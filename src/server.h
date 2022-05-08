@@ -5,11 +5,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <commons/log.h>
-#include<commons/config.h>
+#include "utils.h"
 
-#include "serverUtils.h"
-
-t_config* iniciar_config(void);
 void iterator(char* value);
 
 #endif /* SERVER_H_ */
