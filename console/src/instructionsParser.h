@@ -19,7 +19,8 @@ typedef struct {
 
 typedef struct {
 		char* id;
-		u_int32_t* parameters;
+		uint32_t* parameters;
+		uint32_t cantParameters;
 	} t_instruction;
 
 typedef struct {

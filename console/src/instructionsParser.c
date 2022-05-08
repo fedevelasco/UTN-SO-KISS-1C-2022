@@ -22,7 +22,11 @@ t_instructions_list *parse_pseudocode_file(char *path) {
 	void add_instruction(char *line) {
 		if (!string_is_empty(line)) {
 
-			list_add(instructions_list->instructions, parse_instruction(line));
+			t_instruction* instruction = parse_instruction(line);
+			list_add(instructions_list->instructions, instruction);
+			free(instruction->id);
+			free(instruction->parameters);
+			free(instruction);
 
 		}
 	}
@@ -32,6 +36,16 @@ t_instructions_list *parse_pseudocode_file(char *path) {
 	string_array_destroy(lines);
 	free(buffer);
 	fclose(file);
+
+	int size = list_size(instructions_list->instructions);
+
+	for(int i = 0; i < size; i++){
+		t_instruction* instruction = list_get(instructions_list->instructions, i);
+		printf("Instruccion %u: %s ", i, instruction->id);
+		free(instruction->id);
+		free(instruction->parameters);
+		free(instruction);
+	}
 
 	return instructions_list;
 }
@@ -49,6 +63,7 @@ t_instruction* new_instruction(char* id) {
 		free(instruction);
 		return NULL;
 	}
+	strcpy(instruction->id, id);
 
 	//TODO: pasar inicializacion de parameters en el if a una funcion donde le paso puntero a la instruccion y cuantos parametros tiene para asignarle la memoria.
 
@@ -58,26 +73,46 @@ t_instruction* new_instruction(char* id) {
 			free(instruction);
 			return NULL;
 		}
+		instruction->parameters[0]=0;
+		instruction->parameters[1]=0;
+		instruction->cantParameters=2;
+
 	} else if(strcmp(id, "WRITE") == 0) {
-		instruction->parameters = malloc(2 * sizeof(u_int32_t));
+		instruction->parameters = malloc(2 * sizeof(uint32_t));
 		if (instruction->parameters == NULL) {
 			free(instruction);
 			return NULL;
 		}
+		instruction->parameters[0]=0;
+		instruction->parameters[1]=0;
+		instruction->cantParameters=2;
 	} else if(strcmp(id, "I/O") == 0){
-		instruction->parameters = malloc(sizeof(u_int32_t));
+		instruction->parameters = malloc(sizeof(uint32_t));
 		if (instruction->parameters == NULL) {
 			free(instruction);
 			return NULL;
 		}
+		instruction->parameters[0]=0;
+		instruction->cantParameters=1;
 	} else if(strcmp(id, "READ") == 0) {
-		instruction->parameters = malloc(sizeof(u_int32_t));
+		instruction->parameters = malloc(sizeof(uint32_t));
 		if (instruction->parameters == NULL) {
 			free(instruction);
 			return NULL;
 		}
+		instruction->parameters[0]=0;
+		instruction->cantParameters=1;
+	} else if (strcmp(id, "NO_OP") == 0){
+		instruction->parameters = malloc(sizeof(uint32_t));
+		if (instruction->parameters == NULL) {
+			free(instruction);
+			return NULL;
+		}
+		instruction->parameters[0]=0;
+		instruction->cantParameters=1;
 	} else if(strcmp(id, "EXIT") == 0){
 		instruction->parameters = NULL;
+		instruction->cantParameters=0;
 	}
 	return instruction;
 }
@@ -97,34 +132,44 @@ t_instructions_list* new_instructions_list() {
 
 t_instruction* parse_instruction(char *line) {
 	int aParameter;
-	char* line2 = line;
 
-	//TODO: Explota en la segunda iteracion adentro de una funcion de commons/string. Creo que falta liberar memoria en algun lado
-	char** idAndParams = string_n_split(line2, 2, " ");
-	char* id = idAndParams[0];
-	char* params = idAndParams[1];
 
+	char** idAndParams = string_n_split(line, 2, " ");
+
+
+	char id[strlen(idAndParams[0])+1];
+	strcpy(id, idAndParams[0]);
 
 	t_instruction* instruction = new_instruction(id);
-	memcpy(instruction->id, id, sizeof(char));
 
+	printf("instruction add: %s \n", instruction->id);
 
+	 if(strcmp(id, "EXIT") != 0){
 
+		 char params[strlen(idAndParams[1])+1];
+		 strcpy(params, idAndParams[1]);
 
-    printf("instruction add: %s \n", instruction->id);
+		 char** parameters = string_split(params, " ");
 
-	char** parameters = string_split(params, " ");
+		 for(int i = 0; i < instruction->cantParameters; i++){
+		 		aParameter = atoi(parameters[i]);
+		 		instruction->parameters[i] = aParameter;
+		 	}
 
-	//https://stackoverflow.com/questions/5643316/how-to-find-the-number-of-elements-in-char-array
+		 string_array_destroy(parameters);
 
-	int size = sizeof(parameters) / sizeof(parameters[0]);
+	    }
 
-	for(int i = 0; i < size; i++){
-		aParameter = atoi(parameters[i]);
-		instruction->parameters[i] = aParameter;
-	}
+	 string_array_destroy(idAndParams);
 
-	printf("instruction add: %s %u %u %u \n", instruction->id, instruction->parameters[0], instruction->parameters[1], size);
+	 if(instruction->cantParameters == 2){
+		printf("instruction add: %s %u %u %u \n", instruction->id, instruction->parameters[0], instruction->parameters[1], instruction->cantParameters);
+	 } else if (instruction->cantParameters == 1){
+			printf("instruction add: %s %u %u \n", instruction->id, instruction->parameters[0], instruction->cantParameters);
+
+	 } else {
+		 printf("instruction add: %s %u \n", instruction->id, instruction->cantParameters);
+	 }
 
 
 	return instruction;

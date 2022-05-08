@@ -1,22 +1,22 @@
 #include "consoleUtils.h"
 
 
-void* serializar_paquete(t_paquete* paquete, int bytes)
+void* serializar_paquete(t_paquete* paquete, uint32_t bytes)
 {
 	void * magic = malloc(bytes);
-	int desplazamiento = 0;
+	uint32_t desplazamiento = 0;
 
-	memcpy(magic + desplazamiento, &(paquete->codigo_operacion), sizeof(int));
-	desplazamiento+= sizeof(int);
-	memcpy(magic + desplazamiento, &(paquete->buffer->size), sizeof(int));
-	desplazamiento+= sizeof(int);
+	memcpy(magic + desplazamiento, &(paquete->codigo_operacion), sizeof(uint32_t));
+	desplazamiento+= sizeof(uint32_t);
+	memcpy(magic + desplazamiento, &(paquete->buffer->size), sizeof(uint32_t));
+	desplazamiento+= sizeof(uint32_t);
 	memcpy(magic + desplazamiento, paquete->buffer->stream, paquete->buffer->size);
 	desplazamiento+= paquete->buffer->size;
 
 	return magic;
 }
 
-int crear_conexion(t_log* logger, const char* server_name, char *ip, char* puerto)
+uint32_t crear_conexion(t_log* logger, const char* server_name, char *ip, char* puerto)
 {
 	struct addrinfo infoSocket, *server_info; //Declaramos las estructuras
 
@@ -33,7 +33,7 @@ int crear_conexion(t_log* logger, const char* server_name, char *ip, char* puert
 		}
 
 	// Ahora vamos a crear el socket.
-	int8_t socket_cliente = 0;
+	uint32_t socket_cliente = 0;
 	socket_cliente = socket(server_info->ai_family,
 		                    server_info->ai_socktype,
 		                    server_info->ai_protocol);
@@ -60,7 +60,7 @@ int crear_conexion(t_log* logger, const char* server_name, char *ip, char* puert
 	return socket_cliente;
 }
 
-void enviar_mensaje(char* mensaje, int socket_cliente)
+void enviar_mensaje(char* mensaje, uint32_t socket_cliente)
 {
 	t_paquete* paquete = malloc(sizeof(t_paquete));
 
@@ -70,7 +70,7 @@ void enviar_mensaje(char* mensaje, int socket_cliente)
 	paquete->buffer->stream = malloc(paquete->buffer->size);
 	memcpy(paquete->buffer->stream, mensaje, paquete->buffer->size);
 
-	int8_t bytes = paquete->buffer->size + 2*sizeof(int);
+	uint32_t bytes = paquete->buffer->size + 2*sizeof(uint32_t);
 
 	void* a_enviar = serializar_paquete(paquete, bytes);
 
@@ -107,19 +107,19 @@ t_paquete* crear_paquete(void)
 	return paquete;
 }
 
-void agregar_a_paquete(t_paquete* paquete, void* valor, int tamanio)
+void agregar_a_paquete(t_paquete* paquete, void* valor, uint32_t tamanio)
 {
-	paquete->buffer->stream = realloc(paquete->buffer->stream, paquete->buffer->size + tamanio + sizeof(int));
+	paquete->buffer->stream = realloc(paquete->buffer->stream, paquete->buffer->size + tamanio + sizeof(uint32_t));
 
-	memcpy(paquete->buffer->stream + paquete->buffer->size, &tamanio, sizeof(int));
-	memcpy(paquete->buffer->stream + paquete->buffer->size + sizeof(int), valor, tamanio);
+	memcpy(paquete->buffer->stream + paquete->buffer->size, &tamanio, sizeof(uint32_t));
+	memcpy(paquete->buffer->stream + paquete->buffer->size + sizeof(uint32_t), valor, tamanio);
 
-	paquete->buffer->size += tamanio + sizeof(int);
+	paquete->buffer->size += tamanio + sizeof(uint32_t);
 }
 
-void enviar_paquete(t_paquete* paquete, int8_t socket_cliente)
+void enviar_paquete(t_paquete* paquete, uint32_t socket_cliente)
 {
-	int bytes = paquete->buffer->size + 2*sizeof(int8_t);
+	uint32_t bytes = paquete->buffer->size + 2*sizeof(uint32_t);
 	void* a_enviar = serializar_paquete(paquete, bytes);
 
 	send(socket_cliente, a_enviar, bytes, 0);
@@ -134,7 +134,7 @@ void eliminar_paquete(t_paquete* paquete)
 	free(paquete);
 }
 
-void liberar_conexion(int socket_cliente)
+void liberar_conexion(uint32_t socket_cliente)
 {
 	close(socket_cliente);
 }

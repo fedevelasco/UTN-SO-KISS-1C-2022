@@ -42,9 +42,7 @@ int main(int8_t argc, char** argv){
 
 	instructions_list = parse_pseudocode_file(psudocode_file_path);
 
-	char *file_get_string_value(t_pseudocode *self, int index) {
-		return list_get(self->lines, index);
-	}
+
 
 
 
