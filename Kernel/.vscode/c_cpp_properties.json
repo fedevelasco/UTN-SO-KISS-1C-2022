@@ -1,0 +1,10 @@
+{
+    "configurations": [
+        {
+          "intelliSenseMode": "clang-x64",
+          "defines": ["_GNU_SOURCE"]
+        }
+      ],
+      "version": 4
+    }
+    

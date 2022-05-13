@@ -10,7 +10,7 @@ OBJ = $(SRC:%.c=./obj/%.o)                    # OBJ variable que tiene todos los
 # REGLAS
 
 build: makefolder $(OBJ)                       # Siempre chequea makefolder
-	$(CC) -o $(OUTFILE) src/logKernel.c $(OBJ)          # COMPILA TODO
+	$(CC) -o $(OUTFILE) logKernel.c $(OBJ)          # COMPILA TODO
 
 LINK = -lpthread -lcommons -lm
 CFLAGS = -c                                    # Es para el debugger con -c
