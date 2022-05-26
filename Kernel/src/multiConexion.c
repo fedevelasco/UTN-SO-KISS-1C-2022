@@ -1,6 +1,45 @@
-#include "conexion.h"
+#include <pthread.h>
 
-// Iniciar Conexion como Servidor 
+#include<sys/socket.h>
+#include<unistd.h>
+#include<netdb.h>
+#include<commons/collections/list.h>
+#include<string.h>
+#include<assert.h>
+
+#include <commons/log.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+
+#define NUM_THREADS 2
+
+
+
+#define IP "127.0.0.1"
+#define PUERTO "4444"
+
+
+// Funcion para iniciar un logger, chequea que se haya podido iniciar
+t_log* iniciar_logger(void)
+{
+	t_log* nuevo_logger;
+
+	nuevo_logger = log_create("kernel.log","Kernel", 1, LOG_LEVEL_INFO);
+
+	if (nuevo_logger == NULL){
+		printf("Error al abrir el kernel.log\n");
+		exit(1);
+	}
+
+	return nuevo_logger;
+}
+
+// Funcion que finaliza el logger
+void terminar_logger(t_log* logger)
+{
+	log_destroy(logger);
+}
 
 int iniciar_servidor(t_log* logger)
 {
@@ -38,7 +77,18 @@ int esperar_cliente(int socket_servidor, t_log* logger)
 	return socket_cliente;
 }
 
-// Iniciar Conexion como Cliente
+void iniciar_conexion_servidor(){
+
+    t_log* logger = iniciar_logger();
+
+    int server_fd = iniciar_servidor(logger);
+
+    log_info(logger, "Se inicio el servidor");
+
+    int conexion_fd = esperar_cliente(server_fd, logger);
+
+
+} 
 
 int iniciar_cliente(char *ip, char* puerto, t_log* logger)
 {
@@ -71,3 +121,33 @@ int iniciar_cliente(char *ip, char* puerto, t_log* logger)
 }
 
 
+void iniciar_conexion_cliente(){
+
+    char* ip_server = "127.0.0.1";
+    char* port_server = "4444";
+
+    t_log* logger = iniciar_logger();
+
+    int cliente_fd = iniciar_cliente(ip_server, port_server, logger); 
+
+
+}
+
+
+
+int main(){
+
+    pthread_t threads[NUM_THREADS];
+
+    while(1){
+
+        pthread_create (&threads[0], NULL, (void*) iniciar_conexion_servidor, NULL);
+
+        pthread_create (&threads[1], NULL, (void*) iniciar_conexion_cliente, NULL);
+
+    }
+
+    return EXIT_SUCCESS;
+
+
+}

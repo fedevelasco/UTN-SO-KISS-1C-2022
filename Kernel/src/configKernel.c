@@ -1,6 +1,4 @@
-#include <commons/config.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include "configKernel.h"
 
 // Funcion que inicia el config para poder tomar los datos del configuracion.txt
 t_config* iniciar_config(void)
