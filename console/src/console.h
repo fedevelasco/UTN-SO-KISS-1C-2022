@@ -14,12 +14,10 @@
 #include "instructionsParser.h"
 
 
+
 t_log* start_logger(void);
-t_config* load_configuration_file();
-
-
-void leer_consola(t_log*);
-void paquete(int8_t);
-void terminar_programa(int8_t, t_log*, t_config*);
+t_config* load_configuration_file(t_log*);
+int send_package(int32_t connection, t_package* package);
+void end_process(int32_t, t_log*, t_config*);
 
 #endif /* CONSOLE_H_ */

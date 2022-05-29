@@ -1,22 +1,23 @@
 #include "consoleUtils.h"
 
 
-void* serializar_paquete(t_paquete* paquete, uint32_t bytes)
+
+void* serialize_package(t_package* package, int32_t bytes)
 {
-	void * magic = malloc(bytes);
-	uint32_t desplazamiento = 0;
+	void * to_send = malloc(bytes);
+	int32_t offset = 0;
 
-	memcpy(magic + desplazamiento, &(paquete->codigo_operacion), sizeof(uint32_t));
-	desplazamiento+= sizeof(uint32_t);
-	memcpy(magic + desplazamiento, &(paquete->buffer->size), sizeof(uint32_t));
-	desplazamiento+= sizeof(uint32_t);
-	memcpy(magic + desplazamiento, paquete->buffer->stream, paquete->buffer->size);
-	desplazamiento+= paquete->buffer->size;
+	memcpy(to_send + offset, &(package->operation_code), sizeof(int32_t));
+	offset+= sizeof(int32_t);
+	memcpy(to_send + offset, &(package->buffer->size), sizeof(int32_t));
+	offset+= sizeof(int32_t);
+	memcpy(to_send + offset, package->buffer->stream, package->buffer->size);
+	offset+= package->buffer->size;
 
-	return magic;
+	return to_send;
 }
 
-uint32_t crear_conexion(t_log* logger, const char* server_name, char *ip, char* puerto)
+int32_t create_connection(t_log* logger, const char* server_name, char *ip, char* port)
 {
 	struct addrinfo infoSocket, *server_info; //Declaramos las estructuras
 
@@ -27,116 +28,137 @@ uint32_t crear_conexion(t_log* logger, const char* server_name, char *ip, char* 
 	infoSocket.ai_flags = AI_PASSIVE; //Solo para cuando se quiere utilizar el socket para un servidor
 
 	//Obtenemos la direccion y los datos del socket y los mete en server_info
-		if (getaddrinfo(ip, puerto, &infoSocket, &server_info) != 0){
+		if (getaddrinfo(ip, port, &infoSocket, &server_info) != 0){
 			perror("No se pudo obtener la direccion correctamente.");
 			return -1;
 		}
 
 	// Ahora vamos a crear el socket.
-	uint32_t socket_cliente = 0;
-	socket_cliente = socket(server_info->ai_family,
+	int32_t server_socket = 0;
+	server_socket = socket(server_info->ai_family,
 		                    server_info->ai_socktype,
 		                    server_info->ai_protocol);
 
 	// Fallo en crear el socket
-	if(socket_cliente == -1) {
+	if(server_socket == -1) {
 		freeaddrinfo(server_info);
-		log_error(logger, "Error creando el socket para %s:%s", ip, puerto);
+		log_error(logger, "Error creando el socket para %s:%s", ip, port);
 		return -1;
 	}
 
 	// Ahora que tenemos el socket, vamos a conectarlo
 
 	// Error conectando
-	    if(connect(socket_cliente, server_info->ai_addr, server_info->ai_addrlen) == -1) {
-	        close(socket_cliente);
+	    if(connect(server_socket, server_info->ai_addr, server_info->ai_addrlen) == -1) {
+	        close(server_socket);
 	        freeaddrinfo(server_info);
 	        log_error(logger, "Error al conectar (a %s)\n", server_name);
 	        return -1;
 	    } else
-	        log_info(logger, "Cliente conectado en %s:%s (a %s)\n", ip, puerto, server_name);
+	        log_info(logger, "Cliente conectado en %s:%s (a %s)\n", ip, port, server_name);
 
 	freeaddrinfo(server_info);
-	return socket_cliente;
-}
-
-void enviar_mensaje(char* mensaje, uint32_t socket_cliente)
-{
-	t_paquete* paquete = malloc(sizeof(t_paquete));
-
-	paquete->codigo_operacion = MENSAJE;
-	paquete->buffer = malloc(sizeof(t_buffer));
-	paquete->buffer->size = strlen(mensaje) + 1;
-	paquete->buffer->stream = malloc(paquete->buffer->size);
-	memcpy(paquete->buffer->stream, mensaje, paquete->buffer->size);
-
-	uint32_t bytes = paquete->buffer->size + 2*sizeof(uint32_t);
-
-	void* a_enviar = serializar_paquete(paquete, bytes);
-
-	send(socket_cliente, a_enviar, bytes, 0);
-
-	free(a_enviar);
-	eliminar_paquete(paquete);
+	return server_socket;
 }
 
 
-void crear_buffer(t_paquete* paquete)
+void create_buffer(t_package* package, t_instructions_list* instructions_list)
 {
-	paquete->buffer = malloc(sizeof(t_buffer));
-	paquete->buffer->size = 0;
-	paquete->buffer->stream = NULL;
+	package->buffer = malloc(sizeof(t_buffer));
+	package->buffer->size = 0;
+	package->buffer->stream = NULL;
 }
 
-t_paquete* crear_super_paquete(void)
-{
-	//me falta un malloc!
-	t_paquete* paquete;
 
-	//descomentar despues de arreglar
-	//paquete->codigo_operacion = PAQUETE;
-	//crear_buffer(paquete);
-	return paquete;
+t_package* create_package(t_instructions_list* instructions_list)
+{
+	t_package* package = malloc(sizeof(t_package));
+	package->operation_code = INSTRUCTIONS;
+	create_buffer(package, instructions_list);
+	return package;
 }
 
-t_paquete* crear_paquete(void)
+
+int send_package(int32_t connection, t_package* package)
 {
-	t_paquete* paquete = malloc(sizeof(t_paquete));
-	paquete->codigo_operacion = PAQUETE;
-	crear_buffer(paquete);
-	return paquete;
+	int32_t bytes = package->buffer->size + 2*sizeof(int32_t);
+	void* to_send = serialize_package(package, bytes);
+
+	if(send(connection, to_send, bytes, 0) == -1){
+		free(to_send);
+		return -1;
+	}
+
+	free(to_send);
+	return 1;
 }
 
-void agregar_a_paquete(t_paquete* paquete, void* valor, uint32_t tamanio)
+void free_package(t_package* package)
 {
-	paquete->buffer->stream = realloc(paquete->buffer->stream, paquete->buffer->size + tamanio + sizeof(uint32_t));
-
-	memcpy(paquete->buffer->stream + paquete->buffer->size, &tamanio, sizeof(uint32_t));
-	memcpy(paquete->buffer->stream + paquete->buffer->size + sizeof(uint32_t), valor, tamanio);
-
-	paquete->buffer->size += tamanio + sizeof(uint32_t);
+	free(package->buffer->stream);
+	free(package->buffer);
+	free(package);
 }
 
-void enviar_paquete(t_paquete* paquete, uint32_t socket_cliente)
+void end_connection(int32_t connection)
 {
-	uint32_t bytes = paquete->buffer->size + 2*sizeof(uint32_t);
-	void* a_enviar = serializar_paquete(paquete, bytes);
-
-	send(socket_cliente, a_enviar, bytes, 0);
-
-	free(a_enviar);
+	close(connection);
 }
 
-void eliminar_paquete(t_paquete* paquete)
+int32_t receive_operation_code(int32_t server_socket)
 {
-	free(paquete->buffer->stream);
-	free(paquete->buffer);
-	free(paquete);
+	int32_t cod_op = recv(server_socket, &cod_op, sizeof(int32_t), MSG_WAITALL);
+	return cod_op;
 }
 
-void liberar_conexion(uint32_t socket_cliente)
-{
-	close(socket_cliente);
+
+t_buffer* create_instruction_buffer(t_instructions_list* instructions_list){
+
+	t_buffer* buffer = malloc(sizeof(t_buffer));
+	buffer->size = 0;
+	buffer->stream = NULL;
+
+	buffer->size = sizeof(instructions_list);
+
+	void* stream = malloc(buffer->size);
+	int offset = 0;
+
+	memcpy(stream + offset, &instructions_list->process_size, sizeof(int32_t));
+	offset += sizeof(int32_t);
+
+	t_list_iterator* list_iterator = list_iterator_create(instructions_list->instructions);
+
+	while(list_iterator_has_next(list_iterator)){
+		t_instruction* instruction = list_iterator_next(list_iterator);
+
+		memcpy(stream + offset, &instruction->id_length, sizeof(int32_t));
+		offset += sizeof(int32_t);
+
+		memcpy(stream + offset, &instruction->id, strlen(instruction->id) + 1);
+		offset += strlen(instruction->id) + 1;
+
+		memcpy(stream + offset, &instruction->parameters, sizeof(instruction->parameters));
+		offset += sizeof(instruction->parameters);
+
+		memcpy(stream + offset, &instruction->cantParameters, sizeof(int32_t));
+
+		buffer->stream = stream;
+	}
+
+	list_iterator_destroy(list_iterator);
+
+	return buffer;
+}
+
+
+t_package* create_instructions_package(t_buffer* instructions_buffer){
+
+	t_package* package = malloc(sizeof(t_package));
+
+	package->operation_code = INSTRUCTIONS;
+	package->buffer = instructions_buffer;
+
+    return package;
 }
 
 

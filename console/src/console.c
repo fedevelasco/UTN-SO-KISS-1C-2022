@@ -1,19 +1,19 @@
 #include "console.h"
 
-int main(int8_t argc, char** argv){
+int main(int32_t argc, char** argv){
 
 	if(argc < 2) {
 	        return EXIT_FAILURE;
 	    }
 
 
-	int8_t conexion;
+	int32_t connection;
 	char* ip;
 	char* port;
 	char *psudocode_file_path;
 
 
-	int8_t process_size;
+	int32_t process_size;
 
 	t_log* logger;
 	t_config* config;
@@ -23,60 +23,93 @@ int main(int8_t argc, char** argv){
 	/* ---------------- LOGGING ---------------- */
 
 	logger = start_logger();
-	log_info(logger, "Soy un logg");
 
 
 	/* ---------------- ARCHIVOS DE CONFIGURACION ---------------- */
 
-	config = load_configuration_file();
+	log_info(logger, "Carga de archivo de configuracion - Inicio");
+	config = load_configuration_file(logger);
 
 	// Loggeamos el valor de config
 	ip = config_get_string_value(config, "KERNEL_IP");
 	port = config_get_string_value(config, "KERNEL_PORT");
 
-	log_info(logger, port);
+	log_info(logger, "El kernel configurado tiene ip: %s:%s", ip, port);
+	log_info(logger, "Carga de archivo de configuracion - Fin");
 
 	/* ---------------- ARCHIVO DE PSEUDOCODIGO ---------------- */
 
+	log_info(logger, "Carga de archivo de pseudocodigo - Inicio");
 	psudocode_file_path = argv[2];
+	if (strcmp(psudocode_file_path, "") == 0){
+		log_error(logger, "Carga de archivo de pseudocodigo - La ruta del archivo de pseudocodigo esta vacia");
+		return EXIT_FAILURE;
+	}
 
-	instructions_list = parse_pseudocode_file(psudocode_file_path);
+	instructions_list = parse_pseudocode_file(psudocode_file_path, logger);
 
-
-
-
-
-
-
-
-	/* ---------------- TAMANIO DE PROCESO ---------------- */
-
-	char *a = argv[1];
-	process_size = atoi(a);
+	log_info(logger, "Carga de archivo de pseudocodigo - Fin");
 
 
-	/* ---------------- LEER DE CONSOLA ---------------- */
+	/* ---------------- TAMANIO DE PROCESO -------------------- */
 
-	leer_consola(logger);
+	log_info(logger, "Carga de tamanio de proceso - Inicio");
+	char *process_size_string = argv[1];
+	if (strcmp(process_size_string, " ") == 0){
+			log_error(logger, "Carga de tamanio de proceso - El tamanio de proceso esta vacio");
+			return EXIT_FAILURE;
+		}
+	process_size = atoi(process_size_string);
+	instructions_list->process_size = process_size;
+	log_info(logger, "Carga de tamanio de proceso - Fin");
 
-	/*---------------------------------------------------CONEXION AL SERVIDOR---------------------------------------------------*/
+	/* ---------------- CONEXION AL KERNEL -------------------- */
 
-	// Creamos una conexión hacia el servidor
-	conexion = crear_conexion(logger, "Server", ip, port);
+	log_info(logger, "Conexion a Kernel - Inicio");
 
+	// Creo una conexión hacia el kernel
+	connection = create_connection(logger, "Kernel", ip, port);
 
-	// Armamos y enviamos el paquete
-	paquete(conexion);
+	log_debug(logger, "Conexion a Kernel - create_connection - server_socket: %i", connection);
 
-	terminar_programa(conexion, logger, config);
+	t_buffer* instructions_buffer = create_instruction_buffer(instructions_list);
+	if (instructions_buffer == NULL){
+		log_error(logger, "Conexion a Kernel - Error al crear instructions_buffer");
+		return EXIT_FAILURE;
+	}
+
+	t_package* instructions_package = create_instructions_package(instructions_buffer);
+	if (instructions_package == NULL){
+			log_error(logger, "Conexion a Kernel - Error al crear instructions_package");
+			return EXIT_FAILURE;
+		}
+
+	// Envio paquete
+	if(send_to_server(instructions_package, connection)== -1){
+		log_error(logger, "Conexion a Kernel - Error al enviar paquete al servidor");
+		return EXIT_FAILURE;
+	}
+
+	//Espero mensaje de finalizacion del kernel
+	while(1){
+		int cod_op = receive_operation_code(connection);
+		if (cod_op == 1){
+			end_process(connection, logger, config);
+		}
+	}
 
 }
+
+
+
+
+
 
 t_log* start_logger(void)
 {
 	t_log* new_logger;
 
-	new_logger = log_create("tp0.log", "Client", 1, LOG_LEVEL_INFO);
+	new_logger = log_create("console.log", "Console", 1, LOG_LEVEL_DEBUG);
 
 	if(new_logger == NULL){
 		printf("No fue posible crear el Logger\n");
@@ -86,59 +119,36 @@ t_log* start_logger(void)
 	return new_logger;
 }
 
-t_config* load_configuration_file(void)
+t_config* load_configuration_file(t_log* logger)
 {
+	log_info(logger, "Carga de archivo de configuracion - load_configuration_file - Inicio");
 	t_config* new_configuration;
 
 	new_configuration = config_create("../console/console.config");
 
 	if (new_configuration == NULL){
-		printf("No fue posible cargar la config\n");
+		log_error(logger, "Carga de archivo de configuracion - load_configuration_file - Error al crear configuracion");
 		exit(2);
 	}
-
+	log_info(logger, "Carga de archivo de configuracion - load_configuration_file - Config en %s cargada ok", new_configuration->path);
 	return new_configuration;
 }
 
-void leer_consola(t_log* logger)
+
+int32_t send_to_server(int32_t connection, t_package* package)
 {
-	char* linea;
 
-	while(1){
-
-		linea = readline("> ");
-
-		if(linea[0] == '\0'){
-			break;
-		}
-
-		log_info(logger, linea);
+	if(send_package(connection, package) == -1){
+		free_package(package);
+		return -1;
 	}
-
-	free(linea);
-
+	free_package(package);
+	return 1;
 }
 
-void paquete(int8_t conexion)
+void end_process(int32_t connection, t_log* logger, t_config* config)
 {
-	char* leido = readline("> ");
-	t_paquete* paquete = crear_paquete();
 
-	while(leido[0] != '\0'){
-		agregar_a_paquete(paquete, leido, strlen(leido)+1);
-		free(leido);
-		leido = readline("> ");
-	}
-
-	free(leido);
-	enviar_paquete(paquete, conexion);
-	eliminar_paquete(paquete);
-}
-
-void terminar_programa(int8_t conexion, t_log* logger, t_config* config)
-{
-	/* Y por ultimo, hay que liberar lo que utilizamos (conexion, log y config) 
-	  con las funciones de las commons y del TP mencionadas en el enunciado */
 	if(logger != NULL){
 		log_destroy(logger);
 	}
@@ -146,5 +156,8 @@ void terminar_programa(int8_t conexion, t_log* logger, t_config* config)
 	if (config != NULL){
 		config_destroy(config);
 	}
+
+    close(connection);
+
 
 }

@@ -9,34 +9,55 @@
 #include<netdb.h>
 #include<string.h>
 #include<commons/log.h>
+#include <commons/collections/list.h>
+
+
 
 typedef enum
 {
-	MENSAJE,
-	PAQUETE
+	INSTRUCTIONS,
+	EXIT
 }op_code;
 
 typedef struct
 {
-	uint32_t size;
+	int32_t size;
 	void* stream;
 } t_buffer;
 
 typedef struct
 {
-	op_code codigo_operacion;
+	op_code operation_code;
 	t_buffer* buffer;
-} t_paquete;
+} t_package;
+
+typedef struct {
+		char *path;
+		t_list *lines;
+	} t_pseudocode;
+
+typedef struct {
+	    int32_t id_length;
+		char* id;
+		int32_t* parameters;
+		int32_t cantParameters;
+	} t_instruction;
+
+typedef struct {
+		int32_t process_size;
+		t_list *instructions;
+	} t_instructions_list;
 
 
-
-uint32_t crear_conexion(t_log*, const char* server_name, char *ip, char* puerto);
-void enviar_mensaje(char* mensaje, uint32_t socket_cliente);
-t_paquete* crear_paquete(void);
-t_paquete* crear_super_paquete(void);
-void agregar_a_paquete(t_paquete* paquete, void* valor, uint32_t tamanio);
-void enviar_paquete(t_paquete* paquete, uint32_t socket_cliente);
-void liberar_conexion(uint32_t socket_cliente);
-void eliminar_paquete(t_paquete* paquete);
+void* serialize_package(t_package* package, int32_t bytes);
+int32_t create_connection(t_log* logger, const char* server_name, char *ip, char* port);
+void create_buffer(t_package* package, t_instructions_list* instructions_list);
+t_package* create_package(t_instructions_list* instructions_list);
+void send_package(int32_t connection, t_package* package);
+void free_package(t_package* package);
+void end_connection(int32_t connection);
+int32_t receive_operation_code(int32_t server_socket);
+t_buffer* create_instruction_buffer(t_instructions_list* instructions_list);
+t_package* create_instructions_package(t_buffer* instructions_buffer);
 
 #endif /* UTILS_H_ */
