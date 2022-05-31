@@ -2,7 +2,7 @@
 
 // Iniciar Conexion como Servidor 
 
-int iniciar_servidor(t_log* logger)
+int iniciar_servidor(t_log* logger, char IP, char PUERTO)
 {
 
 	int socket_servidor;

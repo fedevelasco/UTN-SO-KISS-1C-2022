@@ -1,5 +1,19 @@
 #include "configKernel.h"
 
+typedef struct kernel_cfg{
+    char* IP_MEMORIA;
+    char* PUERTO_MEMORIA;
+    char* IP_CPU;
+    char* PUERTO_CPU_DISPATCH;
+    char* PUERTO_CPU_INTERRUPT;
+    char* PUERTO_ESCUCHA;
+    char* ALGORITMO_PLANIFICACION;
+    char* ESTIMACION_INICIAL;
+    char* ALFA;
+    char* GRADO_MULTIPROGRAMACION;
+    char* TIEMPO_MAXIMO_BLOQUEADO;
+} kernel_cfg_t;
+
 // Funcion que inicia el config para poder tomar los datos del configuracion.txt
 t_config* iniciar_config(void)
 {
@@ -17,19 +31,19 @@ t_config* iniciar_config(void)
 
 // Funcion para leer todo lo que tiene el config file 
 // y guardarlo en sus respectivas variables
-void leer_config_file(char *IP_MEMORIA, char *PUERTO_MEMORIA, char *IP_CPU, char *PUERTO_CPU_DISPATCH, char *PUERTO_CPU_INTERRUPT, char *PUERTO_ESCUCHA, char *ALGORITMO_PLANIFICACION, char *ESTIMACION_INICIAL, char *ALFA, char *GRADO_MULTIPROGRAMACION, char *TIEMPO_MAXIMO_BLOQUEADO, t_config *config)
+void leer_config_file(kernel_cfg_t* kernel_cfg, t_config *config)
 {
-    IP_MEMORIA = config_get_string_value(config, "IP_MEMORIA");
-    PUERTO_MEMORIA = config_get_string_value(config, "PUERTO_MEMORIA");
-    IP_CPU = config_get_string_value(config, "IP_CPU");
-    PUERTO_CPU_DISPATCH = config_get_string_value(config, "PUERTO_CPU_DISPATCH");
-    PUERTO_CPU_INTERRUPT = config_get_string_value(config, "PUERTO_CPU_INTERRUPT");
-    PUERTO_ESCUCHA = config_get_string_value(config, "PUERTO_ESCUCHA");
-    ALGORITMO_PLANIFICACION = config_get_string_value(config, "ALGORITMO_PLANIFICACION");
-    ESTIMACION_INICIAL = config_get_string_value(config, "ESTIMACION_INICIAL");
-    ALFA = config_get_string_value(config, "IP");
-    GRADO_MULTIPROGRAMACION = config_get_string_value(config, "GRADO_MULTIPROGRAMACION");
-    TIEMPO_MAXIMO_BLOQUEADO = config_get_string_value(config, "TIEMPO_MAXIMO_BLOQUEADO");
+    kernel_cfg->IP_MEMORIA = config_get_string_value(config, "IP_MEMORIA");
+    kernel_cfg->PUERTO_MEMORIA = config_get_string_value(config, "PUERTO_MEMORIA");
+    kernel_cfg->IP_CPU = config_get_string_value(config, "IP_CPU");
+    kernel_cfg->PUERTO_CPU_DISPATCH = config_get_string_value(config, "PUERTO_CPU_DISPATCH");
+    kernel_cfg->PUERTO_CPU_INTERRUPT = config_get_string_value(config, "PUERTO_CPU_INTERRUPT");
+    kernel_cfg->PUERTO_ESCUCHA = config_get_string_value(config, "PUERTO_ESCUCHA");
+    kernel_cfg->ALGORITMO_PLANIFICACION = config_get_string_value(config, "ALGORITMO_PLANIFICACION");
+    kernel_cfg->ESTIMACION_INICIAL = config_get_string_value(config, "ESTIMACION_INICIAL");
+    kernel_cfg->ALFA = config_get_string_value(config, "IP");
+    kernel_cfg->GRADO_MULTIPROGRAMACION = config_get_string_value(config, "GRADO_MULTIPROGRAMACION");
+    kernel_cfg->TIEMPO_MAXIMO_BLOQUEADO = config_get_string_value(config, "TIEMPO_MAXIMO_BLOQUEADO");
 }
 
 
@@ -40,3 +54,5 @@ void terminar_config(t_config* config)
 	config_destroy(config);
 
 }
+
+t_config* config_kernel = iniciar_config();

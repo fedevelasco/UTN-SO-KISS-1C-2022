@@ -8,11 +8,7 @@
 #include<assert.h>
 
 
-#define IP "127.0.0.1"
-#define PUERTO "4444"
-
-
-int iniciar_servidor(t_log* logger);
+int iniciar_servidor(t_log* logger, char IP, char PUERTO);
 
 
 int esperar_cliente(int socket_servidor, t_log* logger);
