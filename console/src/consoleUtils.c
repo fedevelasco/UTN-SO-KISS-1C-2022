@@ -79,7 +79,7 @@ t_package* create_package(t_instructions_list* instructions_list)
 }
 
 
-int send_package(int32_t connection, t_package* package)
+int32_t send_package(int32_t connection, t_package* package)
 {
 	int32_t bytes = package->buffer->size + 2*sizeof(int32_t);
 	void* to_send = serialize_package(package, bytes);
@@ -159,6 +159,17 @@ t_package* create_instructions_package(t_buffer* instructions_buffer){
 	package->buffer = instructions_buffer;
 
     return package;
+}
+
+int32_t send_to_server(int32_t connection, t_package* package)
+{
+
+	if(send_package(connection, package) == -1){
+		free_package(package);
+		return -1;
+	}
+	free_package(package);
+	return 1;
 }
 
 

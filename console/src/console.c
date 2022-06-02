@@ -2,9 +2,14 @@
 
 int main(int32_t argc, char** argv){
 
+	/* ---------------- LOGGING ---------------- */
+	t_log* logger;
+	logger = start_logger();
+
 	if(argc < 2) {
-	        return EXIT_FAILURE;
-	    }
+		log_error(logger, "Error en argumentos - Es obligatorio especificar path y tamanio de proceso");
+		return EXIT_FAILURE;
+	}
 
 
 	int32_t connection;
@@ -15,14 +20,9 @@ int main(int32_t argc, char** argv){
 
 	int32_t process_size;
 
-	t_log* logger;
+
 	t_config* config;
 	t_instructions_list* instructions_list;
-
-
-	/* ---------------- LOGGING ---------------- */
-
-	logger = start_logger();
 
 
 	/* ---------------- ARCHIVOS DE CONFIGURACION ---------------- */
@@ -47,6 +47,10 @@ int main(int32_t argc, char** argv){
 	}
 
 	instructions_list = parse_pseudocode_file(psudocode_file_path, logger);
+	if (instructions_list == NULL){
+		log_error(logger, "Carga de archivo de pseudocodigo - Error al cargar el archivo de pseudocodigo");
+		return EXIT_FAILURE;
+		}
 
 	log_info(logger, "Carga de archivo de pseudocodigo - Fin");
 
@@ -60,6 +64,7 @@ int main(int32_t argc, char** argv){
 			return EXIT_FAILURE;
 		}
 	process_size = atoi(process_size_string);
+	log_info(logger, "Carga de tamanio de proceso - Tamanio de proceso leido: %i", process_size);
 	instructions_list->process_size = process_size;
 	log_info(logger, "Carga de tamanio de proceso - Fin");
 
@@ -85,7 +90,7 @@ int main(int32_t argc, char** argv){
 		}
 
 	// Envio paquete
-	if(send_to_server(instructions_package, connection)== -1){
+	if(send_to_server(connection, instructions_package) == -1){
 		log_error(logger, "Conexion a Kernel - Error al enviar paquete al servidor");
 		return EXIT_FAILURE;
 	}
@@ -134,17 +139,6 @@ t_config* load_configuration_file(t_log* logger)
 	return new_configuration;
 }
 
-
-int32_t send_to_server(int32_t connection, t_package* package)
-{
-
-	if(send_package(connection, package) == -1){
-		free_package(package);
-		return -1;
-	}
-	free_package(package);
-	return 1;
-}
 
 void end_process(int32_t connection, t_log* logger, t_config* config)
 {

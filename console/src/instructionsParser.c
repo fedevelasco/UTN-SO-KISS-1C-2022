@@ -50,12 +50,8 @@ t_instructions_list *parse_pseudocode_file(char *path, t_log* logger) {
 
 	int size = list_size(instructions_list->instructions);
 
-	for(int i = 0; i < size; i++){
-		t_instruction* instruction = list_get(instructions_list->instructions, i);
-		free(instruction->id);
-		free(instruction->parameters);
-		free(instruction);
-	}
+	log_info(logger, "Carga de archivo de configuracion - Cantidad de instrucciones leidas: %i", size);
+
 	log_info(logger, "Carga de archivo de configuracion - parse_pseudocode_file - Return");
 
 	return instructions_list;
@@ -172,7 +168,7 @@ t_instruction* parse_instruction(char *line, t_log* logger) {
 		return NULL;
 	}
 
-	 if(strcmp(id, "EXIT") != 0){
+	 if(strcmp(id, "EXIT\r") != 0){
 
 		 char params[strlen(idAndParams[1])+1];
 		 strcpy(params, idAndParams[1]);

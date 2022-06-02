@@ -53,11 +53,12 @@ void* serialize_package(t_package* package, int32_t bytes);
 int32_t create_connection(t_log* logger, const char* server_name, char *ip, char* port);
 void create_buffer(t_package* package, t_instructions_list* instructions_list);
 t_package* create_package(t_instructions_list* instructions_list);
-void send_package(int32_t connection, t_package* package);
 void free_package(t_package* package);
 void end_connection(int32_t connection);
 int32_t receive_operation_code(int32_t server_socket);
 t_buffer* create_instruction_buffer(t_instructions_list* instructions_list);
 t_package* create_instructions_package(t_buffer* instructions_buffer);
+int32_t send_package(int32_t connection, t_package* package);
+int32_t send_to_server(int32_t connection, t_package* package);
 
 #endif /* UTILS_H_ */
