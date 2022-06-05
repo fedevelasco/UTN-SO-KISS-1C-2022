@@ -31,8 +31,10 @@ t_config* iniciar_config(void)
 
 // Funcion para leer todo lo que tiene el config file 
 // y guardarlo en sus respectivas variables
-void leer_config_file(kernel_cfg_t* kernel_cfg, t_config *config)
+kernel_cfg_t* leer_config_file(t_config *config)
 {
+    kernel_cfg_t* kernel_cfg;
+    
     kernel_cfg->IP_MEMORIA = config_get_string_value(config, "IP_MEMORIA");
     kernel_cfg->PUERTO_MEMORIA = config_get_string_value(config, "PUERTO_MEMORIA");
     kernel_cfg->IP_CPU = config_get_string_value(config, "IP_CPU");
@@ -44,7 +46,10 @@ void leer_config_file(kernel_cfg_t* kernel_cfg, t_config *config)
     kernel_cfg->ALFA = config_get_string_value(config, "IP");
     kernel_cfg->GRADO_MULTIPROGRAMACION = config_get_string_value(config, "GRADO_MULTIPROGRAMACION");
     kernel_cfg->TIEMPO_MAXIMO_BLOQUEADO = config_get_string_value(config, "TIEMPO_MAXIMO_BLOQUEADO");
+
+    return kernel_cfg;
 }
+
 
 
 // Funcion que finaliza el config
@@ -54,5 +59,3 @@ void terminar_config(t_config* config)
 	config_destroy(config);
 
 }
-
-t_config* config_kernel = iniciar_config();

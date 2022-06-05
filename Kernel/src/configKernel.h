@@ -21,7 +21,7 @@ t_config* iniciar_config(void);
 
 // Funcion para leer todo lo que tiene el config file 
 // y guardarlo en sus respectivas variables
-void leer_config_file(kernel_cfg_t* kernel_cfg, t_config *config);
+kernel_cfg_t* leer_config_file(t_config *config);
 
 // Funcion que finaliza el config
 void terminar_config(t_config* config);

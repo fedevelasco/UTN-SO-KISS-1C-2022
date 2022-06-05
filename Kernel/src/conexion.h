@@ -1,4 +1,6 @@
 #include "logKernel.h"
+#include "configKernel.h"
+
 
 #include<sys/socket.h>
 #include<unistd.h>

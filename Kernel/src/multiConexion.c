@@ -15,4 +15,4 @@
 
 kernel_cfg_t config_kernel;
 
-t_config* nuevo_config = iniciar_config();
+

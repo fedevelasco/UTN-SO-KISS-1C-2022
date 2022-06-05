@@ -60,10 +60,10 @@ void creacion_pcb(estado_new_t* lista_new ,listas_instrucciones_t instrucciones,
 
     //Agrega el PCB a la lista de new si es menor al 
     if(contador_procesos_new(lista_new) <= grado_multiprogramacion){
-
-        push(lista_new, aux);
-
+        push(lista_new, aux); //Para solucionar
     }
+
+    
     
     //Enviar a memoria la info para que pasen a ready los procesos
     //siempre y cuando el grado de multiprogramación lo permita
