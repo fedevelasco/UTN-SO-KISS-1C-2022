@@ -7,9 +7,9 @@ void* serialize_package(t_package* package, int32_t bytes)
 	void * to_send = malloc(bytes);
 	int32_t offset = 0;
 
-	memcpy(to_send + offset, &(package->operation_code), sizeof(int32_t));
+	memcpy(to_send + offset, &package->operation_code, sizeof(int32_t));
 	offset+= sizeof(int32_t);
-	memcpy(to_send + offset, &(package->buffer->size), sizeof(int32_t));
+	memcpy(to_send + offset, &package->buffer->size, sizeof(int32_t));
 	offset+= sizeof(int32_t);
 	memcpy(to_send + offset, package->buffer->stream, package->buffer->size);
 	offset+= package->buffer->size;
@@ -29,7 +29,7 @@ int32_t create_connection(t_log* logger, const char* server_name, char *ip, char
 
 	//Obtenemos la direccion y los datos del socket y los mete en server_info
 		if (getaddrinfo(ip, port, &infoSocket, &server_info) != 0){
-			perror("No se pudo obtener la direccion correctamente.");
+			log_error(logger, "Conexion a Kernel - getaddrinfo - No se pudo obtener la direccion correctamente de %s:%s", ip, port);
 			return -1;
 		}
 
@@ -42,7 +42,7 @@ int32_t create_connection(t_log* logger, const char* server_name, char *ip, char
 	// Fallo en crear el socket
 	if(server_socket == -1) {
 		freeaddrinfo(server_info);
-		log_error(logger, "Error creando el socket para %s:%s", ip, port);
+		log_error(logger, "Conexion a Kernel - socket - Error creando el socket para %s:%s", ip, port);
 		return -1;
 	}
 
@@ -52,10 +52,10 @@ int32_t create_connection(t_log* logger, const char* server_name, char *ip, char
 	    if(connect(server_socket, server_info->ai_addr, server_info->ai_addrlen) == -1) {
 	        close(server_socket);
 	        freeaddrinfo(server_info);
-	        log_error(logger, "Error al conectar (a %s)\n", server_name);
+	        log_error(logger, "Conexion a Kernel - connect - Error al conectar a %s\n", server_name);
 	        return -1;
 	    } else
-	        log_info(logger, "Cliente conectado en %s:%s (a %s)\n", ip, port, server_name);
+	        log_info(logger, "Conexion a Kernel - Consola conectada en %s:%s a %s\n", ip, port, server_name);
 
 	freeaddrinfo(server_info);
 	return server_socket;
@@ -112,7 +112,13 @@ int32_t receive_operation_code(int32_t server_socket)
 }
 
 
-t_buffer* create_instruction_buffer(t_instructions_list* instructions_list){
+t_buffer* create_instruction_buffer(t_instructions_list* instructions_list, t_log* logger){
+	log_info(logger, "create_instruction_buffer - Instruction %i\n", instructions_list->process_size );
+	t_instruction* instruction = list_get(instructions_list->instructions,0);
+	log_info(logger, "create_instruction_buffer - Instruction %s\n", instruction->id );
+	t_instruction* instruction2 = list_get(instructions_list->instructions,1);
+		log_info(logger, "create_instruction_buffer - Instruction %s\n", instruction2->id );
+
 
 	t_buffer* buffer = malloc(sizeof(t_buffer));
 	buffer->size = 0;
@@ -126,26 +132,81 @@ t_buffer* create_instruction_buffer(t_instructions_list* instructions_list){
 	memcpy(stream + offset, &instructions_list->process_size, sizeof(int32_t));
 	offset += sizeof(int32_t);
 
-	t_list_iterator* list_iterator = list_iterator_create(instructions_list->instructions);
+	//TODO: Deberia funcionar pero me trae cualquier cosa en list_iterator_next
 
-	while(list_iterator_has_next(list_iterator)){
-		t_instruction* instruction = list_iterator_next(list_iterator);
+//	t_list_iterator* list_iterator = list_iterator_create(instructions_list->instructions);
+//
+//	while(list_iterator_has_next(list_iterator)){
+//		t_instruction* instruction_temp = malloc(sizeof(t_instruction));
+//
+//		instruction_temp =  list_iterator_next(list_iterator);
+//
+//		memcpy(stream + offset, &instruction->id_length, sizeof(int32_t));
+//		offset += sizeof(int32_t);
+//
+//		memcpy(stream + offset, &instruction->id, strlen(instruction->id) + 1);
+//		offset += strlen(instruction->id) + 1;
+//
+//		memcpy(stream + offset, &instruction->parameters, sizeof(instruction->parameters));
+//		offset += sizeof(instruction->parameters);
+//
+//		memcpy(stream + offset, &instruction->cantParameters, sizeof(int32_t));
+//
+//		free(instruction_temp);
+//
+//	}
+//	buffer->stream = stream;
+//
+//	list_iterator_destroy(list_iterator);
+//
+//	void load_instruction_in_buffer(t_instruction* instruction, void* stream, int* offset){
+//		log_info(logger, "create_instruction_buffer - Instruction %s", instruction->id);
+//		if (instruction != NULL){
+//		memcpy(stream + *offset, &instruction->id_length, sizeof(int32_t));
+//		*offset += sizeof(int32_t);
+//
+//		memcpy(stream + *offset, &instruction->id, strlen(instruction->id) + 1);
+//		*offset += strlen(instruction->id) + 1;
+//
+//		memcpy(stream + *offset, &instruction->parameters, sizeof(instruction->parameters));
+//		*offset += sizeof(instruction->parameters);
+//
+//		memcpy(stream + *offset, &instruction->cantParameters, sizeof(int32_t));
+//		}
+//	}
+//
+//	void _iterator(t_instruction* instruction) {
+//		log_info(logger, "Instruction iterator %s", instruction->id);
+//
+////		return load_instruction_in_buffer(instruction, stream, &offset);
+//	}
+//
+//	list_iterate(instructions_list->instructions, (void*) _iterator);
 
-		memcpy(stream + offset, &instruction->id_length, sizeof(int32_t));
+	int size = list_size(instructions_list->instructions);
+
+	for(int i = 0; i < size; i++){
+		t_instruction* instruction_temp = malloc(sizeof(t_instruction));
+		instruction_temp = list_get(instructions_list->instructions,i);
+
+		log_info(logger, "create_instruction_buffer - Instruction %s", instruction_temp->id);
+		if (instruction_temp != NULL){
+		memcpy(stream + offset, &instruction_temp->id_length, sizeof(int32_t));
 		offset += sizeof(int32_t);
 
-		memcpy(stream + offset, &instruction->id, strlen(instruction->id) + 1);
-		offset += strlen(instruction->id) + 1;
+		memcpy(stream + offset, &instruction_temp->id, strlen(instruction_temp->id) + 1);
+		offset += strlen(instruction_temp->id) + 1;
 
-		memcpy(stream + offset, &instruction->parameters, sizeof(instruction->parameters));
-		offset += sizeof(instruction->parameters);
+		memcpy(stream + offset, &instruction_temp->parameters, sizeof(instruction_temp->parameters));
+		offset += sizeof(instruction_temp->parameters);
 
-		memcpy(stream + offset, &instruction->cantParameters, sizeof(int32_t));
+		memcpy(stream + offset, &instruction_temp->cantParameters, sizeof(int32_t));
+		}
 
-		buffer->stream = stream;
+		free(instruction_temp);
 	}
 
-	list_iterator_destroy(list_iterator);
+	buffer->stream = stream;
 
 	return buffer;
 }

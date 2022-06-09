@@ -25,34 +25,47 @@ t_instructions_list *parse_pseudocode_file(char *path, t_log* logger) {
 
 	char** lines = string_split(buffer, "\n");
 
+	int i = 0;
 
-
-	void add_instruction_con_logger(char *line, t_log* logger) {
+	void add_instruction_con_logger(char *line, t_log* logger, t_instructions_list* instructions_list, int* i) {
 		if (!string_is_empty(line)) {
-			t_instruction* instruction = parse_instruction(line, logger);
-			list_add(instructions_list->instructions, instruction);
-			free(instruction->id);
-			free(instruction->parameters);
-			free(instruction);
 
+			t_instruction* instruction = malloc(sizeof(t_instruction));
+			instruction = parse_instruction(line, logger);
+
+			log_debug(logger, "Instruccion que sale del parseo: %s\n", instruction->id );
+
+			list_add(instructions_list->instructions, instruction);
+
+			//Para debug.
+			t_instruction* instruction2 = list_get(instructions_list->instructions,*i);
+			log_debug(logger, "Instruccion agregada a la lista: %s en i=%i\n", instruction2->id, *i);
+
+
+			*i = *i + 1;
 		}
 	}
 
 	void _add_instruction(char *line){
-		return add_instruction_con_logger(line, logger);
+		return add_instruction_con_logger(line, logger, instructions_list, &i);
 	}
 
 	string_iterate_lines(lines, _add_instruction);
 
-	string_array_destroy(lines);
-	free(buffer);
-	fclose(file);
-
 	int size = list_size(instructions_list->instructions);
+	t_instruction* instructionTest = list_get(instructions_list->instructions,0);
+	log_info(logger, "create_instruction_buffer - Instruction %s\n", instructionTest->id );
+	instructionTest = list_get(instructions_list->instructions,2);
+	log_info(logger, "create_instruction_buffer - Instruction %s\n", instructionTest->id );
+
 
 	log_info(logger, "Carga de archivo de configuracion - Cantidad de instrucciones leidas: %i", size);
 
 	log_info(logger, "Carga de archivo de configuracion - parse_pseudocode_file - Return");
+
+	string_array_destroy(lines);
+	free(buffer);
+	fclose(file);
 
 	return instructions_list;
 }
@@ -65,6 +78,7 @@ t_instruction* new_instruction(char* id) {
 	if (instruction == NULL)
 		return NULL;
 
+//	instruction->id_length = 0;
 	instruction->id_length = malloc(sizeof(int32_t));
 	if (instruction->id_length == NULL) {
 		free(instruction);
@@ -77,6 +91,7 @@ t_instruction* new_instruction(char* id) {
 		return NULL;
 	}
 
+//	instruction->cantParameters = 0;
 	instruction->cantParameters = malloc(sizeof(int32_t));
 		if (instruction->cantParameters == NULL) {
 			free(instruction);
@@ -146,6 +161,7 @@ t_instructions_list* new_instructions_list() {
 		return NULL;
 
 	instructions_list->process_size = malloc(sizeof(int32_t));
+//	instructions_list->process_size = 0;
 
 	instructions_list->instructions = list_create();
 
