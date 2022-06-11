@@ -1,6 +1,14 @@
 #include "conexion.h"
 
-// Estructuras para recibir la informacion 
+// -------------- Estructuras para recibir la informacion --------------
+
+
+typedef struct { // Estructura para poder pasarle info a los threads
+    t_log* log;
+    int fd;
+    char* server_name;
+} t_procesar_conexion_args;
+
 
 typedef struct {
 		int32_t process_size;
@@ -11,7 +19,7 @@ typedef enum
 {
 	INSTRUCTIONS,
 	EXIT
-}op_code;
+}op_code; // el operation code te permite identificar que tipo de operacion esta queriendo / estoy queriendo realizar
 
 typedef struct
 {
@@ -27,70 +35,22 @@ typedef struct
 
 
 
-// Iniciar y operar conexion como Servidor 
-
-int32_t iniciar_servidor(t_log* logger, char IP, char PUERTO)
-{
-
-	int32_t socket_servidor;
-
-	struct addrinfo hints, *servinfo, *p; //Ignorar errores
-
-	memset(&hints, 0, sizeof(hints));
-	hints.ai_family = AF_UNSPEC;
-	hints.ai_socktype = SOCK_STREAM;
-	hints.ai_flags = AI_PASSIVE;
-
-	getaddrinfo(IP, PUERTO, &hints, &servinfo);
-
-	socket_servidor = socket(servinfo->ai_family,servinfo->ai_socktype,servinfo->ai_protocol); // Creamos el socket de escucha del servidor
-
-	bind(socket_servidor, servinfo->ai_addr, servinfo->ai_addrlen); // Asociamos el socket a un puerto
-
-	listen(socket_servidor, SOMAXCONN); // Escuchamos las conexiones entrantes
-
-	freeaddrinfo(servinfo);
-	log_trace(logger, "Conexion con Consola - Listo para escuchar a mi cliente");
-
-	return socket_servidor;
-}
-
-int32_t esperar_cliente(int32_t socket_servidor, t_log* logger)
-{
-
-	int32_t socket_cliente = accept(socket_servidor, NULL, NULL); // Aceptamos un nuevo cliente
-
-	log_info(logger, "Conexion con Consola - Se conecto un cliente");
-
-	return socket_cliente;
-}
-
-int32_t recibir_operacion(int32_t socket_cliente, t_log* logger)
-{
-	int32_t cod_op; // Aca se almacena lo que se recive
-	if(recv(socket_cliente, &cod_op, sizeof(int32_t), MSG_WAITALL) > 0)
-		return cod_op;
-	else
-	{
-		log_info(logger, "Conexion con Consola - Error al recibir el mensaje");
-		close(socket_cliente);
-		return -1;
-	}
-}
+// -------------- Funciones para recibir procesos --------------
 
 void* recibir_buffer(int32_t* size, int32_t socket_cliente, t_log* logger)
 {
 	void * buffer;
 
-	log_info(logger, "Conexion con Consola - Error al recibir el mensaje");
-	recv(socket_cliente, size, sizeof(int32_t), MSG_WAITALL);
+	log_info(logger, "Conexion con Consola - Creando buffer");
+	// Devuelve el tamanio de lo que recibe y guarda el buffer en la variable size
+	recv(socket_cliente, size, sizeof(int32_t), MSG_WAITALL); 
 	buffer = malloc(*size);
 	recv(socket_cliente, buffer, *size, MSG_WAITALL);
 
 	return buffer;
 }
 
-t_package* recibir_package(int32_t socket_cliente)
+t_package* recibir_package(int32_t socket_cliente, t_log* logger)
 {
 	int32_t size;
 	int desplazamiento = 0;
@@ -98,7 +58,7 @@ t_package* recibir_package(int32_t socket_cliente)
 	t_package* valores = list_create();
 	int tamanio;
 
-	buffer = recibir_buffer(&size, socket_cliente);
+	buffer = recibir_buffer(&size, socket_cliente, logger);
 	while(desplazamiento < size)
 	{
 		memcpy(&tamanio, buffer + desplazamiento, sizeof(int32_t));
@@ -113,112 +73,62 @@ t_package* recibir_package(int32_t socket_cliente)
 }
 
 
+// -------------- Funciones para crear conexiones tipo Server y abrir hilos --------------
 
+static void procesar_conexion(void* void_args) { // Esta funcion va a correr el hilo
+    t_procesar_conexion_args* args = (t_procesar_conexion_args*) void_args;
+    t_log* logger = args->log;
+    int cliente_socket = args->fd;
+    char* server_name = args->server_name;
+    free(args);
 
+    op_code cop;
+    while (cliente_socket != -1) {
 
+        if (recv(cliente_socket, &cop, sizeof(op_code), 0) != sizeof(op_code)) {
+            log_info(logger, "DISCONNECT!");
+            return;
+        }
 
+        switch (cop) {
+            case EXIT:
+                log_info(logger, "Exit Program");
+                break;
 
-// Iniciar y operar conexion como Cliente
+            case INSTRUCTIONS:
+            {
+				// Competar
+                break;
+            }
 
-int iniciar_cliente(char *ip, char* puerto, t_log* logger)
-{
-	struct addrinfo hints;
-	struct addrinfo *server_info;
+            // Errores
+            case -1:
+                log_error(logger, "Cliente desconectado de %s...", server_name);
+                return;
+            default:
+                log_error(logger, "Algo anduvo mal en el server de %s", server_name);
+                log_info(logger, "Cop: %d", cop);
+                return;
+        }
+    }
 
-	memset(&hints, 0, sizeof(hints));
-	hints.ai_family = AF_UNSPEC;
-	hints.ai_socktype = SOCK_STREAM;
-	hints.ai_flags = AI_PASSIVE;
-
-	getaddrinfo(ip, puerto, &hints, &server_info);
-
-	int socket_cliente = socket(server_info->ai_family, server_info->ai_socktype, server_info->ai_protocol); // Ahora vamos a crear el socket.
-
-	int connection_info = connect(socket_cliente, server_info->ai_addr, server_info->ai_addrlen);// Ahora que tenemos el socket, vamos a conectarlo
-
-	if(connection_info == -1){
-		log_info(logger, "No se pudo conectar al servidor");
-		close(socket_cliente);
-		freeaddrinfo(server_info);
-		return -1;
-	} else {
-		log_info(logger, "Connexion al servidor exitosa");
-	}
-
-	freeaddrinfo(server_info);
-
-	return socket_cliente;
+    log_warning(logger, "El cliente se desconecto de %s server", server_name);
+    return;
 }
 
+int server_escuchar(t_log* logger, char* server_name, int server_socket) {
+    int cliente_socket = esperar_cliente(server_socket, logger);
 
-
-
-// Funciones para los threads
-
-void conectar_consola(){
-
-	t_log* logger = iniciar_logger();
-
-	char IP = '127.0.0.1';
-	char PUERTO = '8000'; //nose si esta hardcodeado
-
-	int server_fd = iniciar_servidor(logger, IP, PUERTO);
-
-	int cliente_fd = esperar_cliente(server_fd, logger);
-
-	//resto de cosas que tiene que hacer kernel-consola
-
-	terminar_logger(logger);
-
+    if (cliente_socket != -1) {
+        pthread_t hilo;
+        t_procesar_conexion_args* args = malloc(sizeof(t_procesar_conexion_args));
+        args->log = logger;
+        args->fd = cliente_socket;
+        args->server_name = server_name;
+        pthread_create(&hilo, NULL, (void*) procesar_conexion, (void*) args);
+        pthread_detach(hilo);
+        return 1;
+    }
+    return 0;
 }
 
-void conectar_memoria(){
-
-	t_log* logger = iniciar_logger();
-
-	t_config* kernel_cfg_init = iniciar_config();
-
-	kernel_cfg_t* kernel_cfg_done = leer_config_file(kernel_cfg_init);
-
-	int conexion = iniciar_cliente(kernel_cfg_done->IP_MEMORIA, kernel_cfg_done->PUERTO_MEMORIA, logger);
-
-	//resto de cosas que tiene que hacer Kernel-memoria
-
-	terminar_config(kernel_cfg_init);
-	terminar_logger(logger);
-
-}
-
-void conectar_cpu_dispatch(){
-
-	t_log* logger = iniciar_logger();
-
-	t_config* kernel_cfg_init = iniciar_config();
-
-	kernel_cfg_t* kernel_cfg_done = leer_config_file(kernel_cfg_init);
-
-	int conexion = iniciar_cliente(kernel_cfg_done->IP_CPU, kernel_cfg_done->PUERTO_CPU_DISPATCH, logger);
-
-	//resto de cosas que tiene que hacer kernel-cpu(dispatch)
-
-	terminar_config(kernel_cfg_init);
-	terminar_logger(logger);
-
-}
-
-void conectar_cpu_interrupt(){
-
-	t_log* logger = iniciar_logger();
-
-	t_config* kernel_cfg_init = iniciar_config();
-
-	kernel_cfg_t* kernel_cfg_done = leer_config_file(kernel_cfg_init);
-
-	int conexion = iniciar_cliente(kernel_cfg_done->IP_CPU, kernel_cfg_done->PUERTO_CPU_INTERRUPT, logger);
-
-	//resto de cosas que tiene que hacer kernel-cpu(interrupt)
-
-	terminar_config(kernel_cfg_init);
-	terminar_logger(logger);
-
-}

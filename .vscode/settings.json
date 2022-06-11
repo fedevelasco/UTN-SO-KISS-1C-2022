@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "log.h": "c",
-        "configkernel.h": "c"
+        "configkernel.h": "c",
+        "pthread.h": "c"
     }
 }
