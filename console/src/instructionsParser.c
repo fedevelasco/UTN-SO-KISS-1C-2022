@@ -30,8 +30,7 @@ t_instructions_list *parse_pseudocode_file(char *path, t_log* logger) {
 	void add_instruction_con_logger(char *line, t_log* logger, t_instructions_list* instructions_list, int* i) {
 		if (!string_is_empty(line)) {
 
-			t_instruction* instruction = malloc(sizeof(t_instruction));
-			instruction = parse_instruction(line, logger);
+			t_instruction*  instruction = parse_instruction(line, logger);
 
 			log_debug(logger, "Instruccion que sale del parseo: %s\n", instruction->id );
 
@@ -40,8 +39,6 @@ t_instructions_list *parse_pseudocode_file(char *path, t_log* logger) {
 			//Para debug.
 			t_instruction* instruction2 = list_get(instructions_list->instructions,*i);
 			log_debug(logger, "Instruccion agregada a la lista: %s en i=%i\n", instruction2->id, *i);
-
-
 			*i = *i + 1;
 		}
 	}
@@ -77,13 +74,9 @@ t_instruction* new_instruction(char* id) {
 	t_instruction *instruction = malloc(sizeof(t_instruction));
 	if (instruction == NULL)
 		return NULL;
+	memset(instruction, 0, sizeof(t_instruction));
 
-//	instruction->id_length = 0;
-	instruction->id_length = malloc(sizeof(int32_t));
-	if (instruction->id_length == NULL) {
-		free(instruction);
-		return NULL;
-	}
+	instruction->id_length = 0;
 
 	instruction->id = malloc((id_size + 1) * sizeof(char));
 	if (instruction->id == NULL) {
@@ -91,16 +84,10 @@ t_instruction* new_instruction(char* id) {
 		return NULL;
 	}
 
-//	instruction->cantParameters = 0;
-	instruction->cantParameters = malloc(sizeof(int32_t));
-		if (instruction->cantParameters == NULL) {
-			free(instruction);
-			return NULL;
-		}
+	instruction->cantParameters = 0;
 
 	instruction->id_length = id_size;
 	strcpy(instruction->id, id);
-
 
 	if(strcmp(id, "COPY") == 0){
 		instruction->parameters = malloc(2 * sizeof(int32_t));
@@ -153,15 +140,13 @@ t_instruction* new_instruction(char* id) {
 }
 
 
-
 t_instructions_list* new_instructions_list() {
 
 	t_instructions_list *instructions_list = malloc(sizeof(t_instructions_list));
 	if (instructions_list == NULL)
 		return NULL;
 
-	instructions_list->process_size = malloc(sizeof(int32_t));
-//	instructions_list->process_size = 0;
+    instructions_list->process_size = 0;
 
 	instructions_list->instructions = list_create();
 

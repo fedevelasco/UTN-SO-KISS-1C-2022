@@ -51,7 +51,6 @@ int main(int32_t argc, char** argv){
 		log_error(logger, "Carga de archivo de pseudocodigo - Error al cargar el archivo de pseudocodigo - Fin proceso");
 		return EXIT_FAILURE;
 		}
-	t_instruction* instructionTest = list_get(instructions_list->instructions,2);
 
 	log_info(logger, "Carga de archivo de pseudocodigo - Fin");
 
@@ -104,18 +103,16 @@ int main(int32_t argc, char** argv){
 		return EXIT_FAILURE;
 	}
 
-	//Espero mensaje de finalizacion del kernel
-	log_info(logger, "Conexion a Kernel - Consola esperando mensaje de finalizacion del Kernel");
-	while(1){
-		int cod_op = receive_operation_code(connection);
-		if (cod_op == 1){
-			end_process(connection, logger, config);
-		}
+	end_process(connection, logger, config);
+
+//	//Espero mensaje de finalizacion del kernel
+//	log_info(logger, "Conexion a Kernel - Consola esperando mensaje de finalizacion del Kernel");
+//	while(1){
+//		int cod_op = receive_operation_code(connection);
+//		if (cod_op == 1){
+//			end_process(connection, logger, config);
+//		}
 	}
-
-}
-
-
 
 
 

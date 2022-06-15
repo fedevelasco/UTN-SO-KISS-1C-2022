@@ -60,5 +60,7 @@ t_buffer* create_instruction_buffer(t_instructions_list* instructions_list, t_lo
 t_package* create_instructions_package(t_buffer* instructions_buffer);
 int32_t send_package(int32_t connection, t_package* package);
 int32_t send_to_server(int32_t connection, t_package* package);
+int32_t instructions_list_size(t_instructions_list* instructions_list);
+void instructions_list_destroyer(t_instructions_list* instructions_list);
 
 #endif /* UTILS_H_ */

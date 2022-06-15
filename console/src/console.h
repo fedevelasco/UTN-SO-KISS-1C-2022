@@ -13,9 +13,6 @@
 #include "consoleUtils.h"
 #include "instructionsParser.h"
 
-
-
-
 t_log* start_logger(void);
 t_config* load_configuration_file(t_log*);
 void end_process(int32_t, t_log*, t_config*);
