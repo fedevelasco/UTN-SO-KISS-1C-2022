@@ -9,17 +9,16 @@ typedef struct { // Estructura para poder pasarle info a los threads
     char* server_name;
 } t_procesar_conexion_args;
 
-
-typedef struct {
-		int32_t process_size;
-		t_list *instructions;
-	} t_instructions_list;
-
 typedef enum
 {
 	INSTRUCTIONS,
 	EXIT
 }op_code; // el operation code te permite identificar que tipo de operacion esta queriendo / estoy queriendo realizar
+
+typedef struct {
+		int32_t process_size;
+		t_list *instructions;
+	} t_instructions_list;
 
 typedef struct
 {
@@ -84,13 +83,15 @@ static void procesar_conexion(void* void_args) { // Esta funcion va a correr el 
 
     op_code cop;
     while (cliente_socket != -1) {
-
-        if (recv(cliente_socket, &cop, sizeof(op_code), 0) != sizeof(op_code)) {
+    //El choclo de bytes que recibo viene encabezado por el op_code
+        if (recv(cliente_socket, &cop, sizeof(op_code), 0) != sizeof(op_code)) { 
+            //Al recv le paso un buffer a donde leer (cop) y le digo cuando leer (sizeof op_code)
+            //Si leyo correctamente entonces tiene que coincidir la cantidad de bytes.
             log_info(logger, "DISCONNECT!");
             return;
         }
 
-        switch (cop) {
+        switch (cop) { //Analizo el op_code para ver que estoy queriendo mandar
             case EXIT:
                 log_info(logger, "Exit Program");
                 break;
@@ -132,3 +133,73 @@ int server_escuchar(t_log* logger, char* server_name, int server_socket) {
     return 0;
 }
 
+//while(server_escuchar(.., .., ..)); Esto va a escuchar todos los clientes Consola que se conecten
+
+
+
+
+// -------------- Funciones para recibir procesos y deserializar --------------
+
+
+static void* serializar_mirar_netflix(size_t* size, char* peli, uint8_t cant_pochoclos) {
+    size_t size_peli = strlen(peli) + 1;
+    *size =
+          sizeof(op_code)   // cop
+        + sizeof(size_t)    // total
+        + sizeof(size_t)    // size de char* peli
+        + size_peli         // char* peli
+        + sizeof(uint8_t);  // cant_pochoclos
+    size_t size_payload = *size - sizeof(op_code) - sizeof(size_t);
+
+    void* stream = malloc(*size);
+
+    op_code cop = MIRAR_NETFLIX;
+    memcpy(stream, &cop, sizeof(op_code));
+    memcpy(stream+sizeof(op_code), &size_payload, sizeof(size_t));
+    memcpy(stream+sizeof(op_code)+sizeof(size_t), &size_peli, sizeof(size_t));
+    memcpy(stream+sizeof(op_code)+sizeof(size_t)*2, peli, size_peli);
+    memcpy(stream+sizeof(op_code)+sizeof(size_t)*2+size_peli, &cant_pochoclos, sizeof(uint8_t));
+
+    return stream;
+}
+
+static void deserializar_mirar_netflix(void* stream, char** peli, uint8_t* cant_pochoclos) {
+    // Peli
+    size_t size_peli;
+    memcpy(&size_peli, stream, sizeof(size_t));
+
+    char* r_peli = malloc(size_peli);
+    memcpy(r_peli, stream+sizeof(size_t), size_peli);
+    *peli = r_peli;
+
+    // Pochoclos
+    memcpy(cant_pochoclos, stream+sizeof(size_t)+size_peli, sizeof(uint8_t));
+}
+
+bool send_mirar_netflix(int fd, char* peli, uint8_t cant_pochoclos) {
+    size_t size;
+    void* stream = serializar_mirar_netflix(&size, peli, cant_pochoclos);
+    if (send(fd, stream, size, 0) != size) {
+        free(stream);
+        return false;
+    }
+    free(stream);
+    return true;
+}
+
+bool recv_mirar_netflix(int fd, char** peli, uint8_t* cant_pochoclos) {
+    size_t size_payload;
+    if (recv(fd, &size_payload, sizeof(size_t), 0) != sizeof(size_t))
+        return false;
+
+    void* stream = malloc(size_payload);
+    if (recv(fd, stream, size_payload, 0) != size_payload) {
+        free(stream);
+        return false;
+    }
+
+    deserializar_mirar_netflix(stream, peli, cant_pochoclos);
+
+    free(stream);
+    return true;
+}
