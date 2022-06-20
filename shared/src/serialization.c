@@ -1,4 +1,4 @@
-#include "serialization.h"
+#include <serialization.h>
 
 int32_t serialize_int(char* output, int32_t* input) {
 	int32_t size = sizeof(int32_t);
@@ -26,7 +26,6 @@ int32_t serialize_list(char* output,t_list* input, int32_t element_size) {
 int32_t deserialize_list(t_list* output,char* input, int32_t element_size) {
 	int32_t i, offset = 1;
 	// Se saca de la primera posicion la cantidad de elementos
-//	void* buffer;
 	for (i = 0; i < input[0]; i++) {
 		void* buffer = malloc(element_size);
 		memcpy(buffer, input + offset, element_size);
@@ -35,6 +34,20 @@ int32_t deserialize_list(t_list* output,char* input, int32_t element_size) {
 		free(buffer);
 	}
 
+	return offset;
+}
+
+int32_t deserialize_parameters(t_list* output,char* input, int32_t element_size) {
+	int32_t i, offset = 1;
+	// Se saca de la primera posicion la cantidad de elementos
+	for (i = 0; i < input[0]; i++) {
+		t_parameter* parameter = create_parameter();
+		memcpy(&parameter->value, input + offset, element_size);
+		list_add(output, parameter);
+		offset += element_size;
+	}
+	printf("\ndeserialize_parameters - parameter value: %d\n", ((t_parameter*) list_get(output,0))->value);
+	printf("\ndeserialize_parameters - parameter value: %d\n", ((t_parameter*) list_get(output,1))->value);
 
 	return offset;
 }
@@ -82,7 +95,9 @@ int32_t serialize_instructions_list(char* output, t_instructions_list* input) {
 int32_t deserialize_instruction(t_instruction* output, char* input) {
 	int32_t offset = 0;
 	offset += deserialize_string(output->id, input);
-	offset += deserialize_list(output->parameters, input + offset, sizeof(t_parameter));
+	offset += deserialize_parameters(output->parameters, input + offset, sizeof(t_parameter));
+	printf("\ndeserialize_instruction - Instruction: parameter value: %d\n", ((t_parameter*) list_get(output->parameters,0))->value);
+	printf("\ndeserialize_instruction - Instruction: parameter value: %d\n", ((t_parameter*) list_get(output->parameters,1))->value);
 
 	return offset;
 }
@@ -95,6 +110,7 @@ int32_t deserialize_instructions_list(t_instructions_list* output, char* input) 
 		offset += deserialize_instruction(instruction, input + offset);
 		// Agrego la instruccion recibida a la lista
 		list_add(output->instructions, instruction);
+
 	}
 	offset += deserialize_int(&output->process_size, input + offset);
 	return offset;
@@ -115,101 +131,6 @@ void print_buffer(char* buffer, int32_t size) {
 int bytes_list(t_list* input, int32_t element_size){
 	return list_size(input)*element_size;
 }
-
-//Instruction
-
-t_parameter* create_parameter(){
-	t_parameter* parameter = malloc(sizeof(t_parameter));
-	memset(parameter, 0, sizeof(t_parameter));
-	parameter->value=0;
-	return parameter;
-}
-
-t_parameter* new_parameter(int32_t value){
-	t_parameter* parameter = create_parameter();
-	parameter->value = value;
-	return parameter;
-}
-
-void parameter_destroy(t_parameter* parameter){
-	if (parameter != NULL){
-		free(parameter);
-		parameter = NULL;
-	}
-}
-
-
-
-t_instruction* create_instruction(){
-	t_instruction* instruction = malloc(sizeof(t_instruction));
-	memset(instruction, 0, sizeof(t_instruction));
-	instruction->id = string_new();
-	instruction->parameters = list_create();
-	return instruction;
-}
-
-t_instruction* new_instruction(char* id, t_list* parameters) {
-	t_instruction* instruction = create_instruction();
-
-	string_append(&instruction->id, id);
-
-	for(int i=0; i<list_size(parameters);i++)
-		list_add(instruction->parameters, list_get(parameters, i));
-
-	return instruction;
-}
-
-void instruction_destroy(t_instruction* instruction){
-	list_destroy_and_destroy_elements(instruction->parameters, (void*) parameter_destroy);
-	free(instruction->id);
-	free(instruction);
-}
-
-int32_t bytes_instruction(t_instruction* instruction) {
-	return string_length(instruction->id)+1 + bytes_list(instruction->parameters, sizeof(int32_t));
-
-}
-
-//Instructions_list
-t_instructions_list* create_instructions_list(){
-	t_instructions_list* instructions_list = malloc(sizeof(t_instructions_list));
-//	memset(instructions_list, 0, sizeof(t_instructions_list));
-	instructions_list->instructions = list_create();
-	instructions_list->process_size = 0;
-	return instructions_list;
-}
-
-t_instructions_list* new_instructions_list(t_list* instructions, int32_t process_size) {
-	t_instructions_list* instructions_list = create_instructions_list();
-
-	for(int i=0; i<list_size(instructions);i++)
-		list_add(instructions_list->instructions, list_get(instructions, i));
-
-	instructions_list->process_size = process_size;
-
-	return instructions_list;
-}
-
-void instructions_list_destroy(t_instructions_list* instructions_list){
-
-	list_destroy_and_destroy_elements(instructions_list->instructions, (void*) instruction_destroy);
-	free(instructions_list);
-}
-
-int32_t bytes_instructions_list(t_instructions_list* instructions_list) {
-	int32_t bytes = 0;
-
-	for(int i=0;i<list_size(instructions_list->instructions);i++){
-		bytes += bytes_instruction(list_get(instructions_list->instructions, i));
-	}
-
-	bytes += sizeof(int32_t);
-
-
-	return bytes;
-
-}
-
 
 
 /* INICIO DE TESTS */
@@ -286,7 +207,9 @@ void test_serialize_instruction(){
 
 	string_append(&instructionA->id, "NO_OP");
 	t_parameter* parameter = new_parameter(2);
+	t_parameter* parameter2 = new_parameter(33);
 	list_add(instructionA->parameters, parameter);
+	list_add(instructionA->parameters, parameter2);
 
 	char* buffer = malloc(bytes_instruction(instructionA));
 	memset(buffer, 0, bytes_instruction(instructionA));
@@ -296,6 +219,8 @@ void test_serialize_instruction(){
 	bool equal = string_equals_ignore_case(instructionB->id, instructionA->id);
 	CU_ASSERT_EQUAL(equal,true);
 	CU_ASSERT_EQUAL( ((t_parameter*)list_get(instructionB->parameters,0))->value, ((t_parameter*)list_get(instructionA->parameters,0))->value );
+	CU_ASSERT_EQUAL( ((t_parameter*)list_get(instructionB->parameters,1))->value, ((t_parameter*)list_get(instructionA->parameters,1))->value );
+
 
 	instruction_destroy(instructionA);
 	instruction_destroy(instructionB);
@@ -305,6 +230,8 @@ void test_serialize_instruction_list(){
 
 	char* id =string_new();
 	string_append(&id, "READ");
+	char* id2 =string_new();
+	string_append(&id2, "WRITE");
 
 	t_list* parameters = list_create();
 	t_parameter* parameter1 = new_parameter(2);
@@ -312,14 +239,21 @@ void test_serialize_instruction_list(){
 	list_add(parameters, parameter1);
 	list_add(parameters, parameter2);
 
+	t_list* parameters2 = list_create();
+	t_parameter* parameter3 = new_parameter(22);
+	t_parameter* parameter4 = new_parameter(33);
+	list_add(parameters2, parameter3);
+	list_add(parameters2, parameter4);
+
 	t_instruction* instruction = new_instruction(id, parameters);
+	t_instruction* instruction2 = new_instruction(id2, parameters2);
 
 	t_instructions_list* instructions_listA = create_instructions_list();
 	t_instructions_list* instructions_listB = create_instructions_list();
 
 	list_add(instructions_listA->instructions, instruction);
+	list_add(instructions_listA->instructions, instruction2);
 	instructions_listA->process_size = 1000;
-
 
 
 	char* buffer = malloc(bytes_instructions_list(instructions_listA));
@@ -327,17 +261,33 @@ void test_serialize_instruction_list(){
 	serialize_instructions_list(buffer, instructions_listA);
 	print_buffer(buffer,bytes_instructions_list(instructions_listA));
 	deserialize_instructions_list(instructions_listB, buffer);
+
+	printf("\nInstructions_listA: parameter value: %d\n", ((t_parameter*) list_get( ((t_instruction*) list_get(instructions_listA->instructions,0))->parameters,0))->value);
+	printf("Instructions_listA: parameter value: %d\n", ((t_parameter*) list_get( ((t_instruction*) list_get(instructions_listA->instructions,0))->parameters,1))->value);
+	printf("Instructions_listA: parameter value: %d\n", ((t_parameter*) list_get( ((t_instruction*) list_get(instructions_listA->instructions,1))->parameters,0))->value);
+	printf("Instructions_listA: parameter value: %d\n", ((t_parameter*) list_get( ((t_instruction*) list_get(instructions_listA->instructions,1))->parameters,1))->value);
+
+	printf("\nInstructions_listB: parameter value: %d\n", ((t_parameter*) list_get( ((t_instruction*) list_get(instructions_listB->instructions,0))->parameters,0))->value);
+	printf("Instructions_listB: parameter value: %d\n", ((t_parameter*) list_get( ((t_instruction*) list_get(instructions_listB->instructions,0))->parameters,1))->value);
+	printf("Instructions_listB: parameter value: %d\n", ((t_parameter*) list_get( ((t_instruction*) list_get(instructions_listB->instructions,1))->parameters,0))->value);
+	printf("Instructions_listB: parameter value: %d\n", ((t_parameter*) list_get( ((t_instruction*) list_get(instructions_listB->instructions,1))->parameters,1))->value);
+
+
+
 	CU_ASSERT_EQUAL(list_size(instructions_listB->instructions),list_size(instructions_listA->instructions));
 	CU_ASSERT_EQUAL(((t_parameter*) list_get( ((t_instruction*) list_get(instructions_listB->instructions,0))->parameters,0))->value,2);
 	CU_ASSERT_EQUAL(((t_parameter*) list_get( ((t_instruction*) list_get(instructions_listB->instructions,0))->parameters,1))->value,100);
-
+	CU_ASSERT_EQUAL(((t_parameter*) list_get( ((t_instruction*) list_get(instructions_listB->instructions,1))->parameters,0))->value,22);
+	CU_ASSERT_EQUAL(((t_parameter*) list_get( ((t_instruction*) list_get(instructions_listB->instructions,1))->parameters,1))->value,33);
 	/*Liberar las estructuras internas*/
 	free(id);
+	free(id2);
 
 
 	instructions_list_destroy(instructions_listA);
 	instructions_list_destroy(instructions_listB);
 	list_destroy_and_destroy_elements(parameters, (void*) parameter_destroy);
+	list_destroy_and_destroy_elements(parameters2, (void*) parameter_destroy);
 	free(buffer);
 }
 
