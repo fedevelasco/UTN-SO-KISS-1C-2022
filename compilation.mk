@@ -1,19 +1,3 @@
-include settings.mk
-
-################################################################################
-
-filename = $(1).out
-
-define compile_bin
-gcc $(CFLAGS) -o "$@" $^ $(IDIRS:%=-I%) $(LIBDIRS:%=-L%) $(LIBS:%=-l%)
-endef
-
-define compile_objs
-gcc $(CFLAGS) -c -o "$@" $< $(IDIRS:%=-I%)
-endef
-
-################################################################################
-
 # Set prerrequisites
 SRCS_C += $(shell find src/ -iname "*.c")
 SRCS_H += $(shell find include/ -iname "*.h")
@@ -64,31 +48,3 @@ $(DEPS): $$(shell find $$(patsubst %bin/,%src/,$$(dir $$@)) -iname "*.c") \
 
 $(sort $(dir $(BIN) $(OBJS))):
 	mkdir -pv $@
-
-
-################################################################################
-
-LD_LIBRARY_PATH != echo $(addsuffix /bin,$(SHARED_LIBPATHS)) | tr ' ' ':'
-
-.PHONY: start
-start: all
-	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH); \
-	valgrind --tool=none ./$(BIN) $(ARGS)
-
-.PHONY: daemon
-daemon:
-	@test $(shell which entr) || entr
-	while sleep 0.1; do \
-		find src/ include/ | entr -d make start --no-print-directory; \
-	done
-
-.PHONY: memcheck
-memcheck: all
-	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH); \
-	valgrind --leak-check=full $(MEMCHECK_FLAGS) ./$(BIN) $(ARGS)
-
-.PHONY: helgrind
-helgrind: all
-	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH); \
-	valgrind --tool=helgrind $(HELGRIND_FLAGS) ./$(BIN) $(ARGS)
-
