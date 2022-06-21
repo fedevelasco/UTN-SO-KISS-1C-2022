@@ -1,4 +1,4 @@
-#include "console.h"
+#include <console.h>
 
 int main(int32_t argc, char** argv){
 
@@ -97,7 +97,7 @@ int main(int32_t argc, char** argv){
 		}
 
 	// Envio paquete
-	log_info(logger, "Conexion a Kernel - Envio de paquete");
+//	log_info(logger, "Conexion a Kernel - Envio de paquete");
 	if(send_to_server(connection, instructions_package) == -1){
 		log_error(logger, "Conexion a Kernel - Error al enviar paquete al servidor - Fin proceso");
 		return EXIT_FAILURE;
@@ -112,9 +112,9 @@ int main(int32_t argc, char** argv){
 //		if (cod_op == 1){
 //			end_process(connection, logger, config);
 //		}
-	}
+//	}
 
-
+}
 
 
 t_log* start_logger(void)
@@ -147,8 +147,7 @@ t_config* load_configuration_file(t_log* logger)
 }
 
 
-void end_process(int32_t connection, t_log* logger, t_config* config)
-{
+void end_process(int32_t connection, t_log* logger, t_config* config){
 
 	if(logger != NULL){
 		log_destroy(logger);
@@ -159,6 +158,4 @@ void end_process(int32_t connection, t_log* logger, t_config* config)
 	}
 
     close(connection);
-
-
 }

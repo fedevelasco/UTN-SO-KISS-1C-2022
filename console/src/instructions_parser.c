@@ -1,5 +1,5 @@
-#include "instructionsParser.h"
-#define ARRAY_LENGTH(a) (sizeof(a) / sizeof(*a))
+#include <instructions_parser.h>
+
 
 t_instructions_list *parse_pseudocode_file(char *path, t_log* logger) {
 	log_info(logger, "Carga de archivo de configuracion - parse_pseudocode_file - Inicio");
@@ -14,7 +14,7 @@ t_instructions_list *parse_pseudocode_file(char *path, t_log* logger) {
 	stat(path, &stat_file);
 
 
-	t_instructions_list *instructions_list = new_instructions_list();
+	t_instructions_list *instructions_list = create_instructions_list();
 	if (instructions_list == NULL) {
 		log_error(logger, "Carga de archivo de configuracion - parse_pseudocode_file - Error al crear lista de instrucciones");
 		return NULL;
@@ -37,8 +37,7 @@ t_instructions_list *parse_pseudocode_file(char *path, t_log* logger) {
 			list_add(instructions_list->instructions, instruction);
 
 			//Para debug.
-			t_instruction* instruction2 = list_get(instructions_list->instructions,*i);
-			log_debug(logger, "Instruccion agregada a la lista: %s en i=%i\n", instruction2->id, *i);
+			log_debug(logger, "Instruccion agregada a la lista: %s en i=%i\n", ((t_instruction*) list_get(instructions_list->instructions,*i))->id, *i);
 			*i = *i + 1;
 		}
 	}
@@ -49,14 +48,14 @@ t_instructions_list *parse_pseudocode_file(char *path, t_log* logger) {
 
 	string_iterate_lines(lines, _add_instruction);
 
-	int size = list_size(instructions_list->instructions);
-	t_instruction* instructionTest = list_get(instructions_list->instructions,0);
-	log_info(logger, "create_instruction_buffer - Instruction %s\n", instructionTest->id );
-	instructionTest = list_get(instructions_list->instructions,2);
-	log_info(logger, "create_instruction_buffer - Instruction %s\n", instructionTest->id );
+	int instructions_added = list_size(instructions_list->instructions);
+
+	for(int i=0; i<instructions_added; i++){
+		log_debug(logger, "parse_pseudocode_file - Instruction %s\n", ((t_instruction*) list_get(instructions_list->instructions,i))->id );
+	}
 
 
-	log_info(logger, "Carga de archivo de configuracion - Cantidad de instrucciones leidas: %i", size);
+	log_info(logger, "Carga de archivo de configuracion - Cantidad de instrucciones leidas: %i", instructions_added);
 
 	log_info(logger, "Carga de archivo de configuracion - parse_pseudocode_file - Return");
 
@@ -67,95 +66,8 @@ t_instructions_list *parse_pseudocode_file(char *path, t_log* logger) {
 	return instructions_list;
 }
 
-t_instruction* new_instruction(char* id) {
-
-	int id_size = string_length(id);
-
-	t_instruction *instruction = malloc(sizeof(t_instruction));
-	if (instruction == NULL)
-		return NULL;
-	memset(instruction, 0, sizeof(t_instruction));
-
-	instruction->id_length = 0;
-
-	instruction->id = malloc((id_size + 1) * sizeof(char));
-	if (instruction->id == NULL) {
-		free(instruction);
-		return NULL;
-	}
-
-	instruction->cantParameters = 0;
-
-	instruction->id_length = id_size;
-	strcpy(instruction->id, id);
-
-	if(strcmp(id, "COPY") == 0){
-		instruction->parameters = malloc(2 * sizeof(int32_t));
-		if (instruction->parameters == NULL) {
-			free(instruction);
-			return NULL;
-		}
-		instruction->parameters[0]=0;
-		instruction->parameters[1]=0;
-		instruction->cantParameters=2;
-
-	} else if(strcmp(id, "WRITE") == 0) {
-		instruction->parameters = malloc(2 * sizeof(int32_t));
-		if (instruction->parameters == NULL) {
-			free(instruction);
-			return NULL;
-		}
-		instruction->parameters[0]=0;
-		instruction->parameters[1]=0;
-		instruction->cantParameters=2;
-	} else if(strcmp(id, "I/O") == 0){
-		instruction->parameters = malloc(sizeof(int32_t));
-		if (instruction->parameters == NULL) {
-			free(instruction);
-			return NULL;
-		}
-		instruction->parameters[0]=0;
-		instruction->cantParameters=1;
-	} else if(strcmp(id, "READ") == 0) {
-		instruction->parameters = malloc(sizeof(int32_t));
-		if (instruction->parameters == NULL) {
-			free(instruction);
-			return NULL;
-		}
-		instruction->parameters[0]=0;
-		instruction->cantParameters=1;
-	} else if (strcmp(id, "NO_OP") == 0){
-		instruction->parameters = malloc(sizeof(int32_t));
-		if (instruction->parameters == NULL) {
-			free(instruction);
-			return NULL;
-		}
-		instruction->parameters[0]=0;
-		instruction->cantParameters=1;
-	} else if(strcmp(id, "EXIT") == 0){
-		instruction->parameters = NULL;
-		instruction->cantParameters=0;
-	}
-	return instruction;
-}
-
-
-t_instructions_list* new_instructions_list() {
-
-	t_instructions_list *instructions_list = malloc(sizeof(t_instructions_list));
-	if (instructions_list == NULL)
-		return NULL;
-
-    instructions_list->process_size = 0;
-
-	instructions_list->instructions = list_create();
-
-	return instructions_list;
-}
 
 t_instruction* parse_instruction(char *line, t_log* logger) {
-	int aParameter;
-
 
 	char** idAndParams = string_n_split(line, 2, " ");
 
@@ -163,36 +75,55 @@ t_instruction* parse_instruction(char *line, t_log* logger) {
 	char id[strlen(idAndParams[0])+1];
 	strcpy(id, idAndParams[0]);
 
-	t_instruction* instruction = new_instruction(id);
+	t_instruction* instruction = create_instruction();
 	if(instruction == NULL){
 		log_error(logger, "Carga de archivo de configuracion - parse_instruction - new_instruction - Error al crear instruccion");
 		return NULL;
 	}
 
-	 if(strcmp(id, "EXIT\r") != 0){
+	string_append(&instruction->id, id);
 
-		 char params[strlen(idAndParams[1])+1];
-		 strcpy(params, idAndParams[1]);
+	t_parameter* parameter_1 = create_parameter();
+	t_parameter* parameter_2 = create_parameter();
 
-		 char** parameters = string_split(params, " ");
+	if(strcmp(id, "COPY") == 0 || strcmp(id, "WRITE") == 0){
 
-		 for(int i = 0; i < instruction->cantParameters; i++){
-		 		aParameter = atoi(parameters[i]);
-		 		instruction->parameters[i] = aParameter;
-		 	}
+		char params[strlen(idAndParams[1])+1];
+		strcpy(params, idAndParams[1]);
+		char** parameters = string_split(params, " ");
 
-		 string_array_destroy(parameters);
+		parameter_1->value = atoi(parameters[0]);
+		parameter_2->value = atoi(parameters[1]);
 
-	    }
+		list_add(instruction->parameters, parameter_1);
+		list_add(instruction->parameters, parameter_2);
+
+		string_array_destroy(parameters);
+
+		} else if(strcmp(id, "I/O") == 0 || strcmp(id, "READ") == 0 || strcmp(id, "NO_OP") == 0 ){
+
+			char params[strlen(idAndParams[1])+1];
+			strcpy(params, idAndParams[1]);
+			char** parameters = string_split(params, " ");
+
+			parameter_1->value = atoi(parameters[0]);
+			list_add(instruction->parameters, parameter_1);
+
+			string_array_destroy(parameters);
+
+		} else if(strcmp(id, "EXIT") == 0){
+
+		}
+
 
 	 string_array_destroy(idAndParams);
 
-	 if(instruction->cantParameters == 2){
-		log_debug(logger, "Carga de archivo de configuracion - Instruction add: %s %u %u %u", instruction->id, instruction->parameters[0], instruction->parameters[1], instruction->cantParameters);
-	 } else if (instruction->cantParameters == 1){
-		 log_debug(logger, "Carga de archivo de configuracion - Instruction add: %s %u %u", instruction->id, instruction->parameters[0], instruction->cantParameters);
+	 if(list_size(instruction->parameters) == 2){
+		log_debug(logger, "Carga de archivo de configuracion - Instruction add: ID: %s Parameter_1: %d Parameter_2: %d List_size: %d", instruction->id, ((t_parameter*)list_get(instruction->parameters,0))->value, ((t_parameter*)list_get(instruction->parameters,1))->value, list_size(instruction->parameters));
+	 } else if (list_size(instruction->parameters) == 1){
+		 log_debug(logger, "Carga de archivo de configuracion - Instruction add: ID: %s Parameter_1: %d List_size: %d", instruction->id, ((t_parameter*)list_get(instruction->parameters,0))->value, list_size(instruction->parameters));
 	 } else {
-		 log_debug(logger, "Carga de archivo de configuracion - Instruction add: %s %u", instruction->id, instruction->cantParameters);
+		 log_debug(logger, "Carga de archivo de configuracion - Instruction add: ID: %s List_size: %u", instruction->id, list_size(instruction->parameters));
 	 }
 
 

@@ -10,8 +10,8 @@
 
 #include<readline/readline.h>
 
-#include "consoleUtils.h"
-#include "instructionsParser.h"
+#include <console_utils.h>
+#include <instructions_parser.h>
 
 t_log* start_logger(void);
 t_config* load_configuration_file(t_log*);

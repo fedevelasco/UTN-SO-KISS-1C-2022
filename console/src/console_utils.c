@@ -1,4 +1,4 @@
-#include "consoleUtils.h"
+#include <console_utils.h>
 
 int32_t create_connection(t_log* logger, const char* server_name, char *ip, char* port)
 {
@@ -29,6 +29,12 @@ int32_t create_connection(t_log* logger, const char* server_name, char *ip, char
 		return -1;
 	}
 
+	//Seteo socket como reusable
+
+	int yes = 1;
+	setsockopt(server_socket, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof yes);
+
+
 	// Ahora que tenemos el socket, vamos a conectarlo
 
 	// Error conectando
@@ -47,8 +53,8 @@ int32_t create_connection(t_log* logger, const char* server_name, char *ip, char
 
 int32_t send_package(int32_t connection, t_package* package)
 {
-	int32_t bytes = package->buffer->size + 2*sizeof(int32_t);
-	void* to_send = serialize_package(package, bytes);
+	int32_t bytes = package->buffer->size + sizeof(int32_t) + sizeof(op_code);
+	char* to_send = serialize_package(package, bytes);
 
 	if(send(connection, to_send, bytes, 0) == -1){
 		free(to_send);
@@ -60,21 +66,21 @@ int32_t send_package(int32_t connection, t_package* package)
 }
 
 
-void* serialize_package(t_package* package, int32_t bytes)
+char* serialize_package(t_package* package, int32_t bytes)
 {
-	void * to_send  = malloc(bytes);
-	memset(to_send, 0, bytes);
+	char * tosend  = malloc(bytes);
+	memset(tosend, 0, bytes);
 
 	int32_t offset = 0;
 
-	memcpy(to_send + offset, &package->operation_code, sizeof(int32_t));
+	memcpy(tosend + offset, &package->operation_code, sizeof(int32_t));
 	offset+= sizeof(int32_t);
-	memcpy(to_send + offset, &package->buffer->size, sizeof(int32_t));
+	memcpy(tosend + offset, &package->buffer->size, sizeof(int32_t));
 	offset+= sizeof(int32_t);
-	memcpy(to_send + offset, package->buffer->stream, package->buffer->size);
+	memcpy(tosend + offset, package->buffer->stream, package->buffer->size);
 	offset+= package->buffer->size;
 
-	return to_send;
+	return tosend;
 }
 
 
@@ -98,98 +104,25 @@ int32_t receive_operation_code(int32_t server_socket)
 
 
 t_buffer* create_instruction_buffer(t_instructions_list* instructions_list, t_log* logger){
-	log_info(logger, "create_instruction_buffer - Instruction %i\n", instructions_list->process_size );
-	t_instruction* instruction = list_get(instructions_list->instructions,0);
-	log_info(logger, "create_instruction_buffer - Instruction %s\n", instruction->id );
-	t_instruction* instruction2 = list_get(instructions_list->instructions,1);
-		log_info(logger, "create_instruction_buffer - Instruction %s\n", instruction2->id );
 
+	for(int i=0; i<list_size(instructions_list->instructions); i++){
+			log_debug(logger, "create_instruction_buffer - Instruction %s\n", ((t_instruction*) list_get(instructions_list->instructions,i))->id );
+		}
 
 	t_buffer* buffer = malloc(sizeof(t_buffer));
 	buffer->size = 0;
 	buffer->stream = NULL;
 
-	buffer->size = sizeof(instructions_list->process_size);
-	buffer->size += instructions_list_size(instructions_list);
+	buffer->size = bytes_instructions_list(instructions_list);
 
+	buffer->stream = malloc(buffer->size);
+	int offset = serialize_instructions_list(buffer->stream, instructions_list);
 
-	void* stream = malloc(buffer->size);
-	int offset = 0;
-
-	memcpy(stream + offset, &instructions_list->process_size, sizeof(int32_t));
-	offset += sizeof(int32_t);
-
-	int size = list_size(instructions_list->instructions);
-
-	for(int i = 0; i < size; i++){
-		t_instruction*  instruction_temp = list_get(instructions_list->instructions,i);
-
-		log_info(logger, "create_instruction_buffer - Instruction %s", instruction_temp->id);
-		if (instruction_temp != NULL){
-		memcpy(stream + offset, &instruction_temp->id_length, sizeof(int32_t));
-		offset += sizeof(int32_t);
-
-		memcpy(stream + offset, &instruction_temp->id, strlen(instruction_temp->id) + 1);
-		offset += strlen(instruction_temp->id) + 1;
-
-		if(instruction_temp->cantParameters != 0){
-			memcpy(stream + offset, &instruction_temp->parameters, sizeof(instruction_temp->parameters));
-			offset += sizeof(instruction_temp->parameters);
-		}
-
-		memcpy(stream + offset, &instruction_temp->cantParameters, sizeof(int32_t));
-		}
-		offset += sizeof(int32_t);
-	}
-
-	buffer->stream = stream;
-
-	instructions_list_destroyer(instructions_list);
+	instructions_list_destroy(instructions_list);
+	log_debug(logger, "create_instruction_buffer - offset: %d\n", offset);
 
 	return buffer;
 }
-
-void instructions_list_destroyer(t_instructions_list* instructions_list){
-
-	int size = list_size(instructions_list->instructions);
-
-		for(int i = 0; i < size; i++){
-			t_instruction* instruction = list_get(instructions_list->instructions,i);
-
-			free(instruction->id);
-
-			if(instruction->cantParameters != 0)
-				free(instruction->parameters);
-
-			free(instruction);
-		}
-
-	list_destroy(instructions_list->instructions);
-	free(instructions_list);
-}
-
-
-
-int32_t instructions_list_size(t_instructions_list* instructions_list){
-	int32_t total_size = 0;
-
-	int size = list_size(instructions_list->instructions);
-
-	for(int i = 0; i < size; i++){
-		t_instruction* instruction_temp = list_get(instructions_list->instructions,i);
-
-		total_size += sizeof(instruction_temp->id_length);
-
-		total_size += strlen(instruction_temp->id) + 1;
-
-		total_size += sizeof(instruction_temp->cantParameters);
-
-		if(instruction_temp->cantParameters != 0)
-			total_size += sizeof(instruction_temp->parameters);
-	}
-	return total_size;
-}
-
 
 t_package* create_instructions_package(t_buffer* instructions_buffer){
 
@@ -197,8 +130,13 @@ t_package* create_instructions_package(t_buffer* instructions_buffer){
 	int32_t buffer_total_size = instructions_buffer->size+sizeof(int32_t);
 
 	package->operation_code = INSTRUCTIONS;
-	package->buffer = malloc(buffer_total_size);
-	memcpy(package->buffer, instructions_buffer, sizeof(instructions_buffer->size)+sizeof(int32_t));
+	package->buffer = malloc(sizeof(t_buffer));
+	package->buffer->stream = malloc(instructions_buffer->size);
+	int32_t buffer_size = instructions_buffer->size;
+	package->buffer->size = buffer_size;
+	memmove(package->buffer->stream, instructions_buffer->stream, instructions_buffer->size);
+
+	free(instructions_buffer->stream);
 	free(instructions_buffer);
 
 
@@ -211,8 +149,9 @@ int32_t send_to_server(int32_t connection, t_package* package)
 	if(send_package(connection, package) == -1){
 		free_package(package);
 		return -1;
+	} else {
+//		free_package(package);
 	}
-	free_package(package);
 	return 1;
 }
 
