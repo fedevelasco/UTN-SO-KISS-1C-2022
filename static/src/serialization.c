@@ -46,8 +46,9 @@ int32_t deserialize_parameters(t_list* output,char* input, int32_t element_size)
 		list_add(output, parameter);
 		offset += element_size;
 	}
-	printf("\ndeserialize_parameters - parameter value: %d\n", ((t_parameter*) list_get(output,0))->value);
-	printf("\ndeserialize_parameters - parameter value: %d\n", ((t_parameter*) list_get(output,1))->value);
+	for(int i=0;i<list_size(output);i++){
+		printf("\ndeserialize_parameters - parameter value: %d\n", ((t_parameter*) list_get(output,i))->value);
+	}
 
 	return offset;
 }
@@ -96,8 +97,9 @@ int32_t deserialize_instruction(t_instruction* output, char* input) {
 	int32_t offset = 0;
 	offset += deserialize_string(output->id, input);
 	offset += deserialize_parameters(output->parameters, input + offset, sizeof(t_parameter));
-	printf("\ndeserialize_instruction - Instruction: parameter value: %d\n", ((t_parameter*) list_get(output->parameters,0))->value);
-	printf("\ndeserialize_instruction - Instruction: parameter value: %d\n", ((t_parameter*) list_get(output->parameters,1))->value);
+	for(int i=0;i<list_size(output->parameters);i++){
+		printf("\ndeserialize_instruction - Instruction: parameter value: %d\n", ((t_parameter*) list_get(output->parameters,i))->value);
+		}
 
 	return offset;
 }
@@ -129,7 +131,8 @@ void print_buffer(char* buffer, int32_t size) {
 //Utils
 
 int bytes_list(t_list* input, int32_t element_size){
-	return list_size(input)*element_size;
+	//Cantidad de elementos * su tamanio + 1 byte donde almaceno el tamanio
+	return list_size(input)*element_size+1;
 }
 
 
@@ -291,10 +294,10 @@ void test_serialize_instruction_list(){
 	free(buffer);
 }
 
-int main(int32_t argc, char** argv){
-	test_serialization();
-	return 0;
-}
+//int main(int32_t argc, char** argv){
+//	test_serialization();
+//	return 0;
+//}
 
 
 

@@ -1,4 +1,4 @@
-#include <parameter.h>
+#include <tads/parameter.h>
 
 t_parameter* create_parameter(){
 	t_parameter* parameter = malloc(sizeof(t_parameter));

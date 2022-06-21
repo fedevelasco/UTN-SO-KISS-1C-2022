@@ -1,4 +1,4 @@
-#include <instruction.h>
+#include <tads/instruction.h>
 
 t_instruction* create_instruction(){
 	t_instruction* instruction = malloc(sizeof(t_instruction));
@@ -26,6 +26,7 @@ void instruction_destroy(t_instruction* instruction){
 }
 
 int32_t bytes_instruction(t_instruction* instruction) {
-	return string_length(instruction->id)+1 + bytes_list(instruction->parameters, sizeof(int32_t));
+	//Empieza en 1 por que en el primer byte esta el largo del string.
+	return 1 + string_length(instruction->id)+1 + bytes_list(instruction->parameters, sizeof(int32_t));
 
 }

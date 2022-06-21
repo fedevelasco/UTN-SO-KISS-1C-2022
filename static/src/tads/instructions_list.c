@@ -1,9 +1,15 @@
-#include <instructions_list.h>
+#include <tads/instructions_list.h>
 
 
 t_instructions_list* create_instructions_list(){
 	t_instructions_list* instructions_list = malloc(sizeof(t_instructions_list));
-//	memset(instructions_list, 0, sizeof(t_instructions_list));
+	instructions_list->instructions = list_create();
+	instructions_list->process_size = 0;
+	return instructions_list;
+}
+
+t_instructions_list* create_instructions_list_with_size(int32_t size){
+	t_instructions_list* instructions_list = malloc(size);
 	instructions_list->instructions = list_create();
 	instructions_list->process_size = 0;
 	return instructions_list;
@@ -27,7 +33,8 @@ void instructions_list_destroy(t_instructions_list* instructions_list){
 }
 
 int32_t bytes_instructions_list(t_instructions_list* instructions_list) {
-	int32_t bytes = 0;
+	//Empieza en 1 por que en el primer byte tengo el tamanio de la lista.
+	int32_t bytes = 1;
 
 	for(int i=0;i<list_size(instructions_list->instructions);i++){
 		bytes += bytes_instruction(list_get(instructions_list->instructions, i));
