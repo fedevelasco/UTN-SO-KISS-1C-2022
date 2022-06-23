@@ -5,16 +5,11 @@
 #include<stdlib.h>
 #include<commons/log.h>
 #include<commons/string.h>
-#include<commons/config.h>
 #include<commons/collections/list.h>
 
-#include<readline/readline.h>
 
 #include <console_utils.h>
 #include <instructions_parser.h>
 
-t_log* start_logger(void);
-t_config* load_configuration_file(t_log*);
-void end_process(int32_t, t_log*, t_config*);
 
 #endif /* CONSOLE_H_ */

@@ -2,12 +2,23 @@
 
 int32_t serialize_int(char* output, int32_t* input) {
 	int32_t size = sizeof(int32_t);
-	memcpy(output, input, sizeof(int32_t));
+	memcpy(output, input, size);
 	return size;
 }
 int32_t deserialize_int(int32_t* output, char* input) {
 	int32_t size = sizeof(int32_t);
-	memcpy(output, input, sizeof(int32_t));
+	memcpy(output, input, size);
+	return size;
+}
+
+int32_t serialize_opcode(char* output, op_code* input) {
+	int32_t size = sizeof(op_code);
+	memcpy(output, input, sizeof(op_code));
+	return size;
+}
+int32_t deserialize_opcode(op_code* output, char* input) {
+	int32_t size = sizeof(op_code);
+	memcpy(output, input, size);
 	return size;
 }
 
@@ -118,6 +129,57 @@ int32_t deserialize_instructions_list(t_instructions_list* output, char* input) 
 	return offset;
 }
 
+//No necesito deserializar el package y buffer. Tengo funciones que reciben el op_code y el extraen el buffer.
+int32_t serialize_buffer_stream(char* output, t_buffer* input) {
+	int32_t offset = 0;
+	memcpy(output + offset, input->stream, input->size);
+	offset+= input->size;
+
+	return offset;
+}
+
+int32_t serialize_buffer(char* output, t_buffer* input) {
+	int32_t offset = 0;
+	offset += serialize_int(output + offset, &(input->size));
+	offset += serialize_buffer_stream(output + offset, input);
+
+	return offset;
+}
+
+//Hago return del output directamente por que es lo ultimo en serializar antes de enviar.
+char* serialize_package(t_package* package, int32_t bytes)
+{
+	char * output  = malloc(bytes);
+	memset(output, 0, bytes);
+
+	int32_t offset = 0;
+
+	offset += serialize_opcode(output + offset, &(package->operation_code));
+	offset += serialize_buffer(output + offset, package->buffer);
+	
+	return output;
+}
+
+t_buffer* new_instruction_buffer(t_instructions_list* instructions_list, t_log* logger){
+
+	for(int i=0; i<list_size(instructions_list->instructions); i++){
+			log_debug(logger, "create_instruction_buffer - Instruction %s\n", ((t_instruction*) list_get(instructions_list->instructions,i))->id );
+		}
+
+	t_buffer* buffer = create_buffer();
+
+	buffer->size = bytes_instructions_list(instructions_list);
+
+	buffer->stream = malloc(buffer->size);
+	int offset = serialize_instructions_list(buffer->stream, instructions_list);
+
+	instructions_list_destroy(instructions_list);
+	log_debug(logger, "create_instruction_buffer - size: %d\n", offset);
+
+	return buffer;
+}
+
+
 void print_buffer(char* buffer, int32_t size) {
 	int32_t i;
 	printf("\nbuffer=");
@@ -125,14 +187,6 @@ void print_buffer(char* buffer, int32_t size) {
 		printf("[%d]", buffer[i]);
 	}
 	printf("\n");
-}
-
-
-//Utils
-
-int bytes_list(t_list* input, int32_t element_size){
-	//Cantidad de elementos * su tamanio + 1 byte donde almaceno el tamanio
-	return list_size(input)*element_size+1;
 }
 
 
@@ -293,6 +347,8 @@ void test_serialize_instruction_list(){
 	list_destroy_and_destroy_elements(parameters2, (void*) parameter_destroy);
 	free(buffer);
 }
+
+//TODO: falta agregar tests de package y buffer
 
 //int main(int32_t argc, char** argv){
 //	test_serialization();

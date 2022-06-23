@@ -83,79 +83,38 @@ int main(int32_t argc, char** argv){
 	log_debug(logger, "Conexion a Kernel - create_connection - server_socket: %i", connection);
 
 	log_info(logger, "Conexion a Kernel - Creando instrucction buffer");
-	t_buffer* instructions_buffer = create_instruction_buffer(instructions_list, logger);
+	t_buffer* instructions_buffer = new_instruction_buffer(instructions_list, logger);
 	if (instructions_buffer == NULL){
 		log_error(logger, "Conexion a Kernel - Error al crear instructions_buffer - Fin proceso");
 		return EXIT_FAILURE;
 	}
 
 	log_info(logger, "Conexion a Kernel - Creando paquete de instrucciones");
-	t_package* instructions_package = create_instructions_package(instructions_buffer);
+	t_package* instructions_package = new_package(instructions_buffer);
 	if (instructions_package == NULL){
 			log_error(logger, "Conexion a Kernel - Error al crear instructions_package - Fin proceso");
 			return EXIT_FAILURE;
 		}
 
 	// Envio paquete
-//	log_info(logger, "Conexion a Kernel - Envio de paquete");
+	log_info(logger, "Conexion a Kernel - Envio de paquete");
 	if(send_to_server(connection, instructions_package) == -1){
 		log_error(logger, "Conexion a Kernel - Error al enviar paquete al servidor - Fin proceso");
 		return EXIT_FAILURE;
 	}
 
-	end_process(connection, logger, config);
+//	end_process(connection, logger, config);
 
-//	//Espero mensaje de finalizacion del kernel
-//	log_info(logger, "Conexion a Kernel - Consola esperando mensaje de finalizacion del Kernel");
-//	while(1){
-//		int cod_op = receive_operation_code(connection);
-//		if (cod_op == 1){
-//			end_process(connection, logger, config);
-//		}
-//	}
+	//Espero mensaje de finalizacion del kernel
+	log_info(logger, "Conexion a Kernel - Consola esperando mensaje de finalizacion del Kernel");
+	while(1){
+		int cod_op = receive_operation_code(connection);
+		if (cod_op == 1){
+			end_process(connection, logger, config);
+		}
+	}
 
 }
 
 
-t_log* start_logger(void)
-{
-	t_log* new_logger;
 
-	new_logger = log_create("console.log", "Console", 1, LOG_LEVEL_DEBUG);
-
-	if(new_logger == NULL){
-		printf("No fue posible crear el Logger\n");
-		exit(1);
-	}
-
-	return new_logger;
-}
-
-t_config* load_configuration_file(t_log* logger)
-{
-	log_info(logger, "Carga de archivo de configuracion - load_configuration_file - Inicio");
-	t_config* new_configuration;
-
-	new_configuration = config_create("../console/console.config");
-
-	if (new_configuration == NULL){
-		log_error(logger, "Carga de archivo de configuracion - load_configuration_file - Error al crear configuracion");
-		exit(2);
-	}
-	log_info(logger, "Carga de archivo de configuracion - load_configuration_file - Config en %s cargada ok", new_configuration->path);
-	return new_configuration;
-}
-
-
-void end_process(int32_t connection, t_log* logger, t_config* config){
-
-	if(logger != NULL){
-		log_destroy(logger);
-	}
-
-	if (config != NULL){
-		config_destroy(config);
-	}
-
-    close(connection);
-}

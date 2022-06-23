@@ -51,6 +51,29 @@ int32_t create_connection(t_log* logger, const char* server_name, char *ip, char
 }
 
 
+void end_connection(int32_t connection)
+{
+	close(connection);
+}
+
+int32_t receive_operation_code(int32_t server_socket)
+{
+	int32_t cod_op = recv(server_socket, &cod_op, sizeof(int32_t), MSG_WAITALL);
+	return cod_op;
+}
+
+
+int32_t send_to_server(int32_t connection, t_package* package)
+{
+	if(send_package(connection, package) == -1){
+		package_destroy(package);
+		return -1;
+	} 
+	package_destroy(package);
+	
+	return 1;
+}
+
 int32_t send_package(int32_t connection, t_package* package)
 {
 	int32_t bytes = package->buffer->size + sizeof(int32_t) + sizeof(op_code);
@@ -65,94 +88,47 @@ int32_t send_package(int32_t connection, t_package* package)
 	return 1;
 }
 
-
-char* serialize_package(t_package* package, int32_t bytes)
+t_log* start_logger(void)
 {
-	char * tosend  = malloc(bytes);
-	memset(tosend, 0, bytes);
+	t_log* new_logger;
 
-	int32_t offset = 0;
+	new_logger = log_create("console.log", "Console", 1, LOG_LEVEL_DEBUG);
 
-	memcpy(tosend + offset, &package->operation_code, sizeof(int32_t));
-	offset+= sizeof(int32_t);
-	memcpy(tosend + offset, &package->buffer->size, sizeof(int32_t));
-	offset+= sizeof(int32_t);
-	memcpy(tosend + offset, package->buffer->stream, package->buffer->size);
-	offset+= package->buffer->size;
-
-	return tosend;
-}
-
-
-void free_package(t_package* package)
-{
-	free(package->buffer->stream);
-	free(package->buffer);
-	free(package);
-}
-
-void end_connection(int32_t connection)
-{
-	close(connection);
-}
-
-int32_t receive_operation_code(int32_t server_socket)
-{
-	int32_t cod_op = recv(server_socket, &cod_op, sizeof(int32_t), MSG_WAITALL);
-	return cod_op;
-}
-
-
-t_buffer* create_instruction_buffer(t_instructions_list* instructions_list, t_log* logger){
-
-	for(int i=0; i<list_size(instructions_list->instructions); i++){
-			log_debug(logger, "create_instruction_buffer - Instruction %s\n", ((t_instruction*) list_get(instructions_list->instructions,i))->id );
-		}
-
-	t_buffer* buffer = malloc(sizeof(t_buffer));
-	buffer->size = 0;
-	buffer->stream = NULL;
-
-	buffer->size = bytes_instructions_list(instructions_list);
-
-	buffer->stream = malloc(buffer->size);
-	int offset = serialize_instructions_list(buffer->stream, instructions_list);
-
-	instructions_list_destroy(instructions_list);
-	log_debug(logger, "create_instruction_buffer - offset: %d\n", offset);
-
-	return buffer;
-}
-
-t_package* create_instructions_package(t_buffer* instructions_buffer){
-
-	t_package* package = malloc(sizeof(t_package));
-	int32_t buffer_total_size = instructions_buffer->size+sizeof(int32_t);
-
-	package->operation_code = INSTRUCTIONS;
-	package->buffer = malloc(sizeof(t_buffer));
-	package->buffer->stream = malloc(instructions_buffer->size);
-	int32_t buffer_size = instructions_buffer->size;
-	package->buffer->size = buffer_size;
-	memmove(package->buffer->stream, instructions_buffer->stream, instructions_buffer->size);
-
-	free(instructions_buffer->stream);
-	free(instructions_buffer);
-
-
-    return package;
-}
-
-int32_t send_to_server(int32_t connection, t_package* package)
-{
-
-	if(send_package(connection, package) == -1){
-		free_package(package);
-		return -1;
-	} else {
-//		free_package(package);
+	if(new_logger == NULL){
+		printf("No fue posible crear el Logger\n");
+		exit(1);
 	}
-	return 1;
+
+	return new_logger;
+}
+
+t_config* load_configuration_file(t_log* logger)
+{
+	log_info(logger, "Carga de archivo de configuracion - load_configuration_file - Inicio");
+	t_config* new_configuration;
+
+	new_configuration = config_create("../console/console.config");
+
+	if (new_configuration == NULL){
+		log_error(logger, "Carga de archivo de configuracion - load_configuration_file - Error al crear configuracion");
+		exit(2);
+	}
+	log_info(logger, "Carga de archivo de configuracion - load_configuration_file - Config en %s cargada ok", new_configuration->path);
+	return new_configuration;
+}
+
+
+void end_process(int32_t connection, t_log* logger, t_config* config){
+
+	if(logger != NULL){
+		log_destroy(logger);
+	}
+
+	if (config != NULL){
+		config_destroy(config);
+	}
+
+    close(connection);
 }
 
 

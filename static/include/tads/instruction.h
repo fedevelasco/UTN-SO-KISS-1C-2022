@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <commons/collections/list.h>
 #include <commons/string.h>
+#include<commons/log.h>
+#include <list_utils.h>
 
 #include "tads/parameter.h"
 
@@ -22,7 +24,7 @@
 
     /**
     * @NAME: new_instruction
-    * @DESC: Crea una instancia de "t_instruction".
+    * @DESC: Crea una instancia de "t_instruction" seteando el id y la lista de parametros.
     */
 	t_instruction* new_instruction(char* id, t_list* parameters);
 
