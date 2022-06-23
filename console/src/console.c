@@ -103,6 +103,7 @@ int main(int32_t argc, char** argv){
 		return EXIT_FAILURE;
 	}
 
+	//Para debug
 //	end_process(connection, logger, config);
 
 	//Espero mensaje de finalizacion del kernel

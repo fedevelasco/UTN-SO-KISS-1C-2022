@@ -83,10 +83,10 @@ t_instruction* parse_instruction(char *line, t_log* logger) {
 
 	string_append(&instruction->id, id);
 
-	t_parameter* parameter_1 = create_parameter();
-	t_parameter* parameter_2 = create_parameter();
-
 	if(strcmp(id, "COPY") == 0 || strcmp(id, "WRITE") == 0){
+
+		t_parameter* parameter_1 = create_parameter();
+		t_parameter* parameter_2 = create_parameter();
 
 		char params[strlen(idAndParams[1])+1];
 		strcpy(params, idAndParams[1]);
@@ -101,6 +101,8 @@ t_instruction* parse_instruction(char *line, t_log* logger) {
 		string_array_destroy(parameters);
 
 		} else if(strcmp(id, "I/O") == 0 || strcmp(id, "READ") == 0 || strcmp(id, "NO_OP") == 0 ){
+
+			t_parameter* parameter_1 = create_parameter();
 
 			char params[strlen(idAndParams[1])+1];
 			strcpy(params, idAndParams[1]);
