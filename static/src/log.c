@@ -1,11 +1,11 @@
-#include "logKernel.h"
+#include "../include/log.h"
 
 // Funcion para iniciar un logger, chequea que se haya podido iniciar
-t_log* iniciar_logger(void)
+t_log* iniciar_logger(char* nombre)
 {
 	t_log* nuevo_logger;
 
-	nuevo_logger = log_create("kernel.log","Kernel", 1, LOG_LEVEL_INFO);
+	nuevo_logger = log_create("kernel.log",nombre, 1, LOG_LEVEL_INFO);
 
 	if (nuevo_logger == NULL){
 		printf("Error al abrir el kernel.log\n");

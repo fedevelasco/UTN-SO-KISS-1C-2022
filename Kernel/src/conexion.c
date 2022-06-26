@@ -1,8 +1,10 @@
-#include "conexion.h"
+#include "/home/utnso/tp-2022-1c-Grupo-TP-SO/static/include/libreriaConexiones.h"
+#include "../include/configKernel.h"
+#include <pthread.h>
 
 // -------------- Estructuras para recibir la informacion --------------
 
-
+/*
 typedef struct { // Estructura para poder pasarle info a los threads
     t_log* log;
     int fd;
@@ -133,73 +135,26 @@ int server_escuchar(t_log* logger, char* server_name, int server_socket) {
     return 0;
 }
 
-//while(server_escuchar(.., .., ..)); Esto va a escuchar todos los clientes Consola que se conecten
-
+*/
 
 
 
 // -------------- Funciones para recibir procesos y deserializar --------------
 
 
-static void* serializar_mirar_netflix(size_t* size, char* peli, uint8_t cant_pochoclos) {
-    size_t size_peli = strlen(peli) + 1;
-    *size =
-          sizeof(op_code)   // cop
-        + sizeof(size_t)    // total
-        + sizeof(size_t)    // size de char* peli
-        + size_peli         // char* peli
-        + sizeof(uint8_t);  // cant_pochoclos
-    size_t size_payload = *size - sizeof(op_code) - sizeof(size_t);
 
-    void* stream = malloc(*size);
+// TESTING
+int main(){
+    char* nombre = malloc(sizeof(char));
+    nombre = "KERNEL_TESTING";
+    t_log* logger = iniciar_logger(nombre);
+    
+    log_info(logger, "Iniciando conexion del servidor");
+    int32_t server_fd = iniciar_servidor(logger, "127.0.0.1", "8000");
+    
+    log_info(logger, "Esperando conexion del cliente");
+    int32_t conexion_fd = esperar_cliente(server_fd, logger);
 
-    op_code cop = MIRAR_NETFLIX;
-    memcpy(stream, &cop, sizeof(op_code));
-    memcpy(stream+sizeof(op_code), &size_payload, sizeof(size_t));
-    memcpy(stream+sizeof(op_code)+sizeof(size_t), &size_peli, sizeof(size_t));
-    memcpy(stream+sizeof(op_code)+sizeof(size_t)*2, peli, size_peli);
-    memcpy(stream+sizeof(op_code)+sizeof(size_t)*2+size_peli, &cant_pochoclos, sizeof(uint8_t));
-
-    return stream;
-}
-
-static void deserializar_mirar_netflix(void* stream, char** peli, uint8_t* cant_pochoclos) {
-    // Peli
-    size_t size_peli;
-    memcpy(&size_peli, stream, sizeof(size_t));
-
-    char* r_peli = malloc(size_peli);
-    memcpy(r_peli, stream+sizeof(size_t), size_peli);
-    *peli = r_peli;
-
-    // Pochoclos
-    memcpy(cant_pochoclos, stream+sizeof(size_t)+size_peli, sizeof(uint8_t));
-}
-
-bool send_mirar_netflix(int fd, char* peli, uint8_t cant_pochoclos) {
-    size_t size;
-    void* stream = serializar_mirar_netflix(&size, peli, cant_pochoclos);
-    if (send(fd, stream, size, 0) != size) {
-        free(stream);
-        return false;
-    }
-    free(stream);
-    return true;
-}
-
-bool recv_mirar_netflix(int fd, char** peli, uint8_t* cant_pochoclos) {
-    size_t size_payload;
-    if (recv(fd, &size_payload, sizeof(size_t), 0) != sizeof(size_t))
-        return false;
-
-    void* stream = malloc(size_payload);
-    if (recv(fd, stream, size_payload, 0) != size_payload) {
-        free(stream);
-        return false;
-    }
-
-    deserializar_mirar_netflix(stream, peli, cant_pochoclos);
-
-    free(stream);
-    return true;
+    
+    
 }

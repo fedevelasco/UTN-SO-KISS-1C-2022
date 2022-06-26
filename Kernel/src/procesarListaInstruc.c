@@ -1,6 +1,6 @@
 #include "procesarListaInstruc.h"
 
-
+/*
 typedef struct { //Struc de instrucciones de Fede
 	    int32_t id_length;
 		char* id;
@@ -47,7 +47,7 @@ PLANIFICADOR LARGO PLAZO
 Al conectarse una consola al kernel, deberá generarse la estructura PCB detallada anteriormente y asignarse este proceso al estado NEW.
 En caso de que el grado de multiprogramación lo permita, los procesos pasarán al estado READY, enviando un mensaje al módulo Memoria para que inicialice sus estructuras necesarias y obtener el valor de la tabla de páginas que deberá estar almacenado en nuestro PCB.
 Cuando se reciba un PCB con motivo de finalizar el mismo, se deberá pasar al proceso al estado EXIT y dar aviso al módulo Memoria para que éste libere sus estructuras. Una vez liberadas, se dará aviso a la Consola de la finalización del proceso.
-*/
+
 void planificador_largo_plazo(t_instructions_list* lista_nueva, int grado_multiprogramacion, t_log* logger)
 {
     log_info(logger, "Planificador a Largo Plazo: Creando PCB")
@@ -60,3 +60,4 @@ void planificador_largo_plazo(t_instructions_list* lista_nueva, int grado_multip
 }
 
 
+*/

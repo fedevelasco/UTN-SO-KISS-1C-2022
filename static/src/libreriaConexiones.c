@@ -1,6 +1,6 @@
 // Este file es exclusivamente utilizado para tener como libreria de conexion entre modulos
 
-#include "libreriaConexiones.h"
+#include "../include/libreriaConexiones.h"
 
 
 // -------------- Iniciar Servidor --------------
@@ -10,7 +10,7 @@ int32_t iniciar_servidor(t_log* logger, char* ip, char* puerto)
 
 	int32_t socket_servidor;
 
-	struct addrinfo hints, *servinfo, *p; //Ignorar errores
+	struct addrinfo hints, *servinfo; //Ignorar errores
 
 	memset(&hints, 0, sizeof(hints));
 	hints.ai_family = AF_UNSPEC;

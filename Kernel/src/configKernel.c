@@ -1,6 +1,6 @@
-#include "configKernel.h"
-
-typedef struct kernel_cfg{
+#include "../include/configKernel.h"
+/*
+typedef struct kernel_cfg_t{
     char* IP_MEMORIA;
     char* PUERTO_MEMORIA;
     char* IP_CPU;
@@ -13,7 +13,7 @@ typedef struct kernel_cfg{
     char* GRADO_MULTIPROGRAMACION;
     char* TIEMPO_MAXIMO_BLOQUEADO;
 } kernel_cfg_t;
-
+*/
 // Funcion que inicia el config para poder tomar los datos del configuracion.txt
 t_config* iniciar_config(void)
 {
@@ -28,7 +28,7 @@ t_config* iniciar_config(void)
 
 	return nuevo_config;
 }
-
+/*
 // Funcion para leer todo lo que tiene el config file 
 // y guardarlo en sus respectivas variables
 kernel_cfg_t* leer_config_file(t_config *config)
@@ -50,7 +50,7 @@ kernel_cfg_t* leer_config_file(t_config *config)
     return kernel_cfg;
 }
 
-
+*/
 
 // Funcion que finaliza el config
 void terminar_config(t_config* config)

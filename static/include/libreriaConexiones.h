@@ -1,4 +1,4 @@
-#include "logKernel.h"
+#include "log.h"
 
 #include<sys/socket.h>
 #include<unistd.h>
@@ -8,7 +8,7 @@
 #include<assert.h>
 
 
-int32_t iniciar_servidor(char* ip, char* puerto, t_log* logger);
+int32_t iniciar_servidor(t_log* logger, char* ip, char* puerto);
 
 // -------------- Aceptar cliente como Servidor --------------
 

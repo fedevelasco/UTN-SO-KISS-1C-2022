@@ -2,6 +2,9 @@
     "files.associations": {
         "log.h": "c",
         "configkernel.h": "c",
-        "pthread.h": "c"
+        "pthread.h": "c",
+        "libreriaconexiones.h": "c",
+        "list.h": "c",
+        "conexion.h": "c"
     }
 }
