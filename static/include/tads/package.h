@@ -7,8 +7,8 @@
 #include <commons/collections/list.h>
 #include <commons/string.h>
 
-#include "tads/op_code.h"
-#include "tads/buffer.h"
+#include "op_code.h"
+#include "buffer.h"
 
 
 typedef struct

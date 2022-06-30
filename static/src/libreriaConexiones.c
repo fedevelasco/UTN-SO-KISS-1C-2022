@@ -5,45 +5,80 @@
 
 // -------------- Iniciar Servidor --------------
 
-int32_t iniciar_servidor(t_log* logger, char* ip, char* puerto)
+int32_t iniciar_servidor(t_log* logger, const char* name, char* ip, char* puerto)
 {
+	int32_t socket_servidor; //Declaramos el descriptor
 
-	int32_t socket_servidor;
+	struct addrinfo infoSocket, *server_info; //Declaramos las estructuras
 
-	struct addrinfo hints, *servinfo; //Ignorar errores
+	memset(&infoSocket, 0, sizeof(infoSocket)); //Seteamos el valor de la informacion de la direccion a 0
+	//Asignamos los valores de info de la conexion
+	infoSocket.ai_family = AF_UNSPEC; //Indica a getaddrinfo(3) que la direccion va a ser de tipo IPv4 o IPv6
+	infoSocket.ai_socktype = SOCK_STREAM; //Socket de tipo TCP/IP
+	infoSocket.ai_flags = AI_PASSIVE; //Solo para cuando se quiere utilizar el socket para un servidor
 
-	memset(&hints, 0, sizeof(hints));
-	hints.ai_family = AF_UNSPEC;
-	hints.ai_socktype = SOCK_STREAM;
-	hints.ai_flags = AI_PASSIVE;
+	//Obtenemos la direccion y los datos del socket y los mete en server_info
+	if (getaddrinfo(ip, puerto, &infoSocket, &server_info) != 0){
+		perror("No se pudo obtener la direccion correctamente.");
+		return -1;
+	}
 
-	getaddrinfo(ip, puerto, &hints, &servinfo);
+	bool conecto = false;
 
-	socket_servidor = socket(servinfo->ai_family,servinfo->ai_socktype,servinfo->ai_protocol); // Creamos el socket de escucha del servidor
+	// Itera por cada addrinfo devuelto
+	for (struct addrinfo *p = server_info; p != NULL; p = p->ai_next) {
+		// Creamos el socket de escucha del servidor
+		socket_servidor = socket(p->ai_family, p->ai_socktype, p->ai_protocol);
 
-	bind(socket_servidor, servinfo->ai_addr, servinfo->ai_addrlen); // Asociamos el socket a un puerto
+		if (socket_servidor == -1) // fallo de crear socket
+			continue;
 
-	listen(socket_servidor, SOMAXCONN); // Escuchamos las conexiones entrantes
+		int yes = 1;
+		setsockopt(socket_servidor, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof yes);
 
-	freeaddrinfo(servinfo);
-	log_trace(logger, "Conexion con Consola - Listo para escuchar a mi cliente");
+		// Asociamos el socket a un puerto
+		if (bind(socket_servidor, p->ai_addr, p->ai_addrlen) == -1) {
+			// Si entra aca fallo el bind
+			close(socket_servidor);
+			continue;
+		}
+		// Ni bien conecta uno nos vamos del for
+		conecto = true;
+		break;
+	}
+
+	if(!conecto) {
+		free(server_info);
+		perror("No se pudo crear el socket");
+		return -1;
+	}
+
+	// Escuchamos las conexiones entrantes
+
+	listen(socket_servidor, SOMAXCONN);
+
+	log_trace(logger, "Listo para escuchar a mi cliente");
+	log_info(logger, "Escuchando en %s:%s (%s)\n", IP_KERNEL, PUERTO_KERNEL, name);
+
+	freeaddrinfo(server_info);
 
 	return socket_servidor;
 }
 
 // -------------- Aceptar cliente como Servidor --------------
 
-int32_t esperar_cliente(int32_t socket_servidor, t_log* logger)
+int32_t esperar_cliente(t_log* logger, const char* name, int32_t socket_servidor)
 {
+	// Aceptamos un nuevo cliente
+	struct sockaddr_in dir_cliente; // Esta estructura contendra los datos de la conexion del cliente. IP, puerto, etc
+	socklen_t addrlenght  = sizeof(dir_cliente);
 
-	int32_t socket_cliente = accept(socket_servidor, NULL, NULL); // Aceptamos un nuevo cliente
+	int32_t socket_cliente = accept(socket_servidor, (struct sockaddr *) &dir_cliente, &addrlenght ); // Aceptamos un nuevo cliente
 
-	log_info(logger, "Conexion con Consola - Se conecto un cliente");
+	log_info(logger, "Consola conectada (a %s)\n", name);
 
 	return socket_cliente;
 }
-
-
 
 // -------------- Iniciar Cliente --------------
 

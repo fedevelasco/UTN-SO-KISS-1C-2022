@@ -5,7 +5,7 @@ t_log* iniciar_logger(char* nombre)
 {
 	t_log* nuevo_logger;
 
-	nuevo_logger = log_create("kernel.log",nombre, 1, LOG_LEVEL_INFO);
+	nuevo_logger = log_create("logger.log",nombre, 1, LOG_LEVEL_INFO);
 
 	if (nuevo_logger == NULL){
 		printf("Error al abrir el kernel.log\n");

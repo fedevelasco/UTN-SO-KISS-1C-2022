@@ -1,4 +1,25 @@
-#include <server.h>
+#include "../include/kernel.h"
+
+t_config* iniciar_config(void)
+{
+	t_config* nuevo_config;
+
+	nuevo_config = config_create("/home/utnso/tp-2022-1c-Grupo-TP-SO/Kernel/src/configuracion.config");
+
+	if (nuevo_config == NULL){
+		printf("No fue posible cargar la config\n");
+		exit(2);
+	}
+
+	return nuevo_config;
+}
+
+void terminar_config(t_config* config)
+{
+
+	config_destroy(config);
+
+}
 
 int32_t main(void) {
 
@@ -16,17 +37,17 @@ int32_t main(void) {
 	puerto = config_get_string_value(config, "PUERTO");
 
 
-	int32_t server_fd = iniciar_servidor(logger, "Server", ip, puerto);
-	log_info(logger, "Servidor listo para recibir al cliente");
-	int32_t cliente_fd = esperar_cliente(logger, "Server", server_fd);
+	int32_t server_fd = iniciar_servidor(logger, "Kernel", ip, puerto);
+	log_info(logger, "Kernel   listo para recibir a consola");
+	int32_t cliente_fd = esperar_cliente(logger, "Kernel", server_fd);
 
 
 	t_instructions_list* instructions_list;
 
 	while (1) {
-		int32_t cod_op = recibir_operacion(cliente_fd);
+		int32_t cod_op = recibir_operacion(cliente_fd); //Recibo el op_code de consola 
 		switch (cod_op) {
-		case INSTRUCTIONS:
+		case INSTRUCTIONS: //Ejecuto el caso donde op_code == INSTRUCTIONS
 			instructions_list = recibir_paquete(cliente_fd, logger);
 			log_info(logger, "Me llegaron los siguientes valores:");
 			log_info(logger, "Process size: %d", instructions_list->process_size);
@@ -60,18 +81,4 @@ int32_t main(void) {
 
 void iterator(char* value) {
 	log_info(logger,"%s", value);
-}
-
-t_config* iniciar_config(void)
-{
-	t_config* nuevo_config;
-
-	nuevo_config = config_create("/home/utnso/tp-2022-1c-Grupo-TP-SO/server/server.config");
-
-	if (nuevo_config == NULL){
-		printf("No fue posible cargar la config\n");
-		exit(2);
-	}
-
-	return nuevo_config;
 }

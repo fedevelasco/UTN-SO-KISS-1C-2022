@@ -5,6 +5,18 @@
         "pthread.h": "c",
         "libreriaconexiones.h": "c",
         "list.h": "c",
-        "conexion.h": "c"
+        "conexion.h": "c",
+        "package.h": "c",
+        "serialization.h": "c",
+        "list_utils.h": "c",
+        "instruction.h": "c",
+        "op_code.h": "c",
+        "instructions_list.h": "c",
+        "kernel.h": "c",
+        "serverutils.h": "c",
+        "parameter.h": "c",
+        "buffer.h": "c",
+        "stdlib.h": "c",
+        "socket.h": "c"
     }
 }

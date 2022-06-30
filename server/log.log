@@ -1,0 +1,24 @@
+[INFO] 20:19:04:568 Servidor/(9829:9829): Escuchando en 127.0.0.1:4444 (Server)
+
+[INFO] 20:19:04:585 Servidor/(9829:9829): Servidor listo para recibir al cliente
+[INFO] 20:19:14:873 Servidor/(9829:9829): Cliente conectado (a Server)
+
+[INFO] 20:19:14:879 Servidor/(9829:9829): buffer_size:88
+
+[INFO] 20:19:14:883 Servidor/(9829:9829): Me llegaron los siguientes valores:
+[INFO] 20:19:14:883 Servidor/(9829:9829): Process size: 1001
+[INFO] 20:19:14:883 Servidor/(9829:9829): Instruction: NO_OP 
+[INFO] 20:19:14:884 Servidor/(9829:9829): Parameters: 5 
+[INFO] 20:19:14:884 Servidor/(9829:9829): Instruction: NO_OP 
+[INFO] 20:19:14:884 Servidor/(9829:9829): Parameters: 5 
+[INFO] 20:19:14:884 Servidor/(9829:9829): Instruction: WRITE 
+[INFO] 20:19:14:884 Servidor/(9829:9829): Parameters: 4 
+[INFO] 20:19:14:884 Servidor/(9829:9829): Parameters: 42 
+[INFO] 20:19:14:885 Servidor/(9829:9829): Instruction: COPY 
+[INFO] 20:19:14:885 Servidor/(9829:9829): Parameters: 0 
+[INFO] 20:19:14:885 Servidor/(9829:9829): Parameters: 4 
+[INFO] 20:19:14:885 Servidor/(9829:9829): Instruction: READ 
+[INFO] 20:19:14:885 Servidor/(9829:9829): Parameters: 0 
+[INFO] 20:19:14:885 Servidor/(9829:9829): Instruction: I/O 
+[INFO] 20:19:14:885 Servidor/(9829:9829): Parameters: 3000 
+[INFO] 20:19:14:885 Servidor/(9829:9829): Instruction: EXIT 

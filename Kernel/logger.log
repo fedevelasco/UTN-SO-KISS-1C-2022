@@ -1,0 +1,63 @@
+[INFO] 19:24:58:463 KERNEL_TESTING/(5223:5223): Iniciando conexion del servidor
+[INFO] 19:24:58:523 KERNEL_TESTING/(5223:5223): Esperando conexion del cliente
+[INFO] 19:26:53:047 KERNEL_TESTING/(5390:5390): Iniciando conexion del servidor
+[INFO] 19:26:53:071 KERNEL_TESTING/(5390:5390): Esperando conexion del cliente
+[INFO] 19:45:17:134 KERNEL_TESTING/(6704:6704): Iniciando conexion del servidor
+[INFO] 19:45:17:195 KERNEL_TESTING/(6704:6704): Esperando conexion del cliente
+[INFO] 19:48:37:699 KERNEL_TESTING/(7009:7009): Iniciando conexion del servidor
+[INFO] 19:48:37:759 KERNEL_TESTING/(7009:7009): Esperando conexion del cliente
+[INFO] 19:48:43:703 KERNEL_TESTING/(7009:7009): Conexion con Consola - Se conecto un cliente
+[INFO] 19:55:38:346 KERNEL_TESTING/(7568:7568): Iniciando conexion del servidor
+[INFO] 19:55:38:407 KERNEL_TESTING/(7568:7568): Esperando conexion del cliente
+[INFO] 19:55:45:475 KERNEL_TESTING/(7568:7568): Conexion con Consola - Se conecto un cliente
+[INFO] 19:58:36:740 KERNEL_TESTING/(7877:7877): Iniciando conexion del servidor
+[INFO] 19:58:36:800 KERNEL_TESTING/(7877:7877): Esperando conexion del cliente
+[INFO] 19:58:40:496 KERNEL_TESTING/(7877:7877): Conexion con Consola - Se conecto un cliente
+[INFO] 20:24:11:441 /(5147:5147): Inicio de modulo Kernel
+[INFO] 20:24:11:493 /(5147:5147): Iniciando conexion con Consola
+[INFO] 20:24:11:505 /(5147:5147): Esperando que se conecte un cliente
+[INFO] 20:24:17:912 /(5147:5147): Conexion con Consola - Se conecto un cliente
+[INFO] 20:24:17:912 /(5147:5147): Se conecto un cliente
+[INFO] 22:04:59:891 /(6334:6334): Inicio de modulo Kernel
+[INFO] 22:04:59:942 /(6334:6334): Iniciando conexion con Consola
+[INFO] 22:04:59:953 /(6334:6334): Esperando que se conecte un cliente
+[INFO] 22:05:08:694 /(6334:6334): Conexion con Consola - Se conecto un cliente
+[INFO] 22:05:08:695 /(6334:6334): Se conecto un cliente
+[INFO] 22:05:08:695 /(6334:6334): PRUEBA RECIBIR STREAM - INICIO
+[INFO] 22:05:08:697 /(6334:6334): creando lista de instrucciones
+[INFO] 22:05:08:698 /(6334:6334): Creando buffer
+[INFO] 22:05:08:699 /(6334:6334): Operacion recv
+[INFO] 22:05:08:700 /(6334:6334): Print de buffer
+[INFO] 22:05:08:703 /(6334:6334): PRUEBA RECIBIR STREAM - FIN
+[INFO] 22:49:43:800 KERNEL_TESTING/(7115:7115): Inicio de modulo Kernel
+[INFO] 22:49:43:860 KERNEL_TESTING/(7115:7115): Iniciando conexion con Consola
+[INFO] 22:49:43:872 KERNEL_TESTING/(7115:7115): Esperando que se conecte un cliente
+[INFO] 22:49:51:637 KERNEL_TESTING/(7115:7115): Conexion con Consola - Se conecto un cliente
+[INFO] 22:49:51:638 KERNEL_TESTING/(7115:7115): Se conecto un cliente
+[INFO] 22:49:51:638 KERNEL_TESTING/(7115:7115): PRUEBA RECIBIR STREAM - INICIO
+[INFO] 22:49:51:639 KERNEL_TESTING/(7115:7115): creando lista de instrucciones
+[INFO] 22:49:51:640 KERNEL_TESTING/(7115:7115): Creando buffer
+[INFO] 22:49:51:641 KERNEL_TESTING/(7115:7115): Operacion recv
+[INFO] 22:49:51:643 KERNEL_TESTING/(7115:7115): Print de buffer
+[INFO] 22:49:51:646 KERNEL_TESTING/(7115:7115): Deserializando buffer
+[INFO] 22:49:51:647 KERNEL_TESTING/(7115:7115): PRUEBA RECIBIR STREAM - FIN
+[INFO] 22:50:09:392 KERNEL_TESTING/(7327:7327): Inicio de modulo Kernel
+[INFO] 22:50:09:445 KERNEL_TESTING/(7327:7327): Iniciando conexion con Consola
+[INFO] 22:50:09:457 KERNEL_TESTING/(7327:7327): Esperando que se conecte un cliente
+[INFO] 22:50:14:705 KERNEL_TESTING/(7327:7327): Conexion con Consola - Se conecto un cliente
+[INFO] 22:50:14:706 KERNEL_TESTING/(7327:7327): Se conecto un cliente
+[INFO] 22:50:14:707 KERNEL_TESTING/(7327:7327): PRUEBA RECIBIR STREAM - INICIO
+[INFO] 22:50:14:708 KERNEL_TESTING/(7327:7327): creando lista de instrucciones
+[INFO] 22:50:14:709 KERNEL_TESTING/(7327:7327): Creando buffer
+[INFO] 22:50:14:710 KERNEL_TESTING/(7327:7327): Operacion recv
+[INFO] 22:50:14:712 KERNEL_TESTING/(7327:7327): Print de buffer
+[INFO] 22:50:14:715 KERNEL_TESTING/(7327:7327): Deserializando buffer
+[INFO] 22:50:14:716 KERNEL_TESTING/(7327:7327): PRUEBA RECIBIR STREAM - FIN
+[INFO] 20:01:52:807 KERNEL_TESTING/(8860:8860): Inicio de modulo Kernel
+[INFO] 20:01:52:858 KERNEL_TESTING/(8860:8860): Iniciando conexion con Consola
+[INFO] 20:01:52:869 KERNEL_TESTING/(8860:8860): Esperando que se conecte un cliente
+[INFO] 20:01:55:066 KERNEL_TESTING/(8860:8860): Conexion con Consola - Se conecto un cliente
+[INFO] 20:01:55:067 KERNEL_TESTING/(8860:8860): Se conecto un cliente
+[INFO] 20:01:55:068 KERNEL_TESTING/(8860:8860): PRUEBA RECIBIR STREAM - INICIO
+[INFO] 20:01:55:072 KERNEL_TESTING/(8860:8860): buffer_size:88
+

@@ -7,7 +7,7 @@
 #include <commons/collections/list.h>
 #include <commons/string.h>
 
-#include "tads/instruction.h"
+#include "instruction.h"
 
   typedef struct {
 		t_list *instructions;

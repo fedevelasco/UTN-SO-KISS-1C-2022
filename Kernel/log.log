@@ -1,0 +1,25 @@
+[INFO] 22:25:02:726 Servidor/(6371:6371): Escuchando en 127.0.0.1:4444 (Kernel)
+
+[INFO] 22:25:02:769 Servidor/(6371:6371): Kernel   listo para recibir a consola
+[INFO] 22:25:28:455 Servidor/(6371:6371): Consola conectada (a Kernel)
+
+[INFO] 22:25:28:462 Servidor/(6371:6371): buffer_size:88
+
+[INFO] 22:25:28:475 Servidor/(6371:6371): Me llegaron los siguientes valores:
+[INFO] 22:25:28:475 Servidor/(6371:6371): Process size: 1001
+[INFO] 22:25:28:476 Servidor/(6371:6371): Instruction: NO_OP 
+[INFO] 22:25:28:477 Servidor/(6371:6371): Parameters: 5 
+[INFO] 22:25:28:477 Servidor/(6371:6371): Instruction: NO_OP 
+[INFO] 22:25:28:478 Servidor/(6371:6371): Parameters: 5 
+[INFO] 22:25:28:478 Servidor/(6371:6371): Instruction: WRITE 
+[INFO] 22:25:28:478 Servidor/(6371:6371): Parameters: 4 
+[INFO] 22:25:28:478 Servidor/(6371:6371): Parameters: 42 
+[INFO] 22:25:28:479 Servidor/(6371:6371): Instruction: COPY 
+[INFO] 22:25:28:479 Servidor/(6371:6371): Parameters: 0 
+[INFO] 22:25:28:479 Servidor/(6371:6371): Parameters: 4 
+[INFO] 22:25:28:480 Servidor/(6371:6371): Instruction: READ 
+[INFO] 22:25:28:480 Servidor/(6371:6371): Parameters: 0 
+[INFO] 22:25:28:480 Servidor/(6371:6371): Instruction: I/O 
+[INFO] 22:25:28:480 Servidor/(6371:6371): Parameters: 3000 
+[INFO] 22:25:28:481 Servidor/(6371:6371): Instruction: EXIT 
+[ERROR] 22:26:00:569 Servidor/(6371:6371): el cliente se desconecto. Terminando servidor
