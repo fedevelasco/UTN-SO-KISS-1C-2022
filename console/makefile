@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 include settings.mk
-
-
-# MAKEFILE PROPIO DE FEDE QUE TENGO QUE ADAPTAR AL MODULO DE CPU, VER QUE ME SIRVE
 
 ################################################################################
 
@@ -95,16 +91,4 @@ memcheck: all
 helgrind: all
 	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH); \
 	valgrind --tool=helgrind $(HELGRIND_FLAGS) ./$(BIN) $(ARGS)
-=======
-build:
-	make  -C console
-	make  -C server
 
-debug:
-	make debug -C console
-	make debug -C server
-
-clean:
-	make clean -C console
-	make clean -C server
->>>>>>> main
