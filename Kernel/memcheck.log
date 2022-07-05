@@ -1,335 +1,390 @@
-==6371== Memcheck, a memory error detector
-==6371== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==6371== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
-==6371== Command: ./bin/Kernel.out 1001 ../console/instructions.txt
-==6371== Parent PID: 6370
-==6371== 
-==6371== Invalid write of size 2
-==6371==    at 0x4834F03: memcpy (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==6371==    by 0x109CD2: deserialize_string (serialization.c:81)
-==6371==    by 0x109E11: deserialize_instruction (serialization.c:109)
-==6371==    by 0x109ECB: deserialize_instructions_list (serialization.c:123)
-==6371==    by 0x10910A: recibir_paquete (conexion.c:46)
-==6371==    by 0x1092AD: main (kernel.c:51)
-==6371==  Address 0x4a5c348 is 0 bytes inside a block of size 1 alloc'd
-==6371==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==6371==    by 0x48F58D5: strdup (strdup.c:42)
-==6371==    by 0x485E4A7: string_duplicate (in /usr/lib/libcommons.so)
-==6371==    by 0x485E53C: string_new (in /usr/lib/libcommons.so)
-==6371==    by 0x10AEB9: create_instruction (instruction.c:6)
-==6371==    by 0x109EB4: deserialize_instructions_list (serialization.c:122)
-==6371==    by 0x10910A: recibir_paquete (conexion.c:46)
-==6371==    by 0x1092AD: main (kernel.c:51)
-==6371== 
-==6371== Invalid write of size 1
-==6371==    at 0x483513B: memcpy (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==6371==    by 0x109CD2: deserialize_string (serialization.c:81)
-==6371==    by 0x109E11: deserialize_instruction (serialization.c:109)
-==6371==    by 0x109ECB: deserialize_instructions_list (serialization.c:123)
-==6371==    by 0x10910A: recibir_paquete (conexion.c:46)
-==6371==    by 0x1092AD: main (kernel.c:51)
-==6371==  Address 0x4a5c7ac is 3 bytes after a block of size 1 alloc'd
-==6371==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==6371==    by 0x48F58D5: strdup (strdup.c:42)
-==6371==    by 0x485E4A7: string_duplicate (in /usr/lib/libcommons.so)
-==6371==    by 0x485E53C: string_new (in /usr/lib/libcommons.so)
-==6371==    by 0x10AEB9: create_instruction (instruction.c:6)
-==6371==    by 0x109EB4: deserialize_instructions_list (serialization.c:122)
-==6371==    by 0x10910A: recibir_paquete (conexion.c:46)
-==6371==    by 0x1092AD: main (kernel.c:51)
-==6371== 
-==6371== Invalid write of size 4
-==6371==    at 0x4834EB2: memcpy (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==6371==    by 0x109CD2: deserialize_string (serialization.c:81)
-==6371==    by 0x109E11: deserialize_instruction (serialization.c:109)
-==6371==    by 0x109ECB: deserialize_instructions_list (serialization.c:123)
-==6371==    by 0x10910A: recibir_paquete (conexion.c:46)
-==6371==    by 0x1092AD: main (kernel.c:51)
-==6371==  Address 0x4a5cab8 is 0 bytes inside a block of size 1 alloc'd
-==6371==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==6371==    by 0x48F58D5: strdup (strdup.c:42)
-==6371==    by 0x485E4A7: string_duplicate (in /usr/lib/libcommons.so)
-==6371==    by 0x485E53C: string_new (in /usr/lib/libcommons.so)
-==6371==    by 0x10AEB9: create_instruction (instruction.c:6)
-==6371==    by 0x109EB4: deserialize_instructions_list (serialization.c:122)
-==6371==    by 0x10910A: recibir_paquete (conexion.c:46)
-==6371==    by 0x1092AD: main (kernel.c:51)
-==6371== 
-==6371== Invalid read of size 1
-==6371==    at 0x48333C3: __GI_strlen (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==6371==    by 0x48C20C7: vfprintf (vfprintf.c:1643)
-==6371==    by 0x48E5EA0: vsnprintf (vsnprintf.c:114)
-==6371==    by 0x485EFF8: _string_append_with_format_list (in /usr/lib/libcommons.so)
-==6371==    by 0x485E5E0: string_from_vformat (in /usr/lib/libcommons.so)
-==6371==    by 0x485E30C: _log_write_in_level (in /usr/lib/libcommons.so)
-==6371==    by 0x485E18D: log_info (in /usr/lib/libcommons.so)
-==6371==    by 0x109331: main (kernel.c:58)
-==6371==  Address 0x4a5c349 is 0 bytes after a block of size 1 alloc'd
-==6371==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==6371==    by 0x48F58D5: strdup (strdup.c:42)
-==6371==    by 0x485E4A7: string_duplicate (in /usr/lib/libcommons.so)
-==6371==    by 0x485E53C: string_new (in /usr/lib/libcommons.so)
-==6371==    by 0x10AEB9: create_instruction (instruction.c:6)
-==6371==    by 0x109EB4: deserialize_instructions_list (serialization.c:122)
-==6371==    by 0x10910A: recibir_paquete (conexion.c:46)
-==6371==    by 0x1092AD: main (kernel.c:51)
-==6371== 
-==6371== Invalid read of size 1
-==6371==    at 0x48EB628: _IO_default_xsputn (genops.c:412)
-==6371==    by 0x48C1C8A: vfprintf (vfprintf.c:1643)
-==6371==    by 0x48E5EA0: vsnprintf (vsnprintf.c:114)
-==6371==    by 0x485EFF8: _string_append_with_format_list (in /usr/lib/libcommons.so)
-==6371==    by 0x485E5E0: string_from_vformat (in /usr/lib/libcommons.so)
-==6371==    by 0x485E30C: _log_write_in_level (in /usr/lib/libcommons.so)
-==6371==    by 0x485E18D: log_info (in /usr/lib/libcommons.so)
-==6371==    by 0x109331: main (kernel.c:58)
-==6371==  Address 0x4a5c349 is 0 bytes after a block of size 1 alloc'd
-==6371==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==6371==    by 0x48F58D5: strdup (strdup.c:42)
-==6371==    by 0x485E4A7: string_duplicate (in /usr/lib/libcommons.so)
-==6371==    by 0x485E53C: string_new (in /usr/lib/libcommons.so)
-==6371==    by 0x10AEB9: create_instruction (instruction.c:6)
-==6371==    by 0x109EB4: deserialize_instructions_list (serialization.c:122)
-==6371==    by 0x10910A: recibir_paquete (conexion.c:46)
-==6371==    by 0x1092AD: main (kernel.c:51)
-==6371== 
-==6371== Invalid read of size 1
-==6371==    at 0x48EB634: _IO_default_xsputn (genops.c:411)
-==6371==    by 0x48C1C8A: vfprintf (vfprintf.c:1643)
-==6371==    by 0x48E5EA0: vsnprintf (vsnprintf.c:114)
-==6371==    by 0x485EFF8: _string_append_with_format_list (in /usr/lib/libcommons.so)
-==6371==    by 0x485E5E0: string_from_vformat (in /usr/lib/libcommons.so)
-==6371==    by 0x485E30C: _log_write_in_level (in /usr/lib/libcommons.so)
-==6371==    by 0x485E18D: log_info (in /usr/lib/libcommons.so)
-==6371==    by 0x109331: main (kernel.c:58)
-==6371==  Address 0x4a5c34a is 1 bytes after a block of size 1 alloc'd
-==6371==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==6371==    by 0x48F58D5: strdup (strdup.c:42)
-==6371==    by 0x485E4A7: string_duplicate (in /usr/lib/libcommons.so)
-==6371==    by 0x485E53C: string_new (in /usr/lib/libcommons.so)
-==6371==    by 0x10AEB9: create_instruction (instruction.c:6)
-==6371==    by 0x109EB4: deserialize_instructions_list (serialization.c:122)
-==6371==    by 0x10910A: recibir_paquete (conexion.c:46)
-==6371==    by 0x1092AD: main (kernel.c:51)
-==6371== 
-==6371== Invalid read of size 1
-==6371==    at 0x48333C3: __GI_strlen (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==6371==    by 0x48C20C7: vfprintf (vfprintf.c:1643)
-==6371==    by 0x48E5EA0: vsnprintf (vsnprintf.c:114)
-==6371==    by 0x485F02A: _string_append_with_format_list (in /usr/lib/libcommons.so)
-==6371==    by 0x485E5E0: string_from_vformat (in /usr/lib/libcommons.so)
-==6371==    by 0x485E30C: _log_write_in_level (in /usr/lib/libcommons.so)
-==6371==    by 0x485E18D: log_info (in /usr/lib/libcommons.so)
-==6371==    by 0x109331: main (kernel.c:58)
-==6371==  Address 0x4a5c349 is 0 bytes after a block of size 1 alloc'd
-==6371==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==6371==    by 0x48F58D5: strdup (strdup.c:42)
-==6371==    by 0x485E4A7: string_duplicate (in /usr/lib/libcommons.so)
-==6371==    by 0x485E53C: string_new (in /usr/lib/libcommons.so)
-==6371==    by 0x10AEB9: create_instruction (instruction.c:6)
-==6371==    by 0x109EB4: deserialize_instructions_list (serialization.c:122)
-==6371==    by 0x10910A: recibir_paquete (conexion.c:46)
-==6371==    by 0x1092AD: main (kernel.c:51)
-==6371== 
-==6371== Invalid read of size 1
-==6371==    at 0x48EB628: _IO_default_xsputn (genops.c:412)
-==6371==    by 0x48C1C8A: vfprintf (vfprintf.c:1643)
-==6371==    by 0x48E5EA0: vsnprintf (vsnprintf.c:114)
-==6371==    by 0x485F02A: _string_append_with_format_list (in /usr/lib/libcommons.so)
-==6371==    by 0x485E5E0: string_from_vformat (in /usr/lib/libcommons.so)
-==6371==    by 0x485E30C: _log_write_in_level (in /usr/lib/libcommons.so)
-==6371==    by 0x485E18D: log_info (in /usr/lib/libcommons.so)
-==6371==    by 0x109331: main (kernel.c:58)
-==6371==  Address 0x4a5c349 is 0 bytes after a block of size 1 alloc'd
-==6371==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==6371==    by 0x48F58D5: strdup (strdup.c:42)
-==6371==    by 0x485E4A7: string_duplicate (in /usr/lib/libcommons.so)
-==6371==    by 0x485E53C: string_new (in /usr/lib/libcommons.so)
-==6371==    by 0x10AEB9: create_instruction (instruction.c:6)
-==6371==    by 0x109EB4: deserialize_instructions_list (serialization.c:122)
-==6371==    by 0x10910A: recibir_paquete (conexion.c:46)
-==6371==    by 0x1092AD: main (kernel.c:51)
-==6371== 
-==6371== Invalid read of size 1
-==6371==    at 0x48EB634: _IO_default_xsputn (genops.c:411)
-==6371==    by 0x48C1C8A: vfprintf (vfprintf.c:1643)
-==6371==    by 0x48E5EA0: vsnprintf (vsnprintf.c:114)
-==6371==    by 0x485F02A: _string_append_with_format_list (in /usr/lib/libcommons.so)
-==6371==    by 0x485E5E0: string_from_vformat (in /usr/lib/libcommons.so)
-==6371==    by 0x485E30C: _log_write_in_level (in /usr/lib/libcommons.so)
-==6371==    by 0x485E18D: log_info (in /usr/lib/libcommons.so)
-==6371==    by 0x109331: main (kernel.c:58)
-==6371==  Address 0x4a5c34a is 1 bytes after a block of size 1 alloc'd
-==6371==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==6371==    by 0x48F58D5: strdup (strdup.c:42)
-==6371==    by 0x485E4A7: string_duplicate (in /usr/lib/libcommons.so)
-==6371==    by 0x485E53C: string_new (in /usr/lib/libcommons.so)
-==6371==    by 0x10AEB9: create_instruction (instruction.c:6)
-==6371==    by 0x109EB4: deserialize_instructions_list (serialization.c:122)
-==6371==    by 0x10910A: recibir_paquete (conexion.c:46)
-==6371==    by 0x1092AD: main (kernel.c:51)
-==6371== 
-==6371== 
-==6371== HEAP SUMMARY:
-==6371==     in use at exit: 1,480 bytes in 93 blocks
-==6371==   total heap usage: 519 allocs, 426 frees, 26,044 bytes allocated
-==6371== 
-==6371== 7 bytes in 7 blocks are indirectly lost in loss record 1 of 19
-==6371==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==6371==    by 0x48F58D5: strdup (strdup.c:42)
-==6371==    by 0x485E4A7: string_duplicate (in /usr/lib/libcommons.so)
-==6371==    by 0x485E53C: string_new (in /usr/lib/libcommons.so)
-==6371==    by 0x10AEB9: create_instruction (instruction.c:6)
-==6371==    by 0x109EB4: deserialize_instructions_list (serialization.c:122)
-==6371==    by 0x10910A: recibir_paquete (conexion.c:46)
-==6371==    by 0x1092AD: main (kernel.c:51)
-==6371== 
-==6371== 8 bytes in 1 blocks are indirectly lost in loss record 2 of 19
-==6371==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==6371==    by 0x485F3FE: list_create (in /usr/lib/libcommons.so)
-==6371==    by 0x1094A2: create_instructions_list_with_size (instructions_list.c:13)
-==6371==    by 0x1090F6: recibir_paquete (conexion.c:44)
-==6371==    by 0x1092AD: main (kernel.c:51)
-==6371== 
-==6371== 9 bytes in 1 blocks are still reachable in loss record 3 of 19
-==6371==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==6371==    by 0x48F58D5: strdup (strdup.c:42)
-==6371==    by 0x485E4A7: string_duplicate (in /usr/lib/libcommons.so)
-==6371==    by 0x485E049: log_create (in /usr/lib/libcommons.so)
-==6371==    by 0x1091D2: main (kernel.c:26)
-==6371== 
-==6371== 16 bytes in 1 blocks are indirectly lost in loss record 4 of 19
-==6371==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==6371==    by 0x48608FD: dictionary_create (in /usr/lib/libcommons.so)
-==6371==    by 0x48612D1: config_create (in /usr/lib/libcommons.so)
-==6371==    by 0x109147: iniciar_config (kernel.c:7)
-==6371==    by 0x1091E4: main (kernel.c:35)
-==6371== 
-==6371== 20 bytes in 1 blocks are still reachable in loss record 5 of 19
-==6371==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==6371==    by 0x485DFA3: log_create (in /usr/lib/libcommons.so)
-==6371==    by 0x1091D2: main (kernel.c:26)
-==6371== 
-==6371== 32 bytes in 8 blocks are indirectly lost in loss record 6 of 19
-==6371==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==6371==    by 0x10B073: create_parameter (parameter.c:4)
-==6371==    by 0x109B95: deserialize_parameters (serialization.c:55)
-==6371==    by 0x109E31: deserialize_instruction (serialization.c:110)
-==6371==    by 0x109ECB: deserialize_instructions_list (serialization.c:123)
-==6371==    by 0x10910A: recibir_paquete (conexion.c:46)
-==6371==    by 0x1092AD: main (kernel.c:51)
-==6371== 
-==6371== 56 bytes in 7 blocks are indirectly lost in loss record 7 of 19
-==6371==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==6371==    by 0x10AE9C: create_instruction (instruction.c:4)
-==6371==    by 0x109EB4: deserialize_instructions_list (serialization.c:122)
-==6371==    by 0x10910A: recibir_paquete (conexion.c:46)
-==6371==    by 0x1092AD: main (kernel.c:51)
-==6371== 
-==6371== 56 bytes in 7 blocks are indirectly lost in loss record 8 of 19
-==6371==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==6371==    by 0x485F3FE: list_create (in /usr/lib/libcommons.so)
-==6371==    by 0x10AEC5: create_instruction (instruction.c:7)
-==6371==    by 0x109EB4: deserialize_instructions_list (serialization.c:122)
-==6371==    by 0x10910A: recibir_paquete (conexion.c:46)
-==6371==    by 0x1092AD: main (kernel.c:51)
-==6371== 
-==6371== 56 bytes in 7 blocks are indirectly lost in loss record 9 of 19
-==6371==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==6371==    by 0x486067B: list_create_element (in /usr/lib/libcommons.so)
-==6371==    by 0x485F48E: list_add (in /usr/lib/libcommons.so)
-==6371==    by 0x109EE2: deserialize_instructions_list (serialization.c:125)
-==6371==    by 0x10910A: recibir_paquete (conexion.c:46)
-==6371==    by 0x1092AD: main (kernel.c:51)
-==6371== 
-==6371== 64 bytes in 8 blocks are indirectly lost in loss record 10 of 19
-==6371==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==6371==    by 0x486067B: list_create_element (in /usr/lib/libcommons.so)
-==6371==    by 0x485F48E: list_add (in /usr/lib/libcommons.so)
-==6371==    by 0x109BC2: deserialize_parameters (serialization.c:57)
-==6371==    by 0x109E31: deserialize_instruction (serialization.c:110)
-==6371==    by 0x109ECB: deserialize_instructions_list (serialization.c:123)
-==6371==    by 0x10910A: recibir_paquete (conexion.c:46)
-==6371==    by 0x1092AD: main (kernel.c:51)
-==6371== 
-==6371== 67 bytes in 1 blocks are indirectly lost in loss record 11 of 19
-==6371==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==6371==    by 0x48F58D5: strdup (strdup.c:42)
-==6371==    by 0x48612C2: config_create (in /usr/lib/libcommons.so)
-==6371==    by 0x109147: iniciar_config (kernel.c:7)
-==6371==    by 0x1091E4: main (kernel.c:35)
-==6371== 
-==6371== 78 bytes in 13 blocks are indirectly lost in loss record 12 of 19
-==6371==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==6371==    by 0x48F58D5: strdup (strdup.c:42)
-==6371==    by 0x485E4A7: string_duplicate (in /usr/lib/libcommons.so)
-==6371==    by 0x485F172: _string_split (in /usr/lib/libcommons.so)
-==6371==    by 0x485EA9E: string_n_split (in /usr/lib/libcommons.so)
-==6371==    by 0x48611CB: add_cofiguration.2925 (in /usr/lib/libcommons.so)
-==6371==    by 0x485EC4C: string_iterate_lines (in /usr/lib/libcommons.so)
-==6371==    by 0x486135F: config_create (in /usr/lib/libcommons.so)
-==6371==    by 0x109147: iniciar_config (kernel.c:7)
-==6371==    by 0x1091E4: main (kernel.c:35)
-==6371== 
-==6371== 80 bytes in 1 blocks are indirectly lost in loss record 13 of 19
-==6371==    at 0x48321A6: calloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==6371==    by 0x486091E: dictionary_create (in /usr/lib/libcommons.so)
-==6371==    by 0x48612D1: config_create (in /usr/lib/libcommons.so)
-==6371==    by 0x109147: iniciar_config (kernel.c:7)
-==6371==    by 0x1091E4: main (kernel.c:35)
-==6371== 
-==6371== 88 bytes in 1 blocks are definitely lost in loss record 14 of 19
-==6371==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==6371==    by 0x109074: recibir_buffer (conexion.c:20)
-==6371==    by 0x1090CB: recibir_paquete (conexion.c:41)
-==6371==    by 0x1092AD: main (kernel.c:51)
-==6371== 
-==6371== 195 bytes in 13 blocks are indirectly lost in loss record 15 of 19
-==6371==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==6371==    by 0x48F58D5: strdup (strdup.c:42)
-==6371==    by 0x4860A33: dictionary_put (in /usr/lib/libcommons.so)
-==6371==    by 0x48611EE: add_cofiguration.2925 (in /usr/lib/libcommons.so)
-==6371==    by 0x485EC4C: string_iterate_lines (in /usr/lib/libcommons.so)
-==6371==    by 0x486135F: config_create (in /usr/lib/libcommons.so)
-==6371==    by 0x109147: iniciar_config (kernel.c:7)
-==6371==    by 0x1091E4: main (kernel.c:35)
-==6371== 
-==6371== 208 bytes in 13 blocks are indirectly lost in loss record 16 of 19
-==6371==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==6371==    by 0x4860F0A: dictionary_create_element (in /usr/lib/libcommons.so)
-==6371==    by 0x4860A45: dictionary_put (in /usr/lib/libcommons.so)
-==6371==    by 0x48611EE: add_cofiguration.2925 (in /usr/lib/libcommons.so)
-==6371==    by 0x485EC4C: string_iterate_lines (in /usr/lib/libcommons.so)
-==6371==    by 0x486135F: config_create (in /usr/lib/libcommons.so)
-==6371==    by 0x109147: iniciar_config (kernel.c:7)
-==6371==    by 0x1091E4: main (kernel.c:35)
-==6371== 
-==6371== 344 bytes in 1 blocks are still reachable in loss record 17 of 19
-==6371==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==6371==    by 0x48DD3EA: __fopen_internal (iofopen.c:65)
-==6371==    by 0x48DD4D1: fopen@@GLIBC_2.1 (iofopen.c:89)
-==6371==    by 0x485DEDA: txt_open_for_append (in /usr/lib/libcommons.so)
-==6371==    by 0x485DFE3: log_create (in /usr/lib/libcommons.so)
-==6371==    by 0x1091D2: main (kernel.c:26)
-==6371== 
-==6371== 367 (88 direct, 279 indirect) bytes in 1 blocks are definitely lost in loss record 18 of 19
-==6371==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==6371==    by 0x109497: create_instructions_list_with_size (instructions_list.c:12)
-==6371==    by 0x1090F6: recibir_paquete (conexion.c:44)
-==6371==    by 0x1092AD: main (kernel.c:51)
-==6371== 
-==6371== 652 (8 direct, 644 indirect) bytes in 1 blocks are definitely lost in loss record 19 of 19
-==6371==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==6371==    by 0x48612AE: config_create (in /usr/lib/libcommons.so)
-==6371==    by 0x109147: iniciar_config (kernel.c:7)
-==6371==    by 0x1091E4: main (kernel.c:35)
-==6371== 
-==6371== LEAK SUMMARY:
-==6371==    definitely lost: 184 bytes in 3 blocks
-==6371==    indirectly lost: 923 bytes in 87 blocks
-==6371==      possibly lost: 0 bytes in 0 blocks
-==6371==    still reachable: 373 bytes in 3 blocks
-==6371==         suppressed: 0 bytes in 0 blocks
-==6371== 
-==6371== For counts of detected and suppressed errors, rerun with: -v
-==6371== ERROR SUMMARY: 142 errors from 12 contexts (suppressed: 0 from 0)
+==18377== Memcheck, a memory error detector
+==18377== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==18377== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
+==18377== Command: ./bin/Kernel.out 1001 ../console/instructions.txt
+==18377== Parent PID: 18376
+==18377== 
+==18377== Invalid write of size 2
+==18377==    at 0x4834F03: memcpy (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x10A175: deserialize_string (serialization.c:81)
+==18377==    by 0x10A2B4: deserialize_instruction (serialization.c:109)
+==18377==    by 0x10A36E: deserialize_instructions_list (serialization.c:123)
+==18377==    by 0x10925A: recibir_paquete (conexion.c:37)
+==18377==    by 0x10973B: main (kernel.c:60)
+==18377==  Address 0x4a5c400 is 0 bytes inside a block of size 1 alloc'd
+==18377==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x48F58D5: strdup (strdup.c:42)
+==18377==    by 0x485E4A7: string_duplicate (in /usr/lib/libcommons.so)
+==18377==    by 0x485E53C: string_new (in /usr/lib/libcommons.so)
+==18377==    by 0x10B500: create_instruction (instruction.c:6)
+==18377==    by 0x10A357: deserialize_instructions_list (serialization.c:122)
+==18377==    by 0x10925A: recibir_paquete (conexion.c:37)
+==18377==    by 0x10973B: main (kernel.c:60)
+==18377== 
+==18377== Invalid write of size 1
+==18377==    at 0x483513B: memcpy (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x10A175: deserialize_string (serialization.c:81)
+==18377==    by 0x10A2B4: deserialize_instruction (serialization.c:109)
+==18377==    by 0x10A36E: deserialize_instructions_list (serialization.c:123)
+==18377==    by 0x10925A: recibir_paquete (conexion.c:37)
+==18377==    by 0x10973B: main (kernel.c:60)
+==18377==  Address 0x4a5c864 is 3 bytes after a block of size 1 alloc'd
+==18377==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x48F58D5: strdup (strdup.c:42)
+==18377==    by 0x485E4A7: string_duplicate (in /usr/lib/libcommons.so)
+==18377==    by 0x485E53C: string_new (in /usr/lib/libcommons.so)
+==18377==    by 0x10B500: create_instruction (instruction.c:6)
+==18377==    by 0x10A357: deserialize_instructions_list (serialization.c:122)
+==18377==    by 0x10925A: recibir_paquete (conexion.c:37)
+==18377==    by 0x10973B: main (kernel.c:60)
+==18377== 
+==18377== Invalid write of size 4
+==18377==    at 0x4834EB2: memcpy (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x10A175: deserialize_string (serialization.c:81)
+==18377==    by 0x10A2B4: deserialize_instruction (serialization.c:109)
+==18377==    by 0x10A36E: deserialize_instructions_list (serialization.c:123)
+==18377==    by 0x10925A: recibir_paquete (conexion.c:37)
+==18377==    by 0x10973B: main (kernel.c:60)
+==18377==  Address 0x4a5cb70 is 0 bytes inside a block of size 1 alloc'd
+==18377==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x48F58D5: strdup (strdup.c:42)
+==18377==    by 0x485E4A7: string_duplicate (in /usr/lib/libcommons.so)
+==18377==    by 0x485E53C: string_new (in /usr/lib/libcommons.so)
+==18377==    by 0x10B500: create_instruction (instruction.c:6)
+==18377==    by 0x10A357: deserialize_instructions_list (serialization.c:122)
+==18377==    by 0x10925A: recibir_paquete (conexion.c:37)
+==18377==    by 0x10973B: main (kernel.c:60)
+==18377== 
+==18377== Invalid read of size 1
+==18377==    at 0x48333C3: __GI_strlen (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x48C20C7: vfprintf (vfprintf.c:1643)
+==18377==    by 0x48E5EA0: vsnprintf (vsnprintf.c:114)
+==18377==    by 0x485EFF8: _string_append_with_format_list (in /usr/lib/libcommons.so)
+==18377==    by 0x485E5E0: string_from_vformat (in /usr/lib/libcommons.so)
+==18377==    by 0x485E30C: _log_write_in_level (in /usr/lib/libcommons.so)
+==18377==    by 0x485E18D: log_info (in /usr/lib/libcommons.so)
+==18377==    by 0x1099FE: imprimir_lista_instrucciones (instructions_list.c:55)
+==18377==    by 0x109792: main (kernel.c:63)
+==18377==  Address 0x4a5c401 is 0 bytes after a block of size 1 alloc'd
+==18377==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x48F58D5: strdup (strdup.c:42)
+==18377==    by 0x485E4A7: string_duplicate (in /usr/lib/libcommons.so)
+==18377==    by 0x485E53C: string_new (in /usr/lib/libcommons.so)
+==18377==    by 0x10B500: create_instruction (instruction.c:6)
+==18377==    by 0x10A357: deserialize_instructions_list (serialization.c:122)
+==18377==    by 0x10925A: recibir_paquete (conexion.c:37)
+==18377==    by 0x10973B: main (kernel.c:60)
+==18377== 
+==18377== Invalid read of size 1
+==18377==    at 0x48EB628: _IO_default_xsputn (genops.c:412)
+==18377==    by 0x48C1C8A: vfprintf (vfprintf.c:1643)
+==18377==    by 0x48E5EA0: vsnprintf (vsnprintf.c:114)
+==18377==    by 0x485EFF8: _string_append_with_format_list (in /usr/lib/libcommons.so)
+==18377==    by 0x485E5E0: string_from_vformat (in /usr/lib/libcommons.so)
+==18377==    by 0x485E30C: _log_write_in_level (in /usr/lib/libcommons.so)
+==18377==    by 0x485E18D: log_info (in /usr/lib/libcommons.so)
+==18377==    by 0x1099FE: imprimir_lista_instrucciones (instructions_list.c:55)
+==18377==    by 0x109792: main (kernel.c:63)
+==18377==  Address 0x4a5c401 is 0 bytes after a block of size 1 alloc'd
+==18377==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x48F58D5: strdup (strdup.c:42)
+==18377==    by 0x485E4A7: string_duplicate (in /usr/lib/libcommons.so)
+==18377==    by 0x485E53C: string_new (in /usr/lib/libcommons.so)
+==18377==    by 0x10B500: create_instruction (instruction.c:6)
+==18377==    by 0x10A357: deserialize_instructions_list (serialization.c:122)
+==18377==    by 0x10925A: recibir_paquete (conexion.c:37)
+==18377==    by 0x10973B: main (kernel.c:60)
+==18377== 
+==18377== Invalid read of size 1
+==18377==    at 0x48EB634: _IO_default_xsputn (genops.c:411)
+==18377==    by 0x48C1C8A: vfprintf (vfprintf.c:1643)
+==18377==    by 0x48E5EA0: vsnprintf (vsnprintf.c:114)
+==18377==    by 0x485EFF8: _string_append_with_format_list (in /usr/lib/libcommons.so)
+==18377==    by 0x485E5E0: string_from_vformat (in /usr/lib/libcommons.so)
+==18377==    by 0x485E30C: _log_write_in_level (in /usr/lib/libcommons.so)
+==18377==    by 0x485E18D: log_info (in /usr/lib/libcommons.so)
+==18377==    by 0x1099FE: imprimir_lista_instrucciones (instructions_list.c:55)
+==18377==    by 0x109792: main (kernel.c:63)
+==18377==  Address 0x4a5c402 is 1 bytes after a block of size 1 alloc'd
+==18377==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x48F58D5: strdup (strdup.c:42)
+==18377==    by 0x485E4A7: string_duplicate (in /usr/lib/libcommons.so)
+==18377==    by 0x485E53C: string_new (in /usr/lib/libcommons.so)
+==18377==    by 0x10B500: create_instruction (instruction.c:6)
+==18377==    by 0x10A357: deserialize_instructions_list (serialization.c:122)
+==18377==    by 0x10925A: recibir_paquete (conexion.c:37)
+==18377==    by 0x10973B: main (kernel.c:60)
+==18377== 
+==18377== Invalid read of size 1
+==18377==    at 0x48333C3: __GI_strlen (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x48C20C7: vfprintf (vfprintf.c:1643)
+==18377==    by 0x48E5EA0: vsnprintf (vsnprintf.c:114)
+==18377==    by 0x485F02A: _string_append_with_format_list (in /usr/lib/libcommons.so)
+==18377==    by 0x485E5E0: string_from_vformat (in /usr/lib/libcommons.so)
+==18377==    by 0x485E30C: _log_write_in_level (in /usr/lib/libcommons.so)
+==18377==    by 0x485E18D: log_info (in /usr/lib/libcommons.so)
+==18377==    by 0x1099FE: imprimir_lista_instrucciones (instructions_list.c:55)
+==18377==    by 0x109792: main (kernel.c:63)
+==18377==  Address 0x4a5c401 is 0 bytes after a block of size 1 alloc'd
+==18377==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x48F58D5: strdup (strdup.c:42)
+==18377==    by 0x485E4A7: string_duplicate (in /usr/lib/libcommons.so)
+==18377==    by 0x485E53C: string_new (in /usr/lib/libcommons.so)
+==18377==    by 0x10B500: create_instruction (instruction.c:6)
+==18377==    by 0x10A357: deserialize_instructions_list (serialization.c:122)
+==18377==    by 0x10925A: recibir_paquete (conexion.c:37)
+==18377==    by 0x10973B: main (kernel.c:60)
+==18377== 
+==18377== Invalid read of size 1
+==18377==    at 0x48EB628: _IO_default_xsputn (genops.c:412)
+==18377==    by 0x48C1C8A: vfprintf (vfprintf.c:1643)
+==18377==    by 0x48E5EA0: vsnprintf (vsnprintf.c:114)
+==18377==    by 0x485F02A: _string_append_with_format_list (in /usr/lib/libcommons.so)
+==18377==    by 0x485E5E0: string_from_vformat (in /usr/lib/libcommons.so)
+==18377==    by 0x485E30C: _log_write_in_level (in /usr/lib/libcommons.so)
+==18377==    by 0x485E18D: log_info (in /usr/lib/libcommons.so)
+==18377==    by 0x1099FE: imprimir_lista_instrucciones (instructions_list.c:55)
+==18377==    by 0x109792: main (kernel.c:63)
+==18377==  Address 0x4a5c401 is 0 bytes after a block of size 1 alloc'd
+==18377==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x48F58D5: strdup (strdup.c:42)
+==18377==    by 0x485E4A7: string_duplicate (in /usr/lib/libcommons.so)
+==18377==    by 0x485E53C: string_new (in /usr/lib/libcommons.so)
+==18377==    by 0x10B500: create_instruction (instruction.c:6)
+==18377==    by 0x10A357: deserialize_instructions_list (serialization.c:122)
+==18377==    by 0x10925A: recibir_paquete (conexion.c:37)
+==18377==    by 0x10973B: main (kernel.c:60)
+==18377== 
+==18377== Invalid read of size 1
+==18377==    at 0x48EB634: _IO_default_xsputn (genops.c:411)
+==18377==    by 0x48C1C8A: vfprintf (vfprintf.c:1643)
+==18377==    by 0x48E5EA0: vsnprintf (vsnprintf.c:114)
+==18377==    by 0x485F02A: _string_append_with_format_list (in /usr/lib/libcommons.so)
+==18377==    by 0x485E5E0: string_from_vformat (in /usr/lib/libcommons.so)
+==18377==    by 0x485E30C: _log_write_in_level (in /usr/lib/libcommons.so)
+==18377==    by 0x485E18D: log_info (in /usr/lib/libcommons.so)
+==18377==    by 0x1099FE: imprimir_lista_instrucciones (instructions_list.c:55)
+==18377==    by 0x109792: main (kernel.c:63)
+==18377==  Address 0x4a5c402 is 1 bytes after a block of size 1 alloc'd
+==18377==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x48F58D5: strdup (strdup.c:42)
+==18377==    by 0x485E4A7: string_duplicate (in /usr/lib/libcommons.so)
+==18377==    by 0x485E53C: string_new (in /usr/lib/libcommons.so)
+==18377==    by 0x10B500: create_instruction (instruction.c:6)
+==18377==    by 0x10A357: deserialize_instructions_list (serialization.c:122)
+==18377==    by 0x10925A: recibir_paquete (conexion.c:37)
+==18377==    by 0x10973B: main (kernel.c:60)
+==18377== 
+==18377== 
+==18377== HEAP SUMMARY:
+==18377==     in use at exit: 1,564 bytes in 101 blocks
+==18377==   total heap usage: 919 allocs, 818 frees, 36,822 bytes allocated
+==18377== 
+==18377== 4 bytes in 1 blocks are still reachable in loss record 1 of 27
+==18377==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x485F226: queue_create (in /usr/lib/libcommons.so)
+==18377==    by 0x1096E9: main (kernel.c:49)
+==18377== 
+==18377== 7 bytes in 7 blocks are indirectly lost in loss record 2 of 27
+==18377==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x48F58D5: strdup (strdup.c:42)
+==18377==    by 0x485E4A7: string_duplicate (in /usr/lib/libcommons.so)
+==18377==    by 0x485E53C: string_new (in /usr/lib/libcommons.so)
+==18377==    by 0x10B500: create_instruction (instruction.c:6)
+==18377==    by 0x10A357: deserialize_instructions_list (serialization.c:122)
+==18377==    by 0x10925A: recibir_paquete (conexion.c:37)
+==18377==    by 0x10973B: main (kernel.c:60)
+==18377== 
+==18377== 8 bytes in 1 blocks are still reachable in loss record 3 of 27
+==18377==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x485F3FE: list_create (in /usr/lib/libcommons.so)
+==18377==    by 0x485F231: queue_create (in /usr/lib/libcommons.so)
+==18377==    by 0x1096E9: main (kernel.c:49)
+==18377== 
+==18377== 8 bytes in 1 blocks are still reachable in loss record 4 of 27
+==18377==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x485F3FE: list_create (in /usr/lib/libcommons.so)
+==18377==    by 0x1096F8: main (kernel.c:51)
+==18377== 
+==18377== 8 bytes in 1 blocks are still reachable in loss record 5 of 27
+==18377==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x486067B: list_create_element (in /usr/lib/libcommons.so)
+==18377==    by 0x485F48E: list_add (in /usr/lib/libcommons.so)
+==18377==    by 0x1093E1: push_cola_ready (estructurasEnlazadas.c:53)
+==18377==    by 0x10955F: planificadorLP_agregar_a_ready (planificacion.c:40)
+==18377==    by 0x1097BF: main (kernel.c:67)
+==18377== 
+==18377== 8 bytes in 1 blocks are indirectly lost in loss record 6 of 27
+==18377==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x485F3FE: list_create (in /usr/lib/libcommons.so)
+==18377==    by 0x10987A: create_instructions_list_with_size (instructions_list.c:13)
+==18377==    by 0x109246: recibir_paquete (conexion.c:35)
+==18377==    by 0x10973B: main (kernel.c:60)
+==18377== 
+==18377== 8 bytes in 1 blocks are indirectly lost in loss record 7 of 27
+==18377==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x485F3FE: list_create (in /usr/lib/libcommons.so)
+==18377==    by 0x109838: create_instructions_list (instructions_list.c:6)
+==18377==    by 0x10B35D: pcb_create (pcb.c:7)
+==18377==    by 0x10945C: planificadorLP_agregar_a_new (planificacion.c:20)
+==18377==    by 0x1097A9: main (kernel.c:65)
+==18377== 
+==18377== 9 bytes in 1 blocks are still reachable in loss record 8 of 27
+==18377==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x48F58D5: strdup (strdup.c:42)
+==18377==    by 0x485E4A7: string_duplicate (in /usr/lib/libcommons.so)
+==18377==    by 0x485E049: log_create (in /usr/lib/libcommons.so)
+==18377==    by 0x109642: main (kernel.c:26)
+==18377== 
+==18377== 16 bytes in 1 blocks are indirectly lost in loss record 9 of 27
+==18377==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x48608FD: dictionary_create (in /usr/lib/libcommons.so)
+==18377==    by 0x48612D1: config_create (in /usr/lib/libcommons.so)
+==18377==    by 0x1095B7: iniciar_config (kernel.c:7)
+==18377==    by 0x109654: main (kernel.c:35)
+==18377== 
+==18377== 16 (8 direct, 8 indirect) bytes in 1 blocks are definitely lost in loss record 10 of 27
+==18377==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x10982D: create_instructions_list (instructions_list.c:5)
+==18377==    by 0x10B35D: pcb_create (pcb.c:7)
+==18377==    by 0x10945C: planificadorLP_agregar_a_new (planificacion.c:20)
+==18377==    by 0x1097A9: main (kernel.c:65)
+==18377== 
+==18377== 20 bytes in 1 blocks are still reachable in loss record 11 of 27
+==18377==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x485DFA3: log_create (in /usr/lib/libcommons.so)
+==18377==    by 0x109642: main (kernel.c:26)
+==18377== 
+==18377== 20 bytes in 1 blocks are definitely lost in loss record 12 of 27
+==18377==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x109451: planificadorLP_agregar_a_new (planificacion.c:19)
+==18377==    by 0x1097A9: main (kernel.c:65)
+==18377== 
+==18377== 20 bytes in 1 blocks are definitely lost in loss record 13 of 27
+==18377==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x10952B: planificadorLP_agregar_a_ready (planificacion.c:37)
+==18377==    by 0x1097BF: main (kernel.c:67)
+==18377== 
+==18377== 32 bytes in 8 blocks are indirectly lost in loss record 14 of 27
+==18377==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x10B6BA: create_parameter (parameter.c:4)
+==18377==    by 0x10A038: deserialize_parameters (serialization.c:55)
+==18377==    by 0x10A2D4: deserialize_instruction (serialization.c:110)
+==18377==    by 0x10A36E: deserialize_instructions_list (serialization.c:123)
+==18377==    by 0x10925A: recibir_paquete (conexion.c:37)
+==18377==    by 0x10973B: main (kernel.c:60)
+==18377== 
+==18377== 56 bytes in 7 blocks are indirectly lost in loss record 15 of 27
+==18377==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x10B4E3: create_instruction (instruction.c:4)
+==18377==    by 0x10A357: deserialize_instructions_list (serialization.c:122)
+==18377==    by 0x10925A: recibir_paquete (conexion.c:37)
+==18377==    by 0x10973B: main (kernel.c:60)
+==18377== 
+==18377== 56 bytes in 7 blocks are indirectly lost in loss record 16 of 27
+==18377==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x485F3FE: list_create (in /usr/lib/libcommons.so)
+==18377==    by 0x10B50C: create_instruction (instruction.c:7)
+==18377==    by 0x10A357: deserialize_instructions_list (serialization.c:122)
+==18377==    by 0x10925A: recibir_paquete (conexion.c:37)
+==18377==    by 0x10973B: main (kernel.c:60)
+==18377== 
+==18377== 56 bytes in 7 blocks are indirectly lost in loss record 17 of 27
+==18377==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x486067B: list_create_element (in /usr/lib/libcommons.so)
+==18377==    by 0x485F48E: list_add (in /usr/lib/libcommons.so)
+==18377==    by 0x10A385: deserialize_instructions_list (serialization.c:125)
+==18377==    by 0x10925A: recibir_paquete (conexion.c:37)
+==18377==    by 0x10973B: main (kernel.c:60)
+==18377== 
+==18377== 64 bytes in 8 blocks are indirectly lost in loss record 18 of 27
+==18377==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x486067B: list_create_element (in /usr/lib/libcommons.so)
+==18377==    by 0x485F48E: list_add (in /usr/lib/libcommons.so)
+==18377==    by 0x10A065: deserialize_parameters (serialization.c:57)
+==18377==    by 0x10A2D4: deserialize_instruction (serialization.c:110)
+==18377==    by 0x10A36E: deserialize_instructions_list (serialization.c:123)
+==18377==    by 0x10925A: recibir_paquete (conexion.c:37)
+==18377==    by 0x10973B: main (kernel.c:60)
+==18377== 
+==18377== 67 bytes in 1 blocks are indirectly lost in loss record 19 of 27
+==18377==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x48F58D5: strdup (strdup.c:42)
+==18377==    by 0x48612C2: config_create (in /usr/lib/libcommons.so)
+==18377==    by 0x1095B7: iniciar_config (kernel.c:7)
+==18377==    by 0x109654: main (kernel.c:35)
+==18377== 
+==18377== 78 bytes in 13 blocks are indirectly lost in loss record 20 of 27
+==18377==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x48F58D5: strdup (strdup.c:42)
+==18377==    by 0x485E4A7: string_duplicate (in /usr/lib/libcommons.so)
+==18377==    by 0x485F172: _string_split (in /usr/lib/libcommons.so)
+==18377==    by 0x485EA9E: string_n_split (in /usr/lib/libcommons.so)
+==18377==    by 0x48611CB: add_cofiguration.2925 (in /usr/lib/libcommons.so)
+==18377==    by 0x485EC4C: string_iterate_lines (in /usr/lib/libcommons.so)
+==18377==    by 0x486135F: config_create (in /usr/lib/libcommons.so)
+==18377==    by 0x1095B7: iniciar_config (kernel.c:7)
+==18377==    by 0x109654: main (kernel.c:35)
+==18377== 
+==18377== 80 bytes in 1 blocks are indirectly lost in loss record 21 of 27
+==18377==    at 0x48321A6: calloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x486091E: dictionary_create (in /usr/lib/libcommons.so)
+==18377==    by 0x48612D1: config_create (in /usr/lib/libcommons.so)
+==18377==    by 0x1095B7: iniciar_config (kernel.c:7)
+==18377==    by 0x109654: main (kernel.c:35)
+==18377== 
+==18377== 88 bytes in 1 blocks are definitely lost in loss record 22 of 27
+==18377==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x1091C4: recibir_buffer (conexion.c:20)
+==18377==    by 0x10921B: recibir_paquete (conexion.c:32)
+==18377==    by 0x10973B: main (kernel.c:60)
+==18377== 
+==18377== 195 bytes in 13 blocks are indirectly lost in loss record 23 of 27
+==18377==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x48F58D5: strdup (strdup.c:42)
+==18377==    by 0x4860A33: dictionary_put (in /usr/lib/libcommons.so)
+==18377==    by 0x48611EE: add_cofiguration.2925 (in /usr/lib/libcommons.so)
+==18377==    by 0x485EC4C: string_iterate_lines (in /usr/lib/libcommons.so)
+==18377==    by 0x486135F: config_create (in /usr/lib/libcommons.so)
+==18377==    by 0x1095B7: iniciar_config (kernel.c:7)
+==18377==    by 0x109654: main (kernel.c:35)
+==18377== 
+==18377== 208 bytes in 13 blocks are indirectly lost in loss record 24 of 27
+==18377==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x4860F0A: dictionary_create_element (in /usr/lib/libcommons.so)
+==18377==    by 0x4860A45: dictionary_put (in /usr/lib/libcommons.so)
+==18377==    by 0x48611EE: add_cofiguration.2925 (in /usr/lib/libcommons.so)
+==18377==    by 0x485EC4C: string_iterate_lines (in /usr/lib/libcommons.so)
+==18377==    by 0x486135F: config_create (in /usr/lib/libcommons.so)
+==18377==    by 0x1095B7: iniciar_config (kernel.c:7)
+==18377==    by 0x109654: main (kernel.c:35)
+==18377== 
+==18377== 344 bytes in 1 blocks are still reachable in loss record 25 of 27
+==18377==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x48DD3EA: __fopen_internal (iofopen.c:65)
+==18377==    by 0x48DD4D1: fopen@@GLIBC_2.1 (iofopen.c:89)
+==18377==    by 0x485DEDA: txt_open_for_append (in /usr/lib/libcommons.so)
+==18377==    by 0x485DFE3: log_create (in /usr/lib/libcommons.so)
+==18377==    by 0x109642: main (kernel.c:26)
+==18377== 
+==18377== 367 (88 direct, 279 indirect) bytes in 1 blocks are definitely lost in loss record 26 of 27
+==18377==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x10986F: create_instructions_list_with_size (instructions_list.c:12)
+==18377==    by 0x109246: recibir_paquete (conexion.c:35)
+==18377==    by 0x10973B: main (kernel.c:60)
+==18377== 
+==18377== 652 (8 direct, 644 indirect) bytes in 1 blocks are definitely lost in loss record 27 of 27
+==18377==    at 0x483021B: malloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==18377==    by 0x48612AE: config_create (in /usr/lib/libcommons.so)
+==18377==    by 0x1095B7: iniciar_config (kernel.c:7)
+==18377==    by 0x109654: main (kernel.c:35)
+==18377== 
+==18377== LEAK SUMMARY:
+==18377==    definitely lost: 232 bytes in 6 blocks
+==18377==    indirectly lost: 931 bytes in 88 blocks
+==18377==      possibly lost: 0 bytes in 0 blocks
+==18377==    still reachable: 401 bytes in 7 blocks
+==18377==         suppressed: 0 bytes in 0 blocks
+==18377== 
+==18377== For counts of detected and suppressed errors, rerun with: -v
+==18377== ERROR SUMMARY: 251 errors from 15 contexts (suppressed: 0 from 0)

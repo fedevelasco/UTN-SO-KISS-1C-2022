@@ -23,15 +23,6 @@ char* recibir_buffer(int32_t* buffer_size, int32_t socket_cliente)
 	return buffer;
 }
 
-/*
-void recibir_mensaje(int32_t socket_cliente)
-{
-	int32_t size;
-	char* buffer = recibir_buffer(&size, socket_cliente);
-	log_info(logger, "Me llego el mensaje %s", buffer);
-	free(buffer);
-}
-*/
 
 t_instructions_list* recibir_paquete(int32_t socket_cliente, t_log* logger)
 {

@@ -9,8 +9,11 @@
 
 #include "conexion.h"
 #include "/home/utnso/tp-2022-1c-Grupo-TP-SO/static/include/libreriaConexiones.h"
+#include "planificacion.h"
 
 t_config* iniciar_config(void);
-void iterator(char* value);
+void terminar_config(t_config* config);
+
+
 
 #endif /* SERVER_H_ */

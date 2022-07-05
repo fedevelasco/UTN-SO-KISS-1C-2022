@@ -28,7 +28,6 @@ char* recibir_buffer(int32_t*, int32_t);
 
 int32_t iniciar_servidor(t_log*, const char*, char*, char*);
 t_instructions_list* recibir_paquete(int32_t, t_log*);
-void recibir_mensaje(int32_t);
 int32_t recibir_operacion(int32_t);
 
 #endif /* UTILS_H_ */
