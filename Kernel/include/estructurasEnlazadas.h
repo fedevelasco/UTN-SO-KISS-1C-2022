@@ -1,3 +1,6 @@
+#ifndef ESTRUCTURAS_H_
+#define ESTRUCTURAS_H_
+
 #include <commons/collections/list.h>
 #include <commons/collections/queue.h>
 #include "/home/utnso/tp-2022-1c-Grupo-TP-SO/static/include/tads/instruction.h"
@@ -28,6 +31,13 @@ void* remover_cola_new(unsigned long tid); // Elimina un elemento de la cola NEW
 
 // Funciones de lista READY
 
-void push_cola_ready(t_PCB* pcb);
+void push_lista_ready(t_PCB* pcb);
 
-int largo_cola_ready();
+int largo_lista_ready();
+
+// Funciones de cola EXIT
+
+void push_cola_exit(t_PCB* pcb);
+
+
+#endif /* ESTRUCTURAS_H_ */

@@ -1,5 +1,11 @@
 #include "../include/conexion.h"
 
+typedef struct {
+    t_log* log;
+    int fd;
+    char* server_name;
+} t_procesar_conexion_args;
+
 int32_t recibir_operacion(int32_t socket_cliente)
 {
 	int32_t cod_op;
@@ -37,4 +43,75 @@ t_instructions_list* recibir_paquete(int32_t socket_cliente, t_log* logger)
 	deserialize_instructions_list(instructions_list, buffer); //Deserializo el buffer y lo guardo en la lista de instrucciones
 
 	return instructions_list;
+}
+
+
+
+
+static void procesar_conexion(void* void_args) {
+    t_procesar_conexion_args* args = (t_procesar_conexion_args*) void_args;
+    t_log* logger = args->log;
+    int cliente_socket = args->fd;
+    char* server_name = args->server_name;
+    free(args);
+
+	t_instructions_list* instructions_list;
+
+	t_PCB* pcb = malloc(sizeof(t_PCB));
+
+
+    int32_t cod_op; // = recibir_operacion(cliente_fd); Recibo el op_code de consola
+    while (cliente_socket != -1) {
+
+        cod_op = recibir_operacion(cliente_socket); //Recibo el op_code de consola
+
+        switch (cod_op) {
+
+			case INSTRUCTIONS: //Ejecuto el caso donde op_code == INSTRUCTIONS
+
+				instructions_list = recibir_paquete(cliente_socket, logger); //Recibo paquete, lo deserializo y lo guardo en instruction_list
+				log_info(logger, "Me llegaron los siguientes valores:");
+				log_info(logger, "Process size: %d", instructions_list->process_size);
+				imprimir_lista_instrucciones(instructions_list, logger); //Imprimo la lista de instrucciones
+
+				planificadorLP_agregar_a_new(instructions_list, logger);
+
+				planificadorLP_agregar_a_ready(10, logger);
+
+				break;
+
+			case -1:
+
+				log_error(logger, "el cliente se desconecto. Terminando servidor"); //Codigo para finalizar conexion
+				return;
+
+			default:
+
+				log_warning(logger,"Operacion desconocida. No quieras meter la pata"); //Codigo para cualquier otro op_code no mencionado arriba
+				break;
+
+		}
+    }
+
+    log_warning(logger, "El cliente se desconecto de %s server", server_name);
+    return;
+}
+
+
+int server_escuchar(t_log* logger, char* server_name, int server_socket) {
+    
+	int32_t cliente_socket = esperar_cliente(logger, server_name, server_socket);
+	      //cliente_fd = esperar_cliente(logger, "Kernel", server_fd);
+    
+	if (cliente_socket != -1) {
+        pthread_t hilo;
+        t_procesar_conexion_args* args = malloc(sizeof(t_procesar_conexion_args));
+        args->log = logger;
+        args->fd = cliente_socket;
+        args->server_name = server_name;
+        pthread_create(&hilo, NULL, (void*) procesar_conexion, (void*) args);
+        pthread_detach(hilo);
+        return 1;
+    }
+    return 0;
 }

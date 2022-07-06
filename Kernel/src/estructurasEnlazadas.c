@@ -49,13 +49,18 @@ void* remover_cola_new(unsigned long tid){ // Elimina un elemento de la cola NEW
 
 // Funciones de lista READY
 
-void push_cola_ready(t_PCB* pcb){
+void push_lista_ready(t_PCB* pcb){
   list_add(LISTA_READY, pcb);
   //send_carpincho_ready(KERNEL_CFG->MEMORIA_FD, carpincho->id);
 }
 
-int largo_cola_ready() {
+int largo_lista_ready() {
   int ret = list_size(LISTA_READY);
   return ret;
 }
 
+// Funciones de cola EXIT
+
+void push_cola_exit(t_PCB* pcb){
+  queue_push(COLA_EXIT, pcb);
+}

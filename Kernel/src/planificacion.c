@@ -37,12 +37,19 @@ void planificadorLP_agregar_a_ready(int grado_multiprogramacion, t_log* logger){
         t_PCB* temp_pcb = malloc(sizeof(t_PCB));
         temp_pcb = pop_cola_new();
         log_info(logger, "Planificador Largo Plazo -> PID: %i", temp_pcb->PID);
-        push_cola_ready(temp_pcb);
-        int largo = largo_cola_ready();
-        log_info(logger, "Largo lista READY: %i", largo);
+        // Preguntar por valor de tabla de pagina a memoria
+        // Asignar tabla de pagina en PCB
+        push_lista_ready(temp_pcb);
         free(temp_pcb);
-
+        int largo = largo_lista_ready();
+        log_info(logger, "Largo lista READY: %i", largo);
     }
+}
+
+void planificadorLP_pasar_proceso_a_exit(t_PCB* pcb){
+
+    push_cola_exit(pcb);
+    // Dar aviso a memoria para librerar estructuras
 
 }
 
@@ -61,3 +68,9 @@ Al recibir el PCB del proceso en ejecución, se calcularán las estimaciones cor
 Cabe aclarar que en todos los casos el PCB será recibido a través de la conexión de dispatch, 
 quedando la conexión de interrupt dedicada solamente a enviar mensajes de interrupción.
 */
+
+
+
+
+void planificadorCP_enviar_a_dispatch(){
+}
