@@ -82,7 +82,7 @@ int32_t esperar_cliente(t_log* logger, const char* name, int32_t socket_servidor
 
 // -------------- Iniciar Cliente --------------
 
-int iniciar_cliente(char *ip, char* puerto, t_log* logger){
+int32_t iniciar_cliente(char *ip, char* puerto, t_log* logger){
 	struct addrinfo hints;
 	struct addrinfo *server_info;
 

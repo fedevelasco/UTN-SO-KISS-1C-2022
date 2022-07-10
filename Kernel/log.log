@@ -1064,3 +1064,468 @@ PC = 0
 [INFO] 22:41:43:402 Servidor/(24629:24691): Planificador Largo Plazo -> PID: 0
 [INFO] 22:41:43:404 Servidor/(24629:24691): Largo lista READY: 1
 [ERROR] 22:41:52:150 Servidor/(24629:24691): el cliente se desconecto. Terminando servidor
+[INFO] 22:48:17:187 Servidor/(25177:25177): Escuchando en 127.0.0.1:4444 (Kernel)
+
+[INFO] 22:48:17:204 Servidor/(25177:25177): Kernel   listo para recibir a consola
+[INFO] 22:48:43:380 Servidor/(25177:25177): Consola conectada (a Kernel)
+
+[INFO] 22:48:43:387 Servidor/(25177:25291): buffer_size:88
+
+[INFO] 22:48:43:391 Servidor/(25177:25291): Me llegaron los siguientes valores:
+[INFO] 22:48:43:391 Servidor/(25177:25291): Process size: 1001
+[INFO] 22:48:43:392 Servidor/(25177:25291): Instruction: NO_OP 
+[INFO] 22:48:43:392 Servidor/(25177:25291): Parameters: 5 
+[INFO] 22:48:43:392 Servidor/(25177:25291): Instruction: NO_OP 
+[INFO] 22:48:43:392 Servidor/(25177:25291): Parameters: 5 
+[INFO] 22:48:43:392 Servidor/(25177:25291): Instruction: WRITE 
+[INFO] 22:48:43:393 Servidor/(25177:25291): Parameters: 4 
+[INFO] 22:48:43:393 Servidor/(25177:25291): Parameters: 42 
+[INFO] 22:48:43:393 Servidor/(25177:25291): Instruction: COPY 
+[INFO] 22:48:43:393 Servidor/(25177:25291): Parameters: 0 
+[INFO] 22:48:43:393 Servidor/(25177:25291): Parameters: 4 
+[INFO] 22:48:43:393 Servidor/(25177:25291): Instruction: READ 
+[INFO] 22:48:43:393 Servidor/(25177:25291): Parameters: 0 
+[INFO] 22:48:43:393 Servidor/(25177:25291): Instruction: I/O 
+[INFO] 22:48:43:393 Servidor/(25177:25291): Parameters: 3000 
+[INFO] 22:48:43:393 Servidor/(25177:25291): Instruction: EXIT 
+[INFO] 22:48:43:393 Servidor/(25177:25291): Planificador Largo Plazo -> Creando estructura de PCB
+
+[INFO] 22:48:43:394 Servidor/(25177:25291): Print de PCB: 
+
+[INFO] 22:48:43:395 Servidor/(25177:25291): PID = 0
+[INFO] 22:48:43:395 Servidor/(25177:25291): Size = 1001
+[INFO] 22:48:43:396 Servidor/(25177:25291): Instruction List =
+[INFO] 22:48:43:396 Servidor/(25177:25291): Instruction: NO_OP 
+[INFO] 22:48:43:397 Servidor/(25177:25291): Parameters: 5 
+[INFO] 22:48:43:397 Servidor/(25177:25291): Instruction: NO_OP 
+[INFO] 22:48:43:398 Servidor/(25177:25291): Parameters: 5 
+[INFO] 22:48:43:398 Servidor/(25177:25291): Instruction: WRITE 
+[INFO] 22:48:43:399 Servidor/(25177:25291): Parameters: 4 
+[INFO] 22:48:43:399 Servidor/(25177:25291): Parameters: 42 
+[INFO] 22:48:43:399 Servidor/(25177:25291): Instruction: COPY 
+[INFO] 22:48:43:399 Servidor/(25177:25291): Parameters: 0 
+[INFO] 22:48:43:399 Servidor/(25177:25291): Parameters: 4 
+[INFO] 22:48:43:399 Servidor/(25177:25291): Instruction: READ 
+[INFO] 22:48:43:400 Servidor/(25177:25291): Parameters: 0 
+[INFO] 22:48:43:401 Servidor/(25177:25291): Instruction: I/O 
+[INFO] 22:48:43:401 Servidor/(25177:25291): Parameters: 3000 
+[INFO] 22:48:43:401 Servidor/(25177:25291): Instruction: EXIT 
+[INFO] 22:48:43:401 Servidor/(25177:25291): PC = 0
+
+[INFO] 22:48:43:401 Servidor/(25177:25291): Planificador Largo Plazo -> Asignando PCB a cola de estado NEW
+
+[INFO] 22:48:43:402 Servidor/(25177:25291): Planificador Largo Plazo -> Largo cola NEW = 1
+[INFO] 22:48:43:402 Servidor/(25177:25291): Planificador Largo Plazo -> Asignando PCB a lista READY
+[INFO] 22:48:43:403 Servidor/(25177:25291): Planificador Largo Plazo -> PID: 0
+[INFO] 22:48:43:403 Servidor/(25177:25291): Largo lista READY: 1
+[INFO] 22:49:12:764 Servidor/(25177:25177): Consola conectada (a Kernel)
+
+[INFO] 22:49:12:770 Servidor/(25177:25380): buffer_size:88
+
+[INFO] 22:49:12:772 Servidor/(25177:25380): Me llegaron los siguientes valores:
+[INFO] 22:49:12:772 Servidor/(25177:25380): Process size: 1001
+[INFO] 22:49:12:772 Servidor/(25177:25380): Instruction: NO_OP 
+[INFO] 22:49:12:772 Servidor/(25177:25380): Parameters: 5 
+[INFO] 22:49:12:772 Servidor/(25177:25380): Instruction: NO_OP 
+[INFO] 22:49:12:772 Servidor/(25177:25380): Parameters: 5 
+[INFO] 22:49:12:772 Servidor/(25177:25380): Instruction: WRITE 
+[INFO] 22:49:12:772 Servidor/(25177:25380): Parameters: 4 
+[INFO] 22:49:12:772 Servidor/(25177:25380): Parameters: 42 
+[INFO] 22:49:12:772 Servidor/(25177:25380): Instruction: COPY 
+[INFO] 22:49:12:772 Servidor/(25177:25380): Parameters: 0 
+[INFO] 22:49:12:772 Servidor/(25177:25380): Parameters: 4 
+[INFO] 22:49:12:772 Servidor/(25177:25380): Instruction: READ 
+[INFO] 22:49:12:772 Servidor/(25177:25380): Parameters: 0 
+[INFO] 22:49:12:772 Servidor/(25177:25380): Instruction: I/O 
+[INFO] 22:49:12:772 Servidor/(25177:25380): Parameters: 3000 
+[INFO] 22:49:12:772 Servidor/(25177:25380): Instruction: EXIT 
+[INFO] 22:49:12:773 Servidor/(25177:25380): Planificador Largo Plazo -> Creando estructura de PCB
+
+[INFO] 22:49:12:773 Servidor/(25177:25380): Print de PCB: 
+
+[INFO] 22:49:12:773 Servidor/(25177:25380): PID = 1
+[INFO] 22:49:12:773 Servidor/(25177:25380): Size = 1001
+[INFO] 22:49:12:773 Servidor/(25177:25380): Instruction List =
+[INFO] 22:49:12:773 Servidor/(25177:25380): Instruction: NO_OP 
+[INFO] 22:49:12:773 Servidor/(25177:25380): Parameters: 5 
+[INFO] 22:49:12:773 Servidor/(25177:25380): Instruction: NO_OP 
+[INFO] 22:49:12:773 Servidor/(25177:25380): Parameters: 5 
+[INFO] 22:49:12:773 Servidor/(25177:25380): Instruction: WRITE 
+[INFO] 22:49:12:773 Servidor/(25177:25380): Parameters: 4 
+[INFO] 22:49:12:773 Servidor/(25177:25380): Parameters: 42 
+[INFO] 22:49:12:773 Servidor/(25177:25380): Instruction: COPY 
+[INFO] 22:49:12:773 Servidor/(25177:25380): Parameters: 0 
+[INFO] 22:49:12:773 Servidor/(25177:25380): Parameters: 4 
+[INFO] 22:49:12:773 Servidor/(25177:25380): Instruction: READ 
+[INFO] 22:49:12:773 Servidor/(25177:25380): Parameters: 0 
+[INFO] 22:49:12:773 Servidor/(25177:25380): Instruction: I/O 
+[INFO] 22:49:12:773 Servidor/(25177:25380): Parameters: 3000 
+[INFO] 22:49:12:773 Servidor/(25177:25380): Instruction: EXIT 
+[INFO] 22:49:12:773 Servidor/(25177:25380): PC = 0
+
+[INFO] 22:49:12:773 Servidor/(25177:25380): Planificador Largo Plazo -> Asignando PCB a cola de estado NEW
+
+[INFO] 22:49:12:774 Servidor/(25177:25380): Planificador Largo Plazo -> Largo cola NEW = 1
+[INFO] 22:49:12:774 Servidor/(25177:25380): Planificador Largo Plazo -> Asignando PCB a lista READY
+[INFO] 22:49:12:774 Servidor/(25177:25380): Planificador Largo Plazo -> PID: 1
+[INFO] 22:49:12:774 Servidor/(25177:25380): Largo lista READY: 2
+[ERROR] 22:49:19:225 Servidor/(25177:25380): el cliente se desconecto. Terminando servidor
+[INFO] 22:49:34:807 Servidor/(25177:25177): Consola conectada (a Kernel)
+
+[INFO] 22:49:34:812 Servidor/(25177:25432): buffer_size:88
+
+[INFO] 22:49:34:813 Servidor/(25177:25432): Me llegaron los siguientes valores:
+[INFO] 22:49:34:814 Servidor/(25177:25432): Process size: 1001
+[INFO] 22:49:34:814 Servidor/(25177:25432): Instruction: NO_OP 
+[INFO] 22:49:34:814 Servidor/(25177:25432): Parameters: 5 
+[INFO] 22:49:34:814 Servidor/(25177:25432): Instruction: NO_OP 
+[INFO] 22:49:34:814 Servidor/(25177:25432): Parameters: 5 
+[INFO] 22:49:34:814 Servidor/(25177:25432): Instruction: WRITE 
+[INFO] 22:49:34:814 Servidor/(25177:25432): Parameters: 4 
+[INFO] 22:49:34:814 Servidor/(25177:25432): Parameters: 42 
+[INFO] 22:49:34:814 Servidor/(25177:25432): Instruction: COPY 
+[INFO] 22:49:34:814 Servidor/(25177:25432): Parameters: 0 
+[INFO] 22:49:34:814 Servidor/(25177:25432): Parameters: 4 
+[INFO] 22:49:34:814 Servidor/(25177:25432): Instruction: READ 
+[INFO] 22:49:34:814 Servidor/(25177:25432): Parameters: 0 
+[INFO] 22:49:34:814 Servidor/(25177:25432): Instruction: I/O 
+[INFO] 22:49:34:814 Servidor/(25177:25432): Parameters: 3000 
+[INFO] 22:49:34:814 Servidor/(25177:25432): Instruction: EXIT 
+[INFO] 22:49:34:814 Servidor/(25177:25432): Planificador Largo Plazo -> Creando estructura de PCB
+
+[INFO] 22:49:34:814 Servidor/(25177:25432): Print de PCB: 
+
+[INFO] 22:49:34:814 Servidor/(25177:25432): PID = 2
+[INFO] 22:49:34:814 Servidor/(25177:25432): Size = 1001
+[INFO] 22:49:34:814 Servidor/(25177:25432): Instruction List =
+[INFO] 22:49:34:815 Servidor/(25177:25432): Instruction: NO_OP 
+[INFO] 22:49:34:815 Servidor/(25177:25432): Parameters: 5 
+[INFO] 22:49:34:815 Servidor/(25177:25432): Instruction: NO_OP 
+[INFO] 22:49:34:815 Servidor/(25177:25432): Parameters: 5 
+[INFO] 22:49:34:815 Servidor/(25177:25432): Instruction: WRITE 
+[INFO] 22:49:34:815 Servidor/(25177:25432): Parameters: 4 
+[INFO] 22:49:34:815 Servidor/(25177:25432): Parameters: 42 
+[INFO] 22:49:34:815 Servidor/(25177:25432): Instruction: COPY 
+[INFO] 22:49:34:815 Servidor/(25177:25432): Parameters: 0 
+[INFO] 22:49:34:815 Servidor/(25177:25432): Parameters: 4 
+[INFO] 22:49:34:815 Servidor/(25177:25432): Instruction: READ 
+[INFO] 22:49:34:815 Servidor/(25177:25432): Parameters: 0 
+[INFO] 22:49:34:815 Servidor/(25177:25432): Instruction: I/O 
+[INFO] 22:49:34:815 Servidor/(25177:25432): Parameters: 3000 
+[INFO] 22:49:34:815 Servidor/(25177:25432): Instruction: EXIT 
+[INFO] 22:49:34:815 Servidor/(25177:25432): PC = 0
+
+[INFO] 22:49:34:815 Servidor/(25177:25432): Planificador Largo Plazo -> Asignando PCB a cola de estado NEW
+
+[INFO] 22:49:34:815 Servidor/(25177:25432): Planificador Largo Plazo -> Largo cola NEW = 1
+[INFO] 22:49:34:815 Servidor/(25177:25432): Planificador Largo Plazo -> Asignando PCB a lista READY
+[INFO] 22:49:34:815 Servidor/(25177:25432): Planificador Largo Plazo -> PID: 2
+[INFO] 22:49:34:815 Servidor/(25177:25432): Largo lista READY: 3
+[ERROR] 22:49:41:324 Servidor/(25177:25432): el cliente se desconecto. Terminando servidor
+[ERROR] 22:49:42:458 Servidor/(25177:25291): el cliente se desconecto. Terminando servidor
+[INFO] 18:50:58:640 Servidor/(26379:26379): Escuchando en 127.0.0.1:4444 (Kernel)
+
+[INFO] 18:50:58:656 Servidor/(26379:26379): Kernel   listo para recibir a clientes
+[INFO] 18:51:24:360 Servidor/(26379:26379): Consola conectada (a Kernel)
+
+[INFO] 18:51:24:368 Servidor/(26379:26441): buffer_size:88
+
+[INFO] 18:51:24:373 Servidor/(26379:26441): Me llegaron los siguientes valores:
+[INFO] 18:51:24:373 Servidor/(26379:26441): Process size: 1001
+[INFO] 18:51:24:373 Servidor/(26379:26441): Instruction: NO_OP 
+[INFO] 18:51:24:373 Servidor/(26379:26441): Parameters: 5 
+[INFO] 18:51:24:374 Servidor/(26379:26441): Instruction: NO_OP 
+[INFO] 18:51:24:374 Servidor/(26379:26441): Parameters: 5 
+[INFO] 18:51:24:374 Servidor/(26379:26441): Instruction: WRITE 
+[INFO] 18:51:24:374 Servidor/(26379:26441): Parameters: 4 
+[INFO] 18:51:24:375 Servidor/(26379:26441): Parameters: 42 
+[INFO] 18:51:24:375 Servidor/(26379:26441): Instruction: COPY 
+[INFO] 18:51:24:375 Servidor/(26379:26441): Parameters: 0 
+[INFO] 18:51:24:375 Servidor/(26379:26441): Parameters: 4 
+[INFO] 18:51:24:375 Servidor/(26379:26441): Instruction: READ 
+[INFO] 18:51:24:375 Servidor/(26379:26441): Parameters: 0 
+[INFO] 18:51:24:375 Servidor/(26379:26441): Instruction: I/O 
+[INFO] 18:51:24:375 Servidor/(26379:26441): Parameters: 3000 
+[INFO] 18:51:24:375 Servidor/(26379:26441): Instruction: EXIT 
+[INFO] 18:51:24:375 Servidor/(26379:26441): Planificador Largo Plazo -> Creando estructura de PCB
+
+[INFO] 18:51:24:376 Servidor/(26379:26441): Print de PCB: 
+
+[INFO] 18:51:24:376 Servidor/(26379:26441): PID = 0
+[INFO] 18:51:24:376 Servidor/(26379:26441): Size = 1001
+[INFO] 18:51:24:376 Servidor/(26379:26441): Instruction List =
+[INFO] 18:51:24:377 Servidor/(26379:26441): Instruction: NO_OP 
+[INFO] 18:51:24:377 Servidor/(26379:26441): Parameters: 5 
+[INFO] 18:51:24:377 Servidor/(26379:26441): Instruction: NO_OP 
+[INFO] 18:51:24:377 Servidor/(26379:26441): Parameters: 5 
+[INFO] 18:51:24:377 Servidor/(26379:26441): Instruction: WRITE 
+[INFO] 18:51:24:377 Servidor/(26379:26441): Parameters: 4 
+[INFO] 18:51:24:377 Servidor/(26379:26441): Parameters: 42 
+[INFO] 18:51:24:377 Servidor/(26379:26441): Instruction: COPY 
+[INFO] 18:51:24:377 Servidor/(26379:26441): Parameters: 0 
+[INFO] 18:51:24:377 Servidor/(26379:26441): Parameters: 4 
+[INFO] 18:51:24:377 Servidor/(26379:26441): Instruction: READ 
+[INFO] 18:51:24:377 Servidor/(26379:26441): Parameters: 0 
+[INFO] 18:51:24:377 Servidor/(26379:26441): Instruction: I/O 
+[INFO] 18:51:24:377 Servidor/(26379:26441): Parameters: 3000 
+[INFO] 18:51:24:377 Servidor/(26379:26441): Instruction: EXIT 
+[INFO] 18:51:24:377 Servidor/(26379:26441): PC = 0
+
+[INFO] 18:51:24:377 Servidor/(26379:26441): Planificador Largo Plazo -> Asignando PCB a cola de estado NEW
+
+[INFO] 18:51:24:378 Servidor/(26379:26441): Planificador Largo Plazo -> Largo cola NEW = 1
+[INFO] 18:51:24:378 Servidor/(26379:26441): Planificador Largo Plazo -> Asignando PCB a lista READY
+[INFO] 18:51:24:379 Servidor/(26379:26441): Planificador Largo Plazo -> PID: 0
+[INFO] 18:51:24:379 Servidor/(26379:26441): Largo lista READY: 1
+[INFO] 18:52:20:825 Servidor/(26379:26379): Consola conectada (a Kernel)
+
+[INFO] 18:52:20:832 Servidor/(26379:26490): buffer_size:88
+
+[INFO] 18:52:20:833 Servidor/(26379:26490): Me llegaron los siguientes valores:
+[INFO] 18:52:20:833 Servidor/(26379:26490): Process size: 1001
+[INFO] 18:52:20:833 Servidor/(26379:26490): Instruction: NO_OP 
+[INFO] 18:52:20:833 Servidor/(26379:26490): Parameters: 5 
+[INFO] 18:52:20:833 Servidor/(26379:26490): Instruction: NO_OP 
+[INFO] 18:52:20:833 Servidor/(26379:26490): Parameters: 5 
+[INFO] 18:52:20:833 Servidor/(26379:26490): Instruction: WRITE 
+[INFO] 18:52:20:833 Servidor/(26379:26490): Parameters: 4 
+[INFO] 18:52:20:833 Servidor/(26379:26490): Parameters: 42 
+[INFO] 18:52:20:833 Servidor/(26379:26490): Instruction: COPY 
+[INFO] 18:52:20:833 Servidor/(26379:26490): Parameters: 0 
+[INFO] 18:52:20:833 Servidor/(26379:26490): Parameters: 4 
+[INFO] 18:52:20:833 Servidor/(26379:26490): Instruction: READ 
+[INFO] 18:52:20:833 Servidor/(26379:26490): Parameters: 0 
+[INFO] 18:52:20:833 Servidor/(26379:26490): Instruction: I/O 
+[INFO] 18:52:20:834 Servidor/(26379:26490): Parameters: 3000 
+[INFO] 18:52:20:834 Servidor/(26379:26490): Instruction: EXIT 
+[INFO] 18:52:20:834 Servidor/(26379:26490): Planificador Largo Plazo -> Creando estructura de PCB
+
+[INFO] 18:52:20:834 Servidor/(26379:26490): Print de PCB: 
+
+[INFO] 18:52:20:834 Servidor/(26379:26490): PID = 1
+[INFO] 18:52:20:834 Servidor/(26379:26490): Size = 1001
+[INFO] 18:52:20:834 Servidor/(26379:26490): Instruction List =
+[INFO] 18:52:20:834 Servidor/(26379:26490): Instruction: NO_OP 
+[INFO] 18:52:20:834 Servidor/(26379:26490): Parameters: 5 
+[INFO] 18:52:20:834 Servidor/(26379:26490): Instruction: NO_OP 
+[INFO] 18:52:20:834 Servidor/(26379:26490): Parameters: 5 
+[INFO] 18:52:20:834 Servidor/(26379:26490): Instruction: WRITE 
+[INFO] 18:52:20:834 Servidor/(26379:26490): Parameters: 4 
+[INFO] 18:52:20:834 Servidor/(26379:26490): Parameters: 42 
+[INFO] 18:52:20:834 Servidor/(26379:26490): Instruction: COPY 
+[INFO] 18:52:20:834 Servidor/(26379:26490): Parameters: 0 
+[INFO] 18:52:20:834 Servidor/(26379:26490): Parameters: 4 
+[INFO] 18:52:20:834 Servidor/(26379:26490): Instruction: READ 
+[INFO] 18:52:20:834 Servidor/(26379:26490): Parameters: 0 
+[INFO] 18:52:20:834 Servidor/(26379:26490): Instruction: I/O 
+[INFO] 18:52:20:834 Servidor/(26379:26490): Parameters: 3000 
+[INFO] 18:52:20:834 Servidor/(26379:26490): Instruction: EXIT 
+[INFO] 18:52:20:834 Servidor/(26379:26490): PC = 0
+
+[INFO] 18:52:20:834 Servidor/(26379:26490): Planificador Largo Plazo -> Asignando PCB a cola de estado NEW
+
+[INFO] 18:52:20:835 Servidor/(26379:26490): Planificador Largo Plazo -> Largo cola NEW = 1
+[INFO] 18:52:20:835 Servidor/(26379:26490): Planificador Largo Plazo -> Asignando PCB a lista READY
+[INFO] 18:52:20:835 Servidor/(26379:26490): Planificador Largo Plazo -> PID: 1
+[INFO] 18:52:20:835 Servidor/(26379:26490): Largo lista READY: 2
+[INFO] 18:52:39:802 Servidor/(26379:26379): Consola conectada (a Kernel)
+
+[INFO] 18:52:39:807 Servidor/(26379:26641): buffer_size:88
+
+[INFO] 18:52:39:809 Servidor/(26379:26641): Me llegaron los siguientes valores:
+[INFO] 18:52:39:809 Servidor/(26379:26641): Process size: 1001
+[INFO] 18:52:39:809 Servidor/(26379:26641): Instruction: NO_OP 
+[INFO] 18:52:39:809 Servidor/(26379:26641): Parameters: 5 
+[INFO] 18:52:39:809 Servidor/(26379:26641): Instruction: NO_OP 
+[INFO] 18:52:39:809 Servidor/(26379:26641): Parameters: 5 
+[INFO] 18:52:39:809 Servidor/(26379:26641): Instruction: WRITE 
+[INFO] 18:52:39:809 Servidor/(26379:26641): Parameters: 4 
+[INFO] 18:52:39:809 Servidor/(26379:26641): Parameters: 42 
+[INFO] 18:52:39:809 Servidor/(26379:26641): Instruction: COPY 
+[INFO] 18:52:39:809 Servidor/(26379:26641): Parameters: 0 
+[INFO] 18:52:39:809 Servidor/(26379:26641): Parameters: 4 
+[INFO] 18:52:39:809 Servidor/(26379:26641): Instruction: READ 
+[INFO] 18:52:39:809 Servidor/(26379:26641): Parameters: 0 
+[INFO] 18:52:39:809 Servidor/(26379:26641): Instruction: I/O 
+[INFO] 18:52:39:809 Servidor/(26379:26641): Parameters: 3000 
+[INFO] 18:52:39:809 Servidor/(26379:26641): Instruction: EXIT 
+[INFO] 18:52:39:809 Servidor/(26379:26641): Planificador Largo Plazo -> Creando estructura de PCB
+
+[INFO] 18:52:39:809 Servidor/(26379:26641): Print de PCB: 
+
+[INFO] 18:52:39:810 Servidor/(26379:26641): PID = 2
+[INFO] 18:52:39:810 Servidor/(26379:26641): Size = 1001
+[INFO] 18:52:39:810 Servidor/(26379:26641): Instruction List =
+[INFO] 18:52:39:810 Servidor/(26379:26641): Instruction: NO_OP 
+[INFO] 18:52:39:810 Servidor/(26379:26641): Parameters: 5 
+[INFO] 18:52:39:810 Servidor/(26379:26641): Instruction: NO_OP 
+[INFO] 18:52:39:810 Servidor/(26379:26641): Parameters: 5 
+[INFO] 18:52:39:810 Servidor/(26379:26641): Instruction: WRITE 
+[INFO] 18:52:39:810 Servidor/(26379:26641): Parameters: 4 
+[INFO] 18:52:39:810 Servidor/(26379:26641): Parameters: 42 
+[INFO] 18:52:39:810 Servidor/(26379:26641): Instruction: COPY 
+[INFO] 18:52:39:810 Servidor/(26379:26641): Parameters: 0 
+[INFO] 18:52:39:810 Servidor/(26379:26641): Parameters: 4 
+[INFO] 18:52:39:810 Servidor/(26379:26641): Instruction: READ 
+[INFO] 18:52:39:810 Servidor/(26379:26641): Parameters: 0 
+[INFO] 18:52:39:810 Servidor/(26379:26641): Instruction: I/O 
+[INFO] 18:52:39:810 Servidor/(26379:26641): Parameters: 3000 
+[INFO] 18:52:39:810 Servidor/(26379:26641): Instruction: EXIT 
+[INFO] 18:52:39:810 Servidor/(26379:26641): PC = 0
+
+[INFO] 18:52:39:810 Servidor/(26379:26641): Planificador Largo Plazo -> Asignando PCB a cola de estado NEW
+
+[INFO] 18:52:39:810 Servidor/(26379:26641): Planificador Largo Plazo -> Largo cola NEW = 1
+[INFO] 18:52:39:811 Servidor/(26379:26641): Planificador Largo Plazo -> Asignando PCB a lista READY
+[INFO] 18:52:39:811 Servidor/(26379:26641): Planificador Largo Plazo -> PID: 2
+[INFO] 18:52:39:811 Servidor/(26379:26641): Largo lista READY: 3
+[ERROR] 18:52:48:957 Servidor/(26379:26641): el cliente se desconecto. Terminando conexion con el cliente
+[ERROR] 18:52:50:033 Servidor/(26379:26490): el cliente se desconecto. Terminando conexion con el cliente
+[ERROR] 18:52:50:680 Servidor/(26379:26441): el cliente se desconecto. Terminando conexion con el cliente
+[INFO] 18:52:57:254 Servidor/(26379:26379): Consola conectada (a Kernel)
+
+[INFO] 18:52:57:260 Servidor/(26379:26757): buffer_size:88
+
+[INFO] 18:52:57:261 Servidor/(26379:26757): Me llegaron los siguientes valores:
+[INFO] 18:52:57:261 Servidor/(26379:26757): Process size: 1001
+[INFO] 18:52:57:261 Servidor/(26379:26757): Instruction: NO_OP 
+[INFO] 18:52:57:261 Servidor/(26379:26757): Parameters: 5 
+[INFO] 18:52:57:261 Servidor/(26379:26757): Instruction: NO_OP 
+[INFO] 18:52:57:261 Servidor/(26379:26757): Parameters: 5 
+[INFO] 18:52:57:261 Servidor/(26379:26757): Instruction: WRITE 
+[INFO] 18:52:57:262 Servidor/(26379:26757): Parameters: 4 
+[INFO] 18:52:57:262 Servidor/(26379:26757): Parameters: 42 
+[INFO] 18:52:57:262 Servidor/(26379:26757): Instruction: COPY 
+[INFO] 18:52:57:262 Servidor/(26379:26757): Parameters: 0 
+[INFO] 18:52:57:262 Servidor/(26379:26757): Parameters: 4 
+[INFO] 18:52:57:262 Servidor/(26379:26757): Instruction: READ 
+[INFO] 18:52:57:262 Servidor/(26379:26757): Parameters: 0 
+[INFO] 18:52:57:262 Servidor/(26379:26757): Instruction: I/O 
+[INFO] 18:52:57:262 Servidor/(26379:26757): Parameters: 3000 
+[INFO] 18:52:57:262 Servidor/(26379:26757): Instruction: EXIT 
+[INFO] 18:52:57:262 Servidor/(26379:26757): Planificador Largo Plazo -> Creando estructura de PCB
+
+[INFO] 18:52:57:262 Servidor/(26379:26757): Print de PCB: 
+
+[INFO] 18:52:57:262 Servidor/(26379:26757): PID = 3
+[INFO] 18:52:57:262 Servidor/(26379:26757): Size = 1001
+[INFO] 18:52:57:262 Servidor/(26379:26757): Instruction List =
+[INFO] 18:52:57:262 Servidor/(26379:26757): Instruction: NO_OP 
+[INFO] 18:52:57:262 Servidor/(26379:26757): Parameters: 5 
+[INFO] 18:52:57:262 Servidor/(26379:26757): Instruction: NO_OP 
+[INFO] 18:52:57:262 Servidor/(26379:26757): Parameters: 5 
+[INFO] 18:52:57:262 Servidor/(26379:26757): Instruction: WRITE 
+[INFO] 18:52:57:262 Servidor/(26379:26757): Parameters: 4 
+[INFO] 18:52:57:262 Servidor/(26379:26757): Parameters: 42 
+[INFO] 18:52:57:262 Servidor/(26379:26757): Instruction: COPY 
+[INFO] 18:52:57:262 Servidor/(26379:26757): Parameters: 0 
+[INFO] 18:52:57:262 Servidor/(26379:26757): Parameters: 4 
+[INFO] 18:52:57:263 Servidor/(26379:26757): Instruction: READ 
+[INFO] 18:52:57:263 Servidor/(26379:26757): Parameters: 0 
+[INFO] 18:52:57:263 Servidor/(26379:26757): Instruction: I/O 
+[INFO] 18:52:57:263 Servidor/(26379:26757): Parameters: 3000 
+[INFO] 18:52:57:263 Servidor/(26379:26757): Instruction: EXIT 
+[INFO] 18:52:57:263 Servidor/(26379:26757): PC = 0
+
+[INFO] 18:52:57:263 Servidor/(26379:26757): Planificador Largo Plazo -> Asignando PCB a cola de estado NEW
+
+[INFO] 18:52:57:263 Servidor/(26379:26757): Planificador Largo Plazo -> Largo cola NEW = 1
+[INFO] 18:52:57:263 Servidor/(26379:26757): Planificador Largo Plazo -> Asignando PCB a lista READY
+[INFO] 18:52:57:263 Servidor/(26379:26757): Planificador Largo Plazo -> PID: 3
+[INFO] 18:52:57:263 Servidor/(26379:26757): Largo lista READY: 4
+[INFO] 20:58:01:305 Servidor/(27763:27763): Kernel - Iniciando conexiones
+[INFO] 20:58:01:325 Servidor/(27763:27763): Escuchando en 127.0.0.1:4444 (Kernel)
+
+[INFO] 20:58:01:326 Servidor/(27763:27763): Kernel - Listo para recibir a clientes
+[INFO] 20:58:01:327 Servidor/(27763:27763): No se pudo conectar al servidor
+[INFO] 20:58:43:903 Servidor/(28031:28031): Kernel - Iniciando conexiones
+[INFO] 20:58:43:923 Servidor/(28031:28031): Escuchando en 127.0.0.1:4444 (Kernel)
+
+[INFO] 20:58:43:924 Servidor/(28031:28031): Kernel - Listo para recibir a clientes
+[INFO] 20:58:43:925 Servidor/(28031:28031): No se pudo conectar al servidor
+[INFO] 14:36:58:241 Servidor/(30445:30445): Kernel - Iniciando conexiones
+[INFO] 14:36:58:257 Servidor/(30445:30445): Kernel - K
+[INFO] 14:36:58:261 Servidor/(30445:30445): Escuchando en 127.0.0.1:4444 (Kernel)
+
+[INFO] 14:36:58:262 Servidor/(30445:30445): Kernel - Listo para recibir a clientes
+[INFO] 14:36:58:263 Servidor/(30445:30445): No se pudo conectar al servidor
+[INFO] 14:38:19:510 Servidor/(30445:30445): Consola conectada (a Kernel)
+
+[INFO] 14:38:19:517 Servidor/(30445:30572): buffer_size:88
+
+[INFO] 14:38:19:521 Servidor/(30445:30572): Me llegaron los siguientes valores:
+[INFO] 14:38:19:521 Servidor/(30445:30572): Process size: 1001
+[INFO] 14:38:19:521 Servidor/(30445:30572): Planificador Largo Plazo -> Creando estructura de PCB
+
+[INFO] 14:38:19:522 Servidor/(30445:30572): Print de PCB: 
+
+[INFO] 14:38:19:522 Servidor/(30445:30572): PID = 0
+[INFO] 14:38:19:522 Servidor/(30445:30572): Size = 1001
+[INFO] 14:38:19:522 Servidor/(30445:30572): Instruction List =
+[INFO] 14:38:19:523 Servidor/(30445:30572): Instruction: NO_OP 
+[INFO] 14:38:19:523 Servidor/(30445:30572): Parameters: 5 
+[INFO] 14:38:19:523 Servidor/(30445:30572): Instruction: NO_OP 
+[INFO] 14:38:19:523 Servidor/(30445:30572): Parameters: 5 
+[INFO] 14:38:19:523 Servidor/(30445:30572): Instruction: WRITE 
+[INFO] 14:38:19:523 Servidor/(30445:30572): Parameters: 4 
+[INFO] 14:38:19:523 Servidor/(30445:30572): Parameters: 42 
+[INFO] 14:38:19:524 Servidor/(30445:30572): Instruction: COPY 
+[INFO] 14:38:19:524 Servidor/(30445:30572): Parameters: 0 
+[INFO] 14:38:19:524 Servidor/(30445:30572): Parameters: 4 
+[INFO] 14:38:19:524 Servidor/(30445:30572): Instruction: READ 
+[INFO] 14:38:19:524 Servidor/(30445:30572): Parameters: 0 
+[INFO] 14:38:19:524 Servidor/(30445:30572): Instruction: I/O 
+[INFO] 14:38:19:524 Servidor/(30445:30572): Parameters: 3000 
+[INFO] 14:38:19:524 Servidor/(30445:30572): Instruction: EXIT 
+[INFO] 14:38:19:524 Servidor/(30445:30572): PC = 0
+
+[INFO] 14:38:19:524 Servidor/(30445:30572): Planificador Largo Plazo -> Asignando PCB a cola de estado NEW
+
+[INFO] 14:38:19:525 Servidor/(30445:30572): Planificador Largo Plazo -> Largo cola NEW = 1
+[INFO] 14:38:19:525 Servidor/(30445:30572): Planificador Largo Plazo -> Asignando PCB a lista READY
+[INFO] 14:38:19:526 Servidor/(30445:30572): Planificador Largo Plazo -> PID: 0
+[INFO] 14:38:19:526 Servidor/(30445:30572): Largo lista READY: 1
+[ERROR] 14:38:43:018 Servidor/(30445:30572): El cliente se desconecto. Terminando conexion con el cliente.
+[INFO] 15:11:18:943 Servidor/(31186:31186): Kernel - Iniciando conexiones
+[INFO] 15:11:18:959 Servidor/(31186:31186): Kernel - K
+[INFO] 15:11:18:964 Servidor/(31186:31186): Escuchando en 127.0.0.1:4444 (Kernel)
+
+[INFO] 15:11:18:964 Servidor/(31186:31186): Kernel - Listo para recibir a clientes
+[INFO] 15:11:18:965 Servidor/(31186:31186): No se pudo conectar al servidor
+[INFO] 15:11:26:490 Servidor/(31186:31186): Consola conectada (a Kernel)
+
+[INFO] 15:11:26:498 Servidor/(31186:31287): buffer_size:88
+
+[INFO] 15:11:26:502 Servidor/(31186:31287): Me llegaron los siguientes valores:
+[INFO] 15:11:26:503 Servidor/(31186:31287): Process size: 1001
+[INFO] 15:11:26:503 Servidor/(31186:31287): Planificador Largo Plazo -> Creando estructura de PCB
+
+[INFO] 15:11:26:503 Servidor/(31186:31287): Print de PCB: 
+
+[INFO] 15:11:26:503 Servidor/(31186:31287): PID = 0
+[INFO] 15:11:26:503 Servidor/(31186:31287): Size = 1001
+[INFO] 15:11:26:504 Servidor/(31186:31287): Instruction List =
+[INFO] 15:11:26:504 Servidor/(31186:31287): Instruction: NO_OP 
+[INFO] 15:11:26:504 Servidor/(31186:31287): Parameters: 5 
+[INFO] 15:11:26:504 Servidor/(31186:31287): Instruction: NO_OP 
+[INFO] 15:11:26:504 Servidor/(31186:31287): Parameters: 5 
+[INFO] 15:11:26:504 Servidor/(31186:31287): Instruction: WRITE 
+[INFO] 15:11:26:505 Servidor/(31186:31287): Parameters: 4 
+[INFO] 15:11:26:505 Servidor/(31186:31287): Parameters: 42 
+[INFO] 15:11:26:505 Servidor/(31186:31287): Instruction: COPY 
+[INFO] 15:11:26:505 Servidor/(31186:31287): Parameters: 0 
+[INFO] 15:11:26:505 Servidor/(31186:31287): Parameters: 4 
+[INFO] 15:11:26:505 Servidor/(31186:31287): Instruction: READ 
+[INFO] 15:11:26:505 Servidor/(31186:31287): Parameters: 0 
+[INFO] 15:11:26:505 Servidor/(31186:31287): Instruction: I/O 
+[INFO] 15:11:26:505 Servidor/(31186:31287): Parameters: 3000 
+[INFO] 15:11:26:505 Servidor/(31186:31287): Instruction: EXIT 
+[INFO] 15:11:26:505 Servidor/(31186:31287): PC = 0
+
+[INFO] 15:11:26:505 Servidor/(31186:31287): Planificador Largo Plazo -> Asignando PCB a cola de estado NEW
+
+[INFO] 15:11:26:506 Servidor/(31186:31287): Planificador Largo Plazo -> Largo cola NEW = 1
+[INFO] 15:11:26:506 Servidor/(31186:31287): Planificador Largo Plazo -> Asignando PCB a lista READY
+[INFO] 15:11:26:507 Servidor/(31186:31287): Planificador Largo Plazo -> PID: 0
+[INFO] 15:11:26:507 Servidor/(31186:31287): Largo lista READY: 1
+[ERROR] 15:25:09:260 Servidor/(31186:31287): El cliente se desconecto. Terminando conexion con el cliente.

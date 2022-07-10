@@ -2943,3 +2943,786 @@
 [INFO] 22:41:43:294 Console/(24690:24690): Conexion a Kernel - Creando paquete de instrucciones
 [INFO] 22:41:43:295 Console/(24690:24690): Conexion a Kernel - Envio de paquete
 [INFO] 22:41:43:297 Console/(24690:24690): Conexion a Kernel - Consola esperando mensaje de finalizacion del Kernel
+[INFO] 22:48:43:337 Console/(25290:25290): Carga de archivo de configuracion - Inicio
+[INFO] 22:48:43:357 Console/(25290:25290): Carga de archivo de configuracion - load_configuration_file - Inicio
+[INFO] 22:48:43:364 Console/(25290:25290): Carga de archivo de configuracion - load_configuration_file - Config en ../console/console.config cargada ok
+[INFO] 22:48:43:365 Console/(25290:25290): El kernel configurado tiene ip: 127.0.0.1:4444
+[INFO] 22:48:43:365 Console/(25290:25290): Carga de archivo de configuracion - Fin
+[INFO] 22:48:43:365 Console/(25290:25290): Carga de archivo de pseudocodigo - Inicio
+[INFO] 22:48:43:366 Console/(25290:25290): Carga de archivo de configuracion - parse_pseudocode_file - Inicio
+[DEBUG] 22:48:43:370 Console/(25290:25290): Carga de archivo de configuracion - Instruction add: ID: NO_OP Parameter_1: 5 List_size: 1
+[DEBUG] 22:48:43:370 Console/(25290:25290): Instruccion que sale del parseo: NO_OP
+
+[DEBUG] 22:48:43:371 Console/(25290:25290): Instruccion agregada a la lista: NO_OP en i=0
+
+[DEBUG] 22:48:43:371 Console/(25290:25290): Carga de archivo de configuracion - Instruction add: ID: NO_OP Parameter_1: 5 List_size: 1
+[DEBUG] 22:48:43:371 Console/(25290:25290): Instruccion que sale del parseo: NO_OP
+
+[DEBUG] 22:48:43:372 Console/(25290:25290): Instruccion agregada a la lista: NO_OP en i=1
+
+[DEBUG] 22:48:43:372 Console/(25290:25290): Carga de archivo de configuracion - Instruction add: ID: WRITE Parameter_1: 4 Parameter_2: 42 List_size: 2
+[DEBUG] 22:48:43:372 Console/(25290:25290): Instruccion que sale del parseo: WRITE
+
+[DEBUG] 22:48:43:373 Console/(25290:25290): Instruccion agregada a la lista: WRITE en i=2
+
+[DEBUG] 22:48:43:373 Console/(25290:25290): Carga de archivo de configuracion - Instruction add: ID: COPY Parameter_1: 0 Parameter_2: 4 List_size: 2
+[DEBUG] 22:48:43:373 Console/(25290:25290): Instruccion que sale del parseo: COPY
+
+[DEBUG] 22:48:43:374 Console/(25290:25290): Instruccion agregada a la lista: COPY en i=3
+
+[DEBUG] 22:48:43:374 Console/(25290:25290): Carga de archivo de configuracion - Instruction add: ID: READ Parameter_1: 0 List_size: 1
+[DEBUG] 22:48:43:374 Console/(25290:25290): Instruccion que sale del parseo: READ
+
+[DEBUG] 22:48:43:374 Console/(25290:25290): Instruccion agregada a la lista: READ en i=4
+
+[DEBUG] 22:48:43:374 Console/(25290:25290): Carga de archivo de configuracion - Instruction add: ID: I/O Parameter_1: 3000 List_size: 1
+[DEBUG] 22:48:43:374 Console/(25290:25290): Instruccion que sale del parseo: I/O
+
+[DEBUG] 22:48:43:374 Console/(25290:25290): Instruccion agregada a la lista: I/O en i=5
+
+[DEBUG] 22:48:43:375 Console/(25290:25290): Carga de archivo de configuracion - Instruction add: ID: EXIT List_size: 0
+[DEBUG] 22:48:43:375 Console/(25290:25290): Instruccion que sale del parseo: EXIT
+
+[DEBUG] 22:48:43:375 Console/(25290:25290): Instruccion agregada a la lista: EXIT en i=6
+
+[DEBUG] 22:48:43:375 Console/(25290:25290): parse_pseudocode_file - Instruction NO_OP
+
+[DEBUG] 22:48:43:375 Console/(25290:25290): parse_pseudocode_file - Instruction NO_OP
+
+[DEBUG] 22:48:43:375 Console/(25290:25290): parse_pseudocode_file - Instruction WRITE
+
+[DEBUG] 22:48:43:375 Console/(25290:25290): parse_pseudocode_file - Instruction COPY
+
+[DEBUG] 22:48:43:375 Console/(25290:25290): parse_pseudocode_file - Instruction READ
+
+[DEBUG] 22:48:43:375 Console/(25290:25290): parse_pseudocode_file - Instruction I/O
+
+[DEBUG] 22:48:43:375 Console/(25290:25290): parse_pseudocode_file - Instruction EXIT
+
+[INFO] 22:48:43:375 Console/(25290:25290): Carga de archivo de configuracion - Cantidad de instrucciones leidas: 7
+[INFO] 22:48:43:375 Console/(25290:25290): Carga de archivo de configuracion - parse_pseudocode_file - Return
+[INFO] 22:48:43:376 Console/(25290:25290): Carga de archivo de pseudocodigo - Fin
+[INFO] 22:48:43:376 Console/(25290:25290): Carga de tamanio de proceso - Inicio
+[INFO] 22:48:43:376 Console/(25290:25290): Carga de tamanio de proceso - Tamanio de proceso leido: 1001
+[INFO] 22:48:43:376 Console/(25290:25290): Carga de tamanio de proceso - Fin
+[INFO] 22:48:43:376 Console/(25290:25290): Conexion a Kernel - Inicio
+[INFO] 22:48:43:376 Console/(25290:25290): Conexion a Kernel - Creando conexion a kernel
+[INFO] 22:48:43:380 Console/(25290:25290): Conexion a Kernel - Consola conectada en 127.0.0.1:4444 a Kernel
+
+[DEBUG] 22:48:43:380 Console/(25290:25290): Conexion a Kernel - create_connection - server_socket: 4
+[INFO] 22:48:43:380 Console/(25290:25290): Conexion a Kernel - Creando instrucction buffer
+[DEBUG] 22:48:43:381 Console/(25290:25290): create_instruction_buffer - Instruction NO_OP
+
+[DEBUG] 22:48:43:381 Console/(25290:25290): create_instruction_buffer - Instruction NO_OP
+
+[DEBUG] 22:48:43:381 Console/(25290:25290): create_instruction_buffer - Instruction WRITE
+
+[DEBUG] 22:48:43:381 Console/(25290:25290): create_instruction_buffer - Instruction COPY
+
+[DEBUG] 22:48:43:381 Console/(25290:25290): create_instruction_buffer - Instruction READ
+
+[DEBUG] 22:48:43:381 Console/(25290:25290): create_instruction_buffer - Instruction I/O
+
+[DEBUG] 22:48:43:381 Console/(25290:25290): create_instruction_buffer - Instruction EXIT
+
+[DEBUG] 22:48:43:383 Console/(25290:25290): create_instruction_buffer - size: 88
+
+[INFO] 22:48:43:384 Console/(25290:25290): Conexion a Kernel - Creando paquete de instrucciones
+[INFO] 22:48:43:384 Console/(25290:25290): Conexion a Kernel - Envio de paquete
+[INFO] 22:48:43:386 Console/(25290:25290): Conexion a Kernel - Consola esperando mensaje de finalizacion del Kernel
+[INFO] 22:49:12:722 Console/(25378:25378): Carga de archivo de configuracion - Inicio
+[INFO] 22:49:12:742 Console/(25378:25378): Carga de archivo de configuracion - load_configuration_file - Inicio
+[INFO] 22:49:12:749 Console/(25378:25378): Carga de archivo de configuracion - load_configuration_file - Config en ../console/console.config cargada ok
+[INFO] 22:49:12:750 Console/(25378:25378): El kernel configurado tiene ip: 127.0.0.1:4444
+[INFO] 22:49:12:750 Console/(25378:25378): Carga de archivo de configuracion - Fin
+[INFO] 22:49:12:750 Console/(25378:25378): Carga de archivo de pseudocodigo - Inicio
+[INFO] 22:49:12:751 Console/(25378:25378): Carga de archivo de configuracion - parse_pseudocode_file - Inicio
+[DEBUG] 22:49:12:755 Console/(25378:25378): Carga de archivo de configuracion - Instruction add: ID: NO_OP Parameter_1: 5 List_size: 1
+[DEBUG] 22:49:12:755 Console/(25378:25378): Instruccion que sale del parseo: NO_OP
+
+[DEBUG] 22:49:12:755 Console/(25378:25378): Instruccion agregada a la lista: NO_OP en i=0
+
+[DEBUG] 22:49:12:756 Console/(25378:25378): Carga de archivo de configuracion - Instruction add: ID: NO_OP Parameter_1: 5 List_size: 1
+[DEBUG] 22:49:12:756 Console/(25378:25378): Instruccion que sale del parseo: NO_OP
+
+[DEBUG] 22:49:12:756 Console/(25378:25378): Instruccion agregada a la lista: NO_OP en i=1
+
+[DEBUG] 22:49:12:757 Console/(25378:25378): Carga de archivo de configuracion - Instruction add: ID: WRITE Parameter_1: 4 Parameter_2: 42 List_size: 2
+[DEBUG] 22:49:12:757 Console/(25378:25378): Instruccion que sale del parseo: WRITE
+
+[DEBUG] 22:49:12:758 Console/(25378:25378): Instruccion agregada a la lista: WRITE en i=2
+
+[DEBUG] 22:49:12:758 Console/(25378:25378): Carga de archivo de configuracion - Instruction add: ID: COPY Parameter_1: 0 Parameter_2: 4 List_size: 2
+[DEBUG] 22:49:12:758 Console/(25378:25378): Instruccion que sale del parseo: COPY
+
+[DEBUG] 22:49:12:758 Console/(25378:25378): Instruccion agregada a la lista: COPY en i=3
+
+[DEBUG] 22:49:12:758 Console/(25378:25378): Carga de archivo de configuracion - Instruction add: ID: READ Parameter_1: 0 List_size: 1
+[DEBUG] 22:49:12:758 Console/(25378:25378): Instruccion que sale del parseo: READ
+
+[DEBUG] 22:49:12:758 Console/(25378:25378): Instruccion agregada a la lista: READ en i=4
+
+[DEBUG] 22:49:12:759 Console/(25378:25378): Carga de archivo de configuracion - Instruction add: ID: I/O Parameter_1: 3000 List_size: 1
+[DEBUG] 22:49:12:759 Console/(25378:25378): Instruccion que sale del parseo: I/O
+
+[DEBUG] 22:49:12:759 Console/(25378:25378): Instruccion agregada a la lista: I/O en i=5
+
+[DEBUG] 22:49:12:759 Console/(25378:25378): Carga de archivo de configuracion - Instruction add: ID: EXIT List_size: 0
+[DEBUG] 22:49:12:759 Console/(25378:25378): Instruccion que sale del parseo: EXIT
+
+[DEBUG] 22:49:12:759 Console/(25378:25378): Instruccion agregada a la lista: EXIT en i=6
+
+[DEBUG] 22:49:12:759 Console/(25378:25378): parse_pseudocode_file - Instruction NO_OP
+
+[DEBUG] 22:49:12:760 Console/(25378:25378): parse_pseudocode_file - Instruction NO_OP
+
+[DEBUG] 22:49:12:760 Console/(25378:25378): parse_pseudocode_file - Instruction WRITE
+
+[DEBUG] 22:49:12:760 Console/(25378:25378): parse_pseudocode_file - Instruction COPY
+
+[DEBUG] 22:49:12:760 Console/(25378:25378): parse_pseudocode_file - Instruction READ
+
+[DEBUG] 22:49:12:760 Console/(25378:25378): parse_pseudocode_file - Instruction I/O
+
+[DEBUG] 22:49:12:760 Console/(25378:25378): parse_pseudocode_file - Instruction EXIT
+
+[INFO] 22:49:12:760 Console/(25378:25378): Carga de archivo de configuracion - Cantidad de instrucciones leidas: 7
+[INFO] 22:49:12:760 Console/(25378:25378): Carga de archivo de configuracion - parse_pseudocode_file - Return
+[INFO] 22:49:12:760 Console/(25378:25378): Carga de archivo de pseudocodigo - Fin
+[INFO] 22:49:12:761 Console/(25378:25378): Carga de tamanio de proceso - Inicio
+[INFO] 22:49:12:761 Console/(25378:25378): Carga de tamanio de proceso - Tamanio de proceso leido: 1001
+[INFO] 22:49:12:761 Console/(25378:25378): Carga de tamanio de proceso - Fin
+[INFO] 22:49:12:761 Console/(25378:25378): Conexion a Kernel - Inicio
+[INFO] 22:49:12:761 Console/(25378:25378): Conexion a Kernel - Creando conexion a kernel
+[INFO] 22:49:12:764 Console/(25378:25378): Conexion a Kernel - Consola conectada en 127.0.0.1:4444 a Kernel
+
+[DEBUG] 22:49:12:765 Console/(25378:25378): Conexion a Kernel - create_connection - server_socket: 4
+[INFO] 22:49:12:765 Console/(25378:25378): Conexion a Kernel - Creando instrucction buffer
+[DEBUG] 22:49:12:765 Console/(25378:25378): create_instruction_buffer - Instruction NO_OP
+
+[DEBUG] 22:49:12:765 Console/(25378:25378): create_instruction_buffer - Instruction NO_OP
+
+[DEBUG] 22:49:12:765 Console/(25378:25378): create_instruction_buffer - Instruction WRITE
+
+[DEBUG] 22:49:12:765 Console/(25378:25378): create_instruction_buffer - Instruction COPY
+
+[DEBUG] 22:49:12:765 Console/(25378:25378): create_instruction_buffer - Instruction READ
+
+[DEBUG] 22:49:12:766 Console/(25378:25378): create_instruction_buffer - Instruction I/O
+
+[DEBUG] 22:49:12:766 Console/(25378:25378): create_instruction_buffer - Instruction EXIT
+
+[DEBUG] 22:49:12:768 Console/(25378:25378): create_instruction_buffer - size: 88
+
+[INFO] 22:49:12:768 Console/(25378:25378): Conexion a Kernel - Creando paquete de instrucciones
+[INFO] 22:49:12:769 Console/(25378:25378): Conexion a Kernel - Envio de paquete
+[INFO] 22:49:12:770 Console/(25378:25378): Conexion a Kernel - Consola esperando mensaje de finalizacion del Kernel
+[INFO] 22:49:34:765 Console/(25431:25431): Carga de archivo de configuracion - Inicio
+[INFO] 22:49:34:784 Console/(25431:25431): Carga de archivo de configuracion - load_configuration_file - Inicio
+[INFO] 22:49:34:791 Console/(25431:25431): Carga de archivo de configuracion - load_configuration_file - Config en ../console/console.config cargada ok
+[INFO] 22:49:34:792 Console/(25431:25431): El kernel configurado tiene ip: 127.0.0.1:4444
+[INFO] 22:49:34:792 Console/(25431:25431): Carga de archivo de configuracion - Fin
+[INFO] 22:49:34:792 Console/(25431:25431): Carga de archivo de pseudocodigo - Inicio
+[INFO] 22:49:34:793 Console/(25431:25431): Carga de archivo de configuracion - parse_pseudocode_file - Inicio
+[DEBUG] 22:49:34:797 Console/(25431:25431): Carga de archivo de configuracion - Instruction add: ID: NO_OP Parameter_1: 5 List_size: 1
+[DEBUG] 22:49:34:797 Console/(25431:25431): Instruccion que sale del parseo: NO_OP
+
+[DEBUG] 22:49:34:798 Console/(25431:25431): Instruccion agregada a la lista: NO_OP en i=0
+
+[DEBUG] 22:49:34:798 Console/(25431:25431): Carga de archivo de configuracion - Instruction add: ID: NO_OP Parameter_1: 5 List_size: 1
+[DEBUG] 22:49:34:798 Console/(25431:25431): Instruccion que sale del parseo: NO_OP
+
+[DEBUG] 22:49:34:799 Console/(25431:25431): Instruccion agregada a la lista: NO_OP en i=1
+
+[DEBUG] 22:49:34:799 Console/(25431:25431): Carga de archivo de configuracion - Instruction add: ID: WRITE Parameter_1: 4 Parameter_2: 42 List_size: 2
+[DEBUG] 22:49:34:799 Console/(25431:25431): Instruccion que sale del parseo: WRITE
+
+[DEBUG] 22:49:34:800 Console/(25431:25431): Instruccion agregada a la lista: WRITE en i=2
+
+[DEBUG] 22:49:34:800 Console/(25431:25431): Carga de archivo de configuracion - Instruction add: ID: COPY Parameter_1: 0 Parameter_2: 4 List_size: 2
+[DEBUG] 22:49:34:800 Console/(25431:25431): Instruccion que sale del parseo: COPY
+
+[DEBUG] 22:49:34:800 Console/(25431:25431): Instruccion agregada a la lista: COPY en i=3
+
+[DEBUG] 22:49:34:801 Console/(25431:25431): Carga de archivo de configuracion - Instruction add: ID: READ Parameter_1: 0 List_size: 1
+[DEBUG] 22:49:34:801 Console/(25431:25431): Instruccion que sale del parseo: READ
+
+[DEBUG] 22:49:34:801 Console/(25431:25431): Instruccion agregada a la lista: READ en i=4
+
+[DEBUG] 22:49:34:801 Console/(25431:25431): Carga de archivo de configuracion - Instruction add: ID: I/O Parameter_1: 3000 List_size: 1
+[DEBUG] 22:49:34:801 Console/(25431:25431): Instruccion que sale del parseo: I/O
+
+[DEBUG] 22:49:34:801 Console/(25431:25431): Instruccion agregada a la lista: I/O en i=5
+
+[DEBUG] 22:49:34:801 Console/(25431:25431): Carga de archivo de configuracion - Instruction add: ID: EXIT List_size: 0
+[DEBUG] 22:49:34:801 Console/(25431:25431): Instruccion que sale del parseo: EXIT
+
+[DEBUG] 22:49:34:802 Console/(25431:25431): Instruccion agregada a la lista: EXIT en i=6
+
+[DEBUG] 22:49:34:802 Console/(25431:25431): parse_pseudocode_file - Instruction NO_OP
+
+[DEBUG] 22:49:34:802 Console/(25431:25431): parse_pseudocode_file - Instruction NO_OP
+
+[DEBUG] 22:49:34:802 Console/(25431:25431): parse_pseudocode_file - Instruction WRITE
+
+[DEBUG] 22:49:34:802 Console/(25431:25431): parse_pseudocode_file - Instruction COPY
+
+[DEBUG] 22:49:34:802 Console/(25431:25431): parse_pseudocode_file - Instruction READ
+
+[DEBUG] 22:49:34:802 Console/(25431:25431): parse_pseudocode_file - Instruction I/O
+
+[DEBUG] 22:49:34:802 Console/(25431:25431): parse_pseudocode_file - Instruction EXIT
+
+[INFO] 22:49:34:802 Console/(25431:25431): Carga de archivo de configuracion - Cantidad de instrucciones leidas: 7
+[INFO] 22:49:34:802 Console/(25431:25431): Carga de archivo de configuracion - parse_pseudocode_file - Return
+[INFO] 22:49:34:803 Console/(25431:25431): Carga de archivo de pseudocodigo - Fin
+[INFO] 22:49:34:803 Console/(25431:25431): Carga de tamanio de proceso - Inicio
+[INFO] 22:49:34:803 Console/(25431:25431): Carga de tamanio de proceso - Tamanio de proceso leido: 1001
+[INFO] 22:49:34:803 Console/(25431:25431): Carga de tamanio de proceso - Fin
+[INFO] 22:49:34:803 Console/(25431:25431): Conexion a Kernel - Inicio
+[INFO] 22:49:34:803 Console/(25431:25431): Conexion a Kernel - Creando conexion a kernel
+[INFO] 22:49:34:807 Console/(25431:25431): Conexion a Kernel - Consola conectada en 127.0.0.1:4444 a Kernel
+
+[DEBUG] 22:49:34:807 Console/(25431:25431): Conexion a Kernel - create_connection - server_socket: 4
+[INFO] 22:49:34:807 Console/(25431:25431): Conexion a Kernel - Creando instrucction buffer
+[DEBUG] 22:49:34:807 Console/(25431:25431): create_instruction_buffer - Instruction NO_OP
+
+[DEBUG] 22:49:34:808 Console/(25431:25431): create_instruction_buffer - Instruction NO_OP
+
+[DEBUG] 22:49:34:808 Console/(25431:25431): create_instruction_buffer - Instruction WRITE
+
+[DEBUG] 22:49:34:808 Console/(25431:25431): create_instruction_buffer - Instruction COPY
+
+[DEBUG] 22:49:34:808 Console/(25431:25431): create_instruction_buffer - Instruction READ
+
+[DEBUG] 22:49:34:808 Console/(25431:25431): create_instruction_buffer - Instruction I/O
+
+[DEBUG] 22:49:34:808 Console/(25431:25431): create_instruction_buffer - Instruction EXIT
+
+[DEBUG] 22:49:34:810 Console/(25431:25431): create_instruction_buffer - size: 88
+
+[INFO] 22:49:34:810 Console/(25431:25431): Conexion a Kernel - Creando paquete de instrucciones
+[INFO] 22:49:34:811 Console/(25431:25431): Conexion a Kernel - Envio de paquete
+[INFO] 22:49:34:812 Console/(25431:25431): Conexion a Kernel - Consola esperando mensaje de finalizacion del Kernel
+[INFO] 18:51:24:313 Console/(26440:26440): Carga de archivo de configuracion - Inicio
+[INFO] 18:51:24:333 Console/(26440:26440): Carga de archivo de configuracion - load_configuration_file - Inicio
+[INFO] 18:51:24:340 Console/(26440:26440): Carga de archivo de configuracion - load_configuration_file - Config en ../console/console.config cargada ok
+[INFO] 18:51:24:341 Console/(26440:26440): El kernel configurado tiene ip: 127.0.0.1:4444
+[INFO] 18:51:24:341 Console/(26440:26440): Carga de archivo de configuracion - Fin
+[INFO] 18:51:24:341 Console/(26440:26440): Carga de archivo de pseudocodigo - Inicio
+[INFO] 18:51:24:342 Console/(26440:26440): Carga de archivo de configuracion - parse_pseudocode_file - Inicio
+[DEBUG] 18:51:24:347 Console/(26440:26440): Carga de archivo de configuracion - Instruction add: ID: NO_OP Parameter_1: 5 List_size: 1
+[DEBUG] 18:51:24:348 Console/(26440:26440): Instruccion que sale del parseo: NO_OP
+
+[DEBUG] 18:51:24:348 Console/(26440:26440): Instruccion agregada a la lista: NO_OP en i=0
+
+[DEBUG] 18:51:24:349 Console/(26440:26440): Carga de archivo de configuracion - Instruction add: ID: NO_OP Parameter_1: 5 List_size: 1
+[DEBUG] 18:51:24:349 Console/(26440:26440): Instruccion que sale del parseo: NO_OP
+
+[DEBUG] 18:51:24:349 Console/(26440:26440): Instruccion agregada a la lista: NO_OP en i=1
+
+[DEBUG] 18:51:24:350 Console/(26440:26440): Carga de archivo de configuracion - Instruction add: ID: WRITE Parameter_1: 4 Parameter_2: 42 List_size: 2
+[DEBUG] 18:51:24:350 Console/(26440:26440): Instruccion que sale del parseo: WRITE
+
+[DEBUG] 18:51:24:351 Console/(26440:26440): Instruccion agregada a la lista: WRITE en i=2
+
+[DEBUG] 18:51:24:351 Console/(26440:26440): Carga de archivo de configuracion - Instruction add: ID: COPY Parameter_1: 0 Parameter_2: 4 List_size: 2
+[DEBUG] 18:51:24:351 Console/(26440:26440): Instruccion que sale del parseo: COPY
+
+[DEBUG] 18:51:24:351 Console/(26440:26440): Instruccion agregada a la lista: COPY en i=3
+
+[DEBUG] 18:51:24:351 Console/(26440:26440): Carga de archivo de configuracion - Instruction add: ID: READ Parameter_1: 0 List_size: 1
+[DEBUG] 18:51:24:352 Console/(26440:26440): Instruccion que sale del parseo: READ
+
+[DEBUG] 18:51:24:352 Console/(26440:26440): Instruccion agregada a la lista: READ en i=4
+
+[DEBUG] 18:51:24:352 Console/(26440:26440): Carga de archivo de configuracion - Instruction add: ID: I/O Parameter_1: 3000 List_size: 1
+[DEBUG] 18:51:24:352 Console/(26440:26440): Instruccion que sale del parseo: I/O
+
+[DEBUG] 18:51:24:352 Console/(26440:26440): Instruccion agregada a la lista: I/O en i=5
+
+[DEBUG] 18:51:24:352 Console/(26440:26440): Carga de archivo de configuracion - Instruction add: ID: EXIT List_size: 0
+[DEBUG] 18:51:24:353 Console/(26440:26440): Instruccion que sale del parseo: EXIT
+
+[DEBUG] 18:51:24:353 Console/(26440:26440): Instruccion agregada a la lista: EXIT en i=6
+
+[DEBUG] 18:51:24:353 Console/(26440:26440): parse_pseudocode_file - Instruction NO_OP
+
+[DEBUG] 18:51:24:353 Console/(26440:26440): parse_pseudocode_file - Instruction NO_OP
+
+[DEBUG] 18:51:24:353 Console/(26440:26440): parse_pseudocode_file - Instruction WRITE
+
+[DEBUG] 18:51:24:353 Console/(26440:26440): parse_pseudocode_file - Instruction COPY
+
+[DEBUG] 18:51:24:353 Console/(26440:26440): parse_pseudocode_file - Instruction READ
+
+[DEBUG] 18:51:24:353 Console/(26440:26440): parse_pseudocode_file - Instruction I/O
+
+[DEBUG] 18:51:24:354 Console/(26440:26440): parse_pseudocode_file - Instruction EXIT
+
+[INFO] 18:51:24:354 Console/(26440:26440): Carga de archivo de configuracion - Cantidad de instrucciones leidas: 7
+[INFO] 18:51:24:354 Console/(26440:26440): Carga de archivo de configuracion - parse_pseudocode_file - Return
+[INFO] 18:51:24:354 Console/(26440:26440): Carga de archivo de pseudocodigo - Fin
+[INFO] 18:51:24:355 Console/(26440:26440): Carga de tamanio de proceso - Inicio
+[INFO] 18:51:24:355 Console/(26440:26440): Carga de tamanio de proceso - Tamanio de proceso leido: 1001
+[INFO] 18:51:24:355 Console/(26440:26440): Carga de tamanio de proceso - Fin
+[INFO] 18:51:24:355 Console/(26440:26440): Conexion a Kernel - Inicio
+[INFO] 18:51:24:355 Console/(26440:26440): Conexion a Kernel - Creando conexion a kernel
+[INFO] 18:51:24:359 Console/(26440:26440): Conexion a Kernel - Consola conectada en 127.0.0.1:4444 a Kernel
+
+[DEBUG] 18:51:24:360 Console/(26440:26440): Conexion a Kernel - create_connection - server_socket: 4
+[INFO] 18:51:24:360 Console/(26440:26440): Conexion a Kernel - Creando instrucction buffer
+[DEBUG] 18:51:24:360 Console/(26440:26440): create_instruction_buffer - Instruction NO_OP
+
+[DEBUG] 18:51:24:360 Console/(26440:26440): create_instruction_buffer - Instruction NO_OP
+
+[DEBUG] 18:51:24:360 Console/(26440:26440): create_instruction_buffer - Instruction WRITE
+
+[DEBUG] 18:51:24:360 Console/(26440:26440): create_instruction_buffer - Instruction COPY
+
+[DEBUG] 18:51:24:360 Console/(26440:26440): create_instruction_buffer - Instruction READ
+
+[DEBUG] 18:51:24:361 Console/(26440:26440): create_instruction_buffer - Instruction I/O
+
+[DEBUG] 18:51:24:361 Console/(26440:26440): create_instruction_buffer - Instruction EXIT
+
+[DEBUG] 18:51:24:363 Console/(26440:26440): create_instruction_buffer - size: 88
+
+[INFO] 18:51:24:363 Console/(26440:26440): Conexion a Kernel - Creando paquete de instrucciones
+[INFO] 18:51:24:364 Console/(26440:26440): Conexion a Kernel - Envio de paquete
+[INFO] 18:51:24:365 Console/(26440:26440): Conexion a Kernel - Consola esperando mensaje de finalizacion del Kernel
+[INFO] 18:52:20:782 Console/(26489:26489): Carga de archivo de configuracion - Inicio
+[INFO] 18:52:20:803 Console/(26489:26489): Carga de archivo de configuracion - load_configuration_file - Inicio
+[INFO] 18:52:20:810 Console/(26489:26489): Carga de archivo de configuracion - load_configuration_file - Config en ../console/console.config cargada ok
+[INFO] 18:52:20:810 Console/(26489:26489): El kernel configurado tiene ip: 127.0.0.1:4444
+[INFO] 18:52:20:811 Console/(26489:26489): Carga de archivo de configuracion - Fin
+[INFO] 18:52:20:811 Console/(26489:26489): Carga de archivo de pseudocodigo - Inicio
+[INFO] 18:52:20:811 Console/(26489:26489): Carga de archivo de configuracion - parse_pseudocode_file - Inicio
+[DEBUG] 18:52:20:816 Console/(26489:26489): Carga de archivo de configuracion - Instruction add: ID: NO_OP Parameter_1: 5 List_size: 1
+[DEBUG] 18:52:20:816 Console/(26489:26489): Instruccion que sale del parseo: NO_OP
+
+[DEBUG] 18:52:20:816 Console/(26489:26489): Instruccion agregada a la lista: NO_OP en i=0
+
+[DEBUG] 18:52:20:817 Console/(26489:26489): Carga de archivo de configuracion - Instruction add: ID: NO_OP Parameter_1: 5 List_size: 1
+[DEBUG] 18:52:20:817 Console/(26489:26489): Instruccion que sale del parseo: NO_OP
+
+[DEBUG] 18:52:20:817 Console/(26489:26489): Instruccion agregada a la lista: NO_OP en i=1
+
+[DEBUG] 18:52:20:818 Console/(26489:26489): Carga de archivo de configuracion - Instruction add: ID: WRITE Parameter_1: 4 Parameter_2: 42 List_size: 2
+[DEBUG] 18:52:20:818 Console/(26489:26489): Instruccion que sale del parseo: WRITE
+
+[DEBUG] 18:52:20:819 Console/(26489:26489): Instruccion agregada a la lista: WRITE en i=2
+
+[DEBUG] 18:52:20:819 Console/(26489:26489): Carga de archivo de configuracion - Instruction add: ID: COPY Parameter_1: 0 Parameter_2: 4 List_size: 2
+[DEBUG] 18:52:20:819 Console/(26489:26489): Instruccion que sale del parseo: COPY
+
+[DEBUG] 18:52:20:819 Console/(26489:26489): Instruccion agregada a la lista: COPY en i=3
+
+[DEBUG] 18:52:20:819 Console/(26489:26489): Carga de archivo de configuracion - Instruction add: ID: READ Parameter_1: 0 List_size: 1
+[DEBUG] 18:52:20:819 Console/(26489:26489): Instruccion que sale del parseo: READ
+
+[DEBUG] 18:52:20:819 Console/(26489:26489): Instruccion agregada a la lista: READ en i=4
+
+[DEBUG] 18:52:20:819 Console/(26489:26489): Carga de archivo de configuracion - Instruction add: ID: I/O Parameter_1: 3000 List_size: 1
+[DEBUG] 18:52:20:820 Console/(26489:26489): Instruccion que sale del parseo: I/O
+
+[DEBUG] 18:52:20:820 Console/(26489:26489): Instruccion agregada a la lista: I/O en i=5
+
+[DEBUG] 18:52:20:820 Console/(26489:26489): Carga de archivo de configuracion - Instruction add: ID: EXIT List_size: 0
+[DEBUG] 18:52:20:820 Console/(26489:26489): Instruccion que sale del parseo: EXIT
+
+[DEBUG] 18:52:20:820 Console/(26489:26489): Instruccion agregada a la lista: EXIT en i=6
+
+[DEBUG] 18:52:20:820 Console/(26489:26489): parse_pseudocode_file - Instruction NO_OP
+
+[DEBUG] 18:52:20:820 Console/(26489:26489): parse_pseudocode_file - Instruction NO_OP
+
+[DEBUG] 18:52:20:820 Console/(26489:26489): parse_pseudocode_file - Instruction WRITE
+
+[DEBUG] 18:52:20:820 Console/(26489:26489): parse_pseudocode_file - Instruction COPY
+
+[DEBUG] 18:52:20:820 Console/(26489:26489): parse_pseudocode_file - Instruction READ
+
+[DEBUG] 18:52:20:821 Console/(26489:26489): parse_pseudocode_file - Instruction I/O
+
+[DEBUG] 18:52:20:821 Console/(26489:26489): parse_pseudocode_file - Instruction EXIT
+
+[INFO] 18:52:20:821 Console/(26489:26489): Carga de archivo de configuracion - Cantidad de instrucciones leidas: 7
+[INFO] 18:52:20:821 Console/(26489:26489): Carga de archivo de configuracion - parse_pseudocode_file - Return
+[INFO] 18:52:20:821 Console/(26489:26489): Carga de archivo de pseudocodigo - Fin
+[INFO] 18:52:20:821 Console/(26489:26489): Carga de tamanio de proceso - Inicio
+[INFO] 18:52:20:822 Console/(26489:26489): Carga de tamanio de proceso - Tamanio de proceso leido: 1001
+[INFO] 18:52:20:822 Console/(26489:26489): Carga de tamanio de proceso - Fin
+[INFO] 18:52:20:822 Console/(26489:26489): Conexion a Kernel - Inicio
+[INFO] 18:52:20:822 Console/(26489:26489): Conexion a Kernel - Creando conexion a kernel
+[INFO] 18:52:20:826 Console/(26489:26489): Conexion a Kernel - Consola conectada en 127.0.0.1:4444 a Kernel
+
+[DEBUG] 18:52:20:826 Console/(26489:26489): Conexion a Kernel - create_connection - server_socket: 4
+[INFO] 18:52:20:826 Console/(26489:26489): Conexion a Kernel - Creando instrucction buffer
+[DEBUG] 18:52:20:826 Console/(26489:26489): create_instruction_buffer - Instruction NO_OP
+
+[DEBUG] 18:52:20:827 Console/(26489:26489): create_instruction_buffer - Instruction NO_OP
+
+[DEBUG] 18:52:20:827 Console/(26489:26489): create_instruction_buffer - Instruction WRITE
+
+[DEBUG] 18:52:20:827 Console/(26489:26489): create_instruction_buffer - Instruction COPY
+
+[DEBUG] 18:52:20:827 Console/(26489:26489): create_instruction_buffer - Instruction READ
+
+[DEBUG] 18:52:20:827 Console/(26489:26489): create_instruction_buffer - Instruction I/O
+
+[DEBUG] 18:52:20:827 Console/(26489:26489): create_instruction_buffer - Instruction EXIT
+
+[DEBUG] 18:52:20:829 Console/(26489:26489): create_instruction_buffer - size: 88
+
+[INFO] 18:52:20:829 Console/(26489:26489): Conexion a Kernel - Creando paquete de instrucciones
+[INFO] 18:52:20:830 Console/(26489:26489): Conexion a Kernel - Envio de paquete
+[INFO] 18:52:20:832 Console/(26489:26489): Conexion a Kernel - Consola esperando mensaje de finalizacion del Kernel
+[INFO] 18:52:39:759 Console/(26640:26640): Carga de archivo de configuracion - Inicio
+[INFO] 18:52:39:780 Console/(26640:26640): Carga de archivo de configuracion - load_configuration_file - Inicio
+[INFO] 18:52:39:787 Console/(26640:26640): Carga de archivo de configuracion - load_configuration_file - Config en ../console/console.config cargada ok
+[INFO] 18:52:39:787 Console/(26640:26640): El kernel configurado tiene ip: 127.0.0.1:4444
+[INFO] 18:52:39:788 Console/(26640:26640): Carga de archivo de configuracion - Fin
+[INFO] 18:52:39:788 Console/(26640:26640): Carga de archivo de pseudocodigo - Inicio
+[INFO] 18:52:39:788 Console/(26640:26640): Carga de archivo de configuracion - parse_pseudocode_file - Inicio
+[DEBUG] 18:52:39:792 Console/(26640:26640): Carga de archivo de configuracion - Instruction add: ID: NO_OP Parameter_1: 5 List_size: 1
+[DEBUG] 18:52:39:793 Console/(26640:26640): Instruccion que sale del parseo: NO_OP
+
+[DEBUG] 18:52:39:793 Console/(26640:26640): Instruccion agregada a la lista: NO_OP en i=0
+
+[DEBUG] 18:52:39:793 Console/(26640:26640): Carga de archivo de configuracion - Instruction add: ID: NO_OP Parameter_1: 5 List_size: 1
+[DEBUG] 18:52:39:793 Console/(26640:26640): Instruccion que sale del parseo: NO_OP
+
+[DEBUG] 18:52:39:794 Console/(26640:26640): Instruccion agregada a la lista: NO_OP en i=1
+
+[DEBUG] 18:52:39:794 Console/(26640:26640): Carga de archivo de configuracion - Instruction add: ID: WRITE Parameter_1: 4 Parameter_2: 42 List_size: 2
+[DEBUG] 18:52:39:795 Console/(26640:26640): Instruccion que sale del parseo: WRITE
+
+[DEBUG] 18:52:39:795 Console/(26640:26640): Instruccion agregada a la lista: WRITE en i=2
+
+[DEBUG] 18:52:39:795 Console/(26640:26640): Carga de archivo de configuracion - Instruction add: ID: COPY Parameter_1: 0 Parameter_2: 4 List_size: 2
+[DEBUG] 18:52:39:795 Console/(26640:26640): Instruccion que sale del parseo: COPY
+
+[DEBUG] 18:52:39:796 Console/(26640:26640): Instruccion agregada a la lista: COPY en i=3
+
+[DEBUG] 18:52:39:796 Console/(26640:26640): Carga de archivo de configuracion - Instruction add: ID: READ Parameter_1: 0 List_size: 1
+[DEBUG] 18:52:39:796 Console/(26640:26640): Instruccion que sale del parseo: READ
+
+[DEBUG] 18:52:39:796 Console/(26640:26640): Instruccion agregada a la lista: READ en i=4
+
+[DEBUG] 18:52:39:796 Console/(26640:26640): Carga de archivo de configuracion - Instruction add: ID: I/O Parameter_1: 3000 List_size: 1
+[DEBUG] 18:52:39:796 Console/(26640:26640): Instruccion que sale del parseo: I/O
+
+[DEBUG] 18:52:39:796 Console/(26640:26640): Instruccion agregada a la lista: I/O en i=5
+
+[DEBUG] 18:52:39:797 Console/(26640:26640): Carga de archivo de configuracion - Instruction add: ID: EXIT List_size: 0
+[DEBUG] 18:52:39:797 Console/(26640:26640): Instruccion que sale del parseo: EXIT
+
+[DEBUG] 18:52:39:797 Console/(26640:26640): Instruccion agregada a la lista: EXIT en i=6
+
+[DEBUG] 18:52:39:797 Console/(26640:26640): parse_pseudocode_file - Instruction NO_OP
+
+[DEBUG] 18:52:39:797 Console/(26640:26640): parse_pseudocode_file - Instruction NO_OP
+
+[DEBUG] 18:52:39:797 Console/(26640:26640): parse_pseudocode_file - Instruction WRITE
+
+[DEBUG] 18:52:39:797 Console/(26640:26640): parse_pseudocode_file - Instruction COPY
+
+[DEBUG] 18:52:39:797 Console/(26640:26640): parse_pseudocode_file - Instruction READ
+
+[DEBUG] 18:52:39:797 Console/(26640:26640): parse_pseudocode_file - Instruction I/O
+
+[DEBUG] 18:52:39:797 Console/(26640:26640): parse_pseudocode_file - Instruction EXIT
+
+[INFO] 18:52:39:798 Console/(26640:26640): Carga de archivo de configuracion - Cantidad de instrucciones leidas: 7
+[INFO] 18:52:39:798 Console/(26640:26640): Carga de archivo de configuracion - parse_pseudocode_file - Return
+[INFO] 18:52:39:798 Console/(26640:26640): Carga de archivo de pseudocodigo - Fin
+[INFO] 18:52:39:798 Console/(26640:26640): Carga de tamanio de proceso - Inicio
+[INFO] 18:52:39:798 Console/(26640:26640): Carga de tamanio de proceso - Tamanio de proceso leido: 1001
+[INFO] 18:52:39:799 Console/(26640:26640): Carga de tamanio de proceso - Fin
+[INFO] 18:52:39:799 Console/(26640:26640): Conexion a Kernel - Inicio
+[INFO] 18:52:39:799 Console/(26640:26640): Conexion a Kernel - Creando conexion a kernel
+[INFO] 18:52:39:802 Console/(26640:26640): Conexion a Kernel - Consola conectada en 127.0.0.1:4444 a Kernel
+
+[DEBUG] 18:52:39:803 Console/(26640:26640): Conexion a Kernel - create_connection - server_socket: 4
+[INFO] 18:52:39:803 Console/(26640:26640): Conexion a Kernel - Creando instrucction buffer
+[DEBUG] 18:52:39:803 Console/(26640:26640): create_instruction_buffer - Instruction NO_OP
+
+[DEBUG] 18:52:39:803 Console/(26640:26640): create_instruction_buffer - Instruction NO_OP
+
+[DEBUG] 18:52:39:803 Console/(26640:26640): create_instruction_buffer - Instruction WRITE
+
+[DEBUG] 18:52:39:803 Console/(26640:26640): create_instruction_buffer - Instruction COPY
+
+[DEBUG] 18:52:39:803 Console/(26640:26640): create_instruction_buffer - Instruction READ
+
+[DEBUG] 18:52:39:803 Console/(26640:26640): create_instruction_buffer - Instruction I/O
+
+[DEBUG] 18:52:39:803 Console/(26640:26640): create_instruction_buffer - Instruction EXIT
+
+[DEBUG] 18:52:39:805 Console/(26640:26640): create_instruction_buffer - size: 88
+
+[INFO] 18:52:39:806 Console/(26640:26640): Conexion a Kernel - Creando paquete de instrucciones
+[INFO] 18:52:39:806 Console/(26640:26640): Conexion a Kernel - Envio de paquete
+[INFO] 18:52:39:808 Console/(26640:26640): Conexion a Kernel - Consola esperando mensaje de finalizacion del Kernel
+[INFO] 18:52:57:212 Console/(26756:26756): Carga de archivo de configuracion - Inicio
+[INFO] 18:52:57:232 Console/(26756:26756): Carga de archivo de configuracion - load_configuration_file - Inicio
+[INFO] 18:52:57:239 Console/(26756:26756): Carga de archivo de configuracion - load_configuration_file - Config en ../console/console.config cargada ok
+[INFO] 18:52:57:240 Console/(26756:26756): El kernel configurado tiene ip: 127.0.0.1:4444
+[INFO] 18:52:57:240 Console/(26756:26756): Carga de archivo de configuracion - Fin
+[INFO] 18:52:57:240 Console/(26756:26756): Carga de archivo de pseudocodigo - Inicio
+[INFO] 18:52:57:240 Console/(26756:26756): Carga de archivo de configuracion - parse_pseudocode_file - Inicio
+[DEBUG] 18:52:57:245 Console/(26756:26756): Carga de archivo de configuracion - Instruction add: ID: NO_OP Parameter_1: 5 List_size: 1
+[DEBUG] 18:52:57:245 Console/(26756:26756): Instruccion que sale del parseo: NO_OP
+
+[DEBUG] 18:52:57:245 Console/(26756:26756): Instruccion agregada a la lista: NO_OP en i=0
+
+[DEBUG] 18:52:57:246 Console/(26756:26756): Carga de archivo de configuracion - Instruction add: ID: NO_OP Parameter_1: 5 List_size: 1
+[DEBUG] 18:52:57:246 Console/(26756:26756): Instruccion que sale del parseo: NO_OP
+
+[DEBUG] 18:52:57:246 Console/(26756:26756): Instruccion agregada a la lista: NO_OP en i=1
+
+[DEBUG] 18:52:57:247 Console/(26756:26756): Carga de archivo de configuracion - Instruction add: ID: WRITE Parameter_1: 4 Parameter_2: 42 List_size: 2
+[DEBUG] 18:52:57:247 Console/(26756:26756): Instruccion que sale del parseo: WRITE
+
+[DEBUG] 18:52:57:248 Console/(26756:26756): Instruccion agregada a la lista: WRITE en i=2
+
+[DEBUG] 18:52:57:248 Console/(26756:26756): Carga de archivo de configuracion - Instruction add: ID: COPY Parameter_1: 0 Parameter_2: 4 List_size: 2
+[DEBUG] 18:52:57:248 Console/(26756:26756): Instruccion que sale del parseo: COPY
+
+[DEBUG] 18:52:57:248 Console/(26756:26756): Instruccion agregada a la lista: COPY en i=3
+
+[DEBUG] 18:52:57:248 Console/(26756:26756): Carga de archivo de configuracion - Instruction add: ID: READ Parameter_1: 0 List_size: 1
+[DEBUG] 18:52:57:248 Console/(26756:26756): Instruccion que sale del parseo: READ
+
+[DEBUG] 18:52:57:248 Console/(26756:26756): Instruccion agregada a la lista: READ en i=4
+
+[DEBUG] 18:52:57:248 Console/(26756:26756): Carga de archivo de configuracion - Instruction add: ID: I/O Parameter_1: 3000 List_size: 1
+[DEBUG] 18:52:57:249 Console/(26756:26756): Instruccion que sale del parseo: I/O
+
+[DEBUG] 18:52:57:249 Console/(26756:26756): Instruccion agregada a la lista: I/O en i=5
+
+[DEBUG] 18:52:57:249 Console/(26756:26756): Carga de archivo de configuracion - Instruction add: ID: EXIT List_size: 0
+[DEBUG] 18:52:57:249 Console/(26756:26756): Instruccion que sale del parseo: EXIT
+
+[DEBUG] 18:52:57:249 Console/(26756:26756): Instruccion agregada a la lista: EXIT en i=6
+
+[DEBUG] 18:52:57:249 Console/(26756:26756): parse_pseudocode_file - Instruction NO_OP
+
+[DEBUG] 18:52:57:249 Console/(26756:26756): parse_pseudocode_file - Instruction NO_OP
+
+[DEBUG] 18:52:57:249 Console/(26756:26756): parse_pseudocode_file - Instruction WRITE
+
+[DEBUG] 18:52:57:249 Console/(26756:26756): parse_pseudocode_file - Instruction COPY
+
+[DEBUG] 18:52:57:250 Console/(26756:26756): parse_pseudocode_file - Instruction READ
+
+[DEBUG] 18:52:57:250 Console/(26756:26756): parse_pseudocode_file - Instruction I/O
+
+[DEBUG] 18:52:57:250 Console/(26756:26756): parse_pseudocode_file - Instruction EXIT
+
+[INFO] 18:52:57:250 Console/(26756:26756): Carga de archivo de configuracion - Cantidad de instrucciones leidas: 7
+[INFO] 18:52:57:250 Console/(26756:26756): Carga de archivo de configuracion - parse_pseudocode_file - Return
+[INFO] 18:52:57:250 Console/(26756:26756): Carga de archivo de pseudocodigo - Fin
+[INFO] 18:52:57:250 Console/(26756:26756): Carga de tamanio de proceso - Inicio
+[INFO] 18:52:57:251 Console/(26756:26756): Carga de tamanio de proceso - Tamanio de proceso leido: 1001
+[INFO] 18:52:57:251 Console/(26756:26756): Carga de tamanio de proceso - Fin
+[INFO] 18:52:57:251 Console/(26756:26756): Conexion a Kernel - Inicio
+[INFO] 18:52:57:251 Console/(26756:26756): Conexion a Kernel - Creando conexion a kernel
+[INFO] 18:52:57:254 Console/(26756:26756): Conexion a Kernel - Consola conectada en 127.0.0.1:4444 a Kernel
+
+[DEBUG] 18:52:57:255 Console/(26756:26756): Conexion a Kernel - create_connection - server_socket: 4
+[INFO] 18:52:57:255 Console/(26756:26756): Conexion a Kernel - Creando instrucction buffer
+[DEBUG] 18:52:57:255 Console/(26756:26756): create_instruction_buffer - Instruction NO_OP
+
+[DEBUG] 18:52:57:255 Console/(26756:26756): create_instruction_buffer - Instruction NO_OP
+
+[DEBUG] 18:52:57:255 Console/(26756:26756): create_instruction_buffer - Instruction WRITE
+
+[DEBUG] 18:52:57:255 Console/(26756:26756): create_instruction_buffer - Instruction COPY
+
+[DEBUG] 18:52:57:255 Console/(26756:26756): create_instruction_buffer - Instruction READ
+
+[DEBUG] 18:52:57:255 Console/(26756:26756): create_instruction_buffer - Instruction I/O
+
+[DEBUG] 18:52:57:255 Console/(26756:26756): create_instruction_buffer - Instruction EXIT
+
+[DEBUG] 18:52:57:258 Console/(26756:26756): create_instruction_buffer - size: 88
+
+[INFO] 18:52:57:258 Console/(26756:26756): Conexion a Kernel - Creando paquete de instrucciones
+[INFO] 18:52:57:259 Console/(26756:26756): Conexion a Kernel - Envio de paquete
+[INFO] 18:52:57:260 Console/(26756:26756): Conexion a Kernel - Consola esperando mensaje de finalizacion del Kernel
+[INFO] 14:38:19:468 Console/(30571:30571): Carga de archivo de configuracion - Inicio
+[INFO] 14:38:19:487 Console/(30571:30571): Carga de archivo de configuracion - load_configuration_file - Inicio
+[INFO] 14:38:19:494 Console/(30571:30571): Carga de archivo de configuracion - load_configuration_file - Config en ../console/console.config cargada ok
+[INFO] 14:38:19:495 Console/(30571:30571): El kernel configurado tiene ip: 127.0.0.1:4444
+[INFO] 14:38:19:495 Console/(30571:30571): Carga de archivo de configuracion - Fin
+[INFO] 14:38:19:495 Console/(30571:30571): Carga de archivo de pseudocodigo - Inicio
+[INFO] 14:38:19:496 Console/(30571:30571): Carga de archivo de configuracion - parse_pseudocode_file - Inicio
+[DEBUG] 14:38:19:500 Console/(30571:30571): Carga de archivo de configuracion - Instruction add: ID: NO_OP Parameter_1: 5 List_size: 1
+[DEBUG] 14:38:19:500 Console/(30571:30571): Instruccion que sale del parseo: NO_OP
+
+[DEBUG] 14:38:19:501 Console/(30571:30571): Instruccion agregada a la lista: NO_OP en i=0
+
+[DEBUG] 14:38:19:501 Console/(30571:30571): Carga de archivo de configuracion - Instruction add: ID: NO_OP Parameter_1: 5 List_size: 1
+[DEBUG] 14:38:19:501 Console/(30571:30571): Instruccion que sale del parseo: NO_OP
+
+[DEBUG] 14:38:19:501 Console/(30571:30571): Instruccion agregada a la lista: NO_OP en i=1
+
+[DEBUG] 14:38:19:502 Console/(30571:30571): Carga de archivo de configuracion - Instruction add: ID: WRITE Parameter_1: 4 Parameter_2: 42 List_size: 2
+[DEBUG] 14:38:19:502 Console/(30571:30571): Instruccion que sale del parseo: WRITE
+
+[DEBUG] 14:38:19:503 Console/(30571:30571): Instruccion agregada a la lista: WRITE en i=2
+
+[DEBUG] 14:38:19:503 Console/(30571:30571): Carga de archivo de configuracion - Instruction add: ID: COPY Parameter_1: 0 Parameter_2: 4 List_size: 2
+[DEBUG] 14:38:19:503 Console/(30571:30571): Instruccion que sale del parseo: COPY
+
+[DEBUG] 14:38:19:503 Console/(30571:30571): Instruccion agregada a la lista: COPY en i=3
+
+[DEBUG] 14:38:19:503 Console/(30571:30571): Carga de archivo de configuracion - Instruction add: ID: READ Parameter_1: 0 List_size: 1
+[DEBUG] 14:38:19:504 Console/(30571:30571): Instruccion que sale del parseo: READ
+
+[DEBUG] 14:38:19:504 Console/(30571:30571): Instruccion agregada a la lista: READ en i=4
+
+[DEBUG] 14:38:19:504 Console/(30571:30571): Carga de archivo de configuracion - Instruction add: ID: I/O Parameter_1: 3000 List_size: 1
+[DEBUG] 14:38:19:504 Console/(30571:30571): Instruccion que sale del parseo: I/O
+
+[DEBUG] 14:38:19:504 Console/(30571:30571): Instruccion agregada a la lista: I/O en i=5
+
+[DEBUG] 14:38:19:504 Console/(30571:30571): Carga de archivo de configuracion - Instruction add: ID: EXIT List_size: 0
+[DEBUG] 14:38:19:504 Console/(30571:30571): Instruccion que sale del parseo: EXIT
+
+[DEBUG] 14:38:19:504 Console/(30571:30571): Instruccion agregada a la lista: EXIT en i=6
+
+[DEBUG] 14:38:19:505 Console/(30571:30571): parse_pseudocode_file - Instruction NO_OP
+
+[DEBUG] 14:38:19:505 Console/(30571:30571): parse_pseudocode_file - Instruction NO_OP
+
+[DEBUG] 14:38:19:505 Console/(30571:30571): parse_pseudocode_file - Instruction WRITE
+
+[DEBUG] 14:38:19:505 Console/(30571:30571): parse_pseudocode_file - Instruction COPY
+
+[DEBUG] 14:38:19:505 Console/(30571:30571): parse_pseudocode_file - Instruction READ
+
+[DEBUG] 14:38:19:505 Console/(30571:30571): parse_pseudocode_file - Instruction I/O
+
+[DEBUG] 14:38:19:505 Console/(30571:30571): parse_pseudocode_file - Instruction EXIT
+
+[INFO] 14:38:19:505 Console/(30571:30571): Carga de archivo de configuracion - Cantidad de instrucciones leidas: 7
+[INFO] 14:38:19:505 Console/(30571:30571): Carga de archivo de configuracion - parse_pseudocode_file - Return
+[INFO] 14:38:19:505 Console/(30571:30571): Carga de archivo de pseudocodigo - Fin
+[INFO] 14:38:19:506 Console/(30571:30571): Carga de tamanio de proceso - Inicio
+[INFO] 14:38:19:506 Console/(30571:30571): Carga de tamanio de proceso - Tamanio de proceso leido: 1001
+[INFO] 14:38:19:506 Console/(30571:30571): Carga de tamanio de proceso - Fin
+[INFO] 14:38:19:506 Console/(30571:30571): Conexion a Kernel - Inicio
+[INFO] 14:38:19:506 Console/(30571:30571): Conexion a Kernel - Creando conexion a kernel
+[INFO] 14:38:19:510 Console/(30571:30571): Conexion a Kernel - Consola conectada en 127.0.0.1:4444 a Kernel
+
+[DEBUG] 14:38:19:510 Console/(30571:30571): Conexion a Kernel - create_connection - server_socket: 4
+[INFO] 14:38:19:510 Console/(30571:30571): Conexion a Kernel - Creando instrucction buffer
+[DEBUG] 14:38:19:510 Console/(30571:30571): create_instruction_buffer - Instruction NO_OP
+
+[DEBUG] 14:38:19:510 Console/(30571:30571): create_instruction_buffer - Instruction NO_OP
+
+[DEBUG] 14:38:19:510 Console/(30571:30571): create_instruction_buffer - Instruction WRITE
+
+[DEBUG] 14:38:19:511 Console/(30571:30571): create_instruction_buffer - Instruction COPY
+
+[DEBUG] 14:38:19:511 Console/(30571:30571): create_instruction_buffer - Instruction READ
+
+[DEBUG] 14:38:19:511 Console/(30571:30571): create_instruction_buffer - Instruction I/O
+
+[DEBUG] 14:38:19:511 Console/(30571:30571): create_instruction_buffer - Instruction EXIT
+
+[DEBUG] 14:38:19:513 Console/(30571:30571): create_instruction_buffer - size: 88
+
+[INFO] 14:38:19:513 Console/(30571:30571): Conexion a Kernel - Creando paquete de instrucciones
+[INFO] 14:38:19:514 Console/(30571:30571): Conexion a Kernel - Envio de paquete
+[INFO] 14:38:19:515 Console/(30571:30571): Conexion a Kernel - Consola esperando mensaje de finalizacion del Kernel
+[INFO] 15:11:26:448 Console/(31286:31286): Carga de archivo de configuracion - Inicio
+[INFO] 15:11:26:468 Console/(31286:31286): Carga de archivo de configuracion - load_configuration_file - Inicio
+[INFO] 15:11:26:475 Console/(31286:31286): Carga de archivo de configuracion - load_configuration_file - Config en ../console/console.config cargada ok
+[INFO] 15:11:26:476 Console/(31286:31286): El kernel configurado tiene ip: 127.0.0.1:4444
+[INFO] 15:11:26:476 Console/(31286:31286): Carga de archivo de configuracion - Fin
+[INFO] 15:11:26:476 Console/(31286:31286): Carga de archivo de pseudocodigo - Inicio
+[INFO] 15:11:26:477 Console/(31286:31286): Carga de archivo de configuracion - parse_pseudocode_file - Inicio
+[DEBUG] 15:11:26:481 Console/(31286:31286): Carga de archivo de configuracion - Instruction add: ID: NO_OP Parameter_1: 5 List_size: 1
+[DEBUG] 15:11:26:481 Console/(31286:31286): Instruccion que sale del parseo: NO_OP
+
+[DEBUG] 15:11:26:482 Console/(31286:31286): Instruccion agregada a la lista: NO_OP en i=0
+
+[DEBUG] 15:11:26:482 Console/(31286:31286): Carga de archivo de configuracion - Instruction add: ID: NO_OP Parameter_1: 5 List_size: 1
+[DEBUG] 15:11:26:482 Console/(31286:31286): Instruccion que sale del parseo: NO_OP
+
+[DEBUG] 15:11:26:482 Console/(31286:31286): Instruccion agregada a la lista: NO_OP en i=1
+
+[DEBUG] 15:11:26:483 Console/(31286:31286): Carga de archivo de configuracion - Instruction add: ID: WRITE Parameter_1: 4 Parameter_2: 42 List_size: 2
+[DEBUG] 15:11:26:483 Console/(31286:31286): Instruccion que sale del parseo: WRITE
+
+[DEBUG] 15:11:26:484 Console/(31286:31286): Instruccion agregada a la lista: WRITE en i=2
+
+[DEBUG] 15:11:26:484 Console/(31286:31286): Carga de archivo de configuracion - Instruction add: ID: COPY Parameter_1: 0 Parameter_2: 4 List_size: 2
+[DEBUG] 15:11:26:484 Console/(31286:31286): Instruccion que sale del parseo: COPY
+
+[DEBUG] 15:11:26:484 Console/(31286:31286): Instruccion agregada a la lista: COPY en i=3
+
+[DEBUG] 15:11:26:484 Console/(31286:31286): Carga de archivo de configuracion - Instruction add: ID: READ Parameter_1: 0 List_size: 1
+[DEBUG] 15:11:26:484 Console/(31286:31286): Instruccion que sale del parseo: READ
+
+[DEBUG] 15:11:26:484 Console/(31286:31286): Instruccion agregada a la lista: READ en i=4
+
+[DEBUG] 15:11:26:485 Console/(31286:31286): Carga de archivo de configuracion - Instruction add: ID: I/O Parameter_1: 3000 List_size: 1
+[DEBUG] 15:11:26:485 Console/(31286:31286): Instruccion que sale del parseo: I/O
+
+[DEBUG] 15:11:26:485 Console/(31286:31286): Instruccion agregada a la lista: I/O en i=5
+
+[DEBUG] 15:11:26:485 Console/(31286:31286): Carga de archivo de configuracion - Instruction add: ID: EXIT List_size: 0
+[DEBUG] 15:11:26:485 Console/(31286:31286): Instruccion que sale del parseo: EXIT
+
+[DEBUG] 15:11:26:485 Console/(31286:31286): Instruccion agregada a la lista: EXIT en i=6
+
+[DEBUG] 15:11:26:485 Console/(31286:31286): parse_pseudocode_file - Instruction NO_OP
+
+[DEBUG] 15:11:26:486 Console/(31286:31286): parse_pseudocode_file - Instruction NO_OP
+
+[DEBUG] 15:11:26:486 Console/(31286:31286): parse_pseudocode_file - Instruction WRITE
+
+[DEBUG] 15:11:26:486 Console/(31286:31286): parse_pseudocode_file - Instruction COPY
+
+[DEBUG] 15:11:26:486 Console/(31286:31286): parse_pseudocode_file - Instruction READ
+
+[DEBUG] 15:11:26:486 Console/(31286:31286): parse_pseudocode_file - Instruction I/O
+
+[DEBUG] 15:11:26:486 Console/(31286:31286): parse_pseudocode_file - Instruction EXIT
+
+[INFO] 15:11:26:486 Console/(31286:31286): Carga de archivo de configuracion - Cantidad de instrucciones leidas: 7
+[INFO] 15:11:26:486 Console/(31286:31286): Carga de archivo de configuracion - parse_pseudocode_file - Return
+[INFO] 15:11:26:486 Console/(31286:31286): Carga de archivo de pseudocodigo - Fin
+[INFO] 15:11:26:487 Console/(31286:31286): Carga de tamanio de proceso - Inicio
+[INFO] 15:11:26:487 Console/(31286:31286): Carga de tamanio de proceso - Tamanio de proceso leido: 1001
+[INFO] 15:11:26:487 Console/(31286:31286): Carga de tamanio de proceso - Fin
+[INFO] 15:11:26:487 Console/(31286:31286): Conexion a Kernel - Inicio
+[INFO] 15:11:26:487 Console/(31286:31286): Conexion a Kernel - Creando conexion a kernel
+[INFO] 15:11:26:490 Console/(31286:31286): Conexion a Kernel - Consola conectada en 127.0.0.1:4444 a Kernel
+
+[DEBUG] 15:11:26:491 Console/(31286:31286): Conexion a Kernel - create_connection - server_socket: 4
+[INFO] 15:11:26:491 Console/(31286:31286): Conexion a Kernel - Creando instrucction buffer
+[DEBUG] 15:11:26:491 Console/(31286:31286): create_instruction_buffer - Instruction NO_OP
+
+[DEBUG] 15:11:26:491 Console/(31286:31286): create_instruction_buffer - Instruction NO_OP
+
+[DEBUG] 15:11:26:491 Console/(31286:31286): create_instruction_buffer - Instruction WRITE
+
+[DEBUG] 15:11:26:491 Console/(31286:31286): create_instruction_buffer - Instruction COPY
+
+[DEBUG] 15:11:26:491 Console/(31286:31286): create_instruction_buffer - Instruction READ
+
+[DEBUG] 15:11:26:492 Console/(31286:31286): create_instruction_buffer - Instruction I/O
+
+[DEBUG] 15:11:26:492 Console/(31286:31286): create_instruction_buffer - Instruction EXIT
+
+[DEBUG] 15:11:26:494 Console/(31286:31286): create_instruction_buffer - size: 88
+
+[INFO] 15:11:26:494 Console/(31286:31286): Conexion a Kernel - Creando paquete de instrucciones
+[INFO] 15:11:26:495 Console/(31286:31286): Conexion a Kernel - Envio de paquete
+[INFO] 15:11:26:496 Console/(31286:31286): Conexion a Kernel - Consola esperando mensaje de finalizacion del Kernel

@@ -13,7 +13,7 @@ para que éste libere sus estructuras. Una vez liberadas, se dará aviso a la Co
 
 // void obtener_valor_tabla_de_paginas(){}  ---------- Completar cuando se realice memoria
 
-void planificadorLP_agregar_a_new(t_instructions_list* lista_instrucciones, t_log* logger){
+void planificadorLP_agregar_a_new(t_instructions_list* lista_instrucciones, t_log* logger){ 
     
     log_info(logger, "Planificador Largo Plazo -> Creando estructura de PCB\n");
     t_PCB* pcb = malloc(sizeof(t_PCB));
@@ -23,7 +23,7 @@ void planificadorLP_agregar_a_new(t_instructions_list* lista_instrucciones, t_lo
     pcb_asignar_lista_tamanio(pcb, lista_instrucciones);
     pcb_imprimir(pcb, logger);
 
-    log_info(logger, "Planificador Largo Plazo -> Asignando PCB a cola de estado NEW\n");
+    log_info(logger, "Planificador Largo Plazo -> Asignando PCB a cola de estado NEW");
     push_cola_new(pcb);
     int temp = largo_cola_new();
     log_info(logger, "Planificador Largo Plazo -> Largo cola NEW = %i", temp);

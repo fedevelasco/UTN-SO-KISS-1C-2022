@@ -11,6 +11,7 @@
 #include<string.h>
 #include<assert.h>
 #include<pthread.h>
+#include<commons/config.h>
 
 #include "planificacion.h"
 #include "/home/utnso/tp-2022-1c-Grupo-TP-SO/static/include/tads/parameter.h"
@@ -22,16 +23,43 @@
 #include "/home/utnso/tp-2022-1c-Grupo-TP-SO/static/include/serialization.h"
 #include "/home/utnso/tp-2022-1c-Grupo-TP-SO/static/include/serialization.h"
 
+typedef struct {
+	char* IP_MEMORIA;
+    char* PUERTO_MEMORIA;
+    char* IP_CPU;
+    char* PUERTO_CPU_DISPATCH;
+    char* PUERTO_CPU_INTERRUPT;
+    char* PUERTO_ESCUCHA;
+    char* ALGORITMO_PLANIFICACION;
+    char* ESTIMACION_INICIAL;
+    char* ALFA;
+    char* GRADO_MULTIPROGRAMACION;
+    char* TIEMPO_MAXIMO_BLOQUEADO;
+} t_config_data;
+
+typedef struct {
+    t_log* log;
+    int fd;
+    char* server_name;
+} t_procesar_conexion_args;
 
 
 t_log* logger;
 
-char* recibir_buffer(int32_t*, int32_t);
+// ---------------- CONFIG ------------------------
 
+t_config* iniciar_config(void);
+void terminar_config(t_config* config, t_config_data* config_data);
+void cargar_config(t_config* config, t_config_data* config_data);
+
+// ---------------- CONEXION -----------------------
+
+char* recibir_buffer(int32_t*, int32_t);
 int32_t iniciar_servidor(t_log*, const char*, char*, char*);
 t_instructions_list* recibir_paquete(int32_t, t_log*);
 int32_t recibir_operacion(int32_t);
 
+// --------------- PROCESAR CONEXIONES DE CONSOLA ------------------------
 
 static void procesar_conexion(void* void_args);
 int server_escuchar(t_log* logger, char* server_name, int server_socket);
