@@ -33,6 +33,8 @@ void* remover_cola_new(unsigned long tid); // Elimina un elemento de la cola NEW
 
 void push_lista_ready(t_PCB* pcb);
 
+t_PCB* pop_lista_ready();
+
 int largo_lista_ready();
 
 // Funciones de cola EXIT

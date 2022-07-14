@@ -1529,3 +1529,378 @@ PC = 0
 [INFO] 15:11:26:507 Servidor/(31186:31287): Planificador Largo Plazo -> PID: 0
 [INFO] 15:11:26:507 Servidor/(31186:31287): Largo lista READY: 1
 [ERROR] 15:25:09:260 Servidor/(31186:31287): El cliente se desconecto. Terminando conexion con el cliente.
+[INFO] 20:02:15:686 Servidor/(5102:5102): Kernel - Iniciando conexiones
+[INFO] 20:02:15:729 Servidor/(5102:5102): Kernel - K
+[INFO] 20:02:15:740 Servidor/(5102:5102): Escuchando en 127.0.0.1:4444 (Kernel)
+
+[INFO] 20:02:15:741 Servidor/(5102:5102): Kernel - Listo para recibir a clientes
+[INFO] 20:02:15:744 Servidor/(5102:5102): No se pudo conectar al servidor
+[INFO] 20:02:15:746 Servidor/(5102:5102): Print de PCB: 
+
+[INFO] 20:02:15:747 Servidor/(5102:5102): PID = 0
+[INFO] 20:02:15:747 Servidor/(5102:5102): Size = 0
+[INFO] 20:02:15:748 Servidor/(5102:5102): Instruction List =
+[INFO] 20:02:15:748 Servidor/(5102:5102): PC = 0
+
+[INFO] 20:02:15:753 Servidor/(5102:5102): Print de PCB: 
+
+[INFO] 20:02:15:754 Servidor/(5102:5102): PID = 0
+[INFO] 20:02:15:754 Servidor/(5102:5102): Size = 0
+[INFO] 20:02:15:754 Servidor/(5102:5102): Instruction List =
+[INFO] 20:02:15:754 Servidor/(5102:5102): PC = 0
+
+[INFO] 20:03:29:015 Servidor/(5234:5234): Kernel - Iniciando conexiones
+[INFO] 20:03:29:058 Servidor/(5234:5234): Kernel - K
+[INFO] 20:03:29:070 Servidor/(5234:5234): Escuchando en 127.0.0.1:4444 (Kernel)
+
+[INFO] 20:03:29:071 Servidor/(5234:5234): Kernel - Listo para recibir a clientes
+[INFO] 20:03:29:073 Servidor/(5234:5234): No se pudo conectar al servidor
+[INFO] 20:03:29:076 Servidor/(5234:5234): Print de PCB: 
+
+[INFO] 20:03:29:076 Servidor/(5234:5234): PID = 0
+[INFO] 20:03:29:077 Servidor/(5234:5234): Size = 0
+[INFO] 20:03:29:077 Servidor/(5234:5234): Instruction List =
+[INFO] 20:03:29:078 Servidor/(5234:5234): PC = 0
+
+[INFO] 20:03:29:083 Servidor/(5234:5234): Print de PCB: 
+
+[INFO] 20:03:29:083 Servidor/(5234:5234): PID = 0
+[INFO] 20:03:29:084 Servidor/(5234:5234): Size = 0
+[INFO] 20:03:29:084 Servidor/(5234:5234): Instruction List =
+[INFO] 20:03:29:084 Servidor/(5234:5234): PC = 0
+
+[INFO] 20:04:29:953 Servidor/(5413:5413): Kernel - Iniciando conexiones
+[INFO] 20:04:29:996 Servidor/(5413:5413): Kernel - K
+[INFO] 20:04:30:008 Servidor/(5413:5413): Escuchando en 127.0.0.1:4444 (Kernel)
+
+[INFO] 20:04:30:009 Servidor/(5413:5413): Kernel - Listo para recibir a clientes
+[INFO] 20:04:30:012 Servidor/(5413:5413): No se pudo conectar al servidor
+[INFO] 20:04:30:014 Servidor/(5413:5413): Print de PCB: 
+
+[INFO] 20:04:30:014 Servidor/(5413:5413): PID = 3
+[INFO] 20:04:30:015 Servidor/(5413:5413): Size = 0
+[INFO] 20:04:30:015 Servidor/(5413:5413): Instruction List =
+[INFO] 20:04:30:016 Servidor/(5413:5413): PC = 3
+
+[INFO] 20:04:30:021 Servidor/(5413:5413): Print de PCB: 
+
+[INFO] 20:04:30:021 Servidor/(5413:5413): PID = 0
+[INFO] 20:04:30:021 Servidor/(5413:5413): Size = 0
+[INFO] 20:04:30:022 Servidor/(5413:5413): Instruction List =
+[INFO] 20:04:30:022 Servidor/(5413:5413): PC = 0
+
+[INFO] 19:40:47:518 Servidor/(6402:6402): Kernel - Iniciando conexiones
+[INFO] 19:40:47:561 Servidor/(6402:6402): Kernel - K
+[INFO] 19:40:47:574 Servidor/(6402:6402): Escuchando en 127.0.0.1:4444 (Kernel)
+
+[INFO] 19:40:47:575 Servidor/(6402:6402): Kernel - Listo para recibir a clientes
+[INFO] 19:40:47:577 Servidor/(6402:6402): No se pudo conectar al servidor
+[INFO] 19:40:47:580 Servidor/(6402:6402): Print de PCB: 
+
+[INFO] 19:40:47:580 Servidor/(6402:6402): PID = 3
+[INFO] 19:40:47:581 Servidor/(6402:6402): Size = 0
+[INFO] 19:40:47:581 Servidor/(6402:6402): Instruction List =
+[INFO] 19:40:47:582 Servidor/(6402:6402): PC = 3
+
+[INFO] 19:40:47:587 Servidor/(6402:6402): Print de PCB: 
+
+[INFO] 19:40:47:588 Servidor/(6402:6402): PID = 0
+[INFO] 19:40:47:588 Servidor/(6402:6402): Size = 0
+[INFO] 19:40:47:588 Servidor/(6402:6402): Instruction List =
+[INFO] 19:40:47:589 Servidor/(6402:6402): PC = 0
+
+[INFO] 19:46:20:461 Servidor/(6673:6673): Kernel - Iniciando conexiones
+[INFO] 19:46:20:503 Servidor/(6673:6673): Kernel - K
+[INFO] 19:46:20:515 Servidor/(6673:6673): Escuchando en 127.0.0.1:4444 (Kernel)
+
+[INFO] 19:46:20:516 Servidor/(6673:6673): Kernel - Listo para recibir a clientes
+[INFO] 19:46:20:518 Servidor/(6673:6673): No se pudo conectar al servidor
+[INFO] 19:46:20:520 Servidor/(6673:6673): Print de PCB: 
+
+[INFO] 19:46:20:521 Servidor/(6673:6673): PID = 3
+[INFO] 19:46:20:521 Servidor/(6673:6673): Size = 0
+[INFO] 19:46:20:522 Servidor/(6673:6673): Instruction List =
+[INFO] 19:46:20:522 Servidor/(6673:6673): PC = 3
+
+[INFO] 19:46:20:527 Servidor/(6673:6673): Print de PCB: 
+
+[INFO] 19:46:20:528 Servidor/(6673:6673): PID = 0
+[INFO] 19:46:20:528 Servidor/(6673:6673): Size = 0
+[INFO] 19:46:20:528 Servidor/(6673:6673): Instruction List =
+[INFO] 19:46:20:528 Servidor/(6673:6673): PC = 0
+
+[INFO] 19:46:58:197 Servidor/(6811:6811): Kernel - Iniciando conexiones
+[INFO] 19:46:58:240 Servidor/(6811:6811): Kernel - K
+[INFO] 19:46:58:251 Servidor/(6811:6811): Escuchando en 127.0.0.1:4444 (Kernel)
+
+[INFO] 19:46:58:252 Servidor/(6811:6811): Kernel - Listo para recibir a clientes
+[INFO] 19:46:58:255 Servidor/(6811:6811): No se pudo conectar al servidor
+[INFO] 19:46:58:256 Servidor/(6811:6811): Print de PCB: 
+
+[INFO] 19:46:58:256 Servidor/(6811:6811): PID = 3
+[INFO] 19:46:58:257 Servidor/(6811:6811): Size = 0
+[INFO] 19:46:58:258 Servidor/(6811:6811): Instruction List =
+[INFO] 19:47:39:413 Servidor/(6955:6955): Kernel - Iniciando conexiones
+[INFO] 19:47:39:455 Servidor/(6955:6955): Kernel - K
+[INFO] 19:47:39:467 Servidor/(6955:6955): Escuchando en 127.0.0.1:4444 (Kernel)
+
+[INFO] 19:47:39:468 Servidor/(6955:6955): Kernel - Listo para recibir a clientes
+[INFO] 19:47:39:470 Servidor/(6955:6955): No se pudo conectar al servidor
+[INFO] 19:47:39:472 Servidor/(6955:6955): Print de PCB: 
+
+[INFO] 19:47:39:472 Servidor/(6955:6955): PID = 3
+[INFO] 19:47:39:473 Servidor/(6955:6955): Size = 0
+[INFO] 19:47:39:473 Servidor/(6955:6955): Instruction List =
+[INFO] 19:47:39:474 Servidor/(6955:6955): PC = 3
+
+[INFO] 19:47:39:479 Servidor/(6955:6955): Print de PCB: 
+
+[INFO] 19:47:39:479 Servidor/(6955:6955): PID = 0
+[INFO] 19:47:39:480 Servidor/(6955:6955): Size = 0
+[INFO] 19:47:39:480 Servidor/(6955:6955): Instruction List =
+[INFO] 19:47:39:480 Servidor/(6955:6955): PC = 0
+
+[INFO] 19:52:51:232 Servidor/(7356:7356): Kernel - Iniciando conexiones
+[INFO] 19:52:51:274 Servidor/(7356:7356): Kernel - K
+[INFO] 19:52:51:285 Servidor/(7356:7356): Escuchando en 127.0.0.1:4444 (Kernel)
+
+[INFO] 19:52:51:286 Servidor/(7356:7356): Kernel - Listo para recibir a clientes
+[INFO] 19:52:51:288 Servidor/(7356:7356): No se pudo conectar al servidor
+[INFO] 19:52:51:290 Servidor/(7356:7356): Print de PCB: 
+
+[INFO] 19:52:51:291 Servidor/(7356:7356): PID = 3
+[INFO] 19:52:51:291 Servidor/(7356:7356): Size = 0
+[INFO] 19:52:51:292 Servidor/(7356:7356): Instruction List =
+[INFO] 19:52:51:293 Servidor/(7356:7356): PC = 3
+
+[INFO] 19:52:51:297 Servidor/(7356:7356): Print de PCB: 
+
+[INFO] 19:52:51:298 Servidor/(7356:7356): PID = 0
+[INFO] 19:52:51:298 Servidor/(7356:7356): Size = 0
+[INFO] 19:52:51:298 Servidor/(7356:7356): Instruction List =
+[INFO] 19:52:51:298 Servidor/(7356:7356): PC = 0
+
+[INFO] 19:57:36:611 Servidor/(7588:7588): Kernel - Iniciando conexiones
+[INFO] 19:57:36:653 Servidor/(7588:7588): Kernel - K
+[INFO] 19:57:36:665 Servidor/(7588:7588): Escuchando en 127.0.0.1:4444 (Kernel)
+
+[INFO] 19:57:36:666 Servidor/(7588:7588): Kernel - Listo para recibir a clientes
+[INFO] 19:57:36:668 Servidor/(7588:7588): No se pudo conectar al servidor
+[INFO] 19:57:36:670 Servidor/(7588:7588): Print de PCB: 
+
+[INFO] 19:57:36:671 Servidor/(7588:7588): PID = 3
+[INFO] 19:57:36:671 Servidor/(7588:7588): Size = 0
+[INFO] 19:57:36:672 Servidor/(7588:7588): Instruction List =
+[INFO] 19:57:36:672 Servidor/(7588:7588): PC = 3
+
+[INFO] 19:57:36:677 Servidor/(7588:7588): Print de PCB: 
+
+[INFO] 19:57:36:678 Servidor/(7588:7588): PID = 0
+[INFO] 19:57:36:678 Servidor/(7588:7588): Size = 0
+[INFO] 19:57:36:679 Servidor/(7588:7588): Instruction List =
+[INFO] 19:58:19:538 Servidor/(7723:7723): Kernel - Iniciando conexiones
+[INFO] 19:58:19:580 Servidor/(7723:7723): Kernel - K
+[INFO] 19:58:19:591 Servidor/(7723:7723): Escuchando en 127.0.0.1:4444 (Kernel)
+
+[INFO] 19:58:19:592 Servidor/(7723:7723): Kernel - Listo para recibir a clientes
+[INFO] 19:58:19:594 Servidor/(7723:7723): No se pudo conectar al servidor
+[INFO] 19:58:19:596 Servidor/(7723:7723): Print de PCB: 
+
+[INFO] 19:58:19:597 Servidor/(7723:7723): PID = 3
+[INFO] 19:58:19:597 Servidor/(7723:7723): Size = 0
+[INFO] 19:58:19:598 Servidor/(7723:7723): Instruction List =
+[INFO] 19:58:19:599 Servidor/(7723:7723): PC = 3
+
+[INFO] 19:58:19:603 Servidor/(7723:7723): Print de PCB: 
+
+[INFO] 19:58:19:604 Servidor/(7723:7723): PID = 0
+[INFO] 19:58:19:605 Servidor/(7723:7723): Size = 0
+[INFO] 19:58:19:605 Servidor/(7723:7723): Instruction List =
+[INFO] 20:01:56:219 Servidor/(7981:7981): Kernel - Iniciando conexiones
+[INFO] 20:01:56:262 Servidor/(7981:7981): Kernel - K
+[INFO] 20:01:56:273 Servidor/(7981:7981): Escuchando en 127.0.0.1:4444 (Kernel)
+
+[INFO] 20:01:56:274 Servidor/(7981:7981): Kernel - Listo para recibir a clientes
+[INFO] 20:01:56:277 Servidor/(7981:7981): No se pudo conectar al servidor
+[INFO] 20:01:56:279 Servidor/(7981:7981): Print de PCB: 
+
+[INFO] 20:01:56:279 Servidor/(7981:7981): PID = 3
+[INFO] 20:01:56:280 Servidor/(7981:7981): Size = 0
+[INFO] 20:01:56:280 Servidor/(7981:7981): Instruction List =
+[INFO] 20:01:56:281 Servidor/(7981:7981): PC = 3
+
+[INFO] 20:01:56:285 Servidor/(7981:7981): Print de PCB: 
+
+[INFO] 20:01:56:287 Servidor/(7981:7981): PID = 0
+[INFO] 20:01:56:287 Servidor/(7981:7981): Size = 0
+[INFO] 20:01:56:287 Servidor/(7981:7981): Instruction List =
+[INFO] 20:33:43:389 Servidor/(8742:8742): Kernel - Iniciando conexiones
+[INFO] 20:33:43:431 Servidor/(8742:8742): Kernel - K
+[INFO] 20:33:43:443 Servidor/(8742:8742): Escuchando en 127.0.0.1:4444 (Kernel)
+
+[INFO] 20:33:43:443 Servidor/(8742:8742): Kernel - Listo para recibir a clientes
+[INFO] 20:33:43:446 Servidor/(8742:8742): No se pudo conectar al servidor
+[INFO] 20:33:43:448 Servidor/(8742:8742): Print de PCB: 
+
+[INFO] 20:33:43:448 Servidor/(8742:8742): PID = 3
+[INFO] 20:33:43:449 Servidor/(8742:8742): Size = 0
+[INFO] 20:33:43:449 Servidor/(8742:8742): Instruction List =
+[INFO] 20:33:43:450 Servidor/(8742:8742): PC = 3
+
+[INFO] 20:33:43:455 Servidor/(8742:8742): Print de PCB: 
+
+[INFO] 20:33:43:456 Servidor/(8742:8742): PID = 0
+[INFO] 20:33:43:456 Servidor/(8742:8742): Size = 0
+[INFO] 20:33:43:457 Servidor/(8742:8742): Instruction List =
+[INFO] 21:52:43:465 Servidor/(9471:9471): Kernel - Iniciando conexiones
+[INFO] 21:52:43:507 Servidor/(9471:9471): Kernel - K
+[INFO] 21:52:43:519 Servidor/(9471:9471): Escuchando en 127.0.0.1:4444 (Kernel)
+
+[INFO] 21:52:43:520 Servidor/(9471:9471): Kernel - Listo para recibir a clientes
+[INFO] 21:52:43:522 Servidor/(9471:9471): No se pudo conectar al servidor
+[INFO] 21:52:43:524 Servidor/(9471:9471): Print de PCB: 
+
+[INFO] 21:52:43:524 Servidor/(9471:9471): PID = 3
+[INFO] 21:52:43:525 Servidor/(9471:9471): Size = 0
+[INFO] 21:52:43:525 Servidor/(9471:9471): Instruction List =
+[INFO] 21:52:43:526 Servidor/(9471:9471): PC = 3
+
+[INFO] 21:52:43:531 Servidor/(9471:9471): Print de PCB: 
+
+[INFO] 21:52:43:531 Servidor/(9471:9471): PID = -18316403
+[INFO] 21:52:43:532 Servidor/(9471:9471): Size = -970326017
+[INFO] 21:52:43:532 Servidor/(9471:9471): Instruction List =
+[INFO] 21:56:38:723 Servidor/(9715:9715): Kernel - Iniciando conexiones
+[INFO] 21:56:38:765 Servidor/(9715:9715): Kernel - K
+[INFO] 21:56:38:776 Servidor/(9715:9715): Escuchando en 127.0.0.1:4444 (Kernel)
+
+[INFO] 21:56:38:777 Servidor/(9715:9715): Kernel - Listo para recibir a clientes
+[INFO] 21:56:38:780 Servidor/(9715:9715): No se pudo conectar al servidor
+[INFO] 21:56:38:788 Servidor/(9715:9715): Print de PCB: 
+
+[INFO] 21:56:38:789 Servidor/(9715:9715): PID = 3
+[INFO] 21:56:38:789 Servidor/(9715:9715): Size = 3
+[INFO] 21:56:38:790 Servidor/(9715:9715): Instruction List =
+[INFO] 21:56:38:791 Servidor/(9715:9715): Instruction: READ 
+[INFO] 21:56:38:791 Servidor/(9715:9715): Parameters: 2 
+[INFO] 21:56:38:792 Servidor/(9715:9715): Parameters: 100 
+[INFO] 21:56:38:792 Servidor/(9715:9715): Instruction: WRITE 
+[INFO] 21:56:38:792 Servidor/(9715:9715): Parameters: 22 
+[INFO] 21:56:38:793 Servidor/(9715:9715): Parameters: 33 
+[INFO] 21:56:38:793 Servidor/(9715:9715): PC = 3
+
+[INFO] 21:56:38:806 Servidor/(9715:9715): Print de PCB: 
+
+[INFO] 21:56:38:806 Servidor/(9715:9715): PID = -1091129431
+[INFO] 21:56:38:807 Servidor/(9715:9715): Size = -1091129399
+[INFO] 21:56:38:807 Servidor/(9715:9715): Instruction List =
+[INFO] 22:00:53:133 Servidor/(9990:9990): Kernel - Iniciando conexiones
+[INFO] 22:00:53:175 Servidor/(9990:9990): Kernel - K
+[INFO] 22:00:53:187 Servidor/(9990:9990): Escuchando en 127.0.0.1:4444 (Kernel)
+
+[INFO] 22:00:53:188 Servidor/(9990:9990): Kernel - Listo para recibir a clientes
+[INFO] 22:00:53:190 Servidor/(9990:9990): No se pudo conectar al servidor
+[INFO] 22:00:53:199 Servidor/(9990:9990): Print de PCB: 
+
+[INFO] 22:00:53:199 Servidor/(9990:9990): PID = 3
+[INFO] 22:00:53:199 Servidor/(9990:9990): Size = 3
+[INFO] 22:00:53:200 Servidor/(9990:9990): Instruction List =
+[INFO] 22:00:53:201 Servidor/(9990:9990): Instruction: READ 
+[INFO] 22:00:53:201 Servidor/(9990:9990): Parameters: 2 
+[INFO] 22:00:53:202 Servidor/(9990:9990): Parameters: 100 
+[INFO] 22:00:53:202 Servidor/(9990:9990): PC = 3
+
+[INFO] 22:00:53:214 Servidor/(9990:9990): Print de PCB: 
+
+[INFO] 22:00:53:215 Servidor/(9990:9990): PID = -1096749143
+[INFO] 22:00:53:216 Servidor/(9990:9990): Size = -1096749111
+[INFO] 22:00:53:216 Servidor/(9990:9990): Instruction List =
+[INFO] 22:05:44:844 Servidor/(10240:10240): Kernel - Iniciando conexiones
+[INFO] 22:05:44:886 Servidor/(10240:10240): Kernel - K
+[INFO] 22:05:44:898 Servidor/(10240:10240): Escuchando en 127.0.0.1:4444 (Kernel)
+
+[INFO] 22:05:44:899 Servidor/(10240:10240): Kernel - Listo para recibir a clientes
+[INFO] 22:05:44:901 Servidor/(10240:10240): No se pudo conectar al servidor
+[INFO] 22:05:44:910 Servidor/(10240:10240): Print de PCB: 
+
+[INFO] 22:05:44:910 Servidor/(10240:10240): PID = 3
+[INFO] 22:05:44:910 Servidor/(10240:10240): Size = 3
+[INFO] 22:05:44:911 Servidor/(10240:10240): Instruction List =
+[INFO] 22:05:44:912 Servidor/(10240:10240): Instruction: READ 
+[INFO] 22:05:44:912 Servidor/(10240:10240): Parameters: 2 
+[INFO] 22:05:44:913 Servidor/(10240:10240): Parameters: 100 
+[INFO] 22:05:44:913 Servidor/(10240:10240): PC = 3
+
+[INFO] 22:06:02:752 Servidor/(10362:10362): Kernel - Iniciando conexiones
+[INFO] 22:06:02:795 Servidor/(10362:10362): Kernel - K
+[INFO] 22:06:02:806 Servidor/(10362:10362): Escuchando en 127.0.0.1:4444 (Kernel)
+
+[INFO] 22:06:02:807 Servidor/(10362:10362): Kernel - Listo para recibir a clientes
+[INFO] 22:06:02:810 Servidor/(10362:10362): No se pudo conectar al servidor
+[INFO] 22:06:02:818 Servidor/(10362:10362): Print de PCB: 
+
+[INFO] 22:06:02:818 Servidor/(10362:10362): PID = 3
+[INFO] 22:06:02:819 Servidor/(10362:10362): Size = 3
+[INFO] 22:06:02:819 Servidor/(10362:10362): Instruction List =
+[INFO] 22:06:02:820 Servidor/(10362:10362): Instruction: READ 
+[INFO] 22:06:02:821 Servidor/(10362:10362): Parameters: 2 
+[INFO] 22:06:02:821 Servidor/(10362:10362): Parameters: 100 
+[INFO] 22:06:02:822 Servidor/(10362:10362): PC = 3
+
+[INFO] 22:06:02:833 Servidor/(10362:10362): Print de PCB: 
+
+[INFO] 22:06:02:834 Servidor/(10362:10362): PID = -1092005975
+[INFO] 22:06:02:834 Servidor/(10362:10362): Size = -1092005943
+[INFO] 22:06:02:834 Servidor/(10362:10362): Instruction List =
+[INFO] 22:14:44:332 Servidor/(10784:10784): Kernel - Iniciando conexiones
+[INFO] 22:14:44:374 Servidor/(10784:10784): Kernel - K
+[INFO] 22:14:44:385 Servidor/(10784:10784): Escuchando en 127.0.0.1:4444 (Kernel)
+
+[INFO] 22:14:44:386 Servidor/(10784:10784): Kernel - Listo para recibir a clientes
+[INFO] 22:14:44:389 Servidor/(10784:10784): No se pudo conectar al servidor
+[INFO] 22:14:44:397 Servidor/(10784:10784): Print de PCB: 
+
+[INFO] 22:14:44:397 Servidor/(10784:10784): PID = 3
+[INFO] 22:14:44:398 Servidor/(10784:10784): Size = 3
+[INFO] 22:14:44:398 Servidor/(10784:10784): Instruction List =
+[INFO] 22:14:44:399 Servidor/(10784:10784): Instruction: READ 
+[INFO] 22:14:44:400 Servidor/(10784:10784): Parameters: 2 
+[INFO] 22:14:44:400 Servidor/(10784:10784): Parameters: 100 
+[INFO] 22:14:44:401 Servidor/(10784:10784): PC = 3
+
+[INFO] 22:14:44:413 Servidor/(10784:10784): Print de PCB: 
+
+[INFO] 22:14:44:413 Servidor/(10784:10784): PID = 3
+[INFO] 22:14:44:413 Servidor/(10784:10784): Size = 3
+[INFO] 22:14:44:414 Servidor/(10784:10784): Instruction List =
+[INFO] 22:14:44:414 Servidor/(10784:10784): Instruction: READ 
+[INFO] 22:14:44:415 Servidor/(10784:10784): Parameters: 2 
+[INFO] 22:14:44:415 Servidor/(10784:10784): Parameters: 100 
+[INFO] 22:14:44:415 Servidor/(10784:10784): PC = 3
+
+[INFO] 22:27:29:316 Servidor/(11165:11165): Kernel - Iniciando conexiones
+[INFO] 22:27:29:358 Servidor/(11165:11165): Kernel - K
+[INFO] 22:27:29:370 Servidor/(11165:11165): Escuchando en 127.0.0.1:4444 (Kernel)
+
+[INFO] 22:27:29:371 Servidor/(11165:11165): Kernel - Listo para recibir a clientes
+[INFO] 22:27:29:373 Servidor/(11165:11165): No se pudo conectar al servidor
+[INFO] 22:27:29:381 Servidor/(11165:11165): Print de PCB: 
+
+[INFO] 22:27:29:382 Servidor/(11165:11165): PID = 3
+[INFO] 22:27:29:382 Servidor/(11165:11165): Size = 3
+[INFO] 22:27:29:383 Servidor/(11165:11165): Instruction List =
+[INFO] 22:27:29:383 Servidor/(11165:11165): Instruction: READ 
+[INFO] 22:27:29:384 Servidor/(11165:11165): Parameters: 2 
+[INFO] 22:27:29:384 Servidor/(11165:11165): Parameters: 100 
+[INFO] 22:27:29:385 Servidor/(11165:11165): PC = 3
+
+[INFO] 22:27:29:398 Servidor/(11165:11165): Print de PCB: 
+
+[INFO] 22:27:29:399 Servidor/(11165:11165): PID = 3
+[INFO] 22:27:29:400 Servidor/(11165:11165): Size = 3
+[INFO] 22:27:29:400 Servidor/(11165:11165): Instruction List =
+[INFO] 22:27:29:401 Servidor/(11165:11165): Instruction: READ 
+[INFO] 22:27:29:401 Servidor/(11165:11165): Parameters: 2 
+[INFO] 22:27:29:402 Servidor/(11165:11165): Parameters: 100 
+[INFO] 22:27:29:402 Servidor/(11165:11165): PC = 3
+

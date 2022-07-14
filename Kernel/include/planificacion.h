@@ -2,7 +2,11 @@
 #define PLANIFICACION_H_
 
 #include "estructurasEnlazadas.h"
-#
+#include <stdio.h>
+#include <string.h>
+
+//const char* algoritmo_fifo = "FIFO";
+//const char* algoritmo_sjf = "SRT";
 
 // void obtener_valor_tabla_de_paginas(){}  ---------- Completar cuando se realice memoria
 

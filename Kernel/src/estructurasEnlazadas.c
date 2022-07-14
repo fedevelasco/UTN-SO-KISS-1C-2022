@@ -51,7 +51,12 @@ void* remover_cola_new(unsigned long tid){ // Elimina un elemento de la cola NEW
 
 void push_lista_ready(t_PCB* pcb){
   list_add(LISTA_READY, pcb);
-  //send_carpincho_ready(KERNEL_CFG->MEMORIA_FD, carpincho->id);
+}
+
+t_PCB* pop_lista_ready(){
+  t_PCB* temp = malloc(sizeof(t_PCB));
+  temp = list_get(LISTA_READY, 0);
+  return temp;
 }
 
 int largo_lista_ready() {

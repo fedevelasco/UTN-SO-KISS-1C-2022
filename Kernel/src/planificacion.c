@@ -67,10 +67,32 @@ Al recibir el PCB del proceso en ejecución, se calcularán las estimaciones cor
 
 Cabe aclarar que en todos los casos el PCB será recibido a través de la conexión de dispatch, 
 quedando la conexión de interrupt dedicada solamente a enviar mensajes de interrupción.
-*/
 
 
+void planificadorCP_enviar_a_dispatch(char* algoritmo_planificacion, t_log* logger){
 
+    //conxion a cpu dispatch
 
-void planificadorCP_enviar_a_dispatch(){
+    if ( strcmp(algoritmo_planificacion, algoritmo_fifo) == 0){
+        log_info(logger, "Planificador Corto Plazo - FIFO seleccionado");
+        //algoritmo fifo
+    }
+    else if ( strcmp(algoritmo_planificacion, algoritmo_sjf) == 0){
+        log_info(logger, "Planificador Corto Plazo - SJF seleccionado");
+        //algoritmo sjf con desalojo
+    }
+    else{
+        log_error(logger, "Planificador Corto Plazo - Error de seleccion de algoritmo, mala lectura de config");
+    }
+
 }
+
+void planificadorCP_fifo(){
+
+    // enviar pcb a cpu
+    // recibir pcb, enviarlo a exit
+    //  
+
+}
+
+*/
