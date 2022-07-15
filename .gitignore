@@ -58,3 +58,7 @@ dkms.conf
 **/.project
 **/.metadata
 
+.vscode/
+*.log
+
+

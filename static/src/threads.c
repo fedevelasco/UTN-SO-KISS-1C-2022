@@ -19,12 +19,12 @@ int32_t mutex_init(int mutex_size, ...) {
 	return 1;
 }
 
-int thread_create(pthread_t * thread, void *(*function)(void *)) {
+int32_t thread_create(pthread_t * thread, void *(*function)(void *)) {
 
 	return pthread_create(thread, &thread_attributes, (void*) function, NULL);
 }
 
-int thread_create_with_parameter(pthread_t * thread, void *(*function)(void *), void * parameter) {
+int32_t thread_create_with_parameter(pthread_t * thread, void *(*function)(void *), void * parameter) {
 
 	return pthread_create(thread, &thread_attributes, (void*) function, parameter);
 }
