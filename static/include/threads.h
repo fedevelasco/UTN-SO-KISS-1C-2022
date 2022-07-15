@@ -2,6 +2,8 @@
 #define THREADS_H_
 
 #include <pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <stdarg.h>
 #include <commons/collections/list.h>
 
@@ -14,11 +16,11 @@ t_list* mutex_list;
 	REPLACED; \
 	pthread_mutex_unlock(&MUTEX_REPLACED);} \
 
-void mutex_init(int mutex_size, ...);
-int thread_create(pthread_t * thread, void *(*function)(void *));
-int thread_create_with_parameter(pthread_t * hilo, void *(*function)(void *), void * parameter);
+int32_t mutex_init(int mutex_size, ...);
+int32_t thread_create(pthread_t * thread, void *(*function)(void *));
+int32_t thread_create_with_parameter(pthread_t * hilo, void *(*function)(void *), void * parameter);
 void mutex_destroy();
-void set_thread_attributes();
+int32_t set_thread_attributes();
 void thread_attributes_destroy();
 
 #endif /* THREADS_H_ */

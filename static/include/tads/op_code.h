@@ -13,7 +13,7 @@ typedef enum
 	GET_FRAME,
 	READ_MEMORY,
 	WRITE_MEMORY,
-	DEBUG
+	DEBUGGING
 }op_code;
 
 
