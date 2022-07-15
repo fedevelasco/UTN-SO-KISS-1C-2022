@@ -58,3 +58,11 @@ dkms.conf
 **/.project
 **/.metadata
 
+# Other
+.idea
+.project
+.cproject
+.settings
+.vscode
+.java
+
