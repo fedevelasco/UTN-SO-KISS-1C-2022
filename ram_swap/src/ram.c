@@ -33,7 +33,7 @@ int main(void){
 
 	//TODO: Definir los mutex que tengo que usar y los inicializo aca.
 	//(El primer numero es la cantidad de mutex que voy a inicializar)
-	if(!mutex_init(2, &mutex_client, &mutex_swap)){
+	if(!mutex_init(3, &MUTEX_CLIENT, &MUTEX_SWAP, &LOCK_ACCESS_RAM)){
 		//end_process();
 		return EXIT_FAILURE;
 	}

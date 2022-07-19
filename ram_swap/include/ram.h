@@ -12,12 +12,12 @@
 #define SERVERNAME "RAM_SWAP"
 
 
-pthread_mutex_t mutex_client;
+pthread_mutex_t MUTEX_CLIENT;
 
 #define MUTEX_CLIENT(REPLACED) \
 	MUTEX(REPLACED,mutex_client);
 
-pthread_mutex_t mutex_swap;
+pthread_mutex_t MUTEX_SWAP;
 
 #define MUTEX_SWAP(REPLACED) \
 	MUTEX(REPLACED,mutex_swap);
@@ -26,8 +26,8 @@ pthread_mutex_t mutex_swap;
 
 //////////////////////////////////////////
 //TODO: Aca definir todos los mutex. Los tengo que cargar en mutex_init de main.
-pthread_mutex_t lock_access_ram;
-pthread_mutex_t lock_access_table;
+pthread_mutex_t LOCK_ACCESS_RAM;
+pthread_mutex_t LOCK_ACCESS_TABLE;
 //////////////////////////////////////////
 
 int32_t server_fd;
