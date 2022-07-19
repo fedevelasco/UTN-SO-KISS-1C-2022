@@ -33,6 +33,10 @@ typedef struct custom_config {
 
 } custom_config_t;
 
+typedef struct second_level_page_number {
+	int32_t value;
+} second_level_page_number_t ;
+
 typedef struct global_page_lists {
 
 	//Primer Nivel
@@ -45,20 +49,22 @@ typedef struct global_page_lists {
 
 typedef struct first_level_page_table {
 
-	t_dictionary* table;
+	int32_t pid;
+	t_list* entries; //El maximo es entradas_por_tabla;
 
 } first_level_page_table_t;
 
+typedef struct second_level_page_tables{
 
-typedef struct second_level_page_table {
-    uint32_t page_number;
-    uint32_t frame_number;
-    union {
-        uint32_t bit_U;     // bit de uso
-        uint32_t TUR;       // tiempo de ultima referencia
-    };
-    bool bit_P;             // bit de presencia
-} second_level_page_table_t;
+	t_list* pages; //El maximo es entradas_por_tabla;
+} second_level_page_tables_t;
+
+typedef struct page {
+    //page_number es el index de la lista
+    int32_t frame_number;
+    bool bit_U;     // bit de uso
+    bool bit_P;     // bit de presencia
+} page_t;
 
 // Variables globales
 
@@ -70,6 +76,7 @@ int32_t memory_size;
 void* memory;
 int32_t* occupied_frames_vector;
 global_page_lists_t global_page_lists;
+int32_t next_second_level_page = 0;
 
 // Funciones
 t_log* start_logger(void);
