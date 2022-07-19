@@ -1,5 +1,5 @@
-#ifndef LIST_UTILS_H_
-#define LIST_UTILS_H_
+#ifndef aBUFFER_H_
+#define aBUFFER_H_
 
 #include <stdlib.h>
 #include <string.h>
@@ -31,3 +31,6 @@ void buffer_destroy(t_buffer* buffer);
 
 
 #endif
+
+
+

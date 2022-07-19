@@ -3,6 +3,7 @@
 #include<sys/socket.h>
 #include<unistd.h>
 #include<netdb.h>
+#include <stdbool.h>
 #include<commons/collections/list.h>
 #include<string.h>
 #include<assert.h>
@@ -23,4 +24,10 @@ int iniciar_cliente(char *ip, char* puerto, t_log* logger);
 // -------------- Liberar Conexiones --------------
 
 void liberar_conexion(int* socket_cliente);
+
+// -------------- Enviar confirmacion de conexion  --------------
+bool send_ack(int fd, bool ack);
+
+// -------------- Recibir confirmacion de conexion  --------------
+bool recv_ack(int fd, bool* ack);
 

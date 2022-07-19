@@ -117,3 +117,27 @@ void liberar_conexion(int* socket_cliente) {
     close(*socket_cliente);
     *socket_cliente = -1;
 }
+
+
+
+bool send_ack(int fd, bool ack) {
+    void* stream = malloc(sizeof(bool));
+    memcpy(stream, &ack, sizeof(bool));
+    if (send(fd, stream, sizeof(bool), 0) == -1) {
+        free(stream);
+        return false;
+    }
+    free(stream);
+    return true;
+}
+bool recv_ack(int fd, bool* ack) {
+    void* stream = malloc(sizeof(bool));
+    if (recv(fd, stream, sizeof(bool), 0) != sizeof(bool)) {
+        free(stream);
+        return false;
+    }
+    memcpy(ack, stream, sizeof(bool));
+
+    free(stream);
+    return true;
+}
