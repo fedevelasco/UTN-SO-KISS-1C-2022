@@ -1,7 +1,8 @@
 #ifndef RAM_CONNECTION_PROCESSOR_H_
 #define RAM_CONNECTION_PROCESSOR_H_
 
-#include <tads/op_code.h>
+#include <stdbool.h>
+#include <tads/process.h>
 #include <libreriaConexiones.h>
 
 
