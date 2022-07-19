@@ -179,6 +179,24 @@ t_buffer* new_instruction_buffer(t_instructions_list* instructions_list, t_log* 
 	return buffer;
 }
 
+int32_t serialize_process(char* output, t_process* input) {
+	int32_t offset = 0;
+	offset += serialize_int(output + offset, &(input->pid));
+	offset += serialize_int(output + offset, &(input->process_size));
+
+	return offset;
+}
+
+int32_t deserialize_process(t_process* output, char* input) {
+	int32_t offset = 0;
+	offset += deserialize_int(&output->pid, input);
+	offset += deserialize_int(&output->process_size, input + offset);
+
+	return offset;
+}
+
+
+
 
 void print_buffer(char* buffer, int32_t size) {
 	int32_t i;
@@ -199,6 +217,8 @@ int test_serialization(){
 	CU_add_test(suite_serialization, "Test de Serializacion de string", test_serialize_string);
 	CU_add_test(suite_serialization, "Test de Serializacion de instruction", test_serialize_instruction);
 	CU_add_test(suite_serialization, "Test de Serializacion de instruction_list", test_serialize_instruction_list);
+	CU_add_test(suite_serialization, "Test de Serializacion de instruction_list", test_serialize_process);
+
 
 	CU_basic_set_mode(CU_BRM_VERBOSE);
 	CU_basic_run_tests();
@@ -345,6 +365,28 @@ void test_serialize_instruction_list(){
 	instructions_list_destroy(instructions_listB);
 	list_destroy_and_destroy_elements(parameters, (void*) parameter_destroy);
 	list_destroy_and_destroy_elements(parameters2, (void*) parameter_destroy);
+	free(buffer);
+}
+
+void test_serialize_process(){
+	t_process* processA = create_process();
+	t_process* processB = create_process();
+
+	processA->pid = 2;
+	processA->process_size = 1024;
+	int32_t size = (2 * (sizeof(int32_t)));
+
+	char* buffer = malloc (size);
+	memset(buffer, 0, size);
+	serialize_process(buffer,processA);
+	print_buffer(buffer,size);
+	deserialize_process(processB,buffer);
+
+	CU_ASSERT_EQUAL(processA->pid, processB->pid);
+	CU_ASSERT_EQUAL(processA->process_size, processB->process_size);
+
+	process_destroy(processA);
+	process_destroy(processB);
 	free(buffer);
 }
 
