@@ -3,17 +3,14 @@
 int main(void){
 
 	/* ---------------- LOGGING ---------------- */
-	t_log* logger;
+
 	logger = start_logger();
-
-
-	t_config* config_to_load;
 
 	/* ---------------- ARCHIVOS DE CONFIGURACION ---------------- */
 
 	log_info(logger, "Carga de archivo de configuracion - Inicio");
 
-	if(!load_configuration_file(config_to_load, logger)){
+	if(!load_ram_configuration_file(logger)){
 		//end_process();
 		return EXIT_FAILURE;
 	}
@@ -33,7 +30,7 @@ int main(void){
 
 	//TODO: Definir los mutex que tengo que usar y los inicializo aca.
 	//(El primer numero es la cantidad de mutex que voy a inicializar)
-	if(!mutex_init(3, &MUTEX_CLIENT, &MUTEX_SWAP, &LOCK_ACCESS_RAM)){
+	if(!mutex_init(3, &MUTEX_CLIENT, &MUTEX_SWAP, &LOCK_ACCESS_RAM, &LOCK_ACCESS_TABLE)){
 		//end_process();
 		return EXIT_FAILURE;
 	}
@@ -66,7 +63,9 @@ int main(void){
 
 
 	//TODO: Ver como pasarle la ip posta de la vm.
-    server_fd = server_init(logger, SERVERNAME, "0.0.0.0", config.puerto_escucha);
+	char port[4];
+	sprintf(port, "%d", config.puerto_escucha);
+    server_fd = iniciar_servidor(logger, SERVERNAME, "0.0.0.0", port);
 
 
 	/* ---------------- ESPERAR CLIENTES Y PROCESAR CONEXION  -------------------- */

@@ -3,11 +3,14 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <threads.h>
 #include <commons/log.h>
 #include <commons/string.h>
 #include <commons/collections/list.h>
+#include <libreriaConexiones.h>
 
 #include <ram_utils.h>
+#include <connection_utils.h>
 
 #define SERVERNAME "RAM_SWAP"
 
