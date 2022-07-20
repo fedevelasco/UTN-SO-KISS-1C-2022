@@ -25,3 +25,16 @@ char* recv_buffer(int32_t* buffer_size, int32_t client_socket)
 	return buffer;
 }
 
+
+bool send_process_init(int32_t client_socket, int32_t pid_first_level_table_number){
+	void* stream = malloc(sizeof(int32_t));
+	memcpy(stream, &pid_first_level_table_number, sizeof(int32_t));
+	if (send(client_socket, stream, sizeof(int32_t), 0) == -1) {
+	        free(stream);
+	        return false;
+	    }
+	    free(stream);
+	    return true;
+}
+
+
