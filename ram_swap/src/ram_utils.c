@@ -4,7 +4,7 @@ t_log* start_logger(void)
 {
 	t_log* new_logger;
 
-	new_logger = log_create("console.log", "Console", 1, LOG_LEVEL_DEBUG);
+	new_logger = log_create("ram_swap.log", "Ram_Swap", 1, LOG_LEVEL_DEBUG);
 
 	if(new_logger == NULL){
 		printf("No fue posible crear el Logger\n");
@@ -14,14 +14,14 @@ t_log* start_logger(void)
 	return new_logger;
 }
 
-int32_t load_configuration_file(t_config* config_to_load, t_log* logger)
+int32_t load_ram_configuration_file(t_log* logger)
 {
 	log_info(logger, "Carga de archivo de configuracion - load_configuration_file - Inicio");
-	t_config* new_configuration;
+	t_config* config_to_load;
 
-	new_configuration = config_create("../ram_swap/ram_swap.config");
+	config_to_load = config_create("../ram_swap/ram_swap.config");
 
-	if (new_configuration == NULL){
+	if (config_to_load == NULL){
 		log_error(logger, "Carga de archivo de configuracion - load_configuration_file - Error al crear configuracion");
 		return 0;
 	}
@@ -39,7 +39,7 @@ int32_t load_configuration_file(t_config* config_to_load, t_log* logger)
 
 	config_destroy(config_to_load);
 
-	log_info(logger, "Carga de archivo de configuracion - load_configuration_file - Config en %s cargada ok", new_configuration->path);
+	log_info(logger, "Carga de archivo de configuracion - load_configuration_file - Config en %s cargada ok", config_to_load->path);
 
 	return 1;
 }
@@ -78,12 +78,14 @@ void occupied_frames_vector_create(custom_config_t config, t_log* logger){
 
 }
 
-void paging_create(custom_config_t config, t_log* logger){
+int32_t paging_create(custom_config_t config, t_log* logger){
 
 	global_page_lists = malloc(sizeof(global_page_lists_t));
 
-	global_page_lists.first_level_page_tables = list_create();
-	global_page_lists.second_level_page_tables = list_create();
+	global_page_lists->first_level_page_tables = list_create();
+	global_page_lists->second_level_page_tables = list_create();
+
+	return 1;
 
 }
 

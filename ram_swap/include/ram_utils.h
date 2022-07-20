@@ -4,6 +4,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<signal.h>
+#include <pthread.h>
 #include<unistd.h>
 #include<sys/socket.h>
 #include<netdb.h>
@@ -33,9 +34,9 @@ typedef struct custom_config {
 
 } custom_config_t;
 
-typedef struct second_level_page_number {
+typedef struct second_level_table_number {
 	int32_t value;
-} second_level_page_number_t ;
+} second_level_table_number_t ;
 
 typedef struct global_page_lists {
 
@@ -75,12 +76,16 @@ t_list* last_memory_position_used;
 int32_t memory_size;
 void* memory;
 int32_t* occupied_frames_vector;
-global_page_lists_t global_page_lists;
-int32_t next_second_level_page = 0;
+global_page_lists_t* global_page_lists;
+
+
 
 // Funciones
 t_log* start_logger(void);
-t_config* load_configuration_file(t_log* logger);
+int32_t load_ram_configuration_file(t_log* logger);
+int32_t memory_create(custom_config_t config, t_log* logger);
+void occupied_frames_vector_create(custom_config_t config, t_log* logger);
+int32_t paging_create(custom_config_t config, t_log* logger);
 void close_process();
 
 
