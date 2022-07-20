@@ -58,7 +58,7 @@ int32_t iniciar_servidor(t_log* logger, const char* name, char* ip, char* puerto
 	listen(socket_servidor, SOMAXCONN);
 
 	log_trace(logger, "Listo para escuchar a mi cliente");
-	log_info(logger, "Escuchando en %s:%s (%s)\n", IP_KERNEL, PUERTO_KERNEL, name);
+	log_info(logger, "Escuchando en %s:%s (%s)\n", ip, puerto, name);
 
 	freeaddrinfo(server_info);
 
@@ -67,7 +67,7 @@ int32_t iniciar_servidor(t_log* logger, const char* name, char* ip, char* puerto
 
 // -------------- Aceptar cliente como Servidor --------------
 
-int32_t esperar_cliente(t_log* logger, const char* name, int32_t socket_servidor)
+int32_t esperar_cliente(t_log* logger, char* name, int32_t socket_servidor)
 {
 	// Aceptamos un nuevo cliente
 	struct sockaddr_in dir_cliente; // Esta estructura contendra los datos de la conexion del cliente. IP, puerto, etc
@@ -120,7 +120,7 @@ void liberar_conexion(int* socket_cliente) {
 
 
 
-bool send_ack(int fd, bool ack) {
+bool send_ack(int32_t fd, bool ack) {
     void* stream = malloc(sizeof(bool));
     memcpy(stream, &ack, sizeof(bool));
     if (send(fd, stream, sizeof(bool), 0) == -1) {
@@ -130,7 +130,7 @@ bool send_ack(int fd, bool ack) {
     free(stream);
     return true;
 }
-bool recv_ack(int fd, bool* ack) {
+bool recv_ack(int32_t fd, bool* ack) {
     void* stream = malloc(sizeof(bool));
     if (recv(fd, stream, sizeof(bool), 0) != sizeof(bool)) {
         free(stream);
