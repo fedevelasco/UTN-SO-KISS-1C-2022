@@ -1,47 +1,49 @@
 #include <ram.h>
 
-int main(void){
+int main(int argc, char* argv[]){
 
 	/* ---------------- LOGGING ---------------- */
 
 	logger = start_logger();
 
+	if(argc < 2) {
+			log_error(logger, "Error en argumentos - Es obligatorio especificar path de config y de ips - Fin proceso");
+			//end_process();
+			return EXIT_FAILURE;
+		}
+
 	/* ---------------- ARCHIVOS DE CONFIGURACION ---------------- */
 
 	log_info(logger, "Carga de archivo de configuracion - Inicio");
 
-	if(!load_ram_configuration_file(logger)){
+	char* config_path = argv[1];
+	char* ip_config_path = argv[2];
+
+	if(load_ram_configuration_file(config_path, ip_config_path)){
 		//end_process();
 		return EXIT_FAILURE;
 	}
 
-	log_info(logger, "La Ram configurada tiene escucha en: %d, con tamanio: %d y algoritmo: %s", config.puerto_escucha, config.tam_memoria, config.algoritmo_reemplazo);
+	log_info(logger, "La Ram configurada tiene escucha en: %s : %s, con tamanio: %d y algoritmo: %s", ip, puerto_escucha, tam_memoria, algoritmo_reemplazo);
 	log_info(logger, "Carga de archivo de configuracion - Fin");
 
 
 	/* ---------------- LOCKS Y MUTEX -------------------- */
 
-	log_info(logger, "Creacion de locks y mutex - Inicio");
+	log_info(logger, "Creacion de mutex - Inicio");
 
-	if(!set_thread_attributes()){
+	if(mutex_init()){
 		//end_process();
 		return EXIT_FAILURE;
 	}
 
-	//TODO: Definir los mutex que tengo que usar y los inicializo aca.
-	//(El primer numero es la cantidad de mutex que voy a inicializar)
-	if(!mutex_init(3, &MUTEX_CLIENT, &MUTEX_SWAP, &LOCK_ACCESS_RAM, &LOCK_ACCESS_TABLE)){
-		//end_process();
-		return EXIT_FAILURE;
-	}
-
-	log_info(logger, "Creacion de locks y mutex - Fin");
+	log_info(logger, "Creacion de mutex - Fin");
 
 	/* ---------------- INICIO MEMORIA -------------------- */
 
 	log_info(logger, "Creacion de memoria - Inicio");
 
-	if(!memory_create(config, logger)){
+	if(memory_create()){
 		//end_process();
 		return EXIT_FAILURE;
 	}
@@ -52,29 +54,58 @@ int main(void){
 
 	log_info(logger, "Inicio de paginacion - Inicio");
 
-	if(!paging_create(config, logger)){
+	if(paging_tables_create()){
 		//end_process();
 		return EXIT_FAILURE;
 	}
 
 	log_info(logger, "Inicio de paginacion - Fin");
 
+	/* ---------------- INICIO SWAP -------------------- */
+
+		log_info(logger, "Inicio de swap - Inicio");
+
+		if(swap_init()){
+			//end_process();
+			return EXIT_FAILURE;
+		}
+
+		log_info(logger, "Inicio de swap - Fin");
+
 	/* ---------------- CREACION SERVER -------------------- */
 
+	log_info(logger, "Inicio de threads - Inicio");
 
-	//TODO: Ver como pasarle la ip posta de la vm.
-	char port[4];
-	sprintf(port, "%d", config.puerto_escucha);
-    server_fd = iniciar_servidor(logger, SERVERNAME, "0.0.0.0", port);
+	if(threads_init()){
+		//end_process();
+		return EXIT_FAILURE;
+	}
+	log_info(logger, "Inicio de threads - Fin");
+
+	log_info(logger, "Inicio de elementos auxiliares - Inicio");
+
+		if(aux_elements_init()){
+			//end_process();
+			return EXIT_FAILURE;
+		}
+	log_info(logger, "Inicio de elementos auxiliares - Fin");
+
+
+	log_info(logger, "Inicio de server - Inicio");
+
+	server_socket = iniciar_servidor(logger, SERVERNAME, ip, puerto_escucha);
+
+    log_info(logger, "Inicio de server - Fin");
 
 
 	/* ---------------- ESPERAR CLIENTES Y PROCESAR CONEXION  -------------------- */
 
-	while (server_listen_ram(SERVERNAME, server_fd));
+    log_info(logger, "Esperando clientes - Inicio");
+	server_listen_ram(SERVERNAME, server_socket);
 
 	/* ---------------- LIBERO CONEXIONES Y FINALIZO  -------------------- */
 
-	liberar_conexion(&server_fd);
+	liberar_conexion(&server_socket);
 
 	close_process();
 
