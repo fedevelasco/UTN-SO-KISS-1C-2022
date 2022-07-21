@@ -7,11 +7,12 @@
 #include<commons/collections/list.h>
 #include<string.h>
 #include<assert.h>
+#include <arpa/inet.h>
 
 #define IP_KERNEL "127.0.0.1"
 #define PUERTO_KERNEL "4444"
 
-int32_t iniciar_servidor(t_log* logger, const char* name, char* ip, char* puerto);
+int32_t iniciar_servidor(t_log* logger, char* name, char* ip, char* puerto);
 
 // -------------- Aceptar cliente como Servidor --------------
 

@@ -1,11 +1,11 @@
 // Este file es exclusivamente utilizado para tener como libreria de conexion entre modulos
 
-#include "../include/libreriaConexiones.h"
+#include <libreriaConexiones.h>
 
 
 // -------------- Iniciar Servidor --------------
 
-int32_t iniciar_servidor(t_log* logger, const char* name, char* ip, char* puerto)
+int32_t iniciar_servidor(t_log* logger, char* name, char* ip, char* puerto)
 {
 	int32_t socket_servidor; //Declaramos el descriptor
 
@@ -65,7 +65,8 @@ int32_t iniciar_servidor(t_log* logger, const char* name, char* ip, char* puerto
 	return socket_servidor;
 }
 
-// -------------- Aceptar cliente como Servidor --------------
+
+// -------------- Aceptar Cliente --------------
 
 int32_t esperar_cliente(t_log* logger, char* name, int32_t socket_servidor)
 {
@@ -73,9 +74,12 @@ int32_t esperar_cliente(t_log* logger, char* name, int32_t socket_servidor)
 	struct sockaddr_in dir_cliente; // Esta estructura contendra los datos de la conexion del cliente. IP, puerto, etc
 	socklen_t addrlenght  = sizeof(dir_cliente);
 
+
 	int32_t socket_cliente = accept(socket_servidor, (struct sockaddr *) &dir_cliente, &addrlenght ); // Aceptamos un nuevo cliente
 
-	log_info(logger, "Consola conectada (a %s)\n", name);
+	log_info(logger, "socket: %i", socket_cliente);
+
+	log_info(logger, "Se conecto %s:%d al servidor %s\n", inet_ntoa(dir_cliente.sin_addr), (int) ntohs(dir_cliente.sin_port), name);
 
 	return socket_cliente;
 }
