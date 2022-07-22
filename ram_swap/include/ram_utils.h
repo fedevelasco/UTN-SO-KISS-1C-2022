@@ -45,7 +45,7 @@ typedef struct first_level_page_table {
 } first_level_page_table_t;
 
 typedef struct first_level_entries {
-	int32_t id;
+	int32_t pid;
 	int32_t second_level_table_id;
 } first_level_entries_t;
 
@@ -56,7 +56,7 @@ typedef struct second_level_page_table{
 } second_level_page_table_t;
 
 typedef struct page {
-    int32_t id;
+    int32_t pid;
     int32_t frame_number;
     bool bit_U;     // bit de uso
     bool bit_P;     // bit de presencia
@@ -65,14 +65,15 @@ typedef struct page {
 } page_t;
 
 typedef struct process_state{
-        int32_t frames_used;
-        int32_t clock_pointer;
-        int32_t first_level_page_table_id;
-    } process_state_t;
+	int32_t frames_used;
+	int32_t clock_pointer;
+	int32_t first_level_page_table_id;
+} process_state_t;
 
 typedef struct operation_buffer{
 	op_code opcode;
 	char* buffer;
+	int32_t client_socket;
 } operation_buffer_t;
 
 // Threads

@@ -43,9 +43,6 @@ int32_t load_ram_configuration_file(char* config_path, char* ip_config_path) {
 	ip = config_get_string_value(ip_config_to_load, "IP_RAM");
 	puerto_escucha = config_get_string_value(ip_config_to_load, "PUERTO_ESCUCHA_RAM");
 	cantidad_frames = tam_memoria / tam_pagina;
-	strin
-
-
 
 	log_info(logger,"Carga de archivo de configuracion - load_configuration_file - Config en %s y en %s cargadas ok", config_path, ip_config_path);
 
