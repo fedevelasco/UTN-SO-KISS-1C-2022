@@ -11,7 +11,7 @@
 #include <ram.h>
 #include <ram_functions.h>
 
-bool process_init(int32_t client_socket);
+int32_t process_init(operation_buffer_t* operation_buffer);
 
 #endif /* RAM_CONNECTION_PROCESSOR_H_ */
 
