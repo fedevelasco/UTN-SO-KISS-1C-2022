@@ -64,16 +64,15 @@ int server_listen_ram(char* server_name, int server_socket) {
 
 
 	int32_t client_socket = esperar_cliente(logger, server_name, server_socket);
+
 	while(1){
-
-
 
 	if (client_socket != -1) {
 
 		op_code opcode;
 		if (recv(client_socket, &opcode, sizeof(op_code), 0) != sizeof(op_code)) {
 			log_error(logger, "server_listen_ram - Error recibiendo op_code");
-			return 0;
+			return 1;
 		}
 
 		int32_t buffer_size;
@@ -84,6 +83,7 @@ int server_listen_ram(char* server_name, int server_socket) {
 		operation_buffer_t* operation_buffer = malloc(sizeof(operation_buffer_t));
 		operation_buffer->opcode = opcode;
 		operation_buffer->buffer = buffer;
+		operation_buffer->client_socket = client_socket;
 
 		if(kernel_opcode(opcode)){
 			pthread_mutex_lock(&MUTEX_KERNEL_QUEUE);
@@ -97,7 +97,7 @@ int server_listen_ram(char* server_name, int server_socket) {
 			sem_post(&sem_cpu_thread);
 		}
 
-	}
+		}
 
 	}
 	return 0;
@@ -133,7 +133,7 @@ void process_kernel_functions(){
 	        			break;
 	        		}
 	        		case PROCESS_INIT_REQUEST: {
-	        			process_init(operation_buffer->buffer);
+	        			process_init(operation_buffer);
 	        			break;
 	        		}
 
