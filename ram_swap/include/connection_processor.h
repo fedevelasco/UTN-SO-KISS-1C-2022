@@ -5,11 +5,15 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <tads/process.h>
+#include <commons/bitarray.h>
+#include <commons/collections/dictionary.h>
+#include <serialization.h>
 #include <libreriaConexiones.h>
-#include <protocol.h>
-#include <connection_utils.h>
-#include <ram.h>
+#include <global_structures.h>
 #include <ram_functions.h>
+#include <swap_utils.h>
+#include <protocol.h>
+
 
 int32_t process_init(operation_buffer_t* operation_buffer);
 
