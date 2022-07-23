@@ -1,28 +1,15 @@
 #ifndef RAM_CONNECTION_UTILS_H_
 #define RAM_CONNECTION_UTILS_H_
 
-#include <commons/collections/queue.h>
-#include <semaphore.h>
+
+#include <pthread.h>
 #include <tads/op_code.h>
 #include <libreriaConexiones.h>
+#include <global_structures.h>
+#include <protocol.h>
 #include <connection_processor.h>
-#include <ram_utils.h>
-
-typedef struct {
-    int socket;
-    char* server_name;
-} connection_args_t;
-
-pthread_mutex_t MUTEX_KERNEL_QUEUE;
-pthread_mutex_t MUTEX_CPU_QUEUE;
-
-sem_t sem_kernel_thread;
-sem_t sem_cpu_thread;
 
 
-
-t_queue* kernel_queue;
-t_queue* cpu_queue;
 
 void process_connection(void* void_args);
 int server_listen_ram(char* server_name, int server_fd);

@@ -86,11 +86,19 @@ int server_listen_ram(char* server_name, int server_socket) {
 		operation_buffer->client_socket = client_socket;
 
 		if(kernel_opcode(opcode)){
+			log_info(logger, "El opcode es de Kernel");
 			pthread_mutex_lock(&MUTEX_KERNEL_QUEUE);
 			queue_push(kernel_queue, operation_buffer);
 			pthread_mutex_unlock(&MUTEX_KERNEL_QUEUE);
+			int value;
+			sem_getvalue(&sem_kernel_thread, &value);
+			log_debug(logger, "Enviando semaforo de kernel antes: %d", value);
 			sem_post(&sem_kernel_thread);
+			int value2;
+			sem_getvalue(&sem_kernel_thread, &value2);
+			log_debug(logger, "Enviando semaforo de kernel despues: %d", value2);
 		} else {
+			log_info(logger, "El opcode es de cpu");
 			pthread_mutex_lock(&MUTEX_CPU_QUEUE);
 			queue_push(cpu_queue, operation_buffer);
 			pthread_mutex_unlock(&MUTEX_CPU_QUEUE);
@@ -122,10 +130,17 @@ int32_t kernel_opcode(op_code opcode){
 
 void process_kernel_functions(){
 	while(true){
+		 	log_info(logger, "process_kernel_functions - Procesando funcion de kernel");
+
 	        sem_wait(&sem_kernel_thread);
+		 	log_info(logger, "process_kernel_functions - Procesando funcion de kernel despues de semaforo");
+
 	        pthread_mutex_lock(&MUTEX_KERNEL_QUEUE);
 	        operation_buffer_t* operation_buffer = queue_pop(kernel_queue);
 	        pthread_mutex_unlock(&MUTEX_KERNEL_QUEUE);
+
+		 	log_info(logger, "process_kernel_functions - se saco de queue socket: %d", operation_buffer->client_socket);
+
 
 	        switch (operation_buffer->opcode) {
 	        		case DEBUGGING: {
