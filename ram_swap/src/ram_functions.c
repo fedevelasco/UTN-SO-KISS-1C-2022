@@ -29,7 +29,7 @@ int32_t create_pid_memory(t_process* process){
 
 		int32_t pid_first_level_table_number;
 		pthread_mutex_lock(&MUTEX_FIRST_LEVEL_TABLES);
-		int32_t pid_first_level_table_number = list_add(global_first_level_page_tables, first_level_page_table);
+		pid_first_level_table_number = list_add(global_first_level_page_tables, first_level_page_table);
 		pthread_mutex_unlock(&MUTEX_FIRST_LEVEL_TABLES);
 
 		log_info(logger, "create_pid_memory - Tabla de paginas de primer nivel con id: %d creada para el proceso %d", pid_first_level_table_number, process->pid);
@@ -46,11 +46,11 @@ int32_t create_pid_memory(t_process* process){
 
 }
 
-int32_t process_total_pages_needed(int32_t tamanioProceso){
-    return (int32_t)ceil((double)tamanioProceso / (double)tam_pagina);
+int32_t process_total_pages_needed(int32_t size){
+    return (int32_t)ceil((double)size / (double)tam_pagina);
 }
 
-int32_t process_complete_second_level_table_pages(total_pages_needed){
+int32_t process_complete_second_level_tables(int32_t total_pages_needed){
 	return (int32_t) floor ( (double) total_pages_needed / (double) entradas_por_tabla);
 }
 
@@ -99,7 +99,7 @@ page_t* create_second_level_page(int32_t process_pid, int32_t *swap_id)
     return page;
 }
 
-void process_state(int32_t pid_first_level_table_number, t_process* process){
+void create_process_state(int32_t pid_first_level_table_number, t_process* process){
 
 	process_state_t* process_state = malloc(sizeof(process_state_t));
 	process_state->clock_pointer = 0;
