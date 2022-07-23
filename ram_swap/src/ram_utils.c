@@ -128,11 +128,12 @@ int32_t mutex_init(){
 
 int32_t threads_init(){
 
-	 if(pthread_create(&kernel_thread, NULL, (void*)process_kernel_functions, NULL)){
+	 if(pthread_create(&kernel_thread, NULL, (void*) process_kernel_functions, NULL)){
 		 log_error(logger, "threads_init - Error en creacion de thread de kernel");
 		 return 1;
 	 }
 	 pthread_detach(kernel_thread);
+	 log_info(logger, "mutex_init - Thread de kernel creado");
 
 
 	 if(pthread_create(&cpu_thread, NULL, (void*) process_cpu_functions, NULL)){
@@ -140,6 +141,7 @@ int32_t threads_init(){
 		 return 1;
 	 }
 	 pthread_detach(cpu_thread);
+	 log_info(logger, "mutex_init - Thread de cpu creado");
 
 	 return 0;
 }
