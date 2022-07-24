@@ -128,6 +128,9 @@ int32_t mutex_init(){
 
 int32_t threads_init(){
 
+	pthread_t kernel_thread;
+	pthread_t cpu_thread;
+
 	 if(pthread_create(&kernel_thread, NULL, (void*) process_kernel_functions, NULL)){
 		 log_error(logger, "threads_init - Error en creacion de thread de kernel");
 		 return 1;
@@ -158,8 +161,8 @@ int32_t aux_elements_init(){
 		 return 1;
 	}
 
-    sem_init(&sem_kernel_thread, 0, 0);
-    sem_init(&sem_cpu_thread, 0, 0);
+    sem_init(&sem_kernel_thread, 1, 0);
+    sem_init(&sem_cpu_thread, 1, 0);
 
     kernel_queue = queue_create();
     cpu_queue = queue_create();

@@ -74,6 +74,14 @@ int main(int argc, char* argv[]){
 
 	/* ---------------- CREACION SERVER -------------------- */
 
+	log_info(logger, "Inicio de elementos auxiliares - Inicio");
+
+	if(aux_elements_init()){
+		//end_process();
+		return EXIT_FAILURE;
+	}
+	log_info(logger, "Inicio de elementos auxiliares - Fin");
+
 	log_info(logger, "Inicio de threads - Inicio");
 
 	if(threads_init()){
@@ -81,14 +89,6 @@ int main(int argc, char* argv[]){
 		return EXIT_FAILURE;
 	}
 	log_info(logger, "Inicio de threads - Fin");
-
-	log_info(logger, "Inicio de elementos auxiliares - Inicio");
-
-		if(aux_elements_init()){
-			//end_process();
-			return EXIT_FAILURE;
-		}
-	log_info(logger, "Inicio de elementos auxiliares - Fin");
 
 
 	log_info(logger, "Inicio de server - Inicio");

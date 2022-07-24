@@ -24,13 +24,16 @@ int32_t process_init(operation_buffer_t* operation_buffer) {
 		return 1;
 	}
 
-	log_info(logger, "process_init - Enviando numero de tabla del proceso a Kernel");
+	log_info(logger, "process_init - Enviando numero de tabla del proceso a Kernel: %d", pid_first_level_table_number);
+
 
 	if(send_process_init(operation_buffer->client_socket, pid_first_level_table_number)) {
 		log_error(logger, "Error enviando numero de tabla del proceso a Kernel");
 		free(process);
 		return 1;
 	}
+
+	log_debug(logger, "process_init - se envio el paquete");
 
 	return 0;
 }

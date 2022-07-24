@@ -5,7 +5,6 @@
 #include <math.h>
 #include <errno.h>
 #include <commons/collections/queue.h>
-#include <semaphore.h>
 #include <commons/collections/list.h>
 #include <commons/string.h>
 #include <commons/log.h>
@@ -68,8 +67,7 @@ pthread_mutex_t MUTEX_OCCUPIED_FRAMES;
 
 // Threads
 
-pthread_t kernel_thread;
-pthread_t cpu_thread;
+
 
 // Variables globales
 char* puerto_escucha;
@@ -102,11 +100,9 @@ typedef struct {
     char* server_name;
 } connection_args_t;
 
+
 pthread_mutex_t MUTEX_KERNEL_QUEUE;
 pthread_mutex_t MUTEX_CPU_QUEUE;
-
-sem_t sem_kernel_thread;
-sem_t sem_cpu_thread;
 
 t_queue* kernel_queue;
 t_queue* cpu_queue;
