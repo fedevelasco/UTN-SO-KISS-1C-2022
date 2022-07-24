@@ -27,7 +27,7 @@ t_package* create_package();
 * @NAME: create_package
 * @DESC: Crea una instancia vacia de "t_package" copiando el contenido del buffer en el package.
 */
-t_package* new_package(t_buffer* buffer);
+t_package* new_package(t_buffer* buffer, op_code opcode);
 
 /**
 * @NAME: package_destroy
