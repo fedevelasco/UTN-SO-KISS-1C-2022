@@ -1,71 +1,12 @@
 #include <connection_utils.h>
 
-//void process_connection(void* void_args) {
-//	connection_args_t* args = (connection_args_t*) void_args;
-//	int client_socket = args->socket;
-//	char* server_name = args->server_name;
-//	free(args);
-//
-//	op_code cop;
-//	while (client_socket != -1) {
-//
-//		if (recv(client_socket, &cop, sizeof(op_code), 0) != sizeof(op_code)) {
-//			log_info(logger, "process_connection - Error recibiendo conexion");
-//			return;
-//		}
-//
-//		switch (cop) {
-//		case DEBUGGING:
-//			log_info(logger, "Im a debug message");
-//			break;
-//
-//		case PROCESS_INIT: {
-//			process_init(client_socket);
-//			break;
-//		}
-//
-//		case PROCESS_SUSPEND: {
-////			process_suspend(client_socket);
-//			break;
-//		}
-//
-//		case PROCESS_KILL: {
-////			process_kill(client_socket);
-//			break;
-//		}
-//		case GET_SECOND_LEVEL_TABLE: {
-////			get_second_level_table(client_socket);
-//			break;
-//		}
-//		case GET_FRAME: {
-////			get_frame(client_socket);
-//			break;
-//		}
-//		case READ_MEMORY: {
-////			read_memory(client_socket);
-//			break;
-//		}
-//		case WRITE_MEMORY: {
-////			write_memory(client_socket);
-//			break;
-//		}
-//
-//		default:
-//			log_error(logger, "process_connection - Error en server");
-//			return;
-//		}
-//	}
-//
-//	log_warning(logger, "El cliente se desconecto de %s server", server_name);
-//	return;
-//}
-
 int server_listen_ram(char* server_name, int server_socket) {
 
 
-	int32_t client_socket = esperar_cliente(logger, server_name, server_socket);
 
 	while(1){
+
+	int32_t client_socket = esperar_cliente(logger, server_name, server_socket);
 
 	if (client_socket != -1) {
 
@@ -90,19 +31,19 @@ int server_listen_ram(char* server_name, int server_socket) {
 			pthread_mutex_lock(&MUTEX_KERNEL_QUEUE);
 			queue_push(kernel_queue, operation_buffer);
 			pthread_mutex_unlock(&MUTEX_KERNEL_QUEUE);
-			int value;
-			sem_getvalue(&sem_kernel_thread, &value);
-			log_debug(logger, "Enviando semaforo de kernel antes: %d", value);
-			sem_post(&sem_kernel_thread);
-			int value2;
-			sem_getvalue(&sem_kernel_thread, &value2);
-			log_debug(logger, "Enviando semaforo de kernel despues: %d", value2);
+
+			if(sem_post(&sem_kernel_thread)){
+				log_error(logger, "server_listen_ram - Error en sem_post - sem_kernel_thread. (errno %i)", errno);
+			}
+
 		} else {
 			log_info(logger, "El opcode es de cpu");
 			pthread_mutex_lock(&MUTEX_CPU_QUEUE);
 			queue_push(cpu_queue, operation_buffer);
 			pthread_mutex_unlock(&MUTEX_CPU_QUEUE);
-			sem_post(&sem_cpu_thread);
+			if(sem_post(&sem_cpu_thread)){
+				log_error(logger, "server_listen_ram - Error en sem_post - sem_cpu_thread. (errno %i)", errno);
+			}
 		}
 
 		}
@@ -130,16 +71,18 @@ int32_t kernel_opcode(op_code opcode){
 
 void process_kernel_functions(){
 	while(true){
-		 	log_info(logger, "process_kernel_functions - Procesando funcion de kernel");
+		 	log_info(logger, "KERNEL_THREAD - process_kernel_functions - Procesando funcion de kernel");
 
-	        sem_wait(&sem_kernel_thread);
-		 	log_info(logger, "process_kernel_functions - Procesando funcion de kernel despues de semaforo");
+	        if(sem_wait(&sem_kernel_thread)){
+				log_error(logger, "KERNEL_THREAD - process_kernel_functions - Error en sem_wait - sem_kernel_thread. (errno %i)", errno);
+			}
+		 	log_info(logger, "KERNEL_THREAD - process_kernel_functions - Procesando funcion de kernel despues de semaforo");
 
 	        pthread_mutex_lock(&MUTEX_KERNEL_QUEUE);
 	        operation_buffer_t* operation_buffer = queue_pop(kernel_queue);
 	        pthread_mutex_unlock(&MUTEX_KERNEL_QUEUE);
 
-		 	log_info(logger, "process_kernel_functions - se saco de queue socket: %d", operation_buffer->client_socket);
+		 	log_info(logger, "KERNEL_THREAD - process_kernel_functions - se saco de queue socket: %d", operation_buffer->client_socket);
 
 
 	        switch (operation_buffer->opcode) {
@@ -163,7 +106,7 @@ void process_kernel_functions(){
 	        		}
 
 	        		default:
-	        			log_error(logger, "process_kernel_functions - Error en server");
+	        			log_error(logger, "KERNEL_THREAD - process_kernel_functions - Error en server");
 	        			return;
 	        		}
 

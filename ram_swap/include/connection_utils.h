@@ -3,6 +3,7 @@
 
 
 #include <pthread.h>
+#include <semaphore.h>
 #include <tads/op_code.h>
 #include <libreriaConexiones.h>
 #include <global_structures.h>
@@ -10,12 +11,13 @@
 #include <connection_processor.h>
 
 
-
-void process_connection(void* void_args);
 int server_listen_ram(char* server_name, int server_fd);
 int32_t kernel_opcode(op_code opcode);
 void process_kernel_functions();
 void process_cpu_functions();
+
+sem_t sem_kernel_thread;
+sem_t sem_cpu_thread;
 
 
 #endif /* RAM_CONNECTION_UTILS_H_ */
