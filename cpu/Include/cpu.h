@@ -28,20 +28,25 @@
 #include "primitivas.h"
 #include "conexiones.h"
 
+
+//  NO RECUERDO PUNTUALMENTE QUE HACE ESTO  //
+
 #define ANSI_COLOR_RED     "\t"//\x1b[31m
 #define ANSI_COLOR_GREEN   "\t"//\x1b[32m
 #define ANSI_COLOR_RESET   "\t"//\x1b[0m
 
+// --------------------------------------- //
+
 typedef struct customConfig {
-	int puertoNucleo;
-	char* ipNucleo;
-	int puertoUMC;
-	char* ipUMC;
-	int DEBUG_IGNORE_UMC;
+	int puertoKernel;
+	char* ipKernel;
+	int puertoMemoria;
+	char* ipMemoria;
+	int DEBUG_IGNORE_MEMORIA;
 	int DEBUG_IGNORE_PROGRAMS;
-	int DEBUG_IGNORE_NUCLEO;
+	int DEBUG_IGNORE_KERNEL;
 	int DEBUG_RAISE_LOG_LEVEL;
-	int DEBUG_RUN_TESTS_WITH_UMC;
+	int DEBUG_RUN_TESTS_WITH_MEMORIA;
 	int DEBUG_RUN_UNITARY_TESTS;
 	int DEBUG_LOG_ON_TESTS;
 } customConfig_t;
@@ -80,6 +85,7 @@ void incrementarPC(t_PCB* pcb) ;
 void loggearFinDePrimitiva(char* instr);
 void desalojarProceso();
 
+
 /*--------FUNCIONES----------*/
 void parsear(char* const sentencia);
 void esperar_programas();
@@ -102,15 +108,17 @@ void handler(int sign);
 bool hayOverflow();
 void pass();
 void finalizar_proceso_por_variable_invalida();
+
+
 // ***** Funciones de conexiones ***** //
 int getHandshake(int cli);
 void warnDebug();
-void conectar_nucleo();
-void hacer_handshake_nucleo();
-void conectar_umc();
-void hacer_handshake_umc();
-void establecerConexionConUMC();
-void establecerConexionConNucleo();
+void conectar_kernel();
+void hacer_handshake_kernel();
+void conectar_memoria();
+void hacer_handshake_memoria();
+void establecerConexionConMemoria();
+void establecerConexionConKernel();
 
 // ***** Funciones de inicializacion y finalizacion ***** //
 void cargarConfig();
@@ -122,6 +130,6 @@ void finalizar();
 void correrTests();  //De cpu.c
 int testear(int (*suite)(void)); //De test.c
 int test_cpu(); //De test.c
-int test_cpu_con_umc(); //De test.c
+int test_cpu_con_memoria(); //De test.c
 
 #endif /* CPU_H_ */

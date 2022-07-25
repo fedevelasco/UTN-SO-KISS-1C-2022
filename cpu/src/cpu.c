@@ -4,7 +4,6 @@
 // Realizar las rutinas/ ciclo de instrucciones -> Fetch -> Decode -> Fetch Operands -> Execute -> Check Interrupt
 // Configurar el MMU con paginacin de 2 niveles y los 3 procesos 
 // TLB
-// Nucleo es kernel y umc y swap son memoria
 
 
 #include "cpu.h"
@@ -28,50 +27,52 @@ void finalizar_proceso(bool normalmente){ //voy a esta funcion cuando ejecuto la
 	if(normalmente){
 		log_info(activeLogger,ANSI_COLOR_GREEN "El proceso ansisop ejecutó su última instrucción." ANSI_COLOR_RESET);
 	}
-	enviarHeader(nucleo, HeaderTerminoProceso);
+	enviarHeader(kernel, HeaderTerminoProceso);
 	if((overflow!=2 && overflow!=0) || normalmente){
-		enviarHeader(umc, HeaderTerminoProceso);
+		enviarHeader(memoria, HeaderTerminoProceso);
 	}
 	pcb_destroy(pcbActual);
 	ejecutando = false;
 	pcbActual=NULL;
 }
 
-/*----- Operaciones sobre el PC y avisos por quantum -----*/
-void setearPC(t_PCB* pcb, t_puntero_instruccion pc) {
-	if(!CU_is_test_running()){
-		log_info(activeLogger, "Actualizando PC de |%d| a |%d|.", pcb->PC, (int)pc);
-	}
-	pcb->PC = (int)pc;
-}
+// /*----- Operaciones sobre el PC y avisos por quantum -----*/
+// void setearPC(t_PCB* pcb, t_puntero_instruccion pc) {
+// 	if(!CU_is_test_running()){
+// 		log_info(activeLogger, "Actualizando PC de |%d| a |%d|.", pcb->PC, (int)pc);
+// 	}
+// 	pcb->PC = (int)pc;
+// }
 
-void incrementarPC(t_PCB* pcb) {
-	setearPC(pcb, (t_puntero_instruccion)((pcb->PC) + 1));
-}
+// void incrementarPC(t_PCB* pcb) {
+// 	setearPC(pcb, (t_puntero_instruccion)((pcb->PC) + 1));
+// }
 
-void loggearFinDePrimitiva(char* primitiva) {
-	log_debug(debugLogger, ANSI_COLOR_GREEN "La primitiva |%s| finalizó OK." ANSI_COLOR_RESET, primitiva);
-}
+// void loggearFinDePrimitiva(char* primitiva) {
+// 	log_debug(debugLogger, ANSI_COLOR_GREEN "La primitiva |%s| finalizó OK." ANSI_COLOR_RESET, primitiva);
+// }
 
-void desalojarProceso() {
-	log_info(activeLogger, "Desalojando proceso...");
+// void desalojarProceso() {
+// 	log_info(activeLogger, "Desalojando proceso...");
 
-	enviarPCB();
-	ejecutando = false;
-	log_info(activeLogger, "Proceso desalojado.");
-}
+// 	enviarPCB();
+// 	ejecutando = false;
+// 	log_info(activeLogger, "Proceso desalojado.");
+// }
 
-void pass(){} //no borrar
+// void pass(){} //no borrar
+
 /*--------FUNCIONES----------*/
+
 void esperar_programas() {
-	log_debug(debugLogger, "Esperando programas de nucleo.");
+	log_debug(debugLogger, "Esperando programas de Kernel.");
 	char* header;
 	while (!puedo_terminar()) {
-		header = recv_waitall_ws(nucleo, 1);
+		header = recv_waitall_ws(kernel, 1);
 		procesarHeader(header);
 		free(header);
 	}
-	log_debug(debugLogger, "Ya no se esperan programas de nucleo.");
+	log_debug(debugLogger, "Ya no se esperan programas de Kernel.");
 }
 
 void procesarHeader(char *header) {
@@ -85,8 +86,7 @@ void procesarHeader(char *header) {
 		break;
 
 	case HeaderHandshake:
-		log_error(errorLogger,
-				"Segunda vez que se recibe un headerHandshake acá!.");
+		log_error(errorLogger, "Segunda vez que se recibe un headerHandshake acá!.");
 		exit(EXIT_FAILURE);
 		break;
 
@@ -123,12 +123,13 @@ void procesarHeader(char *header) {
 }
 
 /**
- * Pido el tamaño de tamaño de pagina a UMC,
- * Si ignoro UMC por config, lo seteo en -99999
+ * Pido el tamaño de tamaño de pagina a memoria,
+ * Si ignoro memoria por config, lo seteo en -99999
  */
+
 void pedir_tamanio_paginas() {
-	enviarHeader(umc,HeaderTamanioPagina); //le pido a umc el tamanio de las paginas
-	char* tamanio = recv_nowait_ws(umc, sizeof(int)); //recibo el tamanio de las paginas
+	enviarHeader(memoria,HeaderTamanioPagina); //le pido a memoria el tamanio de las paginas
+	char* tamanio = recv_nowait_ws(memoria, sizeof(int)); //recibo el tamanio de las paginas
 	tamanioPaginas = char4ToInt(tamanio);
 	log_debug(debugLogger, "El tamaño de paginas es: |%d|",tamanioPaginas);
 	free(tamanio);
@@ -161,7 +162,7 @@ void sacarSaltoDeLinea(char* texto, int pos){
 void recibirFragmentoDeSentencia(int size){
 	if(!hayOverflow()){
 		//log_debug(debugLogger, "Recibiendo parte de una sentencia. Tamaño del fragmento: |%d|...", size);
-		char* serialSentencia = recv_waitall_ws(umc, size);
+		char* serialSentencia = recv_waitall_ws(memoria, size);
 		sacarSaltoDeLinea(serialSentencia, size);
 		char* sentencia = malloc(size+1);
 		sentencia[size]='\0';
@@ -174,7 +175,7 @@ void recibirFragmentoDeSentencia(int size){
 }
 
 /**
- * Envia a UMC: pag, offest y tamaño, es decir, un t_pedido.
+ * Envia a memoria: pag, offest y tamaño, es decir, un t_pedido.
  * Chequea que no haya overflow, mas alla de si pide una sentencia o una variable.
  * Se usa para indicar en que posicion escribir, pedir variable y pedir sentencia.
  */
@@ -189,16 +190,16 @@ void enviar_solicitud(int pagina, int offset, int size) {
 
 			int tamanio = serializar_pedido(solicitud, &pedido);
 
-			send_w(umc, solicitud, tamanio);
+			send_w(memoria, solicitud, tamanio);
 
 			log_info(activeLogger,"Solicitud enviada: (nPag,offset,size)=(%d,%d,%d)", pagina, offset, size);
 
-			char* stackOverflowFlag = recv_waitall_ws(umc, sizeof(int));
+			char* stackOverflowFlag = recv_waitall_ws(memoria, sizeof(int));
 			overflow = char4ToInt(stackOverflowFlag);
 			free(stackOverflowFlag);
 
 			if (hayOverflow()) {
-				//printf("UMC mando overflow = %d\n",overflow); // todo sacar esto para la entrega
+				//printf("memoria mando overflow = %d\n",overflow); // todo sacar esto para la entrega
 				lanzar_excepcion_overflow(overflow);
 			}
 			free(solicitud);
@@ -210,7 +211,7 @@ t_sentencia* obtener_sentencia_relativa(int* paginaInicioSentencia) {
 	t_sentencia* sentenciaAbsoluta = list_get(pcbActual->indice_codigo, pcbActual->PC);	//obtengo el offset de la sentencia
 	t_sentencia* sentenciaRelativa = malloc(sizeof(t_sentencia));
 	(*paginaInicioSentencia) = obtener_offset_relativo(sentenciaAbsoluta, sentenciaRelativa); //obtengo el offset relativo
-	//free(sentenciaAbsoluta); USTEDES SON DIABOLICOS! QUE LE HACEN A MI POBRE PCB?
+	//free(sentenciaAbsoluta); 
 	return sentenciaRelativa;
 }
 
@@ -231,11 +232,11 @@ bool paginaCompleta(int longitud_restante) {
 }
 
 /**
- * Pide una pagina entera a UMC
+ * Pide una pagina entera a Memoria
  */
 void pedirPaginaCompleta(int pagina) {
 	if (!hayOverflow()) {
-		enviarHeader(umc, HeaderSolicitudSentencia);
+		enviarHeader(memoria, HeaderSolicitudSentencia);
 		enviar_solicitud(pagina, 0, tamanioPaginas);
 		recibirFragmentoDeSentencia(tamanioPaginas);
 	}
@@ -246,7 +247,7 @@ void pedirPrimeraSentencia(t_sentencia* sentenciaRelativa, int pagina,
 	if (!hayOverflow()) {
 		int tamanioPrimeraSentencia = minimo(*longitud_restante,
 				tamanioPaginas - sentenciaRelativa->offset_inicio); //llega hasta su final o hasta que se termine la pagina, lo mas pequeño
-		enviarHeader(umc, HeaderSolicitudSentencia);
+		enviarHeader(memoria, HeaderSolicitudSentencia);
 		enviar_solicitud(pagina, sentenciaRelativa->offset_inicio,
 				tamanioPrimeraSentencia);
 		(*longitud_restante) -= tamanioPrimeraSentencia;
@@ -257,19 +258,20 @@ void pedirPrimeraSentencia(t_sentencia* sentenciaRelativa, int pagina,
 void pedirUltimaSentencia(t_sentencia* sentenciaRelativa, int pagina,
 		int longitud_restante) {
 	if (!hayOverflow()) {
-		enviarHeader(umc, HeaderSolicitudSentencia);
+		enviarHeader(memoria, HeaderSolicitudSentencia);
 		enviar_solicitud(pagina, 0, longitud_restante); //Desde el inicio, con tamaño identico a lo que me falta leer.
 		recibirFragmentoDeSentencia(longitud_restante);
 	}
 }
 
 /**
- * Envia a UMC: cantidad de paginas (cantRecvs) que voy a pedir,
+ * Envia a memoria: cantidad de paginas (cantRecvs) que voy a pedir,
  * t_pedido_1 <---- Setendo el offset de inicio correctamente, y el de fin tambien si terminase en esta pagina.
  * t_pedido_2, ...., t_pedido_n-1 <---- paginas que se piden completas
  * t_pedido_n <---- Si no es la pagina completa, setea el offset fin correcto para no pedir de mas.
  */
-void pedirYRecibirSentencia(int* tamanio) {	//pedir al UMC la proxima sentencia a ejecutar
+
+void pedirYRecibirSentencia(int* tamanio) {	//pedir a memoria la proxima sentencia a ejecutar
 	//log_info(activeLogger, "Iniciando pedido de sentencia...");
 	//imprimir_PCB(pcbActual);
 	int paginaAPedir; // Lo inicializa obtener_sentencia_relativa
@@ -298,83 +300,83 @@ void pedirYRecibirSentencia(int* tamanio) {	//pedir al UMC la proxima sentencia 
 }
 
 void enviarPID(){
-	enviarHeader(umc,HeaderPID);
+	enviarHeader(memoria,HeaderPID);
 	char* pid = intToChar4(pcbActual->PID);
-	send_w(umc,pid,sizeof(int));
+	send_w(memoria,pid,sizeof(int));
 	free(pid);
 }
 
 void recibirCantidadDePaginasDeCodigo(){
-	//log_debug(debugLogger,"Recibiendo la cantidad de paginas de codigo de UMC...");
-	char* pags = recv_waitall_ws(umc,sizeof(int));
+	//log_debug(debugLogger,"Recibiendo la cantidad de paginas de codigo de memoria...");
+	char* pags = recv_waitall_ws(memoria,sizeof(int));
 	cantidadPaginasCodigo = char4ToInt(pags);
 	log_debug(debugLogger,"Recibida la cantidad de paginas de codigo |%d|.", cantidadPaginasCodigo);
 	free(pags);
 }
 
 void recibir_quantum_sleep(){
-	char* quantum = recv_waitall_ws(nucleo, sizeof(int));
+	char* quantum = recv_waitall_ws(kernel, sizeof(int));
 	quantum_sleep = char4ToInt(quantum);
 	log_debug(debugLogger, "Valor de quantum_sleep: |%d|",quantum_sleep);
 
 	free(quantum);
 }
 
-void obtenerPCB() {		//recibo el pcb que me manda nucleo
-	if(pcbActual!=NULL){
-		pcb_destroy(pcbActual);
-	}
-	ejecutando = true;
+// void obtenerPCB() {		//recibo el pcb que me manda kernel
+// 	if(pcbActual!=NULL){
+// 		pcb_destroy(pcbActual);
+// 	}
+// 	ejecutando = true;
 
-	pcbActual=malloc(sizeof(t_PCB));
-	//log_debug(debugLogger, "Recibiendo PCB...");
-	char* serialPCB = leerLargoYMensaje(nucleo);
-	log_debug(debugLogger, "PCB recibido!");
-	deserializar_PCB(pcbActual, serialPCB);
-	enviarPID();
-	cantidadPaginasCodigo = pcbActual->cantidad_paginas;
-	stack = pcbActual->SP;
-	free(serialPCB);
-}
+// 	pcbActual=malloc(sizeof(t_PCB));
+// 	//log_debug(debugLogger, "Recibiendo PCB...");
+// 	char* serialPCB = leerLargoYMensaje(kernel);
+// 	log_debug(debugLogger, "PCB recibido!");
+// 	deserializar_PCB(pcbActual, serialPCB);
+// 	enviarPID();
+// 	cantidadPaginasCodigo = pcbActual->cantidad_paginas;
+// 	stack = pcbActual->SP;
+// 	free(serialPCB);
+// }
 
-void enviarPCB() {
-	//log_debug(debugLogger, "Enviando PCB a Nucleo...");
-	int bytes = bytes_PCB(pcbActual);
-	//imprimir_PCB(pcbActual);
-	char* serialPCB = malloc(bytes);
-	serializar_PCB(serialPCB, pcbActual);
+// void enviarPCB() {
+// 	//log_debug(debugLogger, "Enviando PCB a kernel...");
+// 	int bytes = bytes_PCB(pcbActual);
+// 	//imprimir_PCB(pcbActual);
+// 	char* serialPCB = malloc(bytes);
+// 	serializar_PCB(serialPCB, pcbActual);
 
-	enviarLargoYSerial(nucleo, bytes, serialPCB);
-	log_debug(debugLogger, "PCB Enviado!");
-	free(serialPCB);
-}
+// 	enviarLargoYSerial(kernel, bytes, serialPCB);
+// 	log_debug(debugLogger, "PCB Enviado!");
+// 	free(serialPCB);
+// }
 
-/**
- * Llamo a la funcion analizadorLinea del parser y logeo
- */
-void parsear(char* const sentencia) {
-	log_info(activeLogger, "Ejecutando la sentencia |%s|...", sentencia);
-	pcbActual->PC++; //si desp el parser lo setea en otro lado mediante una primitiva, es tema suyo.
-					//lo incremento antes asi no se desfasa.
+// /**
+//  * Llamo a la funcion analizadorLinea del parser y logeo
+//  */
+// void parsear(char* const sentencia) {
+// 	log_info(activeLogger, "Ejecutando la sentencia |%s|...", sentencia);
+// 	pcbActual->PC++; 			//si desp el parser lo setea en otro lado mediante una primitiva, es tema suyo.
+// 								//lo incremento antes asi no se desfasa.
 
-	if(noEsEnd(sentencia)){
-		analizadorLinea(sentencia, &funciones, &funcionesKernel);
-		if(flagMeSalteoTodoConGoto){return;}
+// 	if(noEsEnd(sentencia)){
+// 		analizadorLinea(sentencia, &funciones, &funcionesKernel); // chequear el funcionesKernel con juli
+// 		if(flagMeSalteoTodoConGoto){return;}
 
-		log_info(activeLogger, "PC actualizado a |%d|",pcbActual->PC);
-		enviarHeader(nucleo,headerTermineInstruccion);
-		log_debug(debugLogger,"Informé a nucleo del fin de una instrucción");
-	}
-	else{
-		finalizar_proceso(true);
-	}
-}
+// 		log_info(activeLogger, "PC actualizado a |%d|",pcbActual->PC);
+// 		enviarHeader(kernel,headerTermineInstruccion);
+// 		log_debug(debugLogger,"Informé a kernel del fin de una instrucción");
+// 	}
+// 	else{
+// 		finalizar_proceso(true);
+// 	}
+// }
 /**
  * Recibo la sentencia previamente pedida.
  */
 char* recibir_sentencia(int tamanio){
 	log_debug(debugLogger, "Recibiendo sentencia de tamaño |%d|...", tamanio);
-	char* sentencia = recv_waitall_ws(umc, tamanio);
+	char* sentencia = recv_waitall_ws(memoria, tamanio);
 	sentencia[tamanio-1]='\0';
 	log_debug(debugLogger, "Recibida la sentencia: |%s|", sentencia);
 	return sentencia;
@@ -400,9 +402,9 @@ void obtener_y_parsear() {
 /**
  * Lanza excepcion por stack overflow y termina el proceso.
  */
-void lanzar_excepcion_overflow(int flagDeUmc){
+void lanzar_excepcion_overflow(int flagDeMemoria){
 	if(runOverflowException){
-		switch(flagDeUmc){
+		switch(flagDeMemoria){
 		case 0: log_info(activeLogger,ANSI_COLOR_RED "Stack overflow! se intentó leer una dirección inválida." ANSI_COLOR_RESET);
 				break;
 		case 2:  log_info(activeLogger,ANSI_COLOR_RED "No hay marcos suficientes para el proceso." ANSI_COLOR_RESET);
@@ -425,31 +427,31 @@ void lanzar_excepcion_overflow(int flagDeUmc){
 void cargarConfig() {
 	t_config* configCPU;
 	configCPU = config_create("cpu.cfg");
-	config.puertoNucleo = config_get_int_value(configCPU, "PUERTO_NUCLEO");
-	config.ipNucleo = config_get_string_value(configCPU, "IP_NUCLEO");
-	config.puertoUMC = config_get_int_value(configCPU, "PUERTO_UMC");
-	config.ipUMC = config_get_string_value(configCPU, "IP_UMC");
+	config.puertoKernel = config_get_int_value(configCPU, "PUERTO_KERNEL");
+	config.ipKernel = config_get_string_value(configCPU, "IP_KERNEL");
+	config.puertoMemoria = config_get_int_value(configCPU, "PUERTO_MEMORIA");
+	config.ipMemoria = config_get_string_value(configCPU, "IP_MEMORIA");
 	config.DEBUG_RAISE_LOG_LEVEL = config_get_int_value(configCPU, "LOGGEAR_TODO");
 
 
-	//	config.DEBUG_IGNORE_UMC = config_get_int_value(configCPU, "DEBUG_IGNORE_UMC");
+	//	config.DEBUG_IGNORE_MEMORIA = config_get_int_value(configCPU, "DEBUG_IGNORE_MEMORIA");
 	//	config.DEBUG_IGNORE_PROGRAMS = config_get_int_value(configCPU, "DEBUG_IGNORE_PROGRAMS");
-	//	config.DEBUG_IGNORE_NUCLEO = config_get_int_value(configCPU, "DEBUG_IGNORE_NUCLEO");
+	//	config.DEBUG_IGNORE_KERNEL = config_get_int_value(configCPU, "DEBUG_IGNORE_KERNEL");
 	//	config.DEBUG_RUN_UNITARY_TESTS = config_get_int_value(configCPU, "DEBUG_RUN_UNITARY_TESTS");
-	//	config.DEBUG_RUN_TESTS_WITH_UMC = config_get_int_value(configCPU, "DEBUG_RUN_TESTS_WITH_UMC");
+	//	config.DEBUG_RUN_TESTS_WITH_MEMORIA = config_get_int_value(configCPU, "DEBUG_RUN_TESTS_WITH_MEMORIA");
 	//	config.DEBUG_LOG_ON_TESTS = config_get_int_value(configCPU, "DEBUG_LOG_ON_TESTS");
-		config.DEBUG_IGNORE_UMC = false;
+		config.DEBUG_IGNORE_MEMORIA = false;
 		config.DEBUG_IGNORE_PROGRAMS = false;
-		config.DEBUG_IGNORE_NUCLEO = false;
+		config.DEBUG_IGNORE_KERNEL = false;
 		config.DEBUG_RUN_UNITARY_TESTS = false;
-		config.DEBUG_RUN_TESTS_WITH_UMC = false;
+		config.DEBUG_RUN_TESTS_WITH_MEMORIA = false;
 		config.DEBUG_LOG_ON_TESTS = false;
 }
 
 void finalizar_proceso_por_variable_invalida(){
 	log_info(activeLogger,ANSI_COLOR_RED "terminando la ejecución del programa actual." ANSI_COLOR_RESET);
-	enviarHeader(nucleo, HeaderTerminoProceso);
-	enviarHeader(umc, HeaderTerminoProceso);
+	enviarHeader(kernel, HeaderTerminoProceso);
+	enviarHeader(memoria, HeaderTerminoProceso);
 	pcb_destroy(pcbActual);
 	ejecutando = false;
 	flagMeSalteoTodoConGoto=true;
@@ -477,8 +479,8 @@ void inicializar() {
 void finalizar() {
 	log_info(activeLogger,"Finalizando proceso cpu...");
 
-	close(nucleo);
-	close(umc);
+	close(kernel);
+	close(memoria);
 
 	log_info(activeLogger,"CPU finalizó correctamente.");
 	destruirLogs();
@@ -494,13 +496,13 @@ void handler(int sign) {
 		log_info(activeLogger, ANSI_COLOR_RED "Recibi SIGUSR1!" ANSI_COLOR_RESET);
 
 		if(!ejecutando){
-			enviarHeader(umc,headerCPUTerminada);
-			enviarHeader(nucleo,headerNoTermineQuantumPeroToma);
+			enviarHeader(memoria,headerCPUTerminada);
+			enviarHeader(kernel,headerNoTermineQuantumPeroToma);
 			finalizar(); //si se encuentra esperando y sin ejecutar, lo finalizo
 		}else{
 			terminar = true; //Setea el flag para que termine CPU al terminar de ejecutar la instruccion
 			log_info(activeLogger, "Esperando a que termine la ejecucion del programa actual...");
-			enviarHeader(nucleo,headerNoTermineQuantumPeroToma);
+			enviarHeader(kernel,headerNoTermineQuantumPeroToma);
 		}
 	}
 }
@@ -520,12 +522,12 @@ void correrTests(){
 	}
 }
 
-void correrTestsUMC(){
-	if(config.DEBUG_RUN_TESTS_WITH_UMC && !config.DEBUG_IGNORE_UMC){
+void correrTestsMemoria(){
+	if(config.DEBUG_RUN_TESTS_WITH_MEMORIA && !config.DEBUG_IGNORE_MEMORIA){
 		if(!config.DEBUG_LOG_ON_TESTS){
 			desactivarLogs();
 		}
-		testear(test_cpu_con_umc);
+		testear(test_cpu_con_memoria);
 		if(!config.DEBUG_LOG_ON_TESTS){
 			reactivarLogs();
 		}
@@ -540,18 +542,18 @@ int main() {
 	//tests
 	correrTests();
 
-	//conectarse a umc
-	establecerConexionConUMC();
+	//conectarse a memoria
+	establecerConexionConMemoria();
 
-	//test con UMC
-	correrTestsUMC();
+	//test con memoria
+	correrTestsMemoria();
 
-	//ejemploPedidoLecturaUmc();
+	//ejemploPedidoLecturaMemoria();
 
-	//conectarse a nucleo
-	establecerConexionConNucleo();
+	//conectarse a kernel
+	establecerConexionConKernel();
 
-	//CPU se pone a esperar que nucleo le envie PCB
+	//CPU se pone a esperar que kernel le envie PCB
 	esperar_programas();
 
 	finalizar();
