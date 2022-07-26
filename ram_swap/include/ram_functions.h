@@ -6,6 +6,7 @@
 #include <tads/process.h>
 #include <libreriaConexiones.h>
 #include <protocol.h>
+#include <swap_utils.h>
 
 int32_t create_pid_memory(t_process* process);
 int32_t process_total_pages_needed(int32_t tamanioProceso);
@@ -15,6 +16,16 @@ second_level_page_table_t* create_second_level_table(int32_t pages, int32_t proc
 page_t* create_second_level_page(int32_t process_pid, int32_t *swap_id);
 void create_process_state(int32_t pid_first_level_table_number, t_process* process);
 bool process_table_not_exists(int32_t pid);
+
+int32_t suspend_pid(t_process_suspend* process);
+void swap_first_level_entry(void* entry);
+void swap_second_level_entry(void* entry);
+
+void* read_frame(int32_t frame_number);
+void free_memory(int32_t first_level_table_number);
+void free_first_level_entry(void* entry);
+void free_second_level_entry(void* entry);
+
 
 #endif /* RAM_FUNCTIONS_H_ */
 

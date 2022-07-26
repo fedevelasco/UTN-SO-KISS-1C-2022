@@ -124,6 +124,115 @@ bool process_table_not_exists(int32_t pid){
 }
 
 
+int32_t suspend_pid(t_process_suspend* process){
+
+	log_info(logger, "suspend_pid - Swapeando paginas del proceso:%d - Inicio", process->pid);
+
+	pthread_mutex_lock(&MUTEX_FIRST_LEVEL_TABLES);
+	first_level_page_table_t* first_level_page_table = list_get(global_first_level_page_tables, process->first_level_table_number);
+	pthread_mutex_unlock(&MUTEX_FIRST_LEVEL_TABLES);
+
+    log_info(logger, "suspend_pid - Enviando tabla de primer nivel con id: %d a Swap", process->first_level_table_number);
+
+
+	pthread_mutex_lock(&MUTEX_SECOND_LEVEL_ENTRY);
+	list_iterate(first_level_page_table->first_level_entries, swap_first_level_entry);
+	pthread_mutex_unlock(&MUTEX_SECOND_LEVEL_ENTRY);
+
+	pthread_mutex_lock(&MUTEX_PROCESS_EXTRA_INFO);
+	process_state_t* process_state = dictionary_get(process_extra_info, string_itoa(process->pid));
+	pthread_mutex_unlock(&MUTEX_PROCESS_EXTRA_INFO);
+
+	process_state->frames_used = 0;
+
+
+	return 0;
+}
+
+void swap_first_level_entry(void* entry){
+
+	first_level_entries_t* first_level_entry = (first_level_entries_t*) entry;
+
+    log_info(logger, "swap_first_level_entry - Enviando tabla de segundo nivel con id: %d a Swap", first_level_entry->second_level_table_id);
+
+    pthread_mutex_lock(&MUTEX_SECOND_LEVEL_TABLES);
+    second_level_page_table_t* second_level_page_table = list_get(global_second_level_page_tables, first_level_entry->second_level_table_id);
+    pthread_mutex_unlock(&MUTEX_SECOND_LEVEL_TABLES);
+
+    list_iterate(second_level_page_table->pages, swap_second_level_entry);
+}
+
+void swap_second_level_entry(void* entry){
+
+	page_t* page = (page_t*) entry;
+
+    if (page->bit_M && page->bit_P){
+
+    	log_debug(logger, "Leyendo de memoria frame:%d del proceso: %d", page->frame_number, page->pid);
+        void* frame = read_frame(page->frame_number);
+
+        log_debug(logger, "Escribiendo en swap el frame:%d del proceso: %d", page->frame_number, page->pid);
+        write_frame_in_swap(frame, page->swap_page_id, page->pid);
+
+        //Reincio la pagina
+        page->bit_P = 0;
+        page->bit_M = 0;
+        page->bit_U = 0;
+
+        //Libero el frame de memoria
+        pthread_mutex_lock(&MUTEX_OCCUPIED_FRAMES);
+        bitarray_clean_bit(occupied_frames_bitarray, page->frame_number);
+        pthread_mutex_unlock(&MUTEX_OCCUPIED_FRAMES);
+
+        free(page);
+    }
+}
+
+void* read_frame(int32_t frame_number){
+
+    void* frame = malloc(tam_pagina);
+    int32_t offset = frame_number * tam_pagina;
+
+    pthread_mutex_lock(&MUTEX_MEMORY);
+    memcpy(frame, memory + offset, tam_pagina);
+    pthread_mutex_unlock(&MUTEX_MEMORY);
+
+    return frame;
+}
+
+void free_memory(int32_t first_level_table_number){
+    log_info(logger, "Se borra de memoria la tabla de primer nivel: %d", first_level_table_number);
+
+    pthread_mutex_lock(&MUTEX_FIRST_LEVEL_TABLES);
+    first_level_page_table_t* first_level_page_table = list_get(global_first_level_page_tables, first_level_table_number);
+    pthread_mutex_unlock(&MUTEX_FIRST_LEVEL_TABLES);
+
+    pthread_mutex_lock(&MUTEX_SECOND_LEVEL_ENTRY);
+    list_iterate(first_level_page_table->first_level_entries, free_first_level_entry);
+    pthread_mutex_unlock(&MUTEX_SECOND_LEVEL_ENTRY);
+}
+
+void free_first_level_entry(void* entry){
+	int32_t second_level_table_id = ((first_level_entries_t*) entry)->second_level_table_id;
+    log_info(logger, "Se borra de memoria la tabla de segundo nivel:%d", second_level_table_id);
+
+    pthread_mutex_lock(&MUTEX_SECOND_LEVEL_TABLES);
+    second_level_page_table_t* second_level_page_table  = list_get(global_second_level_page_tables, second_level_table_id);
+    pthread_mutex_unlock(&MUTEX_SECOND_LEVEL_TABLES);
+
+    list_iterate(second_level_page_table->pages, free_second_level_entry);
+}
+
+void free_second_level_entry(void* entry){
+	page_t* page = (page_t*) entry;
+	log_info(logger, "Se borra de memoria la pagina de segundo nivel en el frame:%d del proceso:%d", page->frame_number, page->pid);
+    if (page->bit_P){
+        //Libero el frame de memoria. Dejo el frame disponible para otro proceso. El que lo use, va a pisar el contenido, no hace falta ponerlo en 0.
+        pthread_mutex_lock(&MUTEX_OCCUPIED_FRAMES);
+        bitarray_clean_bit(occupied_frames_bitarray, page->frame_number);
+        pthread_mutex_unlock(&MUTEX_OCCUPIED_FRAMES);
+    }
+}
 
 
 
