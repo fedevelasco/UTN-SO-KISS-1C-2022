@@ -55,5 +55,26 @@ char* get_file_name(int32_t pid) {
 }
 
 
+void write_frame_in_swap(void* frame, int32_t swap_page_id, int32_t pid) {
+
+    pthread_mutex_lock(&MUTEX_SWAP);
+
+    log_info(logger, "Retardo de swap de %dms", retardo_swap);
+    usleep(retardo_swap*1000);
+
+    int32_t offset = swap_page_id * tam_pagina;
+
+    if(memcpy(swap_area+offset, frame, tam_pagina)){
+    	log_error(logger, "write_frame_in_swap - No se pudo copiar el frame a el area de SWAP. (errno %i)", errno);
+    }
+
+    if(msync(swap_area, tam_pagina, MS_SYNC)){
+    	log_error(logger, "write_frame_in_swap - No se pudo escribir en disco el archivo swap. (errno %i)", errno);
+    }
+
+
+    pthread_mutex_unlock(&MUTEX_SWAP);
+}
+
 
 
