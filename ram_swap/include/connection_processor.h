@@ -16,6 +16,7 @@
 
 
 int32_t process_init(operation_buffer_t* operation_buffer);
+int32_t process_suspend(operation_buffer_t* operation_buffer);
 
 #endif /* RAM_CONNECTION_PROCESSOR_H_ */
 
