@@ -195,6 +195,23 @@ int32_t deserialize_process(t_process* output, char* input) {
 	return offset;
 }
 
+int32_t serialize_process_suspend(char* output, t_process_suspend* input) {
+	int32_t offset = 0;
+	offset += serialize_int(output + offset, &(input->pid));
+	offset += serialize_int(output + offset, &(input->first_level_table_number));
+
+	return offset;
+}
+
+int32_t deserialize_process_suspend(t_process_suspend* output, char* input) {
+	int32_t offset = 0;
+	offset += deserialize_int(&output->pid, input);
+	offset += deserialize_int(&output->first_level_table_number, input + offset);
+
+	return offset;
+}
+
+
 
 
 

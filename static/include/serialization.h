@@ -137,6 +137,18 @@ int32_t serialize_process(char* output, t_process* input);
 */
 int32_t deserialize_process(t_process* output, char* input);
 
+/**
+* @NAME: serialize_process_suspend
+* @DESC: Serializa un t_process_suspend en output y retorna el offset.
+*/
+int32_t serialize_process_suspend(char* output, t_process_suspend* input);
+
+/**
+* @NAME: deserialize_process_suspend
+* @DESC: Deserializa un buffer en input hacia un t_process_suspend en output y retorna el offset.
+*/
+int32_t deserialize_process_suspend(t_process_suspend* output, char* input);
+
 // Debug
 void print_buffer(char* buffer, int size);
 
