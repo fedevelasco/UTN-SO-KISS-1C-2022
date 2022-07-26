@@ -56,11 +56,8 @@ int32_t kernel_opcode(op_code opcode){
 
 	if(
 		opcode == PROCESS_INIT_REQUEST ||
-		opcode == PROCESS_INIT_SEND ||
 		opcode == PROCESS_SUSPEND_REQUEST ||
-		opcode == PROCESS_SUSPEND_SEND ||
-		opcode == PROCESS_KILL_REQUEST ||
-		opcode == PROCESS_KILL_SEND
+		opcode == PROCESS_KILL_REQUEST
 		){
 		log_info(logger, "kernel_opcode - El opcode es de Kernel");
 		return 1;
@@ -96,7 +93,7 @@ void process_kernel_functions(){
 	        		}
 
 	        		case PROCESS_SUSPEND_REQUEST: {
-	        //			process_suspend(operation_buffer->buffer);
+	        			process_suspend(operation_buffer);
 	        			break;
 	        		}
 
