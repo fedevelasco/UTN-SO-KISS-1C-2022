@@ -1,5 +1,5 @@
 # Libraries
-LIBS=pthread m static commons cunit readline
+LIBS=static commons pthread m cunit readline
 
 # Custom libraries' paths
 SHARED_LIBPATHS=
@@ -14,4 +14,4 @@ ARGS=/home/utnso/shared/git/tp-2022-1c-Grupo-TP-SO/ram_swap/ram_swap.config /hom
 
 # Valgrind flags
 MEMCHECK_FLAGS=--track-origins=yes --log-file="memcheck.log" --show-leak-kinds=all
-HELGRIND_FLAGS=--log-file="helgrind.log"
+HELGRIND_FLAGS=--log-file="helgrind.log" -v
