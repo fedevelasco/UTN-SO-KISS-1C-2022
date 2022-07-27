@@ -124,7 +124,7 @@ bool process_table_not_exists(int32_t pid){
 }
 
 
-int32_t suspend_pid(t_process_suspend* process){
+int32_t suspend_pid(t_process* process){
 
 	log_info(logger, "suspend_pid - Swapeando paginas del proceso:%d - Inicio", process->pid);
 
@@ -232,6 +232,20 @@ void free_second_level_entry(void* entry){
         bitarray_clean_bit(occupied_frames_bitarray, page->frame_number);
         pthread_mutex_unlock(&MUTEX_OCCUPIED_FRAMES);
     }
+}
+
+int32_t get_second_level_page_table(t_page_table_request* page_table_request){
+
+	log_info(logger, "Retardo de memoria %dms", retardo_memoria);
+	usleep(retardo_memoria*1000);
+
+    pthread_mutex_lock(&MUTEX_FIRST_LEVEL_TABLES);
+    first_level_page_table_t* first_level_page_table = list_get(global_first_level_page_tables, page_table_request->table_number);
+    pthread_mutex_unlock(&MUTEX_FIRST_LEVEL_TABLES);
+
+    first_level_entries_t* first_level_entry = list_get(first_level_page_table->first_level_entries, page_table_request->entry_number);
+
+    return first_level_entry->second_level_table_id;
 }
 
 

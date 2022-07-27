@@ -17,7 +17,7 @@ page_t* create_second_level_page(int32_t process_pid, int32_t *swap_id);
 void create_process_state(int32_t pid_first_level_table_number, t_process* process);
 bool process_table_not_exists(int32_t pid);
 
-int32_t suspend_pid(t_process_suspend* process);
+int32_t suspend_pid(t_process* process);
 void swap_first_level_entry(void* entry);
 void swap_second_level_entry(void* entry);
 
