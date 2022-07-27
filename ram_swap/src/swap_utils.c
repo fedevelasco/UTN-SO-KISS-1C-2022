@@ -20,7 +20,7 @@ int32_t swap_create(int32_t pid, int32_t size){
 
 
     log_info(logger, "Retardo de swap %dms", retardo_swap);
-    usleep(retardo_swap/1000);
+    usleep(retardo_swap*1000);
 
     log_info(logger, "swap_create- Creando archivo swap en path %s", file_path);
     int32_t swap_file = open(file_path, O_RDWR|O_CREAT, 0666);
@@ -74,6 +74,20 @@ void write_frame_in_swap(void* frame, int32_t swap_page_id, int32_t pid) {
 
 
     pthread_mutex_unlock(&MUTEX_SWAP);
+}
+
+void free_process_swap(int32_t pid){
+
+	char* file_path = get_file_name(pid);
+
+	log_info(logger, "Retardo de swap %dms", retardo_swap);
+
+	usleep(retardo_swap*1000);
+
+    if(remove(file_path) == -1){
+    	log_error(logger, "free_process_swap - No se pudo eliminar el archivo SWAP. (errno %i)", errno);
+    }
+    free(file_path);
 }
 
 

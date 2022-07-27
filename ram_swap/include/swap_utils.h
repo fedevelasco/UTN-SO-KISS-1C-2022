@@ -26,7 +26,7 @@ int32_t swap_create(int32_t pid, int32_t size);
 char* get_file_name(int32_t pid);
 int32_t get_swap_size(int32_t size);
 void write_frame_in_swap(void* frame, int32_t swap_page_id, int32_t pid);
-
+void free_process_swap(int32_t pid);
 
 
 
