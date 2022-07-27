@@ -19,6 +19,8 @@
 #include "tads/buffer.h"
 #include "tads/package.h"
 #include "tads/process.h"
+#include "tads/memory_config.h"
+
 
 
 // Serializacion y deserializacion tipos de datos comunes
@@ -138,16 +140,30 @@ int32_t serialize_process(char* output, t_process* input);
 int32_t deserialize_process(t_process* output, char* input);
 
 /**
-* @NAME: serialize_process_suspend
-* @DESC: Serializa un t_process_suspend en output y retorna el offset.
+* @NAME: serialize_memory_config
+* @DESC: Serializa un t_memory_config en output y retorna el offset.
 */
-int32_t serialize_process_suspend(char* output, t_process_suspend* input);
+int32_t serialize_memory_config(char* output, t_memory_config* input);
 
 /**
-* @NAME: deserialize_process_suspend
-* @DESC: Deserializa un buffer en input hacia un t_process_suspend en output y retorna el offset.
+* @NAME: deserialize_memory_config
+* @DESC: Deserializa un buffer en input hacia un t_memory_config en output y retorna el offset.
 */
-int32_t deserialize_process_suspend(t_process_suspend* output, char* input);
+int32_t deserialize_memory_config(t_memory_config* output, char* input);
+
+/**
+* @NAME: serialize_page_table_request
+* @DESC: Serializa un t_page_table_request en output y retorna el offset.
+*/
+int32_t serialize_page_table_request(char* output, t_page_table_request* input);
+
+/**
+* @NAME: deserialize_page_table_request
+* @DESC: Deserializa un buffer en input hacia un t_page_table_request en output y retorna el offset.
+*/
+int32_t deserialize_page_table_request(t_page_table_request* output, char* input);
+
+
 
 // Debug
 void print_buffer(char* buffer, int size);

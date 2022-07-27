@@ -183,6 +183,7 @@ int32_t serialize_process(char* output, t_process* input) {
 	int32_t offset = 0;
 	offset += serialize_int(output + offset, &(input->pid));
 	offset += serialize_int(output + offset, &(input->process_size));
+	offset += serialize_int(output + offset, &(input->first_level_table_number));
 
 	return offset;
 }
@@ -191,22 +192,39 @@ int32_t deserialize_process(t_process* output, char* input) {
 	int32_t offset = 0;
 	offset += deserialize_int(&output->pid, input);
 	offset += deserialize_int(&output->process_size, input + offset);
-
-	return offset;
-}
-
-int32_t serialize_process_suspend(char* output, t_process_suspend* input) {
-	int32_t offset = 0;
-	offset += serialize_int(output + offset, &(input->pid));
-	offset += serialize_int(output + offset, &(input->first_level_table_number));
-
-	return offset;
-}
-
-int32_t deserialize_process_suspend(t_process_suspend* output, char* input) {
-	int32_t offset = 0;
-	offset += deserialize_int(&output->pid, input);
 	offset += deserialize_int(&output->first_level_table_number, input + offset);
+
+	return offset;
+}
+
+int32_t serialize_memory_config(char* output, t_memory_config* input) {
+	int32_t offset = 0;
+	offset += serialize_int(output + offset, &(input->page_size));
+	offset += serialize_int(output + offset, &(input->pages_per_table));
+
+	return offset;
+}
+
+int32_t deserialize_memory_config(t_memory_config* output, char* input) {
+	int32_t offset = 0;
+	offset += deserialize_int(&output->page_size, input);
+	offset += deserialize_int(&output->pages_per_table, input + offset);
+
+	return offset;
+}
+
+int32_t serialize_page_table_request(char* output, t_page_table_request* input) {
+	int32_t offset = 0;
+	offset += serialize_int(output + offset, &(input->table_number));
+	offset += serialize_int(output + offset, &(input->entry_number));
+
+	return offset;
+}
+
+int32_t deserialize_page_table_request(t_page_table_request* output, char* input) {
+	int32_t offset = 0;
+	offset += deserialize_int(&output->table_number, input);
+	offset += deserialize_int(&output->entry_number, input + offset);
 
 	return offset;
 }
