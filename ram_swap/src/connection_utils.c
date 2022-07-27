@@ -1,55 +1,50 @@
 #include <connection_utils.h>
 
-int server_listen_ram(char* server_name, int server_socket) {
+void server_listen_ram(char* server_name, int server_socket) {
 
+	while (1) {
 
+		int32_t client_socket = esperar_cliente(logger, server_name, server_socket);
 
-	while(1){
+		if (client_socket != -1) {
 
-	int32_t client_socket = esperar_cliente(logger, server_name, server_socket);
-
-	if (client_socket != -1) {
-
-		op_code opcode;
-		if (recv(client_socket, &opcode, sizeof(op_code), 0) != sizeof(op_code)) {
-			log_error(logger, "server_listen_ram - Error recibiendo op_code");
-			return 1;
-		}
-
-		int32_t buffer_size;
-		char* buffer;
-
-		buffer = recv_buffer(&buffer_size, client_socket);
-
-		operation_buffer_t* operation_buffer = malloc(sizeof(operation_buffer_t));
-		operation_buffer->opcode = opcode;
-		operation_buffer->buffer = buffer;
-		operation_buffer->client_socket = client_socket;
-
-		if(kernel_opcode(opcode)){
-			log_info(logger, "El opcode es de Kernel");
-			pthread_mutex_lock(&MUTEX_KERNEL_QUEUE);
-			queue_push(kernel_queue, operation_buffer);
-			pthread_mutex_unlock(&MUTEX_KERNEL_QUEUE);
-
-			if(sem_post(&sem_kernel_thread)){
-				log_error(logger, "server_listen_ram - Error en sem_post - sem_kernel_thread. (errno %i)", errno);
+			op_code opcode;
+			if (recv(client_socket, &opcode, sizeof(op_code), 0) != sizeof(op_code)) {
+				log_error(logger, "server_listen_ram - Error recibiendo op_code");
 			}
 
-		} else {
-			log_info(logger, "El opcode es de cpu");
-			pthread_mutex_lock(&MUTEX_CPU_QUEUE);
-			queue_push(cpu_queue, operation_buffer);
-			pthread_mutex_unlock(&MUTEX_CPU_QUEUE);
-			if(sem_post(&sem_cpu_thread)){
-				log_error(logger, "server_listen_ram - Error en sem_post - sem_cpu_thread. (errno %i)", errno);
+
+			char* buffer;
+
+			buffer = recv_buffer(client_socket);
+
+			operation_buffer_t* operation_buffer = malloc(sizeof(operation_buffer_t));
+			operation_buffer->opcode = opcode;
+			operation_buffer->buffer = buffer;
+			operation_buffer->client_socket = client_socket;
+
+			if (kernel_opcode(opcode)) {
+				log_info(logger, "El opcode es de Kernel");
+				pthread_mutex_lock(&MUTEX_KERNEL_QUEUE);
+				queue_push(kernel_queue, operation_buffer);
+				pthread_mutex_unlock(&MUTEX_KERNEL_QUEUE);
+
+				if (sem_post(&sem_kernel_thread)) {
+					log_error(logger,"server_listen_ram - Error en sem_post - sem_kernel_thread. (errno %i)",errno);
+				}
+
+			} else {
+				log_info(logger, "El opcode es de cpu");
+				pthread_mutex_lock(&MUTEX_CPU_QUEUE);
+				queue_push(cpu_queue, operation_buffer);
+				pthread_mutex_unlock(&MUTEX_CPU_QUEUE);
+				if (sem_post(&sem_cpu_thread)) {
+					log_error(logger,"server_listen_ram - Error en sem_post - sem_cpu_thread. (errno %i)",errno);
+				}
 			}
-		}
 
 		}
-
 	}
-	return 0;
 }
 
 int32_t kernel_opcode(op_code opcode){
@@ -98,7 +93,7 @@ void process_kernel_functions(){
 	        		}
 
 	        		case PROCESS_KILL_REQUEST: {
-	        //			process_kill(operation_buffer->buffer);
+	        			process_kill(operation_buffer->buffer);
 	        			break;
 	        		}
 
@@ -107,10 +102,11 @@ void process_kernel_functions(){
 	        			return;
 	        		}
 
+	        close(operation_buffer->client_socket);
+
 	        free(operation_buffer->buffer);
 	        free(operation_buffer);
 	    }
-
 }
 
 void process_cpu_functions(){
@@ -126,7 +122,7 @@ void process_cpu_functions(){
 		        			break;
 		        		}
 		        		case GET_SECOND_LEVEL_TABLE_REQUEST: {
-		        //			get_second_level_table(operation_buffer->buffer);
+		                   get_second_level_table(operation_buffer->buffer);
 		        			break;
 		        		}
 		        		case GET_FRAME_REQUEST: {
@@ -141,15 +137,19 @@ void process_cpu_functions(){
 		        //			write_memory(operation_buffer->buffer);
 		        			break;
 		        		}
+		        		case GET_MEMORY_CONFIG_REQUEST: {
+							get_memory_config(operation_buffer->buffer);
+							break;
+						}
 
 		        		default:
 		        			log_error(logger, "process_cpu_functions - Error en server");
 		        			return;
 		        		}
 
+		        close(operation_buffer->client_socket);
 		        free(operation_buffer->buffer);
 		        free(operation_buffer);
 		    }
-
 }
 

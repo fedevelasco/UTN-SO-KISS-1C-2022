@@ -4,14 +4,13 @@
 
 #include <pthread.h>
 #include <semaphore.h>
-#include <tads/op_code.h>
 #include <libreriaConexiones.h>
 #include <global_structures.h>
 #include <protocol.h>
 #include <connection_processor.h>
 
 
-int server_listen_ram(char* server_name, int server_fd);
+void server_listen_ram(char* server_name, int server_fd);
 int32_t kernel_opcode(op_code opcode);
 void process_kernel_functions();
 void process_cpu_functions();
