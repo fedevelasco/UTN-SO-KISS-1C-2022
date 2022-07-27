@@ -14,9 +14,18 @@
 #include <swap_utils.h>
 #include <protocol.h>
 
+//Kernel
+void process_init(operation_buffer_t* operation_buffer);
+void process_suspend(operation_buffer_t* operation_buffer);
+void process_kill(operation_buffer_t* operation_buffer);
 
-int32_t process_init(operation_buffer_t* operation_buffer);
-int32_t process_suspend(operation_buffer_t* operation_buffer);
+//Cpu
+void get_memory_config(operation_buffer_t* operation_buffer);
+void get_second_level_table(operation_buffer_t* operation_buffer);
+
+
+
+
 
 #endif /* RAM_CONNECTION_PROCESSOR_H_ */
 
