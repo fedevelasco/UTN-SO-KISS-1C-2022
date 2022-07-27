@@ -13,6 +13,9 @@
 #include <tads/op_code.h>
 #include <tads/package.h>
 #include <tads/buffer.h>
+#include <tads/memory_config.h>
+#include <tads/page_table_request.h>
+
 
 // Tabla de paginas primer nivel
 typedef struct first_level_page_table {
