@@ -122,3 +122,23 @@ void get_second_level_table(operation_buffer_t* operation_buffer){
 
 	log_info(logger, "get_second_level_table - Enviar tabla de segundo nivel de memoria a cpu - Fin");
 }
+
+void get_frame(operation_buffer_t* operation_buffer){
+
+	log_info(logger, "get_frame - Enviar frame de memoria a cpu - Inicio");
+
+	t_page_table_request* page_table_request = create_page_table_request();
+	deserialize_table_page_request(page_table_request, operation_buffer->buffer);
+
+
+
+	int32_t frame_number = get_frame_number(consulta->tablaDePaginas, consulta->entradaPagina, consulta->id, false);
+
+	if(send_frame_number(operation_buffer->client_socket, second_level_table_id)) {
+		log_error(logger, "Error enviando numero de frame del proceso a cpu");
+		free(frame_number);
+	}
+
+	free(frame_number);
+
+}
