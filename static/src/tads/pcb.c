@@ -98,7 +98,7 @@ int32_t pcb_serializar(t_PCB* pcb, char* output){
 }
 
 int bytes_PCB(t_PCB* pcb){
-    int temp = sizeof(pcb->PID) + sizeof(pcb->TAMANIO_PROCESO) + sizeof(pcb->PC) + sizeof(pcb->TABLA_DE_PAGINAS) + sizeof(pcb->ESTIMACION_RAFAGA) + bytes_instructions_list(pcb->LISTA_INSTRUCCIONES);
+    return sizeof(pcb->PID) + sizeof(pcb->TAMANIO_PROCESO) + sizeof(pcb->PC) + sizeof(pcb->TABLA_DE_PAGINAS) + sizeof(pcb->ESTIMACION_RAFAGA) + bytes_instructions_list(pcb->LISTA_INSTRUCCIONES);
 }
 
 int32_t pcb_deserializar(t_PCB* destino, char* fuente){ 

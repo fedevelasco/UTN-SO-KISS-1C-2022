@@ -1,4 +1,4 @@
-#include "../include/log.h"
+#include <log.h>
 
 // Funcion para iniciar un logger, chequea que se haya podido iniciar
 t_log* iniciar_logger(char* nombre)

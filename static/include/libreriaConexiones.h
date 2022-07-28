@@ -1,3 +1,6 @@
+#ifndef LIBRERIACONEXIONES_H_
+#define LIBRERIACONEXIONES_H_
+
 #include "log.h"
 
 #include<sys/socket.h>
@@ -32,3 +35,4 @@ bool send_ack(int fd, bool ack);
 // -------------- Recibir confirmacion de conexion  --------------
 bool recv_ack(int fd, bool* ack);
 
+#endif

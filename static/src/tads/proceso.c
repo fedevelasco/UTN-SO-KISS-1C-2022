@@ -1,4 +1,4 @@
-#include <tads/proceso>
+#include <tads/proceso.h>
 
 t_proceso* proceso_crear(){
 
@@ -11,6 +11,8 @@ t_proceso* proceso_crear(){
     proceso->socketCPU = 0;
     proceso->rafagas = 0;
     proceso->suspendido = false;
+
+    return proceso;
 
 }
 

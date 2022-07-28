@@ -90,7 +90,7 @@ int main(int32_t argc, char** argv){
 	}
 
 	log_info(logger, "Conexion a Kernel - Creando paquete de instrucciones");
-	t_package* instructions_package = new_package(instructions_buffer);
+	t_package* instructions_package = new_package(instructions_buffer, INSTRUCTIONS);
 	if (instructions_package == NULL){
 			log_error(logger, "Conexion a Kernel - Error al crear instructions_package - Fin proceso");
 			return EXIT_FAILURE;

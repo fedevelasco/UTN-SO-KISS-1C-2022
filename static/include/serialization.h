@@ -20,6 +20,7 @@
 #include "tads/package.h"
 #include "tads/process.h"
 #include "tads/memory_config.h"
+#include "tads/page_table_request.h"
 
 
 
