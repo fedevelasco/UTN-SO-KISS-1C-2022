@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "cicloinstruccion.h": "c",
+        "instruccion.h": "c",
+        "mmu.h": "c",
+        "serializacion_cpu.h": "c"
+    }
+}
