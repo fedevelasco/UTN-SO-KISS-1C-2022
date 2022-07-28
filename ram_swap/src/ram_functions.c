@@ -479,7 +479,8 @@ page_t* replace_with_clock(process_state_t* process_state, t_list* all_process_p
 page_t* replace_with_clock_m(process_state_t* process_state, t_list* all_process_pages_list, page_t* page){
 	log_info(logger, "Reemplazando pagina con algoritmo CLOCK-M - Inicio");
 
-	int32_t pages_number = list_size(all_process_pages_list);
+	//TODO: Uso marcos_por_proceso. Revisar cual usar.
+//	int32_t pages_number = list_size(all_process_pages_list);
 
 	page_t* victim_page;
 

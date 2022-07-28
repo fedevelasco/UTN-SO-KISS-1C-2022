@@ -102,7 +102,7 @@ int iniciar_cliente(char *ip, char* puerto, t_log* logger){
 	int connection_info = connect(socket_cliente, server_info->ai_addr, server_info->ai_addrlen);// Ahora que tenemos el socket, vamos a conectarlo
 
 	if(connection_info == -1){
-		log_info(logger, "No se pudo conectar al servidor");
+		log_error(logger, "No se pudo conectar al servidor");
 		close(socket_cliente);
 		freeaddrinfo(server_info);
 		return -1;

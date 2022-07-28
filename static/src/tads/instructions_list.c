@@ -47,15 +47,16 @@ int32_t bytes_instructions_list(t_instructions_list* instructions_list) {
 
 }
 
-void imprimir_lista_instrucciones(t_instructions_list* instructions_list, t_log* logger){
+void imprimir_lista_instrucciones(t_instructions_list* instructions_list){
 
 	for(int i=0;i<list_size(instructions_list->instructions);i++){ //Recorro la lista de instrucciones para mostrar por pantalla
 
 		t_instruction* instruction = list_get(instructions_list->instructions,i);
-		log_info(logger, "Instruction: %s ", instruction->id);
+		//log_info(logger, "Instruction: %s ", instruction->id);
 		for(int i=0;i<list_size(instruction->parameters);i++){
 			t_parameter* parameter = list_get(instruction->parameters,i);
-			log_info(logger, "Parameters: %d ", parameter->value);
+			//log_info(logger, "Parameters: %d ", parameter->value);
+			printf("Parameters: %d \n", parameter->value);
 		}
 
 	}
