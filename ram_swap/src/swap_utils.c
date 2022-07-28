@@ -90,7 +90,7 @@ void free_process_swap(int32_t pid){
     free(file_path);
 }
 
-void* read_frame_in_swap(int32_t swap_page_id, int32_t pid){
+void* read_page_in_swap(int32_t swap_page_id, int32_t pid){
 
 	pthread_mutex_lock(&MUTEX_SWAP);
 
