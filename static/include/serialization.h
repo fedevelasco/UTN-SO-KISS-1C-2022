@@ -10,14 +10,14 @@
 
 #include <CUnit/Basic.h>
 
-#include <list_utils.h>
+#include "list_utils.h"
 
-#include <tads/parameter.h>
-#include <tads/instruction.h>
-#include <tads/instructions_list.h>
-#include <tads/op_code.h>
-#include <tads/buffer.h>
-#include <tads/package.h>
+#include "tads/parameter.h"
+#include "tads/instruction.h"
+#include "tads/instructions_list.h"
+#include "tads/op_code.h"
+#include "tads/buffer.h"
+#include "tads/package.h"
 
 
 // Serializacion y deserializacion tipos de datos comunes

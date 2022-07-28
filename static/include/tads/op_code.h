@@ -3,9 +3,18 @@
 
 typedef enum
 {
+	//Console - Kernel
 	INSTRUCTIONS,
-	EXIT,
-	UNDEFINED
+	//EXIT,
+	UNDEFINED,
+
+	//Kernel - CPU
+	PCB,
+	EXECUTE_PROCESS,
+	INTERRUPT_PROCESS,
+	END_PROCESS
+
+
 }op_code;
 
 

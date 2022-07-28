@@ -1,4 +1,9 @@
-#include <serverUtils.h>
+// Este file es exclusivamente utilizado para tener como libreria de conexion entre modulos
+
+#include "../include/libreriaConexiones.h"
+
+
+// -------------- Iniciar Servidor --------------
 
 int32_t iniciar_servidor(t_log* logger, const char* name, char* ip, char* puerto)
 {
@@ -15,7 +20,7 @@ int32_t iniciar_servidor(t_log* logger, const char* name, char* ip, char* puerto
 	//Obtenemos la direccion y los datos del socket y los mete en server_info
 	if (getaddrinfo(ip, puerto, &infoSocket, &server_info) != 0){
 		perror("No se pudo obtener la direccion correctamente.");
-		return -1;
+		return EXIT_FAILURE;
 	}
 
 	bool conecto = false;
@@ -45,7 +50,7 @@ int32_t iniciar_servidor(t_log* logger, const char* name, char* ip, char* puerto
 	if(!conecto) {
 		free(server_info);
 		perror("No se pudo crear el socket");
-		return -1;
+		return EXIT_FAILURE;
 	}
 
 	// Escuchamos las conexiones entrantes
@@ -53,12 +58,14 @@ int32_t iniciar_servidor(t_log* logger, const char* name, char* ip, char* puerto
 	listen(socket_servidor, SOMAXCONN);
 
 	log_trace(logger, "Listo para escuchar a mi cliente");
-	log_info(logger, "Escuchando en %s:%s (%s)\n", IP, PUERTO, name);
+	log_info(logger, "Escuchando en %s:%s (%s)\n", IP_KERNEL, PUERTO_KERNEL, name);
 
 	freeaddrinfo(server_info);
 
 	return socket_servidor;
 }
+
+// -------------- Aceptar cliente como Servidor --------------
 
 int32_t esperar_cliente(t_log* logger, const char* name, int32_t socket_servidor)
 {
@@ -66,60 +73,47 @@ int32_t esperar_cliente(t_log* logger, const char* name, int32_t socket_servidor
 	struct sockaddr_in dir_cliente; // Esta estructura contendra los datos de la conexion del cliente. IP, puerto, etc
 	socklen_t addrlenght  = sizeof(dir_cliente);
 
-	int32_t socket_cliente = accept(socket_servidor, (struct sockaddr *) &dir_cliente, &addrlenght );
+	int32_t socket_cliente = accept(socket_servidor, (struct sockaddr *) &dir_cliente, &addrlenght ); // Aceptamos un nuevo cliente
 
-	log_info(logger, "Cliente conectado (a %s)\n", name);
+	log_info(logger, "Consola conectada (a %s)\n", name);
 
 	return socket_cliente;
 }
 
-int32_t recibir_operacion(int32_t socket_cliente)
-{
-	int32_t cod_op;
-	if(recv(socket_cliente, &cod_op, sizeof(int32_t), MSG_WAITALL) > 0)
-		return cod_op;
-	else
-	{
+// -------------- Iniciar Cliente --------------
+
+int32_t iniciar_cliente(char *ip, char* puerto, t_log* logger){
+	struct addrinfo hints;
+	struct addrinfo *server_info;
+
+	memset(&hints, 0, sizeof(hints));
+	hints.ai_family = AF_UNSPEC;
+	hints.ai_socktype = SOCK_STREAM;
+	hints.ai_flags = AI_PASSIVE;
+
+	getaddrinfo(ip, puerto, &hints, &server_info);
+
+	int socket_cliente = socket(server_info->ai_family, server_info->ai_socktype, server_info->ai_protocol); // Ahora vamos a crear el socket.
+
+	int connection_info = connect(socket_cliente, server_info->ai_addr, server_info->ai_addrlen);// Ahora que tenemos el socket, vamos a conectarlo
+
+	if(connection_info == -1){
+		log_error(logger, "No se pudo conectar al servidor");
 		close(socket_cliente);
-		return -1;
+		freeaddrinfo(server_info);
+		return EXIT_FAILURE;
+	} else {
+		log_info(logger, "Connexion al servidor exitosa");
 	}
+
+	freeaddrinfo(server_info);
+
+	return socket_cliente;
 }
 
-char* recibir_buffer(int32_t* buffer_size, int32_t socket_cliente)
-{
-	char* buffer;
+// -------------- Liberar Conexiones --------------
 
-	read(socket_cliente, buffer_size, sizeof(int32_t));
-	buffer = malloc(*buffer_size);
-	read(socket_cliente, buffer, *buffer_size);
-
-	return buffer;
+void liberar_conexion(int* socket_cliente) {
+    close(*socket_cliente);
+    *socket_cliente = -1;
 }
-
-void recibir_mensaje(int32_t socket_cliente)
-{
-	int32_t size;
-	char* buffer = recibir_buffer(&size, socket_cliente);
-	log_info(logger, "Me llego el mensaje %s", buffer);
-	free(buffer);
-}
-
-t_instructions_list* recibir_paquete(int32_t socket_cliente, t_log* logger)
-{
-	int32_t buffer_size;
-	char* buffer;
-
-	buffer = recibir_buffer(&buffer_size, socket_cliente);
-	log_info(logger, "buffer_size:%i\n", buffer_size);
-
-	t_instructions_list* instructions_list = create_instructions_list_with_size(buffer_size);
-
-
-	deserialize_instructions_list(instructions_list, buffer);
-
-	return instructions_list;
-}
-
-
-
-
