@@ -7,6 +7,7 @@
 typedef struct page_table_request {
 	int32_t table_number;
 	int32_t entry_number;
+	int32_t pid;
 } t_page_table_request;
 
 

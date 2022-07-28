@@ -217,6 +217,7 @@ int32_t serialize_page_table_request(char* output, t_page_table_request* input) 
 	int32_t offset = 0;
 	offset += serialize_int(output + offset, &(input->table_number));
 	offset += serialize_int(output + offset, &(input->entry_number));
+	offset += serialize_int(output + offset, &(input->pid));
 
 	return offset;
 }
@@ -225,6 +226,7 @@ int32_t deserialize_page_table_request(t_page_table_request* output, char* input
 	int32_t offset = 0;
 	offset += deserialize_int(&output->table_number, input);
 	offset += deserialize_int(&output->entry_number, input + offset);
+	offset += deserialize_int(&output->pid, input + offset);
 
 	return offset;
 }

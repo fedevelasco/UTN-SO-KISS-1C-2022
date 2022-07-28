@@ -18,9 +18,9 @@ int32_t swap_create(int32_t pid, int32_t size){
 //    log_info(logger, "Creando directorio para archivo swap");
 //    mkdir("/home/utnso/swap/", 777);
 
-
-    log_info(logger, "Retardo de swap %dms", retardo_swap);
-    usleep(retardo_swap*1000);
+// TODO: Tiene retardo para crear swap?
+//    log_info(logger, "Retardo de swap %dms", retardo_swap);
+//    usleep(retardo_swap*1000);
 
     log_info(logger, "swap_create- Creando archivo swap en path %s", file_path);
     int32_t swap_file = open(file_path, O_RDWR|O_CREAT, 0666);

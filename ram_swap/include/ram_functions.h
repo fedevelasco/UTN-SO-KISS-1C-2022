@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <pthread.h>
 #include <tads/process.h>
+#include <tads/page_table_request.h>
 #include <libreriaConexiones.h>
 #include <protocol.h>
 #include <swap_utils.h>
@@ -25,6 +26,7 @@ void* read_frame(int32_t frame_number);
 void free_memory(int32_t first_level_table_number);
 void free_first_level_entry(void* entry);
 void free_second_level_entry(void* entry);
+int32_t get_second_level_page_table(t_page_table_request* page_table_request);
 
 
 #endif /* RAM_FUNCTIONS_H_ */

@@ -248,6 +248,396 @@ int32_t get_second_level_page_table(t_page_table_request* page_table_request){
     return first_level_entry->second_level_table_id;
 }
 
+int32_t get_frame_number(t_page_table_request* page_table_request, bool isWrite){
+
+		log_info(logger, "Retardo de memoria %dms", retardo_memoria);
+		usleep(retardo_memoria*1000);
+
+	    pthread_mutex_lock(&MUTEX_SECOND_LEVEL_ENTRY);
+
+			pthread_mutex_lock(&MUTEX_SECOND_LEVEL_TABLES);
+				second_level_page_table_t* second_level_page_table = list_get(global_second_level_page_tables, page_table_request->table_number);
+			pthread_mutex_unlock(&MUTEX_SECOND_LEVEL_TABLES);
+
+			page_t* page = list_get(second_level_page_table, page_table_request->entry_number);
+
+			pthread_mutex_lock(&MUTEX_PROCESS_EXTRA_INFO);
+			process_state_t* process_state = dictionary_get(process_extra_info, string_itoa(page_table_request->pid));
+			pthread_mutex_unlock(&MUTEX_PROCESS_EXTRA_INFO);
+
+			//Pagina no esta presente en memoria
+			if (!page->bit_P){
+
+				if (process_state->frames_used < marcos_por_proceso){
+
+					int32_t frame = -1;
+
+					//Busco primer frame libre en memoria
+					pthread_mutex_lock(&MUTEX_OCCUPIED_FRAMES);
+
+					do{
+						frame++;
+					} while (bitarray_test_bit(occupied_frames_bitarray, frame));
+
+					bitarray_set_bit(occupied_frames_bitarray, frame);
+
+					pthread_mutex_unlock(&MUTEX_OCCUPIED_FRAMES);
+
+					page->frame_number = frame;
+					process_state->frames_used++;
+
+					//Busco pagina en swap y la escribo en frame libre de memoria
+					void* swap_page_data = read_page_in_swap(page->swap_page_id, page_table_request->pid);
+					write_page_in_memory(frame, swap_page_data);
+					free(swap_page_data);
+
+				} else {
+					//Pagina presente en memoria. Busco victima para reemplazar.
+
+					page_t* victim_page = find_victim_page_to_replace(process_state, page);
+
+					//Si la pagina victima fue modificada, la llevo a swap.
+					if (victim_page->bit_M){
+
+						void* frame_data = read_frame(victim_page->frame_number);
+						write_frame_in_swap(frame_data, victim_page->swap_page_id, page_table_request->pid);
+						free(frame_data);
+
+						//Le saco un frame de memoria utilizado al proceso que tuvo una pagina victima
+						pthread_mutex_lock(&MUTEX_PROCESS_EXTRA_INFO);
+						process_state_t* process_state = dictionary_get(process_extra_info, string_itoa(victim_page->pid));
+						pthread_mutex_unlock(&MUTEX_PROCESS_EXTRA_INFO);
+
+						process_state->frames_used--;
+
+					}
+					victim_page->bit_M = false;
+					victim_page->bit_P = false;
+					victim_page->bit_U = false;
+
+					page->frame_number = victim_page->frame_number;
+
+					//Escribo en memoria la pagina traida de swap que reemplazo a la victima
+					void* swap_page_data = read_page_in_swap(page->swap_page_id, page_table_request->pid);
+					write_page_in_memory(page->frame_number, swap_page_data);
+					free(swap_page_data);
+				}
+				page->bit_P = true;
+			}
+
+			if (isWrite){
+				page->bit_M = true;
+			}
+
+			page->bit_U = true;
+
+
+	    pthread_mutex_unlock(&MUTEX_SECOND_LEVEL_ENTRY);
+	    return page->frame_number;
+
+}
+
+void write_page_in_memory(int32_t frame, void* swap_page_data){
+
+	int32_t offset = frame * tam_pagina;
+
+    pthread_mutex_lock(&MUTEX_MEMORY);
+    memcpy(memory + offset, swap_page_data, tam_pagina);
+    pthread_mutex_unlock(&MUTEX_MEMORY);
+}
+
+page_t* find_victim_page_to_replace(process_state_t* process_state, page_t* page){
+
+    page_t* victim_page = NULL;
+
+    pthread_mutex_lock(&MUTEX_SECOND_LEVEL_ENTRY);
+    t_list* all_process_pages_list = get_second_level_pages(process_state->first_level_page_table_id);
+    pthread_mutex_unlock(&MUTEX_SECOND_LEVEL_ENTRY);
+
+    //TODO: Revisar estos filtros
+    bool filtroEntradasSegundoNivel(page_t* entradaFilter){
+		return entradaFilter->bit_P;
+	}
+
+	t_list *listaEntradas = list_filter(all_process_pages_list, (void *) filtroEntradasSegundoNivel);
+
+	bool compararEntradasSegundoNivel(page_t* entrada, page_t* entrada2){
+		return entrada->frame_number < entrada2->frame_number;
+	}
+
+	list_sort(listaEntradas, (void *) compararEntradasSegundoNivel);
+
+
+
+    if (string_equals_ignore_case(algoritmo_reemplazo, "CLOCK")){
+
+    	victim_page = replace_with_clock(process_state, listaEntradas, page);
+
+    } else if (string_equals_ignore_case(algoritmo_reemplazo, "CLOCK-M")){
+
+    	victim_page = replace_with_clock_m(process_state, listaEntradas, page);
+
+    } else {
+
+        log_error(logger, "El algoritmo de reemplazo: %s no esta disponible", algoritmo_reemplazo);
+        exit(-1);
+    }
+    list_destroy(all_process_pages_list);
+    list_destroy(listaEntradas);
+    return victim_page;
+}
+
+t_list* get_second_level_pages(int32_t first_level_page_table_id)
+{
+    pthread_mutex_lock(&MUTEX_FIRST_LEVEL_TABLES);
+    first_level_page_table_t* first_level_page_table = list_get(global_first_level_page_tables, first_level_page_table_id);
+    pthread_mutex_unlock(&MUTEX_FIRST_LEVEL_TABLES);
+
+    t_list* all_process_pages_list = list_create();
+
+    for(int i=0; i < list_size(first_level_page_table->first_level_entries);i++){
+
+    	first_level_entries_t entry = list_get(first_level_page_table->first_level_entries, i);
+
+    	pthread_mutex_lock(&MUTEX_SECOND_LEVEL_TABLES);
+    	second_level_page_table_t second_level_page_table = list_get(global_second_level_page_tables, entry->second_level_table_id);
+    	pthread_mutex_unlock(&MUTEX_SECOND_LEVEL_TABLES);
+
+    	for(int j=0; j < list_size(second_level_page_table->pages);j++){
+    		page_t* page = list_get(second_level_page_table->pages, j);
+
+    		list_add(all_process_pages_list, page);
+    	}
+    }
+
+
+    return all_process_pages_list;
+}
+
+page_t* replace_with_clock(process_state_t* process_state, t_list* all_process_pages_list, page_t* page){
+	log_info(logger, "Reemplazando pagina con algoritmo CLOCK - Inicio");
+
+	int32_t pages_number = list_size(all_process_pages_list);
+
+	page_t* victim_page;
+
+	//TODO: Revisar
+//	log_info(logger, "------Estado inicial antes de reemplazo------");
+//	    log_info(logger, "PUNTERO: %d", process_state->clock_pointer);
+//	    void imprimirEstadoInicial(page_t* entrada)
+//	    {
+//	        log_info(logger, "PAGINA:(%d,%d) - FRAME: %d - BIT USO: %d - BIT PRESENCIA: %d",
+//	                 paginaPrimerNivel(entrada->swap_page_id),
+//	                 paginaSegundoNivel(entrada->swap_page_id),
+//	                 entrada->frame_number,
+//	                 entrada->bit_U,
+//	                 entrada->bit_P);
+//	    }
+//
+//	    list_iterate(all_process_pages_list, (void *)imprimirEstadoInicial);
+
+	page_t* pointer;
+
+	log_info(logger, "Reemplazando pagina con algoritmo CLOCK - Buscando pagina victima presente con bit uso=0");
+	while (true) {
+
+		pointer = list_get(all_process_pages_list, process_state->clock_pointer);
+
+		//Sumo el puntero 1 por cada loop y reinicia a 0 cuando supera la cantidad de paginas.
+		process_state->clock_pointer = (process_state->clock_pointer + 1) % marcos_por_proceso;
+		log_info(logger, "Avanzo puntero a: %d", process_state->clock_pointer);
+
+
+		//Si pagina puntero esta presente pero no esta en uso -> Reemplazo
+		if (pointer->bit_P && !pointer->bit_U) {
+
+			victim_page = pointer;
+
+			log_info(logger,
+					"Usando algoritmo: %s - se reemplaza pagina de swap victima : [%d,%d] por pagina de swap: [%d,%d]  - Ingresa a memoria en frame:%d",
+					algoritmo_reemplazo, paginaPrimerNivel(victim_page->swap_page_id), paginaSegundoNivel(victim_page->swap_page_id),
+					paginaPrimerNivel(page->swap_page_id), paginaSegundoNivel(page->swap_page_id), victim_page->frame_number);
+
+			break;
+
+		} else {
+			//Saco bit de uso y vuelvo a recorrer
+			pointer->bit_U = false;
+			log_info(logger, "Se cambia bit uso = 0 para pagina:[%d,%d]", paginaPrimerNivel(pointer->swap_page_id), paginaSegundoNivel(pointer->swap_page_id));
+
+		}
+
+		if(!pointer->bit_U){
+			log_info(logger, "La pagina: [%d,%d] tiene bit de presencia en: %d. Paso a la proxima pagina.", paginaPrimerNivel(pointer->swap_page_id), paginaSegundoNivel(pointer->swap_page_id));
+		}
+	}
+
+	log_info(logger, "Reemplazando pagina con algoritmo CLOCK - Fin");
+	return victim_page;
+}
+
+page_t* replace_with_clock_m(process_state_t* process_state, t_list* all_process_pages_list, page_t* page){
+	log_info(logger, "Reemplazando pagina con algoritmo CLOCK-M - Inicio");
+
+	int32_t pages_number = list_size(all_process_pages_list);
+
+	page_t* victim_page;
+
+
+	//    void print_use_bit(page_t* page){
+		//        if (page->bit_M)
+		//            log_debug(logger, "INDICE SWAP: %d - FRAME: %d - BIT USO: %d - BIT PRESENCIA: %d", page->swap_page_id, page->frame_number, page->bit_U, page->bit_P);
+		//    }
+		//
+		//    list_iterate(all_process_pages_list, (void *) imprimirBitsUso);
+
+	page_t* pointer;
+	int32_t pointer_start = process_state->clock_pointer;
+
+	bool completed = false;
+
+	//Primera vuelta: busco USO=0 y MODIFICADO=0 sin poner USO=0
+	log_info(logger, "Reemplazando pagina con algoritmo CLOCK-M - Buscando pagina victima presente con U=0 y M=0");
+	while (true){
+
+		pointer = list_get(all_process_pages_list, process_state->clock_pointer);
+
+		//Sumo el puntero 1 por cada loop y reinicia a 0 cuando supera la cantidad de paginas.
+		process_state->clock_pointer = (process_state->clock_pointer + 1) % marcos_por_proceso;
+
+		if (pointer->bit_P && !(pointer->bit_M || pointer->bit_U) && !completed){
+
+			victim_page = pointer;
+
+			log_info(logger,
+					"Usando algoritmo: %s - se reemplaza pagina de swap victima :%d por pagina de swap:%d  - Ingresa a memoria en frame:%d",
+					algoritmo_reemplazo, victim_page->swap_page_id,
+					page->swap_page_id, victim_page->frame_number);
+
+			completed = true;
+
+			break;
+		}
+
+		//Si ya recorri todas las paginas, salgo y hago el siguiente intento diferente
+		if(process_state->clock_pointer == pointer_start) break;
+	}
+
+	if(!completed){
+		log_info(logger, "Reemplazando pagina con algoritmo CLOCK-M - Segundo intento - Buscando pagina victima presente con U=0 y M=1");
+	}
+
+
+	//Segunda vuelta: busco USO=0 y MODIFICADO=1 poniendo USO=0
+	while (true){
+
+		pointer = list_get(all_process_pages_list, process_state->clock_pointer);
+
+		//Sumo el puntero 1 por cada loop y reinicia a 0 cuando supera la cantidad de paginas.
+		process_state->clock_pointer = (process_state->clock_pointer + 1) % marcos_por_proceso;
+
+		if (pointer->bit_P && !pointer->bit_U && pointer->bit_M && !completed) {
+
+			victim_page = pointer;
+
+			log_info(logger,
+					"REEMPLAZO EXITOSO - Usando algoritmo: %s - se reemplaza pagina de swap :%d por pagina de swap:%d  - Ingresa a memoria en frame:%d",
+					algoritmo_reemplazo, victim_page->swap_page_id,
+					page->swap_page_id, victim_page->frame_number);
+
+			completed = true;
+
+			break;
+		} else {
+			//Saco bit de uso y vuelvo a recorrer
+			pointer->bit_U = false;
+
+		}
+
+		//Si ya recorri todas las paginas, salgo y hago el siguiente intento diferente
+		if(process_state->clock_pointer == pointer_start) break;
+	}
+
+	if(!completed){
+		log_info(logger, "Reemplazando pagina con algoritmo CLOCK-M - Tercer Intento - Buscando pagina victima presente con U=0 y M=0");
+
+	}
+	//Tercera vuelta - paso 1 otra vez - busco USO=0 y MODIFICADO=0 sin poner USO=0
+	//Ahora deberia encontrar victima, por que si estaban en USO=1 se pasaron a USO=0
+
+	while (true){
+
+		pointer = list_get(all_process_pages_list, process_state->clock_pointer);
+
+		//Sumo el puntero 1 por cada loop y reinicia a 0 cuando supera la cantidad de paginas.
+		process_state->clock_pointer = (process_state->clock_pointer + 1) % marcos_por_proceso;
+
+		if (pointer->bit_P && !(pointer->bit_M || pointer->bit_U) && !completed){
+
+			victim_page = pointer;
+
+			log_info(logger,
+					"REEMPLAZO EXITOSO - Usando algoritmo: %s - se reemplaza pagina de swap :%d por pagina de swap:%d  - Ingresa a memoria en frame:%d",
+					algoritmo_reemplazo, victim_page->swap_page_id,
+					page->swap_page_id, victim_page->frame_number);
+
+			completed = true;
+
+			break;
+		}
+
+		//Si ya recorri todas las paginas, salgo y hago el siguiente intento diferente
+		if(process_state->clock_pointer == pointer_start) break;
+	}
+
+	if(!completed){
+		log_info(logger, "Reemplazando pagina con algoritmo CLOCK-M - Ultimo intento - Buscando pagina victima presente con U=0 y M=1");
+	}
+
+	//Cuarta vuelta: busco USO=0 y MODIFICADO=1 poniendo USO=0
+	//Ahora si o si tiene que encontrar una victima.
+	while (true){
+
+		pointer = list_get(all_process_pages_list, process_state->clock_pointer);
+
+		//Sumo el puntero 1 por cada loop y reinicia a 0 cuando supera la cantidad de paginas.
+		process_state->clock_pointer = (process_state->clock_pointer + 1) % marcos_por_proceso;
+
+		if (pointer->bit_P && !pointer->bit_U && pointer->bit_M && !completed) {
+
+			victim_page = pointer;
+
+			log_info(logger,
+					"REEMPLAZO EXITOSO - Usando algoritmo: %s - se reemplaza pagina de swap :%d por pagina de swap:%d  - Ingresa a memoria en frame:%d",
+					algoritmo_reemplazo, victim_page->swap_page_id,
+					page->swap_page_id, victim_page->frame_number);
+
+			completed = true;
+
+			break;
+		} else {
+			//Saco bit de uso y vuelvo a recorrer
+			pointer->bit_U = false;
+
+		}
+	}
+
+	log_info(logger, "Reemplazando pagina con algoritmo CLOCK-M - Fin");
+	return victim_page;
+}
+
+void* read_frame(int32_t frame_number){
+
+    void* frame = malloc(tam_pagina);
+
+    int32_t offset = frame_number * tam_pagina;
+    pthread_mutex_lock(&MUTEX_MEMORY);
+    memcpy(frame, memory + offset, tam_pagina);
+    pthread_mutex_unlock(&MUTEX_MEMORY);
+
+    return frame;
+}
+
 
 
 
