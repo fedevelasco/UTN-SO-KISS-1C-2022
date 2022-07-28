@@ -90,5 +90,23 @@ void free_process_swap(int32_t pid){
     free(file_path);
 }
 
+void* read_frame_in_swap(int32_t swap_page_id, int32_t pid){
+
+	pthread_mutex_lock(&MUTEX_SWAP);
+
+	log_info(logger, "Retardo de swap de %dms", retardo_swap);
+	usleep(retardo_swap*1000);
+
+	int32_t offset = swap_page_id * tam_pagina;
+
+	void* swap_page_data = malloc(sizeof(tam_pagina));
+
+	if(memcpy(swap_page_data, swap_area+offset, tam_pagina)){
+		log_error(logger, "read_frame_in_swap - No se pudo leer el frame del area de SWAP. (errno %i)", errno);
+	}
+
+	return swap_page_data;
+}
+
 
 
