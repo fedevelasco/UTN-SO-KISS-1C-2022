@@ -8,8 +8,8 @@ void server_listen_ram(char* server_name, int server_socket) {
 
 		if (client_socket != -1) {
 
-			op_code opcode;
-			if (recv(client_socket, &opcode, sizeof(op_code), 0) != sizeof(op_code)) {
+			t_op_code opcode;
+			if (recv(client_socket, &opcode, sizeof(t_op_code), 0) != sizeof(t_op_code)) {
 				log_error(logger, "server_listen_ram - Error recibiendo op_code");
 			}
 
@@ -47,7 +47,7 @@ void server_listen_ram(char* server_name, int server_socket) {
 	}
 }
 
-int32_t kernel_opcode(op_code opcode){
+int32_t kernel_opcode(t_op_code opcode){
 
 	if(
 		opcode == PROCESS_INIT_REQUEST ||

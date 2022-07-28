@@ -1,4 +1,4 @@
-#include "../include/inicializacion.h"
+#include <inicializacion.h>
 
 
 void validarParametros(int argc, char* argv[]){

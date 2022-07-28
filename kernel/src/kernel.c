@@ -1,4 +1,4 @@
-#include "../include/kernel.h"
+#include <kernel.h>
 
 t_config* iniciar_config(void)
 {

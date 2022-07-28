@@ -82,7 +82,7 @@ int32_t send_to_server(int32_t connection, t_package* package)
 
 int32_t send_package(int32_t connection, t_package* package)
 {
-	int32_t bytes = package->buffer->size + sizeof(int32_t) + sizeof(op_code);
+	int32_t bytes = package->buffer->size + sizeof(int32_t) + sizeof(t_op_code);
 	char* to_send = serialize_package(package, bytes);
 
 	if(send(connection, to_send, bytes, 0) == -1){

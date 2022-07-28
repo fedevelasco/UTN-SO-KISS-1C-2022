@@ -8,10 +8,10 @@
     #include <commons/string.h>
     #include <commons/collections/list.h>
     #include <commons/log.h>
-    #include "instruccion.h"
-    #include "estructura.h"
-    #include "socket.h"
-    #include "globales.h"
+    #include <instruccion.h>
+    #include <estructura.h>
+    #include <socket.h>
+    #include <globales.h>
 
     pthread_mutex_t mutex_estado_new;
     pthread_mutex_t mutex_estado_ready;

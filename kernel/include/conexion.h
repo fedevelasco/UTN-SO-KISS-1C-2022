@@ -12,23 +12,20 @@
 #include<assert.h>
 #include<pthread.h>
 
-#include "planificacion.h"
-#include "/home/utnso/tp-2022-1c-Grupo-TP-SO/static/include/tads/parameter.h"
-#include "/home/utnso/tp-2022-1c-Grupo-TP-SO/static/include/tads/instruction.h"
-#include "/home/utnso/tp-2022-1c-Grupo-TP-SO/static/include/tads/instructions_list.h"
-#include "/home/utnso/tp-2022-1c-Grupo-TP-SO/static/include/tads/op_code.h"
-#include "/home/utnso/tp-2022-1c-Grupo-TP-SO/static/include/tads/package.h"
-#include "/home/utnso/tp-2022-1c-Grupo-TP-SO/static/include/tads/buffer.h"
-#include "/home/utnso/tp-2022-1c-Grupo-TP-SO/static/include/serialization.h"
-#include "/home/utnso/tp-2022-1c-Grupo-TP-SO/static/include/serialization.h"
-
-
+#include <planificacion.h>
+#include <tads/parameter.h>
+#include <tads/instruction.h>
+#include <tads/instructions_list.h>
+#include <tads/op_code.h>
+#include <tads/package.h>
+#include <tads/buffer.h>
+#include <serialization.h>
+#include <libreriaConexiones.h>
 
 t_log* logger;
 
 char* recibir_buffer(int32_t*, int32_t);
 
-int32_t iniciar_servidor(t_log*, const char*, char*, char*);
 t_instructions_list* recibir_paquete(int32_t, t_log*);
 int32_t recibir_operacion(int32_t);
 

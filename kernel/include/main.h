@@ -8,12 +8,12 @@
     #include <commons/collections/dictionary.h>
     #include <commons/collections/list.h>
     #include <pthread.h>
-    #include "socket.h"
-    #include "inicializacion.h"
-    #include "estructura.h"
-    #include "planificador.h"
-    #include "globales.h"
-    #include "inicializacion.h"
+    #include <socket.h>
+    #include <inicializacion.h>
+    #include <estructura.h>
+    #include <planificador.h>
+    #include <globales.h>
+    #include <inicializacion.h>
     
 
     void deserializarSegun(t_paquete* paquete, int socket);

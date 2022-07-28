@@ -10,7 +10,7 @@ t_package* create_package(){
     return package;
 }
 
-t_package* new_package(t_buffer* buffer, op_code opcode){
+t_package* new_package(t_buffer* buffer, t_op_code opcode){
 
 	t_package* package = create_package();
 	

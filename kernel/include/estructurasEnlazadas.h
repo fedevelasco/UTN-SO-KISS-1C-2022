@@ -3,9 +3,9 @@
 
 #include <commons/collections/list.h>
 #include <commons/collections/queue.h>
-#include "/home/utnso/tp-2022-1c-Grupo-TP-SO/static/include/tads/instruction.h"
-#include "/home/utnso/tp-2022-1c-Grupo-TP-SO/static/include/tads/instructions_list.h"
-#include "/home/utnso/tp-2022-1c-Grupo-TP-SO/static/include/tads/pcb.h"
+#include <tads/instruction.h>
+#include <tads/instructions_list.h>
+#include <tads/pcb.h>
 
 t_queue* COLA_NEW;
 t_list* LISTA_READY;

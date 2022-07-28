@@ -41,13 +41,13 @@ int32_t deserialize_int(int32_t* output, char* input);
 * @NAME: serialize_opcode
 * @DESC: Serializa un op_code en input hacia un buffer output y retorna el offset.
 */
-int32_t serialize_opcode(char* output, op_code* input);
+int32_t serialize_opcode(char* output, t_op_code* input);
 
 /**
 * @NAME: deserialize_opcode
 * @DESC: Deserializa un buffer input en un output op_code y retorna el offset.
 */
-int32_t deserialize_opcode(op_code* output, char* input);
+int32_t deserialize_opcode(t_op_code* output, char* input);
 
 /**
 * @NAME: serialize_list

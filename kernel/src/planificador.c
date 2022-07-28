@@ -1,4 +1,4 @@
-#include "../include/planificador.h"
+#include <planificador.h>
 
 int id_nuevo_proceso = 0;
 

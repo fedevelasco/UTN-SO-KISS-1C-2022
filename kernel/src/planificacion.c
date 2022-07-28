@@ -1,4 +1,4 @@
-#include "../include/planificacion.h"
+#include <planificacion.h>
 
 /*
 Planificador de Largo Plazo

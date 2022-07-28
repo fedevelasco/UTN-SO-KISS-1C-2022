@@ -129,7 +129,7 @@ uint32_t consultarTablaSegundoNivel(uint32_t tablaDePaginasPrimerNivel, uint32_t
     return tablaSegundoNivel;
 }
 
-uint32_t consultarMarco(uint32_t tablaDePaginasSegundoNivel, uint32_t pagina, t_cod_op codOP) {
+uint32_t consultarMarco(uint32_t tablaDePaginasSegundoNivel, uint32_t pagina, t_op_code codOP) {
     uint32_t socket_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
     uint32_t entradaSegundoNivel = obtenerEntradaTabla2doNivel(pagina);
     t_consultaTablaPagina * consulta = malloc(sizeof(t_consultaTablaPagina));
@@ -151,7 +151,7 @@ uint32_t consultarMarco(uint32_t tablaDePaginasSegundoNivel, uint32_t pagina, t_
     return marcoo;
 }
 
-uint32_t consultarDireccionFisica(uint32_t tablaPaginasPrimerNivelPCB, uint32_t direccion_logica, t_cod_op codOP) {
+uint32_t consultarDireccionFisica(uint32_t tablaPaginasPrimerNivelPCB, uint32_t direccion_logica, t_op_code codOP) {
     uint32_t pagina = obtenerNumeroPagina(direccion_logica);
     t_EntradaTLB * entrada = obtenerEntradaTLB(pagina);
     uint32_t marco;

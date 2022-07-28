@@ -8,8 +8,8 @@
     #include <sys/socket.h>
     #include <unistd.h>
     #include <netdb.h>
-    #include "estructura.h"
-    #include "globales.h"
+    #include <estructura.h>
+    #include <globales.h>
     
     int iniciar_servidor(char* IP, char* PORT);
     int esperar_cliente(int socket_servidor);

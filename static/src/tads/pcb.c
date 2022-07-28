@@ -122,8 +122,9 @@ char* pcb_creat_paquete(t_PCB* pcb, int32_t bytes){
 	memset(output, 0, bytes);
 
 	int32_t offset = 0;
+	t_op_code* opcode = PCB;
 
-	offset += serialize_opcode(output + offset, PCB);
+	offset += serialize_opcode(output + offset, opcode);
 	offset += pcb_serializar(pcb, output + offset);
 	
 	return output;

@@ -11,13 +11,13 @@ int32_t deserialize_int(int32_t* output, char* input) {
 	return size;
 }
 
-int32_t serialize_opcode(char* output, op_code* input) {
-	int32_t size = sizeof(op_code);
-	memcpy(output, input, sizeof(op_code));
+int32_t serialize_opcode(char* output, t_op_code* input) {
+	int32_t size = sizeof(t_op_code);
+	memcpy(output, input, sizeof(t_op_code));
 	return size;
 }
-int32_t deserialize_opcode(op_code* output, char* input) {
-	int32_t size = sizeof(op_code);
+int32_t deserialize_opcode(t_op_code* output, char* input) {
+	int32_t size = sizeof(t_op_code);
 	memcpy(output, input, size);
 	return size;
 }

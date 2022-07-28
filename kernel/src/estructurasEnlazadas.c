@@ -10,7 +10,7 @@ t_list*  LISTA_BLOCKED;
 
 // Cola bloqueados = FIFO
 
-#include "../include/estructurasEnlazadas.h"
+#include <estructurasEnlazadas.h>
 
 static unsigned long obj_tid = 0; 
 

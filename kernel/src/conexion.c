@@ -1,4 +1,4 @@
-#include "../include/conexion.h"
+#include <conexion.h>
 
 typedef struct {
     t_log* log;
@@ -57,7 +57,8 @@ static void procesar_conexion(void* void_args) {
 
 	t_instructions_list* instructions_list;
 
-	t_PCB* pcb = malloc(sizeof(t_PCB));
+	//TODO: ver si va
+	// t_PCB* pcb = malloc(sizeof(t_PCB)); 
 
 
     int32_t cod_op; // = recibir_operacion(cliente_fd); Recibo el op_code de consola
@@ -72,7 +73,7 @@ static void procesar_conexion(void* void_args) {
 				instructions_list = recibir_paquete(cliente_socket, logger); //Recibo paquete, lo deserializo y lo guardo en instruction_list
 				log_info(logger, "Me llegaron los siguientes valores:");
 				log_info(logger, "Process size: %d", instructions_list->process_size);
-				imprimir_lista_instrucciones(instructions_list, logger); //Imprimo la lista de instrucciones
+				imprimir_lista_instrucciones(instructions_list); //Imprimo la lista de instrucciones
 
 				planificadorLP_agregar_a_new(instructions_list, logger);
 
