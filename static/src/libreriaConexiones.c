@@ -20,7 +20,7 @@ int32_t iniciar_servidor(t_log* logger, const char* name, char* ip, char* puerto
 	//Obtenemos la direccion y los datos del socket y los mete en server_info
 	if (getaddrinfo(ip, puerto, &infoSocket, &server_info) != 0){
 		perror("No se pudo obtener la direccion correctamente.");
-		return -1;
+		return EXIT_FAILURE;
 	}
 
 	bool conecto = false;
@@ -50,7 +50,7 @@ int32_t iniciar_servidor(t_log* logger, const char* name, char* ip, char* puerto
 	if(!conecto) {
 		free(server_info);
 		perror("No se pudo crear el socket");
-		return -1;
+		return EXIT_FAILURE;
 	}
 
 	// Escuchamos las conexiones entrantes
@@ -98,10 +98,10 @@ int32_t iniciar_cliente(char *ip, char* puerto, t_log* logger){
 	int connection_info = connect(socket_cliente, server_info->ai_addr, server_info->ai_addrlen);// Ahora que tenemos el socket, vamos a conectarlo
 
 	if(connection_info == -1){
-		log_info(logger, "No se pudo conectar al servidor");
+		log_error(logger, "No se pudo conectar al servidor");
 		close(socket_cliente);
 		freeaddrinfo(server_info);
-		return -1;
+		return EXIT_FAILURE;
 	} else {
 		log_info(logger, "Connexion al servidor exitosa");
 	}

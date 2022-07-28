@@ -310,7 +310,7 @@ void test_serialize_instruction_list(){
 
 	list_add(instructions_listA->instructions, instruction);
 	list_add(instructions_listA->instructions, instruction2);
-	instructions_listA->process_size = 1000; //COPIAR HASTA ACA
+	instructions_listA->process_size = 1000; 
 
 
 	char* buffer = malloc(bytes_instructions_list(instructions_listA));

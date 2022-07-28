@@ -29,12 +29,22 @@ void pcb_imprimir(t_PCB* pcb, t_log* logger);
 
 void pcb_asignar_lista_instrucciones(t_PCB* pcb, t_instructions_list* lista_instrucciones);
 
+void pcb_asignar_estimacion_rafaga_inicial(t_PCB* pcb, char* ESTIMACION_DATO);
+
 void pcb_asignar_lista_tamanio(t_PCB* pcb, t_instructions_list* lista_instrucciones);
 
 void pcb_asignar_id_unico(t_PCB* pcb, t_log* logger);
 
-int pcb_serializar(t_PCB* pcb, t_log* logger, char* output);
+int32_t pcb_convertir_float_a_int(float numero_float);
+
+float pcb_convertir_int_a_float(int32_t numero_int);
+
+int32_t pcb_serializar(t_PCB* pcb, char* output);
 
 int pcb_deserializar(t_PCB* destino, char* fuente);
+
+char* pcb_creat_paquete(t_PCB* pcb, int32_t bytes);
+
+int bytes_PCB(t_PCB* pcb);
 
 #endif /* PCB_H_ */

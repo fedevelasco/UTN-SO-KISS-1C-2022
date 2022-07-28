@@ -46,6 +46,6 @@
 	*/
 	int32_t bytes_instructions_list(t_instructions_list* instructions_list);
 
-	void imprimir_lista_instrucciones(t_instructions_list* instructions_list, t_log* logger);
+	void imprimir_lista_instrucciones(t_instructions_list* instructions_list);
 
 #endif
