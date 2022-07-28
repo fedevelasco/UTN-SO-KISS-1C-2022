@@ -126,7 +126,7 @@ void process_cpu_functions(){
 		        			break;
 		        		}
 		        		case GET_FRAME_REQUEST: {
-		        //			get_frame(operation_buffer->buffer);
+		        			get_frame(operation_buffer->buffer);
 		        			break;
 		        		}
 		        		case READ_MEMORY_REQUEST: {
