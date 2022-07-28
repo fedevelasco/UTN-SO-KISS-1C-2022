@@ -5,19 +5,19 @@
 
     #include <stdlib.h>
     #include <stdio.h>
-    #include <sockets/socket.h>
     #include <commons/config.h>
     #include <commons/log.h>
-    #include <utils/inicializacion.h>
+    #include <pthread.h>
 
 //    #include <utils/handshake_memoria.h>
-    #include <conexiones.h>
+    #include "../Include/conexiones.h"
 
-    #include <serializacion/estructuras.h>
-    #include <cpu_servidor.h>
-    #include <pthread.h>
-    #include <variables_globales.h>
-    #include <cicloInstruccion.h>
+    // sin static
+    #include "../Include/serializacion_cpu.h"
+    #include "../Include/cpu_servidor.h"
+    #include "../Include/variablesGlobales.h"
+    #include "../Include/cicloInstruccion.h"
+    #include "../Include/servidor_abstracto.h"
 
     int* socket_dispatch;
     int * socket_interrupt;

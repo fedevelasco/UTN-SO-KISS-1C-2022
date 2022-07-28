@@ -15,21 +15,18 @@
 #include <commons/collections/dictionary.h>
 #include <commons/collections/queue.h>
 #include <commons/collections/list.h>
-#include <parser/parser.h>
+// #include <parser/parser.h>
 #include <string.h>
 #include <signal.h>
 #include <stdbool.h>
-#include "handshake.h"
-#include "header.h"
-#include "cliente-servidor.h"
-#include "log.h"
-#include "commonTypes.h"
-#include "serializacion.h"
-#include "cpu.h"
-
-//son de la otra carpeta static
-// #include <serializacion/estructuras.h>
-// #include <sockets/socket.h>
+// #include "handshake.h"
+// #include "header.h"
+// #include "cliente-servidor.h"
+// #include "log.h"
+// #include "commonTypes.h"
+#include "../Include/cpu_alt.h"
+// sin static
+#include "../Include/serializacion_cpu.h"
 
 /*------------Variables Globales--------------*/
 int kernel; //cpu es cliente del kernel
@@ -50,6 +47,6 @@ void establecerConexionConKernel();
 
 t_traduccion_direcciones* obtenerTraduccionDeDirecciones(int socket);
 
-/* CONEXIONES_H_ */
+
 
 #endif     

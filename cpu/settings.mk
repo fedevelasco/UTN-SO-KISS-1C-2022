@@ -1,9 +1,11 @@
 # Libraries
-LIBS=static commons cunit readline
+LIBS=static commons cunit readline pthread
+# static commons pthread m cunit readline
 
 # Custom libraries' paths
 SHARED_LIBPATHS=
 STATIC_LIBPATHS=../static
+# /home/utnso/Escritorio/TP Operativos repo/tp-2022-1c-Grupo-TP-SO/static
 
 # Compiler flags
 CDEBUG=-g -Wall -DDEBUG

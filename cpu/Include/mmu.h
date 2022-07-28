@@ -6,11 +6,11 @@
     #include <stdint.h>
     #include <math.h>
     #include <stdbool.h>
-    #include <variables_globales.h>
-    // static del otro
+    // sin static
+    #include "../Include/variablesGlobales.h"
     #include <commons/collections/list.h>
     #include <commons/string.h>
-    #include <sockets/socket.h>
+
     t_list * listaTLB;
     uint32_t tiempoAccesoGlobal;
     uint32_t indiceFIFO;

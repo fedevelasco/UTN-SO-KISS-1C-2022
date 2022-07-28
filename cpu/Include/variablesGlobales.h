@@ -4,8 +4,13 @@
 
 #include <commons/config.h>
 #include <commons/log.h>
-// del otro static
-#include <serializacion/estructuras.h>
+#include <math.h>
+
+// sin static
+#include "../Include/serializacion_cpu.h"
+
+
+
 
 t_config * config;
 t_config * ips;

@@ -1,6 +1,5 @@
+#include "../Include/cpu_alt.h" 
 
-#include <cpu_alt.h>
-// #include <main.h>
 
 void iniciarHilos(){
     log_info(logger, "iniciando hilos..");

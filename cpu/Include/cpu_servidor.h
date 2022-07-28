@@ -1,12 +1,4 @@
-// constiene los h de inicializacion.h - dispatch.h - interrupt.h
-
-// #ifndef CPU_SERVIDOR_DISPATCH_H_
-// #ifndef CPU_SERVIDOR_INTERRUPT_H_
-// #ifndef CPU_VARIABLES_ESTRUCTURAS_H_
-
-// #define CPU_SERVIDOR_DISPATCH_H_
-// #define CPU_SERVIDOR_INTERRUPT_H_
-// #define CPU_VARIABLES_ESTRUCTURAS_H
+// contiene los h de inicializacion.h - dispatch.h - interrupt.h
 
 #ifndef CPU_SERVIDOR_H_
 #define CPU_SERVIDOR_H_
@@ -14,11 +6,12 @@
     #include <stdlib.h>
     #include <stdio.h>
 //    #include <abstract_servidor.h>
-    #include <cicloInstruccion.h>
-//    #include <variables_globales.h>
-    #include <mmu.h>
+    #include "../Include/cicloInstruccion.h"
+    #include "../Include/variablesGlobales.h"
+    #include "../Include/mmu.h"
     #include <pthread.h>
-    #include <serializacion/estructuras.h>
+// sin static 
+    #include "../Include/serializacion_cpu.h"
 
 t_config * config;
 t_config * ips;
@@ -27,7 +20,7 @@ char * PUERTO_ESCUCHA_DISPATCH;
 char * PUERTO_ESCUCHA_INTERRUPT;
 char * IP_MEMORIA;
 char * PUERTO_MEMORIA;
-char *REEMPLAZO_TLB;
+char * REEMPLAZO_TLB;
 int RETARDO_NOOP;
 int ENTRADAS_TLB;
 t_log * logger;

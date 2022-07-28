@@ -3,12 +3,16 @@
 
     #include <stdlib.h>
     #include <stdio.h>
-    #include <sockets/socket.h>
+    // #include <sockets/socket.h>
     #include <pthread.h>
-    #include <instruccion.h>
-    #include <serializacion/estructuras.h>
-    #include <variables_globales.h>
-    #include <mmu.h>
+
+    // sin static
+    #include "../Include/instruccion.h"
+    
+    // sin static
+    #include "../Include/serializacion_cpu.h"
+    #include "../Include/variablesGlobales.h"
+    #include "../Include/mmu.h"
     
     uint32_t tablaPaginasPrimerNivelPCB;
     t_paquete * cicloInstruccion(t_pcb * pcb);

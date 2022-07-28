@@ -1,7 +1,7 @@
 // Operaciones y traduccion de direcciones logicaas a fisicas
 // ESTRUCTURA DE TLB
 
-#include </mmu.h>
+#include "../Include/mmu.h"
 
 void iniciarEstructurasMMU() {
     tiempoAccesoGlobal = 0;

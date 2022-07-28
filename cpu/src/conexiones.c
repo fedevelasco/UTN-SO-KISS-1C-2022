@@ -1,6 +1,6 @@
 // Contiene los handshake con kernel y consola, traduccion de direcciones y paquetes de handshake.h del otro
 
-#include "conexiones.h"
+#include "../Include/conexiones.h"
 
 // ***** Funciones de conexiones ***** //
 
@@ -9,53 +9,53 @@ int getHandshake(int cli) {
 	return charToInt(handshake);
 }
 
-void warnDebug() {
-	log_warning(activeLogger, "--- CORRIENDO EN MODO DEBUG!!! ---", getpid());
-	log_warning(activeLogger, "--- CORRIENDO EN MODO DEBUG!!! ---", getpid());
-	log_warning(activeLogger, "--- CORRIENDO EN MODO DEBUG!!! ---", getpid());
-	log_warning(activeLogger, "--- CORRIENDO EN MODO DEBUG!!! ---", getpid());
-}
+// void warnDebug() {
+// 	log_warning(activeLogger, "--- CORRIENDO EN MODO DEBUG!!! ---", getpid());
+// 	log_warning(activeLogger, "--- CORRIENDO EN MODO DEBUG!!! ---", getpid());
+// 	log_warning(activeLogger, "--- CORRIENDO EN MODO DEBUG!!! ---", getpid());
+// 	log_warning(activeLogger, "--- CORRIENDO EN MODO DEBUG!!! ---", getpid());
+// }
 
 // -------- KERNEL -------- //
 
-void conectar_kernel() {
-	direccionKernel = crearDireccionParaCliente(config.puertoKernel,
-			config.ipKernel);
-	kernel = socket_w();
-	connect_w(kernel, &direccionKernel); //conecto cpu a la direccion 'direccionKernel'
-	log_info(activeLogger, "Conectado a Kernel!");
-}
+// void conectar_kernel() {
+// 	direccionKernel = crearDireccionParaCliente(config.puertoKernel,
+// 			config.ipKernel);
+// 	kernel = socket_w();
+// 	connect_w(kernel, &direccionKernel); //conecto cpu a la direccion 'direccionKernel'
+// 	log_info(activeLogger, "Conectado a Kernel!");
+// }
 
-void hacer_handshake_kernel() {
-	char* hand = string_from_format("%c%c", HeaderHandshake, SOYCPU);
-	send_w(kernel, hand, 2);
+// void hacer_handshake_kernel() {
+// 	char* hand = string_from_format("%c%c", HeaderHandshake, SOYCPU);
+// 	send_w(kernel, hand, 2);
 
-	if (getHandshake(kernel) != SOYKERNEL) {
-		perror("Se esperaba que CPU se conecte con Kernel.");
-	} else {
-		log_info(bgLogger, "Exito al hacer handshake con Kernel.");
-	}
-}
+// 	if (getHandshake(kernel) != SOYKERNEL) {
+// 		perror("Se esperaba que CPU se conecte con Kernel.");
+// 	} else {
+// 		log_info(bgLogger, "Exito al hacer handshake con Kernel.");
+// 	}
+// }
 
 // -------- MEMORIA -------- //
 
-void conectar_memoria() {
-	direccionMemoria = crearDireccionParaCliente(config.puertoMemoria, config.ipMemoria);
-	memoria = socket_w();
-	connect_w(memoria, &direccionMemoria); //conecto memoria a la direccion 'direccionMemoria'
-	log_info(activeLogger, "Conectado a Memoria!");
-}
+// void conectar_memoria() {
+// 	direccionMemoria = crearDireccionParaCliente(config.puertoMemoria, config.ipMemoria);
+// 	memoria = socket_w();
+// 	connect_w(memoria, &direccionMemoria); //conecto memoria a la direccion 'direccionMemoria'
+// 	log_info(activeLogger, "Conectado a Memoria!");
+// }
 
-void hacer_handshake_memoria() {
-	char *hand = string_from_format("%c%c", HeaderHandshake, SOYCPU);
-	send_w(memoria, hand, 2);
+// void hacer_handshake_memoria() {
+// 	char *hand = string_from_format("%c%c", HeaderHandshake, SOYCPU);
+// 	send_w(memoria, hand, 2);
 
-	if (getHandshake(memoria) != SOYMEMORIA) {
-		perror("Se esperaba que CPU se conecte con Memoria.");
-	} else {
-		log_info(bgLogger, "Exito al hacer handshake con Memoria.");
-	}
-}
+// 	if (getHandshake(memoria) != SOYMEMORIA) {
+// 		perror("Se esperaba que CPU se conecte con Memoria.");
+// 	} else {
+// 		log_info(bgLogger, "Exito al hacer handshake con Memoria.");
+// 	}
+// }
 
 
 t_traduccion_direcciones* obtenerTraduccionDeDirecciones(int socket){
@@ -89,25 +89,25 @@ t_traduccion_direcciones* obtenerTraduccionDeDirecciones(int socket){
 
 // -------- ESTABLECER CONEXIONES CON LOS OTROS MODULOS -------- //
 
-void establecerConexionConMemoria() {
-	if (!config.DEBUG_IGNORE_MEMORIA) {
-		conectar_memoria();
-		log_info(activeLogger,"Estoy handshakeando");
-		hacer_handshake_memoria();
-	} else {
-		warnDebug();
-	}
+// void establecerConexionConMemoria() {
+// 	if (!config.DEBUG_IGNORE_MEMORIA) {
+// 		conectar_memoria();
+// 		log_info(activeLogger,"Estoy handshakeando");
+// 		hacer_handshake_memoria();
+// 	} else {
+// 		warnDebug();
+// 	}
 
-	pedir_tamanio_paginas();
-}
-void establecerConexionConKernel() {
-	if(!config.DEBUG_IGNORE_KERNEL){
-		conectar_kernel();
-		hacer_handshake_kernel();
-	}else{
-		warnDebug();
-	}
-}
+// 	pedir_tamanio_paginas();
+// }
+// void establecerConexionConKernel() {
+// 	if(!config.DEBUG_IGNORE_KERNEL){
+// 		conectar_kernel();
+// 		hacer_handshake_kernel();
+// 	}else{
+// 		warnDebug();
+// 	}
+// }
 
 
 

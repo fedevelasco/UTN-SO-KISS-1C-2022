@@ -1,6 +1,17 @@
+// constiene los .c de inicializacion.c - dispatch.c - interrupt.c
+
 // INTEGRO OPERACIONES //
 
-#include <cpu_servidor.h>
+#include "../Include/cpu_servidor.h"
+
+// INICIALIZACION //
+
+void validarParametros(int argc, char* argv[]){
+    if (argc < 2) {
+        fprintf(stderr, "Se esperaba: %s [PATH_CONFIG]\n", argv[0]);
+        exit(EXIT_FAILURE);
+    }
+}
 
 // DISPATCH //
 
@@ -25,17 +36,6 @@ void deserializarDispatch(t_paquete * paquete, int socket_cliente){
 	eliminarPaquete(paquete);
 	close(socket_cliente);
 }
-
-
-// INICIALIZACION //
-
-void validarParametros(int argc, char* argv[]){
-    if (argc < 2) {
-        fprintf(stderr, "Se esperaba: %s [PATH_CONFIG]\n", argv[0]);
-        exit(EXIT_FAILURE);
-    }
-}
-
 
 // INTERRUPCIONES //
 
