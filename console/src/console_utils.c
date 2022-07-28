@@ -58,8 +58,14 @@ void end_connection(int32_t connection)
 
 int32_t receive_operation_code(int32_t server_socket)
 {
-	int32_t cod_op = recv(server_socket, &cod_op, sizeof(int32_t), MSG_WAITALL);
-	return cod_op;
+	int32_t cod_op;
+		if(recv(server_socket, &cod_op, sizeof(int32_t), MSG_WAITALL) > 0)
+			return cod_op;
+		else
+		{
+			close(server_socket);
+			return -1;
+		}
 }
 
 
@@ -131,4 +137,20 @@ void end_process(int32_t connection, t_log* logger, t_config* config){
     close(connection);
 }
 
+char* recibir_buffer(int32_t socket_cliente)
+{
+	int32_t buffer_size;
+	char* buffer;
+	if(recv(socket_cliente, &buffer_size, sizeof(int32_t), MSG_WAITALL) == -1){
+		perror("error scoket");
+	}
+
+	buffer = malloc(buffer_size);
+	if(recv(socket_cliente, buffer, buffer_size, MSG_WAITALL) == -1){
+			perror("error scoket");
+		}
+
+
+	return buffer;
+}
 

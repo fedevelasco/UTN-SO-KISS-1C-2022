@@ -112,7 +112,9 @@ int main(int32_t argc, char** argv){
 		int cod_op = receive_operation_code(connection);
 		if (cod_op == 1){
 			end_process(connection, logger, config);
+			log_info(logger, "Conexion a Kernel - Finalizacion exitosa");
 		}
+
 	}
 
 }

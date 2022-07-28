@@ -7,9 +7,9 @@
 #include <commons/collections/list.h>
 #include <commons/string.h>
 #include<commons/log.h>
-#include <list_utils.h>
+#include "../list_utils.h"
 
-#include "tads/parameter.h"
+#include "parameter.h"
 
    typedef struct {
 		char* id;

@@ -7,7 +7,7 @@
 #include <commons/collections/list.h>
 #include <commons/string.h>
 
-#include "tads/instruction.h"
+#include "instruction.h"
 
   typedef struct {
 		t_list *instructions;
@@ -46,5 +46,6 @@
 	*/
 	int32_t bytes_instructions_list(t_instructions_list* instructions_list);
 
+	void imprimir_lista_instrucciones(t_instructions_list* instructions_list);
 
 #endif

@@ -25,7 +25,7 @@
 # Shared objects (inc. Windows DLLs)
 *.dll
 *.so
-*.so.*
+.so.
 *.dylib
 
 # Executables
@@ -43,7 +43,7 @@
 *.pdb
 
 # Kernel Module Compile Results
-*.mod*
+.mod
 *.cmd
 .tmp_versions/
 modules.order
@@ -58,3 +58,5 @@ dkms.conf
 **/.project
 **/.metadata
 
+.vscode/
+*.log

@@ -1,8 +1,8 @@
-#include "serverUtils.h"
+#include <serverUtils.h>
 
-int iniciar_servidor(t_log* logger, const char* name, char* ip, char* puerto)
+int32_t iniciar_servidor(t_log* logger, const char* name, char* ip, char* puerto)
 {
-	int socket_servidor; //Declaramos el descriptor
+	int32_t socket_servidor; //Declaramos el descriptor
 
 	struct addrinfo infoSocket, *server_info; //Declaramos las estructuras
 
@@ -27,6 +27,9 @@ int iniciar_servidor(t_log* logger, const char* name, char* ip, char* puerto)
 
 		if (socket_servidor == -1) // fallo de crear socket
 			continue;
+
+		int yes = 1;
+		setsockopt(socket_servidor, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof yes);
 
 		// Asociamos el socket a un puerto
 		if (bind(socket_servidor, p->ai_addr, p->ai_addrlen) == -1) {
@@ -57,23 +60,23 @@ int iniciar_servidor(t_log* logger, const char* name, char* ip, char* puerto)
 	return socket_servidor;
 }
 
-int esperar_cliente(t_log* logger, const char* name, int socket_servidor)
+int32_t esperar_cliente(t_log* logger, const char* name, int32_t socket_servidor)
 {
 	// Aceptamos un nuevo cliente
 	struct sockaddr_in dir_cliente; // Esta estructura contendra los datos de la conexion del cliente. IP, puerto, etc
 	socklen_t addrlenght  = sizeof(dir_cliente);
 
-	int socket_cliente = accept(socket_servidor, (struct sockaddr *) &dir_cliente, &addrlenght );
+	int32_t socket_cliente = accept(socket_servidor, (struct sockaddr *) &dir_cliente, &addrlenght );
 
 	log_info(logger, "Cliente conectado (a %s)\n", name);
 
 	return socket_cliente;
 }
 
-int recibir_operacion(int socket_cliente)
+int32_t recibir_operacion(int32_t socket_cliente)
 {
-	uint32_t cod_op;
-	if(recv(socket_cliente, &cod_op, sizeof(uint32_t), MSG_WAITALL) > 0)
+	int32_t cod_op;
+	if(recv(socket_cliente, &cod_op, sizeof(int32_t), MSG_WAITALL) > 0)
 		return cod_op;
 	else
 	{
@@ -82,43 +85,41 @@ int recibir_operacion(int socket_cliente)
 	}
 }
 
-void* recibir_buffer(int* size, int socket_cliente)
+char* recibir_buffer(int32_t* buffer_size, int32_t socket_cliente)
 {
-	void * buffer;
+	char* buffer;
 
-	recv(socket_cliente, size, sizeof(int), MSG_WAITALL);
-	buffer = malloc(*size);
-	recv(socket_cliente, buffer, *size, MSG_WAITALL);
+	read(socket_cliente, buffer_size, sizeof(int32_t));
+	buffer = malloc(*buffer_size);
+	read(socket_cliente, buffer, *buffer_size);
 
 	return buffer;
 }
 
-void recibir_mensaje(int socket_cliente)
+void recibir_mensaje(int32_t socket_cliente)
 {
-	int size;
+	int32_t size;
 	char* buffer = recibir_buffer(&size, socket_cliente);
 	log_info(logger, "Me llego el mensaje %s", buffer);
 	free(buffer);
 }
 
-t_list* recibir_paquete(int socket_cliente)
+t_instructions_list* recibir_paquete(int32_t socket_cliente, t_log* logger)
 {
-	int size;
-	int desplazamiento = 0;
-	void * buffer;
-	t_list* valores = list_create();
-	int tamanio;
+	int32_t buffer_size;
+	char* buffer;
 
-	buffer = recibir_buffer(&size, socket_cliente);
-	while(desplazamiento < size)
-	{
-		memcpy(&tamanio, buffer + desplazamiento, sizeof(int));
-		desplazamiento+=sizeof(int);
-		char* valor = malloc(tamanio);
-		memcpy(valor, buffer+desplazamiento, tamanio);
-		desplazamiento+=tamanio;
-		list_add(valores, valor);
-	}
-	free(buffer);
-	return valores;
+	buffer = recibir_buffer(&buffer_size, socket_cliente);
+	log_info(logger, "buffer_size:%i\n", buffer_size);
+
+	t_instructions_list* instructions_list = create_instructions_list_with_size(buffer_size);
+
+
+	deserialize_instructions_list(instructions_list, buffer);
+
+	return instructions_list;
 }
+
+
+
+

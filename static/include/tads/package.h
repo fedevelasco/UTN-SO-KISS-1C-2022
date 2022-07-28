@@ -7,8 +7,8 @@
 #include <commons/collections/list.h>
 #include <commons/string.h>
 
-#include "tads/op_code.h"
-#include "tads/buffer.h"
+#include "op_code.h"
+#include "buffer.h"
 
 
 typedef struct
@@ -27,7 +27,7 @@ t_package* create_package();
 * @NAME: create_package
 * @DESC: Crea una instancia vacia de "t_package" copiando el contenido del buffer en el package.
 */
-t_package* new_package(t_buffer* buffer);
+t_package* new_package(t_buffer* buffer, op_code opcode);
 
 /**
 * @NAME: package_destroy
