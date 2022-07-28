@@ -1,0 +1,28 @@
+//#include "conexion.h"
+#include <pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
+#define NUM_THREADS 2
+
+void funicionPruebaHilos(int numero){
+    
+    printf("Este hilo es el %d\n", numero);
+
+}
+
+int main(){
+
+    pthread_t threads[NUM_THREADS];
+
+    int i = 0;
+    int y = 1;
+    while (1){
+        pthread_create (&threads[0], NULL, (void*) funicionPruebaHilos,(void*) i);
+
+        pthread_create (&threads[1], NULL, (void*) funicionPruebaHilos,(void*) y);
+    }
+
+    return EXIT_SUCCESS;
+
+}
+

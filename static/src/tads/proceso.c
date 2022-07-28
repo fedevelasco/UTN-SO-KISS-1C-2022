@@ -1,4 +1,4 @@
-#include "../../include/tads/proceso.h"
+#include <tads/proceso>
 
 t_proceso* proceso_crear(){
 

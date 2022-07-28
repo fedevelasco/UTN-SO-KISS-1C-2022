@@ -1,4 +1,4 @@
-#include "../../include/tads/pcb.h"
+#include <tads/pcb.h>
 
 t_PCB* pcb_create(){
 	t_PCB* pcb = malloc(sizeof(t_PCB));

@@ -1,4 +1,4 @@
-#include "../../include/tads/instructions_list.h"
+#include <tads/instructions_list.h>
 
 
 t_instructions_list* create_instructions_list(){

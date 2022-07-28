@@ -1,11 +1,11 @@
 // Este file es exclusivamente utilizado para tener como libreria de conexion entre modulos
 
-#include "../include/libreriaConexiones.h"
+#include <libreriaConexiones.h>
 
 
 // -------------- Iniciar Servidor --------------
 
-int32_t iniciar_servidor(t_log* logger, const char* name, char* ip, char* puerto)
+int32_t iniciar_servidor(t_log* logger, char* name, char* ip, char* puerto)
 {
 	int32_t socket_servidor; //Declaramos el descriptor
 
@@ -20,7 +20,7 @@ int32_t iniciar_servidor(t_log* logger, const char* name, char* ip, char* puerto
 	//Obtenemos la direccion y los datos del socket y los mete en server_info
 	if (getaddrinfo(ip, puerto, &infoSocket, &server_info) != 0){
 		perror("No se pudo obtener la direccion correctamente.");
-		return EXIT_FAILURE;
+		return -1;
 	}
 
 	bool conecto = false;
@@ -50,7 +50,7 @@ int32_t iniciar_servidor(t_log* logger, const char* name, char* ip, char* puerto
 	if(!conecto) {
 		free(server_info);
 		perror("No se pudo crear el socket");
-		return EXIT_FAILURE;
+		return -1;
 	}
 
 	// Escuchamos las conexiones entrantes
@@ -58,31 +58,35 @@ int32_t iniciar_servidor(t_log* logger, const char* name, char* ip, char* puerto
 	listen(socket_servidor, SOMAXCONN);
 
 	log_trace(logger, "Listo para escuchar a mi cliente");
-	log_info(logger, "Escuchando en %s:%s (%s)\n", IP_KERNEL, PUERTO_KERNEL, name);
+	log_info(logger, "Escuchando en %s:%s (%s)\n", ip, puerto, name);
 
 	freeaddrinfo(server_info);
 
 	return socket_servidor;
 }
 
-// -------------- Aceptar cliente como Servidor --------------
 
-int32_t esperar_cliente(t_log* logger, const char* name, int32_t socket_servidor)
+// -------------- Aceptar Cliente --------------
+
+int32_t esperar_cliente(t_log* logger, char* name, int32_t socket_servidor)
 {
 	// Aceptamos un nuevo cliente
 	struct sockaddr_in dir_cliente; // Esta estructura contendra los datos de la conexion del cliente. IP, puerto, etc
 	socklen_t addrlenght  = sizeof(dir_cliente);
 
+
 	int32_t socket_cliente = accept(socket_servidor, (struct sockaddr *) &dir_cliente, &addrlenght ); // Aceptamos un nuevo cliente
 
-	log_info(logger, "Consola conectada (a %s)\n", name);
+	log_info(logger, "socket: %i", socket_cliente);
+
+	log_info(logger, "Se conecto %s:%d al servidor %s\n", inet_ntoa(dir_cliente.sin_addr), (int) ntohs(dir_cliente.sin_port), name);
 
 	return socket_cliente;
 }
 
 // -------------- Iniciar Cliente --------------
 
-int32_t iniciar_cliente(char *ip, char* puerto, t_log* logger){
+int iniciar_cliente(char *ip, char* puerto, t_log* logger){
 	struct addrinfo hints;
 	struct addrinfo *server_info;
 
@@ -101,7 +105,7 @@ int32_t iniciar_cliente(char *ip, char* puerto, t_log* logger){
 		log_error(logger, "No se pudo conectar al servidor");
 		close(socket_cliente);
 		freeaddrinfo(server_info);
-		return EXIT_FAILURE;
+		return -1;
 	} else {
 		log_info(logger, "Connexion al servidor exitosa");
 	}
@@ -116,4 +120,28 @@ int32_t iniciar_cliente(char *ip, char* puerto, t_log* logger){
 void liberar_conexion(int* socket_cliente) {
     close(*socket_cliente);
     *socket_cliente = -1;
+}
+
+
+
+bool send_ack(int32_t fd, bool ack) {
+    void* stream = malloc(sizeof(bool));
+    memcpy(stream, &ack, sizeof(bool));
+    if (send(fd, stream, sizeof(bool), 0) == -1) {
+        free(stream);
+        return false;
+    }
+    free(stream);
+    return true;
+}
+bool recv_ack(int32_t fd, bool* ack) {
+    void* stream = malloc(sizeof(bool));
+    if (recv(fd, stream, sizeof(bool), 0) != sizeof(bool)) {
+        free(stream);
+        return false;
+    }
+    memcpy(ack, stream, sizeof(bool));
+
+    free(stream);
+    return true;
 }
