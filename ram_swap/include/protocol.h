@@ -22,6 +22,13 @@ uint32_t send_memory_config(uint32_t client_socket, t_memory_config* memory_conf
 t_buffer* new_memory_config_buffer(t_memory_config* memory_config);
 t_buffer* new_second_level_table_buffer(uint32_t second_level_table_id);
 uint32_t send_second_level_table_id(uint32_t client_socket, uint32_t second_level_table_id);
+uint32_t send_frame_number_read(uint32_t client_socket, uint32_t frame_number);
+uint32_t send_frame_number_write(uint32_t client_socket, uint32_t frame_number);
+t_buffer* new_frame_number_buffer(uint32_t frame_number);
+uint32_t send_memory_data(uint32_t client_socket, uint32_t memory_data);
+t_buffer* new_memory_data_buffer(uint32_t memory_data);
+uint32_t send_write_memory(uint32_t client_socket);
+t_buffer* new_write_memory_buffer();
 
 
 

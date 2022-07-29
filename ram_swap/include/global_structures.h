@@ -15,6 +15,7 @@
 #include <tads/buffer.h>
 #include <tads/memory_config.h>
 #include <tads/page_table_request.h>
+#include <tads/memory_write_request.h>
 
 
 // Tabla de paginas primer nivel
@@ -52,7 +53,7 @@ typedef struct process_state{
 } process_state_t;
 
 typedef struct operation_buffer{
-	op_code opcode;
+	t_op_code opcode;
 	char* buffer;
 	uint32_t client_socket;
 } operation_buffer_t;

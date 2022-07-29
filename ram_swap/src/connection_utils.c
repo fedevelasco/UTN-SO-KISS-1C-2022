@@ -18,12 +18,6 @@ void server_listen_ram(char* server_name, int server_socket) {
 
 			buffer = recv_buffer(client_socket);
 
-			t_process* process = create_process();
-			deserialize_process(process, operation_buffer->buffer);
-
-
-
-
 			operation_buffer_t* operation_buffer = malloc(sizeof(operation_buffer_t));
 			operation_buffer->opcode = opcode;
 			operation_buffer->buffer = buffer;
@@ -131,20 +125,20 @@ void process_cpu_functions(){
 		                   get_second_level_table(operation_buffer->buffer);
 		        			break;
 		        		}
-		        		case GET_FRAME_REQUEST: {
-		        			get_frame(operation_buffer->buffer);
+		        		case GET_FRAME_READ_REQUEST: {
+		        			get_frame_read(operation_buffer->buffer);
+		        			break;
+		        		}
+		        		case GET_FRAME_WRITE_REQUEST: {
+		        			get_frame_write(operation_buffer->buffer);
 		        			break;
 		        		}
 		        		case READ_MEMORY_REQUEST: {
-		        //			read_memory(operation_buffer->buffer);
+		        			read_memory(operation_buffer->buffer);
 		        			break;
 		        		}
 		        		case WRITE_MEMORY_REQUEST: {
-		        //			write_memory(operation_buffer->buffer);
-		        			break;
-		        		}
-		        		case GET_MEMORY_CONFIG_REQUEST: {
-							get_memory_config(operation_buffer->buffer);
+		        			write_memory(operation_buffer->buffer);
 							break;
 						}
 

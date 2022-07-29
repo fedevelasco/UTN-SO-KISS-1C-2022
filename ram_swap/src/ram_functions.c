@@ -200,6 +200,7 @@ void* read_frame(uint32_t frame_number){
     return frame;
 }
 
+
 void free_memory(uint32_t first_level_table_number){
     log_info(logger, "Se borra de memoria la tabla de primer nivel: %d", first_level_table_number);
 
@@ -327,12 +328,17 @@ uint32_t get_frame_number(t_page_table_request* page_table_request, bool isWrite
 
 			if (isWrite){
 				page->bit_M = true;
+				log_info(logger, "Al pid: %d se le asigna el frame: %d para Escritura", page->frame_number, page_table_request->pid);
+			} else {
+				log_info(logger, "Al pid: %d se le asigna el frame: %d para Lectura", page->frame_number, page_table_request->pid);
 			}
 
 			page->bit_U = true;
 
 
 	    pthread_mutex_unlock(&MUTEX_SECOND_LEVEL_ENTRY);
+
+
 	    return page->frame_number;
 
 }
@@ -397,10 +403,10 @@ t_list* get_second_level_pages(uint32_t first_level_page_table_id)
 
     for(int i=0; i < list_size(first_level_page_table->first_level_entries);i++){
 
-    	first_level_entries_t entry = list_get(first_level_page_table->first_level_entries, i);
+    	first_level_entries_t* entry = list_get(first_level_page_table->first_level_entries, i);
 
     	pthread_mutex_lock(&MUTEX_SECOND_LEVEL_TABLES);
-    	second_level_page_table_t second_level_page_table = list_get(global_second_level_page_tables, entry->second_level_table_id);
+    	second_level_page_table_t* second_level_page_table = list_get(global_second_level_page_tables, entry->second_level_table_id);
     	pthread_mutex_unlock(&MUTEX_SECOND_LEVEL_TABLES);
 
     	for(int j=0; j < list_size(second_level_page_table->pages);j++){
@@ -627,18 +633,34 @@ page_t* replace_with_clock_m(process_state_t* process_state, t_list* all_process
 	return victim_page;
 }
 
-void* read_frame(uint32_t frame_number){
 
-    void* frame = malloc(tam_pagina);
+uint32_t read_fisical_address(uint32_t fisical_address){
 
-    uint32_t offset = frame_number * tam_pagina;
+	log_info(logger, "Retardo de memoria %dms", retardo_memoria);
+	usleep(retardo_memoria*1000);
+
+    uint32_t data = malloc(sizeof(uint32_t));
+
     pthread_mutex_lock(&MUTEX_MEMORY);
-    memcpy(frame, memory + offset, tam_pagina);
+    memcpy(data, memory + fisical_address, sizeof(uint32_t));
     pthread_mutex_unlock(&MUTEX_MEMORY);
-
-    return frame;
+    log_info(logger, "LECTURA - En la direccion fisica: %d se LEE el dato: %d", fisical_address, data);
+    return data;
 }
 
+void write_memory_data(t_memory_write_request* write){
+
+	log_info(logger, "Retardo de memoria %dms", retardo_memoria);
+	usleep(retardo_memoria*1000);
+
+	uint32_t data = write->data;
+
+    pthread_mutex_lock(&MUTEX_MEMORY);
+    memcpy(memory + write->fisical_address, &data, sizeof(uint32_t));
+    pthread_mutex_unlock(&MUTEX_MEMORY);
+
+    log_info(logger, "ESCRITURA - En la direccion fisica: %d se ESCRIBE el dato: %d", write->fisical_address, data);
+}
 
 
 
