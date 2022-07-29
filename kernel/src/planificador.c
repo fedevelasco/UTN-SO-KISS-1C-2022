@@ -20,7 +20,7 @@ t_pcb * iniciarPcb(t_proceso * proceso){
     pcb->instrucciones = proceso->instrucciones;
     pcb->lengthUltimaRafaga = 0;
     pcb->PC = 0;
-    pcb->tablaDePaginas = 0; //¿iniciar conexion con memomoria para solicitar tabla de paginas?
+    pcb->tablaDePaginas = 0;
     pcb->estimacionRafaga = ESTIMACION_INICIAL;
     free(proceso);
     return pcb;
@@ -31,11 +31,12 @@ void ingresarANew(t_pcb * pcb){
     pthread_mutex_lock(&mutex_estado_new);
     queue_push(estado_new, (void*) pcb);
     pthread_mutex_unlock(&mutex_estado_new);
-    log_info(logger, "KERNEL - Se agrega el proceso: %d a la cola del estado NEW", pcb->id);
+    log_info(logger, "Kernel - Se agrega el PID: %d a la cola del estado NEW", pcb->id);
     //sem_post(&sem_hay_pcb_en_new);
     sem_post(&sem_hay_pcb_esperando_ready);
 }
 
+// ---------- Funcion que corre el hilo para administrar el planificador largo plazo -------------
 void Aready(){
     while(1){
 
@@ -60,8 +61,7 @@ void Aready(){
 // ------------ Obtengo el siguiente PCB a ser agregado a la lista READY -----------------
 t_pcb * obtenerSiguienteAready(){
     
-    t_pcb* pcb = NULL;
-    log_info(logger, "HASTA ACA FUNCIONA AREADY 2");  
+    t_pcb* pcb = NULL;  
     	if(!queue_is_empty(estado_susp_ready)){
             
             pthread_mutex_lock(&mutex_estado_susp_ready);
@@ -242,6 +242,9 @@ void comunicacionMemoriaSuspender(t_pcb * pcb){
 void comunicacionMemoriaCreacionEstructuras(t_pcb * pcb){
 
     int socketMemoria = crear_conexion(IP_MEMORIA,PUERTO_MEMORIA);
+    if (socketMemoria == -1){
+        log_info(logger, "Kernel - No se pudo crear la conexion con memoria para traer las estructuras");
+    }
     t_paquete* paqueteAmemoria = armarPaqueteCon(pcb, REQ_CREAR_PROCESO_KERNEL_MEMORIA);
     enviarPaquete(paqueteAmemoria, socketMemoria);
     eliminarPaquete(paqueteAmemoria);

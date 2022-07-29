@@ -19,7 +19,7 @@
 
     uint32_t recibir_operacion(uint32_t socket_cliente);
     char* recibir_buffer(uint32_t* buffer_size, uint32_t socket_cliente);
-    t_instructions_list* recibir_paquete(uint32_t socket_cliente, t_log* logger);
-    t_instructions_list* recibirPaqquete_inicio(int server_socket, t_proceso* nuevo_proceso);
+    t_proceso* recibir_paquete(uint32_t socket_cliente, t_log* logger);
+    t_proceso* recibirPaqquete_inicio(int server_socket);
     
 #endif

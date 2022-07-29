@@ -22,11 +22,13 @@ void inicializarVariablesGlobales(char * pathConfig, char * pathConfigIP){
     config = config_create(pathConfig);
     ips = config_create(pathConfigIP);
     logger = log_create("kernel.log", "kernel", 1, LOG_LEVEL_INFO);
-    IP = config_get_string_value(ips, "IP_KERNEL");
-    PUERTO_ESCUCHA = config_get_string_value(ips, "PUERTO_KERNEL");
-
-
     log_info(logger, "Kernel - Copiando configuracion de archivos .cfg");
+
+    IP = config_get_string_value(ips, "IP_KERNEL");
+    log_info(logger, "Kernel - IP configurado: %s", IP);
+    PUERTO_ESCUCHA = config_get_string_value(ips, "PUERTO_KERNEL");
+    log_info(logger, "Kernel - PUERTO configurado: %s", PUERTO_ESCUCHA);
+
     IP_CPU = config_get_string_value(ips, "IP_CPU");
     PUERTO_CPU_DISPATCH = config_get_string_value(ips, "PUERTO_CPU_DISPATCH");
     PUERTO_CPU_INTERRUPT = config_get_string_value(ips, "PUERTO_CPU_INTERRUPT");

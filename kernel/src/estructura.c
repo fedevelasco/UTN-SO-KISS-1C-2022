@@ -113,15 +113,16 @@ void eliminarPaquete(t_paquete* paquete)
 //	free(proceso->instrucciones);
 //	free(proceso);
 //}
-//void* serializarProceso (void* stream, void* estructura){
-// 	t_proceso* proceso = (t_proceso*) estructura;
-//	int offset = 0;
-//  	memcpy(stream + offset, &(proceso->tamanioProceso),sizeof(uint32_t));
-//	offset += sizeof(uint32_t);
-//	memcpy(stream + offset, &(proceso->sizeInstrucciones),sizeof(uint32_t));
-//	serializarInstrucciones(stream, (void*)proceso->instrucciones, offset);
-//	return stream;
-//}
+void* serializarProceso (void* stream, void* estructura){
+ 	t_proceso* proceso = (t_proceso*) estructura;
+	int offset = 0;
+  	memcpy(stream + offset, &(proceso->tamanioProceso),sizeof(uint32_t));
+	offset += sizeof(uint32_t);
+	memcpy(stream + offset, &(proceso->sizeInstrucciones),sizeof(uint32_t));
+	serializarInstrucciones(stream, (void*)proceso->instrucciones, offset);
+	return stream;
+}
+
 //
 //t_proceso* deserializarProceso (void* stream){
 //	t_proceso* proceso = malloc(sizeof(t_proceso)); //Aloco memoria para el proceso

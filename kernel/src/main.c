@@ -1,10 +1,11 @@
 #include <main.h>
 
-/* Creo y asigno las estructuras proceso, PCB y consola. Agrego el PCB al estado new */
+/* ------------------- Creo y asigno las estructuras proceso, PCB y consola. Agrego el PCB al estado new ---------------- */
 void manejarProceso(int* socket_consola){
 
     t_proceso* nuevo_proceso = malloc(sizeof(t_proceso));
-    t_instructions_list* lista = recibirPaqquete_inicio(*socket_consola, nuevo_proceso);
+    //t_instructions_list* lista = 
+    nuevo_proceso = recibirPaqquete_inicio(*socket_consola);
     //t_paquete* paquete = recibirPaquete(*socket_consola); // Recibo paquete de consola FUNCIONA
     //t_proceso* nuevo_proceso = deserializarProceso(paquete->buffer->stream); // Creo proceso a partir del paquete
     //t_proceso* nuevo_proceso = deserializarProceso_V2(paquete);
@@ -22,8 +23,7 @@ void manejarProceso(int* socket_consola){
     list_add(consolas_conectadas, (void *) nuevaConsola); // Agrego a la lista la consola que cree
     pthread_mutex_unlock(&mutex_consolas_conectadas);
     
-    ingresarANew(pcb); // Ingreso el PCB al estado new
-    log_info(logger, "----------- HASTA ACA LLEGA EL MAIN & FUNCIONA ------------");    
+    ingresarANew(pcb); // Ingreso el PCB al estado new   
 }
 
 
@@ -35,7 +35,7 @@ int main() {
 
     /* Inicializo la config y asigno los valores a las variables globales */
     //inicializarVariablesGlobales(pathConfig, pathIPS);
-    inicializarVariablesGlobales("/home/utnso/tp-2022-1c-Grupo-TP-SO/kernel/config/kernel.cfg", "/home/utnso/tp-2022-1c-Grupo-TP-SO/kernel/config/ip.cfg");
+    inicializarVariablesGlobales("/home/utnso/shared/tp-2022-1c-Grupo-TP-SO/kernel/config/kernel.cfg", "/home/utnso/shared/tp-2022-1c-Grupo-TP-SO/kernel/config/ip.cfg");
 
     /* Inicializacion de los mutex */
     pthread_mutex_init(&mutex_estado_new, (void *)NULL);
@@ -45,7 +45,7 @@ int main() {
     pthread_mutex_init(&mutex_estado_blocked, (void *)NULL);
     pthread_mutex_init(&mutex_estado_susp_ready, (void*)NULL);
     pthread_mutex_init(&mutex_consolas_conectadas, (void*)NULL);
-
+     
     /* Creo la lista para almacenar consolas */
     consolas_conectadas = list_create();
 

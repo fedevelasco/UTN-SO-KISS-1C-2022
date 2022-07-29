@@ -31,11 +31,11 @@
 		t_instruccion* instrucciones;
 	}t_proceso;
 	*/
-//	typedef struct{
-//		uint32_t tamanioProceso;
-//		uint32_t sizeInstrucciones;
-//		t_instructions_list* instrucciones;
-//	}t_proceso;
+	typedef struct{
+		uint32_t tamanioProceso;
+		uint32_t sizeInstrucciones;
+		t_instructions_list* instrucciones;
+	}t_proceso;
 
 	typedef struct{
 		uint32_t tamanio_pagina;
@@ -106,7 +106,7 @@
 
 //	t_proceso* crearProceso(uint32_t tamanioProceso, uint32_t sizeInstrucciones,t_instruccion* instrucciones);
 //	void freeProceso(t_proceso * proceso);
-//	void * serializarProceso(void* stream, void* estructura);
+	void * serializarProceso(void* stream, void* estructura);
 //	t_proceso* deserializarProceso(void* stream);
 //	t_proceso* deserializarProceso_V2 (t_paquete* paquete);
 	
