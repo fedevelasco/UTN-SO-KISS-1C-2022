@@ -121,23 +121,23 @@ void process_cpu_functions(){
 		        			log_info(logger, "Im a debug message");
 		        			break;
 		        		}
-		        		case GET_SECOND_LEVEL_TABLE_REQUEST: {
+		        		case GET_SECOND_LEVEL_TABLE_REQUEST: { //cpu - mmu: consultarTablaSegundoNivel
 		                   get_second_level_table(operation_buffer->buffer);
 		        			break;
 		        		}
-		        		case GET_FRAME_READ_REQUEST: {
+		        		case GET_FRAME_READ_REQUEST: { //cpu - mmu: consultarMarco REQ_MARCO_LECTURA_CPU_MEMORIA
 		        			get_frame_read(operation_buffer->buffer);
 		        			break;
 		        		}
-		        		case GET_FRAME_WRITE_REQUEST: {
+		        		case GET_FRAME_WRITE_REQUEST: { //cpu - mmu: consultarMarcoREQ_MARCO_ESCRITURA_CPU_MEMORIA
 		        			get_frame_write(operation_buffer->buffer);
 		        			break;
 		        		}
-		        		case READ_MEMORY_REQUEST: {
+		        		case READ_MEMORY_REQUEST: { //cpu - cicloinstrucction: memoria_read
 		        			read_memory(operation_buffer->buffer);
 		        			break;
 		        		}
-		        		case WRITE_MEMORY_REQUEST: {
+		        		case WRITE_MEMORY_REQUEST: {//cpu - cicloinstrucction: memoria_write
 		        			write_memory(operation_buffer->buffer);
 							break;
 						}
