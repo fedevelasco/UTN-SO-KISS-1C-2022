@@ -3,9 +3,7 @@
 void server_listen_ram(char* server_name, int server_socket) {
 
 	while (1) {
-
 		uint32_t client_socket = esperar_cliente(logger, server_name, server_socket);
-
 		if (client_socket != -1) {
 
 			t_op_code opcode;
@@ -93,7 +91,7 @@ void process_kernel_functions(){
 	        		}
 
 	        		case PROCESS_KILL_REQUEST: {
-	        			process_kill(operation_buffer->buffer);
+	        			process_kill(operation_buffer);
 	        			break;
 	        		}
 
@@ -122,23 +120,23 @@ void process_cpu_functions(){
 		        			break;
 		        		}
 		        		case GET_SECOND_LEVEL_TABLE_REQUEST: { //cpu - mmu: consultarTablaSegundoNivel
-		                   get_second_level_table(operation_buffer->buffer);
+		                   get_second_level_table(operation_buffer);
 		        			break;
 		        		}
 		        		case GET_FRAME_READ_REQUEST: { //cpu - mmu: consultarMarco REQ_MARCO_LECTURA_CPU_MEMORIA
-		        			get_frame_read(operation_buffer->buffer);
+		        			get_frame_read(operation_buffer);
 		        			break;
 		        		}
-		        		case GET_FRAME_WRITE_REQUEST: { //cpu - mmu: consultarMarcoREQ_MARCO_ESCRITURA_CPU_MEMORIA
-		        			get_frame_write(operation_buffer->buffer);
+		        		case GET_FRAME_WRITE_REQUEST: { //cpu - mmu: consultarMarco REQ_MARCO_ESCRITURA_CPU_MEMORIA
+		        			get_frame_write(operation_buffer);
 		        			break;
 		        		}
 		        		case READ_MEMORY_REQUEST: { //cpu - cicloinstrucction: memoria_read
-		        			read_memory(operation_buffer->buffer);
+		        			read_memory(operation_buffer);
 		        			break;
 		        		}
 		        		case WRITE_MEMORY_REQUEST: {//cpu - cicloinstrucction: memoria_write
-		        			write_memory(operation_buffer->buffer);
+		        			write_memory(operation_buffer);
 							break;
 						}
 

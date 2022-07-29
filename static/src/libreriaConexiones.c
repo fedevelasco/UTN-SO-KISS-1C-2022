@@ -117,7 +117,7 @@ int iniciar_cliente(char *ip, char* puerto, t_log* logger){
 
 // -------------- Liberar Conexiones --------------
 
-void liberar_conexion(int* socket_cliente) {
-    close(*socket_cliente);
-    *socket_cliente = -1;
+void liberar_conexion(int socket_cliente) {
+    close(socket_cliente);
+    socket_cliente = -1;
 }
