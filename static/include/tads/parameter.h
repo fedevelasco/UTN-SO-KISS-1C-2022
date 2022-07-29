@@ -2,6 +2,7 @@
 #define PARAMETER_H_
 
 #include <stdlib.h>
+#include <stdint.h>
 
     typedef struct {
 	uint32_t value;

@@ -97,7 +97,7 @@ uint32_t pcb_serializar(t_PCB* pcb, char* output){
     return offset;
 }
 
-int bytes_PCB(t_PCB* pcb){
+uint32_t bytes_PCB(t_PCB* pcb){
     return sizeof(pcb->PID) + sizeof(pcb->TAMANIO_PROCESO) + sizeof(pcb->PC) + sizeof(pcb->TABLA_DE_PAGINAS) + sizeof(pcb->ESTIMACION_RAFAGA) + bytes_instructions_list(pcb->LISTA_INSTRUCCIONES);
 }
 

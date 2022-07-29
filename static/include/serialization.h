@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 #include <commons/collections/list.h>
 #include <commons/string.h>
@@ -167,7 +168,7 @@ uint32_t deserialize_page_table_request(t_page_table_request* output, char* inpu
 
 
 // Debug
-void print_buffer(char* buffer, int size);
+void print_buffer(char* buffer, uint32_t size);
 
 // Test Call
 int test_serialization();

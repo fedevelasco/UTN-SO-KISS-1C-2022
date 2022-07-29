@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <commons/collections/list.h>
 #include <commons/collections/dictionary.h>
 #include "instructions_list.h"
@@ -41,10 +42,10 @@ float pcb_convertir_int_a_float(uint32_t numero_int);
 
 uint32_t pcb_serializar(t_PCB* pcb, char* output);
 
-int pcb_deserializar(t_PCB* destino, char* fuente);
+uint32_t pcb_deserializar(t_PCB* destino, char* fuente);
 
 char* pcb_creat_paquete(t_PCB* pcb, uint32_t bytes);
 
-int bytes_PCB(t_PCB* pcb);
+uint32_t bytes_PCB(t_PCB* pcb);
 
 #endif /* PCB_H_ */
