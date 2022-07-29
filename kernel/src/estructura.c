@@ -284,7 +284,7 @@ void*  serializarIO(void* stream, void* estructura){
 	int offset = 0;
 	memcpy(stream + offset, &(IO->tiempoBloqueo),sizeof(uint32_t));
 	offset += sizeof(uint32_t);
-	serializarPCB(stream, (void*) IO->pcb, offset);
+	pcb_serializar_estruc(stream, (void*) IO->pcb, offset);
 	return stream;
 }
 
@@ -293,7 +293,7 @@ t_IO* deserializarIO(void* stream){
 	int offset = 0;
 	memcpy(&(IO->tiempoBloqueo), stream + offset, sizeof(uint32_t));
 	offset += sizeof(uint32_t);
-	IO->pcb = deserializarPCB(stream, offset);
+	IO->pcb = pcb_deserializar_estrucs(stream, offset);
 	return IO;
 }
 
@@ -385,16 +385,16 @@ void* serializarEstructura(void* estructura,int tamanio,t_op_code cod_op){
 			return serializarTraduccionDirecciones(stream,estructura);
 		}
 		case REQ_PCB_A_EJECUTAR_KERNEL_CPU:{
-			return serializarPCB(stream,estructura,0);
+			return pcb_serializar_estruc(stream,estructura,0);
 		}
 		case PCB_EJECUTADO_IO_CPU_KERNEL:{
 			return serializarIO(stream,estructura);
 		}
 		case PCB_EJECUTADO_EXIT_CPU_KERNEL:{
-			return serializarPCB(stream,estructura,0);
+			return pcb_serializar_estruc(stream,estructura,0);
 		}
 		case PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL:{
-			return serializarPCB(stream,estructura,0);
+			return pcb_serializar_estruc(stream,estructura,0);
 		}
 		case REQ_INTERRUPCION_KERNEL_CPU:{
 			return serializarUINT32_T(stream,estructura);
@@ -403,16 +403,16 @@ void* serializarEstructura(void* estructura,int tamanio,t_op_code cod_op){
 			return serializarUINT32_T(stream,estructura);
 		}
 		case REQ_FIN_PROCESO_KERNEL_MEMORIA:{
-			return serializarPCB(stream,estructura,0);
+			return pcb_serializar_estruc(stream,estructura,0);
 		}
 		case REQ_CREAR_PROCESO_KERNEL_MEMORIA:{
-			return serializarPCB(stream,estructura,0);
+			return pcb_serializar_estruc(stream,estructura,0);
 		}
 		case RES_CREAR_PROCESO_KERNEL_MEMORIA:{
 			return serializarUINT32_T(stream,estructura);
 		}
 		case REQ_SUSP_PROCESO_KERNEL_MEMORIA:{
-			return serializarPCB(stream,estructura,0);
+			return pcb_serializar_estruc(stream,estructura,0);
 		}
 		case RES_SUSP_PROCESO_KERNEL_MEMORIA:{
 			return serializarUINT32_T(stream, estructura);
