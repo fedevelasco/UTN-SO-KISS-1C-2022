@@ -11,7 +11,7 @@
     #include <commons/collections/list.h>
     #include <commons/string.h>
 
-    #include <conexiones.h>
+    #include "../Include/conexiones.h"
     #include <tads/page_table_request.h>
 
     t_list * listaTLB;
