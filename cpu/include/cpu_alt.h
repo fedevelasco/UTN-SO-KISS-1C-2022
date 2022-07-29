@@ -10,14 +10,14 @@
     #include <pthread.h>
 
 //    #include <utils/handshake_memoria.h>
-    #include "../Include/conexiones.h"
+    #include "../include/conexiones.h"
 
     // sin static
-    #include "../Include/serializacion_cpu.h"
-    #include "../Include/cpu_servidor.h"
-    #include "../Include/variablesGlobales.h"
-    #include "../Include/cicloInstruccion.h"
-    #include "../Include/servidor_abstracto.h"
+    #include "../include/serializacion_cpu.h"
+    #include "../include/cpu_servidor.h"
+    #include "../include/variablesGlobales.h"
+    #include "../include/cicloInstruccion.h"
+    #include "../include/servidor_abstracto.h"
 
     int* socket_dispatch;
     int * socket_interrupt;

@@ -1,4 +1,4 @@
-#include "../Include/cpu_alt.h" 
+#include "../include/cpu_alt.h" 
 
 
 void iniciarHilos(){

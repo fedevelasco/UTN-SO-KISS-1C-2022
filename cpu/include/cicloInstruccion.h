@@ -3,18 +3,18 @@
 
     #include <stdlib.h>
     #include <stdio.h>
-    // #include <sockets/socket.h>
+    #include "../include/sockets.h"
     #include <pthread.h>
 
     // sin static
-    #include "../Include/instruccion.h"
+    #include "../include/instruccion.h"
     
     // sin static
-    #include "../Include/serializacion_cpu.h"
-    #include "../Include/variablesGlobales.h"
-    #include "../Include/mmu.h"
+    #include "../include/serializacion_cpu.h"
+    #include "../include/variablesGlobales.h"
+    #include "../include/mmu.h"
 
-    #include "../Include/conexiones.h"
+    #include "../include/conexiones.h"
     
     uint32_t tablaPaginasPrimerNivelPCB;
     t_paquete * cicloInstruccion(t_pcb * pcb);
@@ -22,7 +22,7 @@
     bool execute(t_instruccion instruccion);
     uint32_t * execute_read(uint32_t direccion_logica);
     void execute_write(uint32_t direccion_logica, uint32_t dato);
-    uint32_t * memoria_read(uint32_t direccion_fisica);
+    uint32_t  memoria_read(uint32_t direccion_fisica);
     void memoria_write(uint32_t direccion_fisica, uint32_t dato);
 
 #endif

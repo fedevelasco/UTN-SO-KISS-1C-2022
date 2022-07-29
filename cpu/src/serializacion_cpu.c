@@ -1,4 +1,4 @@
-#include "../Include/serializacion_cpu.h"
+#include "../include/serializacion_cpu.h"
 
 char * codOPtoString(t_op_code cod_op){
 

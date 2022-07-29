@@ -2,7 +2,7 @@
 
 // INTEGRO OPERACIONES //
 
-#include "../Include/cpu_servidor.h"
+#include "../include/cpu_servidor.h"
 
 // INICIALIZACION //
 

@@ -3,9 +3,9 @@
 
     #include <stdlib.h>
 	#include <stdint.h>
-    #include "../Include/serializacion_cpu.h"
-    #include "../Include/sockets.h"
-    #include "../Include/variablesGlobales.h"
+    #include "../include/serializacion_cpu.h"
+    #include "../include/sockets.h"
+    #include "../include/variablesGlobales.h"
     typedef struct{
         int * socket;
         char nombre[10];

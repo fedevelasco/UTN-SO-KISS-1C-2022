@@ -7,7 +7,7 @@
 #include <math.h>
 
 // sin static
-#include "../Include/serializacion_cpu.h"
+#include "../include/serializacion_cpu.h"
 
 
 

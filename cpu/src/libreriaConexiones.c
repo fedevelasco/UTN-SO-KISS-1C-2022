@@ -1,6 +1,6 @@
 // // Este file es exclusivamente utilizado para tener como libreria de conexion entre modulos
 
-// #include "../Include/libreriaConexiones.h"
+// #include "../include/libreriaConexiones.h"
 
 
 // // -------------- Iniciar Servidor --------------

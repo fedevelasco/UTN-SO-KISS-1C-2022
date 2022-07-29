@@ -1,4 +1,4 @@
-#include "../Include/instruccion.h"
+#include "../include/instruccion.h"
 
 t_instruccion * obtenerInstruccion(char* instruccionTexto){
     

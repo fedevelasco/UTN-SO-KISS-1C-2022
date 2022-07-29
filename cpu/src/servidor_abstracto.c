@@ -1,4 +1,4 @@
-#include "../Include/servidor_abstracto.h"
+#include "../include/servidor_abstracto.h"
 
 void servidor(void * params){
     t_servidor * servidor = (t_servidor *)params;

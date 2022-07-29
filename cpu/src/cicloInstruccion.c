@@ -3,7 +3,7 @@
 
 
 
-#include "../Include/cicloInstruccion.h"
+#include "../include/cicloInstruccion.h"
 
 
 t_instruccion fetch(t_pcb *  pcb){
@@ -88,19 +88,21 @@ bool execute(t_instruccion instruccion){
             //log_info(logger, "Ejecutando IO");
             return false;
         case READ: {
-            uint32_t * dato = execute_read(instruccion.parametro1);
+            uint32_t dato = execute_read(instruccion.parametro1);
             log_info(logger, "Ejecutado READ");
-            free(dato);
+
+            // log_info(logger, "Ejecutado READ");
+            // free(dato);
             //uint32_t * dato = execute_read(instruccion.parametro1);
-            //log_info(logger, "Ejecutado READ valor: %d", *dato);
+            
             return true;
         }
         case COPY:{
             //log_info(logger, "Ejecutando COPY");
-            uint32_t * dato = execute_read(instruccion.parametro2);
+            uint32_t dato = execute_read(instruccion.parametro2);
 
-            execute_write(instruccion.parametro1, *dato);
-            free(dato);
+            execute_write(instruccion.parametro1, dato);
+            // free(dato);
             log_info(logger, "COPY finalizado");
             return true;
         }
@@ -119,17 +121,17 @@ bool execute(t_instruccion instruccion){
         }
     }
 }
-uint32_t * execute_read(uint32_t direccion_logica){
+uint32_t execute_read(uint32_t direccion_logica){
 
-    uint32_t direccionFisica = consultarDireccionFisica(tablaPaginasPrimerNivelPCB, direccion_logica, REQ_MARCO_LECTURA_CPU_MEMORIA);
-    uint32_t * dato = memoria_read(direccionFisica);
-    log_info(logger, "READ dato: %d en dirección física: %d", *dato, direccionFisica);
+    uint32_t direccionFisica = consultarDireccionFisica(tablaPaginasPrimerNivelPCB, direccion_logica, GET_FRAME_READ_REQUEST);
+    uint32_t dato = memoria_read(direccionFisica);
+    log_info(logger, "READ dato: %d en dirección física: %d", dato, direccionFisica);
     //leer direccion fisica en memoria y loggear dato
     return dato;
 }
 
 void execute_write(uint32_t direccion_logica, uint32_t dato){
-    uint32_t direccionFisica = consultarDireccionFisica(tablaPaginasPrimerNivelPCB, direccion_logica, REQ_MARCO_ESCRITURA_CPU_MEMORIA);
+    uint32_t direccionFisica = consultarDireccionFisica(tablaPaginasPrimerNivelPCB, direccion_logica, GET_FRAME_WRITE_REQUEST);
     memoria_write(direccionFisica, dato);
     log_info(logger, "WRITE dato: %d en dirección física: %d", dato, direccionFisica);
 }
@@ -137,15 +139,51 @@ void execute_write(uint32_t direccion_logica, uint32_t dato){
 uint32_t * memoria_read(uint32_t direccion_fisica) {
 
     uint32_t socket_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
-    t_paquete * paquete = armarPaqueteCon(&direccion_fisica, REQ_READ_CPU_MEMORIA);
-    enviarPaquete(paquete,socket_memoria);
-    eliminarPaquete(paquete);
+
+    t_buffer* buffer = new_memoria_read_buffer(direccion_fisica);
+
+    //Codigo operacion que envio: * REQUEST
+	t_package* package = new_package(buffer, READ_MEMORY_REQUEST);
+
+	if (send_to_server(socket_memoria, package) == -1) {
+		log_error(logger, "Error al enviar paquete al servidor");
+
+	}
+	buffer_destroy(buffer);
+	package_destroy(package);
+
+    uint32_t cod_op = recibir_operacion(socket_memoria);
+
+   //Codigo operacion que recibo:* RESPONSE
+	if(cod_op != READ_MEMORY_RESPONSE){
+			perror("respuesta inesperada");
+			exit(EXIT_FAILURE);
+		}
+
+	char* buffer_recibido = recibir_paquete(socket_memoria);
+
+	uint32_t dato;
+
+	deserialize_int(&dato, buffer_recibido);
+
+	if(dato == -1){
+		log_error(logger, "Error al leer dato en memoria");
+	}
+
+	free(buffer_recibido);
+
+    // uint32_t asdnum = 1;  
+    // uint32_t* asd = &asdnum;
+
+    return dato;
+}
+    // t_paquete * paquete = armarPaqueteCon(&direccion_fisica, REQ_READ_CPU_MEMORIA);
+    // enviarPaquete(paquete,socket_memoria);
+    // eliminarPaquete(paquete);
 
     //TODO: COMPLETAR CONEXION   
-    uint32_t asdnum = 1;  
-    uint32_t* asd = &asdnum;
-    return asd;
-}
+    
+
 
 void memoria_write(uint32_t direccion_fisica, uint32_t dato) {
 

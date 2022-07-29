@@ -6,7 +6,7 @@
 	#include <unistd.h>
 	#include <sys/socket.h>
 	#include <netdb.h>
-	#include "../Include/instruccion.h"
+	#include "../include/instruccion.h"
 	#include <commons/collections/list.h>
 	#include <commons/collections/queue.h>
 	#include <tads/op_code.h>

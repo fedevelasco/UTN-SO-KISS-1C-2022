@@ -7,7 +7,7 @@
     #include<unistd.h>
     #include<netdb.h>
     #include<string.h>
-    #include"../Include/serializacion_cpu.h"
+    #include"../include/serializacion_cpu.h"
     #include<commons/log.h>
     
     int iniciar_servidor(char* IP, char* PORT);

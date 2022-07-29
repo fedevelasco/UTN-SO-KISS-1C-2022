@@ -5,13 +5,13 @@
 
     #include <stdlib.h>
     #include <stdio.h>
-    #include "../Include/servidro_abstracto.h"
-    #include "../Include/cicloInstruccion.h"
-    #include "../Include/variablesGlobales.h"
-    #include "../Include/mmu.h"
+    #include "../include/servidor_abstracto.h"
+    #include "../include/cicloInstruccion.h"
+    #include "../include/variablesGlobales.h"
+    #include "../include/mmu.h"
     #include <pthread.h>
 // sin static 
-    #include "../Include/serializacion_cpu.h"
+    #include "../include/serializacion_cpu.h"
 
 t_config * config;
 t_config * ips;

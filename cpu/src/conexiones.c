@@ -1,6 +1,6 @@
 // Contiene los handshake con kernel y consola, traduccion de direcciones y paquetes de handshake.h del otro
 
-#include "../Include/conexiones.h"
+#include "../include/conexiones.h"
 
 // ***** ELIMINAR COMENTADOS  YA QUE SON VIEJOS ***** //
 
@@ -155,6 +155,20 @@ t_buffer* new_page_table_request_buffer(t_page_table_request* request){
 	int offset = serialize_page_table_request(buffer->stream, request);
 
 	log_debug(logger, "new_page_table_request_buffer - size: %d\n", offset);
+
+	return buffer;
+}
+
+t_buffer* new_memoria_read_buffer(uint32_t direccion){
+
+	t_buffer* buffer = create_buffer();
+
+	buffer->size = sizeof(uint32_t);
+
+	buffer->stream = malloc(buffer->size);
+	int offset = serialize_int(buffer->stream, &direccion);
+
+	log_debug(logger, "new_memoria_read_buffer - size: %d\n", offset);
 
 	return buffer;
 }

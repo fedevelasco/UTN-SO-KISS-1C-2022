@@ -8,11 +8,11 @@
     #include <stdbool.h>
 	#include <global_structures.h>
     // sin static
-    #include "../Include/variablesGlobales.h"
+    #include "../include/variablesGlobales.h"
     #include <commons/collections/list.h>
     #include <commons/string.h>
 
-    #include "../Include/conexiones.h"
+    #include "../include/conexiones.h"
 
 
     t_list * listaTLB;

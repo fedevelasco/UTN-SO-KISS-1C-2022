@@ -25,9 +25,9 @@
 // #include "cliente-servidor.h"
 // #include "log.h"
 // #include "commonTypes.h"
-#include "../Include/cpu_alt.h"
+#include "../include/cpu_alt.h"
 // sin static
-#include "../Include/serializacion_cpu.h"
+#include "../include/serializacion_cpu.h"
 #include <serialization.h>
 
 /*------------Variables Globales--------------*/
