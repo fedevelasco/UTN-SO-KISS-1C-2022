@@ -48,7 +48,7 @@ void Aready(){
         t_pcb * pcb = obtenerSiguienteAready();
 
         addEstadoReady(pcb);
-        log_info(logger, "Se elimino el proceso %d de New y se agrego a Ready", pcb->id);
+        log_info(logger, "Se elimino el proceso PID %d de New y se agrego a Ready", pcb->id);
         
         if(string_equals_ignore_case(ALGORITMO_PLANIFICACION,"SRT")){
             interrumpirPCB();
@@ -76,8 +76,7 @@ t_pcb* obtenerSiguienteAready(){
         else{
             pthread_mutex_lock(&mutex_estado_new);
             pcb = queue_pop(estado_new); // Consigo un PCB de la cola de estado NEW
-            //printf("PROBLEMA DE HILO AREADY");
-            comunicacionMemoriaCreacionEstructuras(pcb); // Le pregunto a memorio por el valor de tabla de paginas para el nuevo PCB, luego lo asigno
+            comunicacionMemoriaCreacionEstructuras(pcb); // Le pregunto a memoria por el valor de tabla de paginas para el nuevo PCB, luego lo asigno
             pthread_mutex_unlock(&mutex_estado_new);
             return pcb;
         }
@@ -200,22 +199,22 @@ void hilo_block(){
         
         uint32_t ultimoIOenSegundos = ultimoIO->tiempoBloqueo/1000;
         uint32_t ultimoIOenUseconds = ultimoIO->tiempoBloqueo*1000;
-        log_info(logger, "pcb: %d ejecutando IO de: %d segundos", ultimoIO->pcb->id, ultimoIOenSegundos);
+        log_info(logger, "PID: %d ejecutando IO de: %d segundos", ultimoIO->pcb->id, ultimoIOenSegundos);
         if(ultimoIOenSegundos > TIEMPO_MAXIMO_BLOQUEADO){
-            log_info(logger, "pcb: %d excedió el tiempo maximo de IO permitido de %d segundos", ultimoIO->pcb->id, TIEMPO_MAXIMO_BLOQUEADO);
-            log_info(logger, "Se suspende el pcb");
+            log_info(logger, "PID: %d excedió el tiempo maximo de IO permitido de %d segundos", ultimoIO->pcb->id, TIEMPO_MAXIMO_BLOQUEADO);
+            log_info(logger, "Kernel - Se suspende el pcb");
             usleep(TIEMPO_MAXIMO_BLOQUEADO);
             comunicacionMemoriaSuspender(ultimoIO->pcb);
             sem_post(&sem_multiprogramacion);
-            log_info(logger, "pcb: %d ejecutando IO restante de %d segundos", ultimoIO->pcb->id, (ultimoIOenSegundos - TIEMPO_MAXIMO_BLOQUEADO));
+            log_info(logger, "PID: %d ejecutando IO restante de %d segundos", ultimoIO->pcb->id, (ultimoIOenSegundos - TIEMPO_MAXIMO_BLOQUEADO));
             usleep(ultimoIOenUseconds - TIEMPO_MAXIMO_BLOQUEADO);
-            log_info(logger, "terminó la io del proceso: %d", ultimoIO->pcb->id);
+            log_info(logger, "Kernel - Terminó el IO del PID: %d", ultimoIO->pcb->id);
             addEstadoSuspReady(ultimoIO->pcb);
             sem_post(&sem_hay_pcb_esperando_ready);
         } else{
             usleep(ultimoIOenUseconds);
             addEstadoReady(ultimoIO->pcb);
-            log_info(logger, "terminó la io del proceso: %d", ultimoIO->pcb->id);
+            log_info(logger, "Kernel - Terminó el IO del PID: %d", ultimoIO->pcb->id);
 
             if(string_equals_ignore_case(ALGORITMO_PLANIFICACION,"SRT")){
                 interrumpirPCB();
@@ -227,21 +226,40 @@ void hilo_block(){
 
 }//REQ_CREAR_PROCESO_KERNEL_MEMORIA
 
+// -------------- Me conecto a memoria para suspender un proceso -------------- 
 void comunicacionMemoriaSuspender(t_pcb * pcb){
+
     int socketMemoria = iniciar_cliente(IP_MEMORIA,PUERTO_MEMORIA, logger);
-    t_paquete * paqueteAmemoria = armarPaqueteCon(pcb, REQ_SUSP_PROCESO_KERNEL_MEMORIA);
-    enviarPaquete(paqueteAmemoria, socketMemoria);
-    eliminarPaquete(paqueteAmemoria);
-    t_paquete * paqueteRespuesta = recibirPaquete(socketMemoria);
-    if(paqueteRespuesta->codigo_operacion == RES_SUSP_PROCESO_KERNEL_MEMORIA){
-        log_info(logger, "Memoria terminó de suspender el proceso: %d", pcb->id);
+    if (socketMemoria == -1){
+        log_info(logger, "Kernel - No se pudo crear la conexion con memoria para suspender el proceso");
     }
-    eliminarPaquete(paqueteRespuesta);
+
+    t_process* crear_proceso = create_process();
+    crear_proceso->process_size = pcb->tamanioProceso;
+	crear_proceso->pid = pcb->id;
+
+    t_buffer* buffer = new_crear_proceso_buffer(crear_proceso);
+
+	t_package* package = new_package(buffer, PROCESS_SUSPEND_REQUEST);
+
+    if (send_to_server(socketMemoria, package) == -1) {
+		log_error(logger, "Kernel - Error al enviar paquete a memoria");
+	}
+
+    buffer_destroy(buffer);
+	package_destroy(package);
+
+    uint32_t cod_op = recibir_operacion(socketMemoria);
+	if(cod_op != PROCESS_SUSPEND_RESPONSE){
+		perror("respuesta inesperada");
+		exit(EXIT_FAILURE);
+	}
+    log_info(logger, "Kernel - Memoria suspendio el proceso correctamente");
 }
 
 // --------- Le pregunto a memorio por el valor de tabla de paginas para el nuevo PCB, luego lo asigno ----------------------
 void comunicacionMemoriaCreacionEstructuras(t_pcb * pcb){
-    //TODO: me esta tirando error este socket
+
     int socketMemoria = iniciar_cliente(IP_MEMORIA,PUERTO_MEMORIA, logger);
     if (socketMemoria == -1){
         log_info(logger, "Kernel - No se pudo crear la conexion con memoria para traer las estructuras");
@@ -251,19 +269,18 @@ void comunicacionMemoriaCreacionEstructuras(t_pcb * pcb){
     crear_proceso->process_size = pcb->tamanioProceso;
 	crear_proceso->pid = pcb->id;
 
-
 	t_buffer* buffer = new_crear_proceso_buffer(crear_proceso);
 
 	t_package* package = new_package(buffer, PROCESS_INIT_REQUEST);
 
 	if (send_to_server(socketMemoria, package) == -1) {
-		log_error(logger, "Error al enviar paquete al servidor");
-
+		log_error(logger, "Kernel - Error al enviar paquete a memoria");
 	}
+
 	buffer_destroy(buffer);
 	package_destroy(package);
 
-   uint32_t cod_op = recibir_operacion(socketMemoria);
+    uint32_t cod_op = recibir_operacion(socketMemoria);
 	if(cod_op != PROCESS_INIT_RESPONSE){
 			perror("respuesta inesperada");
 			exit(EXIT_FAILURE);
@@ -282,12 +299,36 @@ void comunicacionMemoriaCreacionEstructuras(t_pcb * pcb){
 
 }
 
+// -------------- Me conecto a memoria para que termine un proceso -------------- 
 void comunicacionMemoriaFinalizar(t_pcb * pcb) {
+
     int socketMemoria = iniciar_cliente(IP_MEMORIA,PUERTO_MEMORIA, logger);
-    t_paquete * paqueteAmemoria = armarPaqueteCon(pcb, REQ_FIN_PROCESO_KERNEL_MEMORIA);
-    enviarPaquete(paqueteAmemoria, socketMemoria);
-    eliminarPaquete(paqueteAmemoria);
-    //CONSULTAR: Esperar confirmacion de Memoria?
+    if (socketMemoria == -1){
+        log_info(logger, "Kernel - No se pudo crear la conexion con memoria para terminar el proceso");
+    }
+
+    t_process* crear_proceso = create_process();
+    crear_proceso->process_size = pcb->tamanioProceso;
+	crear_proceso->pid = pcb->id;
+
+    t_buffer* buffer = new_crear_proceso_buffer(crear_proceso);
+
+	t_package* package = new_package(buffer, PROCESS_KILL_REQUEST);
+
+    if (send_to_server(socketMemoria, package) == -1) {
+		log_error(logger, "Kernel - Error al enviar paquete a memoria");
+	}
+
+    buffer_destroy(buffer);
+	package_destroy(package);
+
+    uint32_t cod_op = recibir_operacion(socketMemoria);
+	if(cod_op != PROCESS_KILL_RESPONSE){
+		perror("respuesta inesperada");
+		exit(EXIT_FAILURE);
+	}
+    log_info(logger, "Kernel - Memoria termino el proceso correctamente");
+
 }
 
 t_pcb * algoritmoPlanificacion(){
