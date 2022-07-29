@@ -3,10 +3,11 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdint.h>
 
 typedef struct memory_config {
-	int32_t page_size;
-	int32_t pages_per_table;
+	uint32_t page_size;
+	uint32_t pages_per_table;
 } t_memory_config;
 
 

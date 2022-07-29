@@ -1,6 +1,6 @@
-#include "../include/estructura.h"
+#include <estructura.h>
 
-char* codOPtoString(t_cod_op cod_op){
+char* codOPtoString(t_op_code cod_op){
 
 	switch (cod_op){
 		case PROCESO:
@@ -41,7 +41,7 @@ void crearBuffer(t_paquete* paquete)
 	paquete->buffer->stream = NULL;
 }
 
-t_paquete* crearPaquete(t_cod_op cod_op)
+t_paquete* crearPaquete(t_op_code cod_op)
 {
 	t_paquete* paquete = malloc(sizeof(t_paquete));
 	paquete->codigo_operacion = cod_op;
@@ -49,7 +49,7 @@ t_paquete* crearPaquete(t_cod_op cod_op)
 	return paquete;
 }
 
-t_paquete* armarPaqueteCon(void* estructura,t_cod_op cod_op){ 
+t_paquete* armarPaqueteCon(void* estructura,t_op_code cod_op){ 
 
 	t_paquete* paquete = crearPaquete(cod_op);
 	paquete->buffer->size = tamanioEstructura(estructura,cod_op);
@@ -101,35 +101,36 @@ void eliminarPaquete(t_paquete* paquete)
 	free(paquete);
 }
 
-t_proceso* crearProceso(uint32_t tamanioProceso, uint32_t sizeInstrucciones, t_instruccion * instrucciones){
-	t_proceso * proceso = malloc(sizeof(t_proceso));
-	proceso->tamanioProceso = tamanioProceso;
-	proceso->sizeInstrucciones = sizeInstrucciones;
-	proceso->instrucciones = instrucciones;
-	return proceso;
-}
-void freeProceso (t_proceso * proceso) {
-	free(proceso->instrucciones);
-	free(proceso);
-}
-void* serializarProceso (void* stream, void* estructura){
- 	t_proceso* proceso = (t_proceso*) estructura;
-	int offset = 0;
-  	memcpy(stream + offset, &(proceso->tamanioProceso),sizeof(uint32_t));
-	offset += sizeof(uint32_t);
-	memcpy(stream + offset, &(proceso->sizeInstrucciones),sizeof(uint32_t));
-	serializarInstrucciones(stream, (void*)proceso->instrucciones, offset);
-	return stream;
-}
-
-t_proceso* deserializarProceso (void* stream){
-	t_proceso* proceso = malloc(sizeof(t_proceso)); //Aloco memoria para el proceso
-	int offset = 0;
-	memcpy(&(proceso->tamanioProceso), stream + offset, sizeof(uint32_t)); //Asigno el tamanio del proceso
-	offset += sizeof(uint32_t); //
-	proceso->instrucciones = deserializarInstrucciones(stream,  offset);
-	return proceso;
-}
+//t_proceso* crearProceso(uint32_t tamanioProceso, uint32_t sizeInstrucciones, t_instruccion * instrucciones){
+//	t_proceso * proceso = malloc(sizeof(t_proceso));
+//	proceso->tamanioProceso = tamanioProceso;
+//	proceso->sizeInstrucciones = sizeInstrucciones;
+//	list_add(proceso->instrucciones->instructions, )
+//	proceso->instrucciones->instructions = instrucciones;
+//	return proceso;
+//}
+//void freeProceso (t_proceso * proceso) {
+//	free(proceso->instrucciones);
+//	free(proceso);
+//}
+//void* serializarProceso (void* stream, void* estructura){
+// 	t_proceso* proceso = (t_proceso*) estructura;
+//	int offset = 0;
+//  	memcpy(stream + offset, &(proceso->tamanioProceso),sizeof(uint32_t));
+//	offset += sizeof(uint32_t);
+//	memcpy(stream + offset, &(proceso->sizeInstrucciones),sizeof(uint32_t));
+//	serializarInstrucciones(stream, (void*)proceso->instrucciones, offset);
+//	return stream;
+//}
+//
+//t_proceso* deserializarProceso (void* stream){
+//	t_proceso* proceso = malloc(sizeof(t_proceso)); //Aloco memoria para el proceso
+//	int offset = 0;
+//	memcpy(&(proceso->tamanioProceso), stream + offset, sizeof(uint32_t)); //Asigno el tamanio del proceso
+//	offset += sizeof(uint32_t); //
+//	proceso->instrucciones = deserializarInstrucciones(stream,  offset);
+//	return proceso;
+//}
 
 t_proceso* deserializarProceso_V2 (t_paquete* paquete){
 	t_proceso* proceso = malloc(sizeof(t_proceso)); //Aloco memoria para el proceso
@@ -138,7 +139,7 @@ t_proceso* deserializarProceso_V2 (t_paquete* paquete){
 	//printf("KERNEL - COPIADO EL TAMANIO DE PROCESO\n");
     //offset += sizeof(uint32_t);
     proceso->tamanioProceso = 20;
-    int32_t bytes = deserialize_instructions_list(proceso->instrucciones, paquete->buffer->stream);
+    uint32_t bytes = deserialize_instructions_list(proceso->instrucciones, paquete->buffer->stream);
     printf("KERNEL - LISTA DE INSTRUCCIONES EXTRAIDA\n");
     imprimir_lista_instrucciones(proceso->instrucciones);
 }
@@ -333,7 +334,7 @@ t_peticionEscritura* deserializarPeticionEscritura(void* stream) {
 	return peticion;
 }
 
-void* serializarEstructura(void* estructura,int tamanio,t_cod_op cod_op){
+void* serializarEstructura(void* estructura,int tamanio,t_op_code cod_op){
 
 	void* stream = malloc(tamanio);
 
@@ -415,7 +416,7 @@ void* serializarEstructura(void* estructura,int tamanio,t_cod_op cod_op){
 	}
 }
 
-int tamanioEstructura(void* estructura ,t_cod_op cod_op){
+int tamanioEstructura(void* estructura ,t_op_code cod_op){
 
 	switch(cod_op){
 

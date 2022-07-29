@@ -1,4 +1,4 @@
-#include "../include/socket.h"
+#include <socket.h>
 
 /* Inicializo el sevidor en modo escucha */
 int iniciar_servidor(char* IP, char* PORT)
@@ -55,7 +55,7 @@ t_paquete* recibirPaquete(int server_socket){
 	t_paquete* paquete = malloc(sizeof(t_paquete));
 	paquete->buffer = malloc(sizeof(t_buffer));
 
-	recv(server_socket, &(paquete->codigo_operacion), sizeof(t_cod_op), 0);
+	recv(server_socket, &(paquete->codigo_operacion), sizeof(t_op_code), 0);
 
 	recv(server_socket, &(paquete->buffer->size), sizeof(uint32_t), 0);
 
@@ -98,10 +98,10 @@ int crear_conexion(char* ip, char* puerto) {
 }
 
 
-int32_t recibir_operacion(int32_t socket_cliente)
+uint32_t recibir_operacion(uint32_t socket_cliente)
 {
-	int32_t cod_op;
-	if(recv(socket_cliente, &cod_op, sizeof(int32_t), MSG_WAITALL) > 0) //Recibo la cantidad de bytes que representan al op_code en el stream de datos
+	uint32_t cod_op;
+	if(recv(socket_cliente, &cod_op, sizeof(uint32_t), MSG_WAITALL) > 0) //Recibo la cantidad de bytes que representan al op_code en el stream de datos
 		return cod_op;
 	else
 	{
@@ -110,20 +110,20 @@ int32_t recibir_operacion(int32_t socket_cliente)
 	}
 }
 
-char* recibir_buffer(int32_t* buffer_size, int32_t socket_cliente) 
+char* recibir_buffer(uint32_t* buffer_size, uint32_t socket_cliente) 
 {
 	char* buffer;
 
-	read(socket_cliente, buffer_size, sizeof(int32_t)); //Leo el tamanio del payload y lo escribo en buffer_size
+	read(socket_cliente, buffer_size, sizeof(uint32_t)); //Leo el tamanio del payload y lo escribo en buffer_size
 	buffer = malloc(*buffer_size);
 	read(socket_cliente, buffer, *buffer_size); //Ahora leo la cantidad de payload que me indica buffer_size y o guardo en buffer que devuelvo
 
 	return buffer;
 }
 
-t_instructions_list* recibir_paquete(int32_t socket_cliente, t_log* logger)
+t_instructions_list* recibir_paquete(uint32_t socket_cliente, t_log* logger)
 {
-	int32_t buffer_size; //Creo el tamanio del buffer
+	uint32_t buffer_size; //Creo el tamanio del buffer
 	char* buffer; //Creo el buffer
 
 	buffer = recibir_buffer(&buffer_size, socket_cliente); //leo el payload y lo asigno a buffer
@@ -138,7 +138,7 @@ t_instructions_list* recibir_paquete(int32_t socket_cliente, t_log* logger)
 
 t_instructions_list* recibirPaqquete_inicio(int server_socket, t_proceso* nuevo_proceso){
 
-    int32_t cod_op = recibir_operacion(server_socket);// Recibo el cod_op
+    uint32_t cod_op = recibir_operacion(server_socket);// Recibo el cod_op
     t_instructions_list* instructions_list; 
         switch (cod_op) {
 

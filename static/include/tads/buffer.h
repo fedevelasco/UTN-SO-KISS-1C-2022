@@ -4,13 +4,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdint.h>
 #include <commons/collections/list.h>
 #include <commons/string.h>
 
 
 
 typedef struct {
-	int32_t size;
+	uint32_t size;
 	char* stream;
 } t_buffer;
 

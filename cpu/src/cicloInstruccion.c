@@ -140,15 +140,11 @@ uint32_t * memoria_read(uint32_t direccion_fisica) {
     t_paquete * paquete = armarPaqueteCon(&direccion_fisica, REQ_READ_CPU_MEMORIA);
     enviarPaquete(paquete,socket_memoria);
     eliminarPaquete(paquete);
-    t_paquete * paqueteRespuesta = recibirPaquete(socket_memoria);
-    if(paqueteRespuesta->codigo_operacion != RES_READ_MEMORIA_CPU){
-        perror("respuesta inesperada");
-        exit(EXIT_FAILURE);
-    }
-    //TODO: ELIMINAR PAQUETE??
-    uint32_t * dato = deserializarUINT32_T(paqueteRespuesta->buffer->stream);
-    eliminarPaquete(paqueteRespuesta);
-    return dato;
+
+    //TODO: COMPLETAR CONEXION   
+    uint32_t asdnum = 1;  
+    uint32_t* asd = &asdnum;
+    return asd;
 }
 
 void memoria_write(uint32_t direccion_fisica, uint32_t dato) {
@@ -171,5 +167,3 @@ void memoria_write(uint32_t direccion_fisica, uint32_t dato) {
     eliminarPaquete(paqueteRespuesta);
     free(peticion);
 }
-
-

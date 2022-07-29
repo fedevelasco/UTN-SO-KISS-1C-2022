@@ -5,7 +5,7 @@
 
     #include <stdlib.h>
     #include <stdio.h>
-//    #include <abstract_servidor.h>
+    #include "../Include/servidro_abstracto.h"
     #include "../Include/cicloInstruccion.h"
     #include "../Include/variablesGlobales.h"
     #include "../Include/mmu.h"

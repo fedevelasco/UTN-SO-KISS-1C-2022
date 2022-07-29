@@ -38,7 +38,7 @@
 	* @NAME: bytes_instruction
 	* @DESC: Devuelve la cantidad de bytes ocupados por una instancia de "t_instruction".
 	*/
-	int32_t bytes_instruction(t_instruction* instruction);
+	uint32_t bytes_instruction(t_instruction* instruction);
 
 
 #endif

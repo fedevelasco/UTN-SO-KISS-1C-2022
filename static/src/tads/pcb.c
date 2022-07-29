@@ -11,7 +11,7 @@ t_PCB* pcb_create(){
 	return pcb;
 }
 
-t_PCB* pcb_create_with_size(int32_t size){ // Uso el pcb create con size para cuando deserealizo un PCB
+t_PCB* pcb_create_with_size(uint32_t size){ // Uso el pcb create con size para cuando deserealizo un PCB
 	t_PCB* pcb = malloc(size);
 	pcb->PID = 0;
     pcb->TAMANIO_PROCESO = 0;
@@ -45,16 +45,16 @@ void pcb_asignar_lista_instrucciones(t_PCB* pcb, t_instructions_list* lista_inst
 }
 
 /* IGNORAR
-int32_t pcb_convertir_float_a_int(float numero_float){
+uint32_t pcb_convertir_float_a_int(float numero_float){
 	//Esta funcion convierte el float inicial del archivo de config a un int32 para poder ser serializado, a la hora
 	//de deserializar, lo vuelo a convertir un float
 
 	numero_float = numero_float * 10; //lo multiplico por 10 para eliminar la coma
-	int32_t numero_int = (int32_t)numero_float;
+	uint32_t numero_int = (uint32_t)numero_float;
 	return numero_int;
 }
 
-float pcb_convertir_int_a_float(int32_t numero_int){
+float pcb_convertir_int_a_float(uint32_t numero_int){
 	
 	float numero_float = (float)numero_int / 10; //Lo convierto a float y lo divido por 10 para manterner la coma
 	return numero_float;
@@ -63,7 +63,7 @@ float pcb_convertir_int_a_float(int32_t numero_int){
 
 void pcb_asignar_estimacion_rafaga_inicial(t_PCB* pcb, char* ESTIMACION_DATO){
 
-	int32_t ESTIMACION_INT = atoi(ESTIMACION_DATO);
+	uint32_t ESTIMACION_INT = atoi(ESTIMACION_DATO);
 	pcb->ESTIMACION_RAFAGA = ESTIMACION_INT;
 
 }
@@ -83,9 +83,9 @@ void pcb_asignar_id_unico(t_PCB* pcb, t_log* logger){
 
 }
 
-int32_t pcb_serializar(t_PCB* pcb, char* output){
+uint32_t pcb_serializar(t_PCB* pcb, char* output){
 
-	int32_t offset = 0;
+	uint32_t offset = 0;
 
     offset += serialize_int(output + offset, &(pcb->PID));
     offset += serialize_int(output + offset, &(pcb->TAMANIO_PROCESO));
@@ -97,13 +97,13 @@ int32_t pcb_serializar(t_PCB* pcb, char* output){
     return offset;
 }
 
-int bytes_PCB(t_PCB* pcb){
+uint32_t bytes_PCB(t_PCB* pcb){
     return sizeof(pcb->PID) + sizeof(pcb->TAMANIO_PROCESO) + sizeof(pcb->PC) + sizeof(pcb->TABLA_DE_PAGINAS) + sizeof(pcb->ESTIMACION_RAFAGA) + bytes_instructions_list(pcb->LISTA_INSTRUCCIONES);
 }
 
-int32_t pcb_deserializar(t_PCB* destino, char* fuente){ 
+uint32_t pcb_deserializar(t_PCB* destino, char* fuente){ 
 
-	int32_t offset=0;
+	uint32_t offset=0;
 
 	offset += deserialize_int(&(destino->PID), fuente + offset);
 	offset += deserialize_int(&(destino->TAMANIO_PROCESO), fuente + offset);
@@ -116,14 +116,15 @@ int32_t pcb_deserializar(t_PCB* destino, char* fuente){
 }
 
 
-char* pcb_creat_paquete(t_PCB* pcb, int32_t bytes){
+char* pcb_creat_paquete(t_PCB* pcb, uint32_t bytes){
 
 	char * output  = malloc(bytes);
 	memset(output, 0, bytes);
 
-	int32_t offset = 0;
+	uint32_t offset = 0;
+	t_op_code* opcode = PCB;
 
-	offset += serialize_opcode(output + offset, PCB);
+	offset += serialize_opcode(output + offset, opcode);
 	offset += pcb_serializar(pcb, output + offset);
 	
 	return output;

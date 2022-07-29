@@ -3,11 +3,12 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdint.h>
 
 typedef struct {
-	int32_t pid;
-	int32_t process_size;
-	int32_t first_level_table_number;
+	uint32_t pid;
+	uint32_t process_size;
+	uint32_t first_level_table_number;
 } t_process;
 
 

@@ -1,6 +1,6 @@
 #include "../Include/serializacion_cpu.h"
 
-char * codOPtoString(t_cod_op cod_op){
+char * codOPtoString(t_op_code cod_op){
 
 	switch (cod_op){
 		case PROCESO:
@@ -41,7 +41,7 @@ void crearBuffer(t_paquete* paquete)
 	paquete->buffer->stream = NULL;
 }
 
-t_paquete* crearPaquete(t_cod_op cod_op)
+t_paquete* crearPaquete(t_op_code cod_op)
 {
 	t_paquete* paquete = malloc(sizeof(t_paquete));
 	paquete->codigo_operacion = cod_op;
@@ -49,7 +49,7 @@ t_paquete* crearPaquete(t_cod_op cod_op)
 	return paquete;
 }
 
-t_paquete* armarPaqueteCon(void* estructura,t_cod_op cod_op){ 
+t_paquete* armarPaqueteCon(void* estructura,t_op_code cod_op){ 
 
 	t_paquete* paquete = crearPaquete(cod_op);
 	paquete->buffer->size = tamanioEstructura(estructura,cod_op);
@@ -317,7 +317,7 @@ t_peticionEscritura * deserializarPeticionEscritura(void* stream) {
 	return peticion;
 }
 
-void* serializarEstructura(void* estructura,int tamanio,t_cod_op cod_op){
+void* serializarEstructura(void* estructura,int tamanio,t_op_code cod_op){
 
 	void* stream = malloc(tamanio);
 
@@ -399,7 +399,7 @@ void* serializarEstructura(void* estructura,int tamanio,t_cod_op cod_op){
 	}
 }
 
-int tamanioEstructura(void* estructura ,t_cod_op cod_op){
+int tamanioEstructura(void* estructura ,t_op_code cod_op){
 
 	switch(cod_op){
 

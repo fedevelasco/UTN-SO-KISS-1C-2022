@@ -36,7 +36,13 @@ void inicializarVariablesGlobales(char * pathConfig,char * pathConfigIP){
 }
 int main(int argc, char* argv[]) {
     logger = log_create("cpu.log", "cpu", true, LOG_LEVEL_INFO);
-    validarParametros(argc, argv);
+
+    if(argc < 2) {
+			log_error(logger, "Error en argumentos - Es obligatorio especificar path de config y de ips - Fin proceso");
+			//end_process();
+			return EXIT_FAILURE;
+		}
+        
     log_info(logger, "parametros validados");
     char * pathConfig = argv[1];
     char * pathIPS = argv[2];

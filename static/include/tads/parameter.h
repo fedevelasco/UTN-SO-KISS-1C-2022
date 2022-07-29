@@ -2,9 +2,10 @@
 #define PARAMETER_H_
 
 #include <stdlib.h>
+#include <stdint.h>
 
     typedef struct {
-	int32_t value;
+	uint32_t value;
     } t_parameter;
 
     /**
@@ -17,7 +18,7 @@
     * @NAME: new_parameter
     * @DESC: Crea una instancia de "t_parameter".
     */
-    t_parameter* new_parameter(int32_t value);
+    t_parameter* new_parameter(uint32_t value);
 
 
     /**

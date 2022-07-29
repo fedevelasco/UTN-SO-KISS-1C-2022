@@ -9,44 +9,10 @@
 	#include <netdb.h>
 	#include <commons/collections/list.h>
 	#include <commons/collections/queue.h>
-	#include "instruccion.h"
-	#include "../../static/include/serialization.h"
-	
-
-
-	typedef enum{
-		//INSTRUCTIONS,
-		//EXIT,
-		//UNDEFINED,
-		PROCESO,
-		REQ_PCB_A_EJECUTAR_KERNEL_CPU,
-		PCB_EJECUTADO_IO_CPU_KERNEL,
-		PCB_EJECUTADO_EXIT_CPU_KERNEL,
-		PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL,
-		REQ_INTERRUPCION_KERNEL_CPU, //HILO INTERRUPT
-		RES_INTERRUPCION_CPU_KERNEL, //HILO DISPATCH
-		REQ_TRADUCCION_DIRECCIONES_CPU_MEMORIA,
-		RES_TRADUCCION_DIRECCIONES_MEMORIA_CPU,
-		REQ_DATO_DIRECCION_LOGICA_CPU_MEMORIA,
-		REQ_READ_CPU_MEMORIA,
-		RES_READ_MEMORIA_CPU,
-		REQ_WRITE_CPU_MEMORIA,
-		RES_WRITE_CPU_MEMORIA,
-		REQ_MARCO_ESCRITURA_CPU_MEMORIA,
-		REQ_MARCO_LECTURA_CPU_MEMORIA,
-		RES_MARCO_MEMORIA_CPU,
-		REQ_CREAR_PROCESO_KERNEL_MEMORIA,
-		RES_CREAR_PROCESO_KERNEL_MEMORIA,
-		REQ_TABLA_SEGUNDO_NIVEL_CPU_MEMORIA,
-		RES_TABLA_SEGUNDO_NIVEL_MEMORIA_CPU,
-		RES_FIN_PROCESO_KERNEL_CONSOLA,
-		REQ_FIN_PROCESO_KERNEL_MEMORIA,
-		REQ_SUSP_PROCESO_KERNEL_MEMORIA,
-		RES_SUSP_PROCESO_KERNEL_MEMORIA,
-		REQ_DESUSP_PROCESO_KERNEL_MEMORIA,
-		ALGO
-	}t_cod_op;
-
+	#include <instruccion.h>
+	#include <tads/op_code.h>
+	#include <tads/instructions_list.h>
+	#include <serialization.h>
 	
 	typedef struct{
         uint32_t size;
@@ -54,7 +20,7 @@
     }t_buffer_new;
 
 	typedef struct{
-        t_cod_op codigo_operacion;
+        t_op_code codigo_operacion;
 	    t_buffer_new* buffer;
     }t_paquete;
 
@@ -65,11 +31,11 @@
 		t_instruccion* instrucciones;
 	}t_proceso;
 	*/
-	typedef struct{
-		uint32_t tamanioProceso;
-		uint32_t sizeInstrucciones;
-		t_instructions_list* instrucciones;
-	}t_proceso;
+//	typedef struct{
+//		uint32_t tamanioProceso;
+//		uint32_t sizeInstrucciones;
+//		t_instructions_list* instrucciones;
+//	}t_proceso;
 
 	typedef struct{
 		uint32_t tamanio_pagina;
@@ -121,15 +87,15 @@
 		uint32_t id;
 	}t_peticionEscritura;
 
-	char * codOPtoString(t_cod_op);
+	char * codOPtoString(t_op_code);
 
-	void* serializarEstructura(void* estructura,int tamanio,t_cod_op codigoOperacion);
-	int tamanioEstructura(void* estructura ,t_cod_op cod_op);
+	void* serializarEstructura(void* estructura,int tamanio,t_op_code codigoOperacion);
+	int tamanioEstructura(void* estructura ,t_op_code cod_op);
 	
 	void crearBuffer(t_paquete* paquete);
 
-    t_paquete* crearPaquete(t_cod_op cod_op);
-    t_paquete* armarPaqueteCon(void* estructura,t_cod_op cod_op);
+    t_paquete* crearPaquete(t_op_code cod_op);
+    t_paquete* armarPaqueteCon(void* estructura,t_op_code cod_op);
     void* serializarPaquete(t_paquete* paquete, uint32_t bytes);
     void enviarPaquete(t_paquete* paquete, int socket_cliente);
     void eliminarPaquete(t_paquete* paquete);
@@ -138,11 +104,11 @@
 	t_instruccion* deserializarInstrucciones(void * stream, int offset);
 	t_instructions_list* deserializarInstrucciones_V2(t_paquete* paquete, int offset);
 
-	t_proceso* crearProceso(uint32_t tamanioProceso, uint32_t sizeInstrucciones,t_instruccion* instrucciones);
-	void freeProceso(t_proceso * proceso);
-	void * serializarProceso(void* stream, void* estructura);
-	t_proceso* deserializarProceso(void* stream);
-	t_proceso* deserializarProceso_V2 (t_paquete* paquete);
+//	t_proceso* crearProceso(uint32_t tamanioProceso, uint32_t sizeInstrucciones,t_instruccion* instrucciones);
+//	void freeProceso(t_proceso * proceso);
+//	void * serializarProceso(void* stream, void* estructura);
+//	t_proceso* deserializarProceso(void* stream);
+//	t_proceso* deserializarProceso_V2 (t_paquete* paquete);
 	
 	t_traduccion_direcciones* crearTraduccionDirecciones(uint32_t PID);
 	void * serializarTraduccionDirecciones(void* stream, void* estructura);

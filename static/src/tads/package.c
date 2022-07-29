@@ -10,13 +10,13 @@ t_package* create_package(){
     return package;
 }
 
-t_package* new_package(t_buffer* buffer, op_code opcode){
+t_package* new_package(t_buffer* buffer, t_op_code opcode){
 
 	t_package* package = create_package();
 	
 	package->operation_code = opcode;
 	package->buffer->stream = malloc(buffer->size);
-	int32_t buffer_size = buffer->size;
+	uint32_t buffer_size = buffer->size;
 	package->buffer->size = buffer_size;
 	memcpy(package->buffer->stream, buffer->stream, buffer->size);
 

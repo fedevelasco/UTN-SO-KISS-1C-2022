@@ -11,6 +11,9 @@
     #include <commons/collections/list.h>
     #include <commons/string.h>
 
+    #include "../Include/conexiones.h"
+    #include <tads/page_table_request.h>
+
     t_list * listaTLB;
     uint32_t tiempoAccesoGlobal;
     uint32_t indiceFIFO;
@@ -44,9 +47,9 @@
 
     uint32_t consultarTablaSegundoNivel(uint32_t tablaDePaginasPrimerNivel, uint32_t pagina);
 
-    uint32_t consultarMarco(uint32_t tablaDePaginasSegundoNivel, uint32_t pagina, t_cod_op codOP);
+    uint32_t consultarMarco(uint32_t tablaDePaginasSegundoNivel, uint32_t pagina, t_op_code codOP);
     
-    uint32_t consultarDireccionFisica(uint32_t tablaPaginasPrimerNivelPCB, uint32_t direccion_logica, t_cod_op codOP);
+    uint32_t consultarDireccionFisica(uint32_t tablaPaginasPrimerNivelPCB, uint32_t direccion_logica, t_op_code codOP);
 
     uint32_t obtenerNumeroPagina(uint32_t direccion_logica);
 

@@ -4,12 +4,12 @@ void server_listen_ram(char* server_name, int server_socket) {
 
 	while (1) {
 
-		int32_t client_socket = esperar_cliente(logger, server_name, server_socket);
+		uint32_t client_socket = esperar_cliente(logger, server_name, server_socket);
 
 		if (client_socket != -1) {
 
-			op_code opcode;
-			if (recv(client_socket, &opcode, sizeof(op_code), 0) != sizeof(op_code)) {
+			t_op_code opcode;
+			if (recv(client_socket, &opcode, sizeof(t_op_code), 0) != sizeof(t_op_code)) {
 				log_error(logger, "server_listen_ram - Error recibiendo op_code");
 			}
 
@@ -17,6 +17,12 @@ void server_listen_ram(char* server_name, int server_socket) {
 			char* buffer;
 
 			buffer = recv_buffer(client_socket);
+
+			t_process* process = create_process();
+			deserialize_process(process, operation_buffer->buffer);
+
+
+
 
 			operation_buffer_t* operation_buffer = malloc(sizeof(operation_buffer_t));
 			operation_buffer->opcode = opcode;
@@ -47,7 +53,7 @@ void server_listen_ram(char* server_name, int server_socket) {
 	}
 }
 
-int32_t kernel_opcode(op_code opcode){
+uint32_t kernel_opcode(t_op_code opcode){
 
 	if(
 		opcode == PROCESS_INIT_REQUEST ||
@@ -121,23 +127,27 @@ void process_cpu_functions(){
 		        			log_info(logger, "Im a debug message");
 		        			break;
 		        		}
-		        		case GET_SECOND_LEVEL_TABLE_REQUEST: {
+		        		case GET_SECOND_LEVEL_TABLE_REQUEST: {  //cpu - mmu: consultarTablaSegundoNivel
 		                   get_second_level_table(operation_buffer->buffer);
 		        			break;
 		        		}
-		        		case GET_FRAME_REQUEST: {
-		        			get_frame(operation_buffer->buffer);
+		        		case GET_FRAME_READ_REQUEST: { //cpu - mmu: consultarMarco REQ_MARCO_LECTURA_CPU_MEMORIA
+		        			get_frame_read(operation_buffer->buffer);
 		        			break;
 		        		}
-		        		case READ_MEMORY_REQUEST: {
-		        //			read_memory(operation_buffer->buffer);
+						case GET_FRAME_WRITE_REQUEST: { //cpu - mmu: consultarMarcoREQ_MARCO_ESCRITURA_CPU_MEMORIA
+		        			get_frame_write(operation_buffer->buffer);
 		        			break;
 		        		}
-		        		case WRITE_MEMORY_REQUEST: {
-		        //			write_memory(operation_buffer->buffer);
+		        		case READ_MEMORY_REQUEST: {  //cpu - cicloinstrucction: memoria_read
+		        			read_memory(operation_buffer->buffer);
 		        			break;
 		        		}
-		        		case GET_MEMORY_CONFIG_REQUEST: {
+		        		case WRITE_MEMORY_REQUEST: { //cpu - cicloinstrucction: memoria_write
+		        			write_memory(operation_buffer->buffer);
+		        			break;
+		        		}
+		        		case GET_MEMORY_CONFIG_REQUEST: { 
 							get_memory_config(operation_buffer->buffer);
 							break;
 						}

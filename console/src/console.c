@@ -12,13 +12,13 @@ int main(int32_t argc, char** argv){
 	}
 
 
-	int32_t connection;
+	uint32_t connection;
 	char* ip;
 	char* port;
 	char *psudocode_file_path;
 
 
-	int32_t process_size;
+	uint32_t process_size;
 
 
 	t_config* config;
@@ -110,7 +110,7 @@ int main(int32_t argc, char** argv){
 	log_info(logger, "Conexion a Kernel - Consola esperando mensaje de finalizacion del Kernel");
 	while(1){
 		int cod_op = receive_operation_code(connection);
-		if (cod_op == 1){
+		if (cod_op == EXIT_CONSOLE){
 			end_process(connection, logger, config);
 			log_info(logger, "Conexion a Kernel - Finalizacion exitosa");
 		}

@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdint.h>
 #include <commons/collections/list.h>
 #include <commons/string.h>
 
@@ -13,7 +14,7 @@
 
 typedef struct
 {
-op_code operation_code;
+t_op_code operation_code;
 t_buffer* buffer;
 } t_package;
 
@@ -27,7 +28,7 @@ t_package* create_package();
 * @NAME: create_package
 * @DESC: Crea una instancia vacia de "t_package" copiando el contenido del buffer en el package.
 */
-t_package* new_package(t_buffer* buffer, op_code opcode);
+t_package* new_package(t_buffer* buffer, t_op_code opcode);
 
 /**
 * @NAME: package_destroy

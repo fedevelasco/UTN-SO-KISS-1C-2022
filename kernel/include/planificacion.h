@@ -1,7 +1,7 @@
 #ifndef PLANIFICACION_H_
 #define PLANIFICACION_H_
 
-#include "estructurasEnlazadas.h"
+#include <estructurasEnlazadas.h>
 #
 
 // void obtener_valor_tabla_de_paginas(){}  ---------- Completar cuando se realice memoria

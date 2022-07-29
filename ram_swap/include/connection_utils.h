@@ -11,7 +11,7 @@
 
 
 void server_listen_ram(char* server_name, int server_fd);
-int32_t kernel_opcode(op_code opcode);
+uint32_t kernel_opcode(t_op_code opcode);
 void process_kernel_functions();
 void process_cpu_functions();
 

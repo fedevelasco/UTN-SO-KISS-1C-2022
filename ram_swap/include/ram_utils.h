@@ -28,15 +28,15 @@
 
 // Funciones
 t_log* start_logger(void);
-int32_t load_ram_configuration_file(char* config_path, char* ip_config_path);
-int32_t memory_create();
+uint32_t load_ram_configuration_file(char* config_path, char* ip_config_path);
+uint32_t memory_create();
 void occupied_frames_vector_create();
-int32_t paging_tables_create();
+uint32_t paging_tables_create();
 void close_process();
-char* create_bitarray_memory_block(int32_t frames);
-int32_t threads_init();
-int32_t mutex_init();
-int32_t aux_elements_init();
+char* create_bitarray_memory_block(uint32_t frames);
+uint32_t threads_init();
+uint32_t mutex_init();
+uint32_t aux_elements_init();
 
 
 #endif /* RAM_UTILS_H_ */

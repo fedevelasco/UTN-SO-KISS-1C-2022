@@ -1,6 +1,6 @@
 #include "threads.h"
 
-int32_t mutex_init(int mutex_size, ...) {
+uint32_t mutex_init(int mutex_size, ...) {
 
 	mutex_list = list_create();
 
@@ -19,12 +19,12 @@ int32_t mutex_init(int mutex_size, ...) {
 	return 1;
 }
 
-int32_t thread_create(pthread_t * thread, void *(*function)(void *)) {
+uint32_t thread_create(pthread_t * thread, void *(*function)(void *)) {
 
 	return pthread_create(thread, &thread_attributes, (void*) function, NULL);
 }
 
-int32_t thread_create_with_parameter(pthread_t * thread, void *(*function)(void *), void * parameter) {
+uint32_t thread_create_with_parameter(pthread_t * thread, void *(*function)(void *), void * parameter) {
 
 	return pthread_create(thread, &thread_attributes, (void*) function, parameter);
 }
@@ -34,7 +34,7 @@ void mutex_destroy() {
 	list_destroy_and_destroy_elements(mutex_list, (void*) pthread_mutex_destroy);
 }
 
-int32_t set_thread_attributes(){
+uint32_t set_thread_attributes(){
 
 	//Seteo los threads como detached
 	pthread_attr_init(&thread_attributes);

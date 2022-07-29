@@ -5,9 +5,9 @@
 
 // -------------- Iniciar Servidor --------------
 
-int32_t iniciar_servidor(t_log* logger, char* name, char* ip, char* puerto)
+uint32_t iniciar_servidor(t_log* logger, char* name, char* ip, char* puerto)
 {
-	int32_t socket_servidor; //Declaramos el descriptor
+	uint32_t socket_servidor; //Declaramos el descriptor
 
 	struct addrinfo infoSocket, *server_info; //Declaramos las estructuras
 
@@ -68,14 +68,14 @@ int32_t iniciar_servidor(t_log* logger, char* name, char* ip, char* puerto)
 
 // -------------- Aceptar Cliente --------------
 
-int32_t esperar_cliente(t_log* logger, char* name, int32_t socket_servidor)
+uint32_t esperar_cliente(t_log* logger, char* name, uint32_t socket_servidor)
 {
 	// Aceptamos un nuevo cliente
 	struct sockaddr_in dir_cliente; // Esta estructura contendra los datos de la conexion del cliente. IP, puerto, etc
 	socklen_t addrlenght  = sizeof(dir_cliente);
 
 
-	int32_t socket_cliente = accept(socket_servidor, (struct sockaddr *) &dir_cliente, &addrlenght ); // Aceptamos un nuevo cliente
+	uint32_t socket_cliente = accept(socket_servidor, (struct sockaddr *) &dir_cliente, &addrlenght ); // Aceptamos un nuevo cliente
 
 	log_info(logger, "socket: %i", socket_cliente);
 
@@ -120,28 +120,4 @@ int iniciar_cliente(char *ip, char* puerto, t_log* logger){
 void liberar_conexion(int* socket_cliente) {
     close(*socket_cliente);
     *socket_cliente = -1;
-}
-
-
-
-bool send_ack(int32_t fd, bool ack) {
-    void* stream = malloc(sizeof(bool));
-    memcpy(stream, &ack, sizeof(bool));
-    if (send(fd, stream, sizeof(bool), 0) == -1) {
-        free(stream);
-        return false;
-    }
-    free(stream);
-    return true;
-}
-bool recv_ack(int32_t fd, bool* ack) {
-    void* stream = malloc(sizeof(bool));
-    if (recv(fd, stream, sizeof(bool), 0) != sizeof(bool)) {
-        free(stream);
-        return false;
-    }
-    memcpy(ack, stream, sizeof(bool));
-
-    free(stream);
-    return true;
 }

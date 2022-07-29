@@ -1,19 +1,19 @@
 #include <ram_functions.h>
 
 
-int32_t create_pid_memory(t_process* process){
+uint32_t create_pid_memory(t_process* process){
 
 	if(process_table_not_exists(process->pid)){
 
-		int32_t total_pages_needed = process_total_pages_needed(process->process_size);
-		int32_t complete_second_level_tables =  process_complete_second_level_tables(total_pages_needed);
-		int32_t incomplete_second_level_table_pages = total_pages_needed % entradas_por_tabla;
+		uint32_t total_pages_needed = process_total_pages_needed(process->process_size);
+		uint32_t complete_second_level_tables =  process_complete_second_level_tables(total_pages_needed);
+		uint32_t incomplete_second_level_table_pages = total_pages_needed % entradas_por_tabla;
 
 		first_level_page_table_t* first_level_page_table = malloc(sizeof(first_level_page_table_t));
 		first_level_page_table->pid = process->pid;
 		first_level_page_table->first_level_entries = list_create();
 
-		int32_t swap_id = 0;
+		uint32_t swap_id = 0;
 
 		if (complete_second_level_tables > 0){
 			for (int i = 0; i < complete_second_level_tables; i++){
@@ -27,7 +27,7 @@ int32_t create_pid_memory(t_process* process){
 			list_add(first_level_page_table->first_level_entries, first_level_entry);
 		}
 
-		int32_t pid_first_level_table_number;
+		uint32_t pid_first_level_table_number;
 		pthread_mutex_lock(&MUTEX_FIRST_LEVEL_TABLES);
 		pid_first_level_table_number = list_add(global_first_level_page_tables, first_level_page_table);
 		pthread_mutex_unlock(&MUTEX_FIRST_LEVEL_TABLES);
@@ -46,15 +46,15 @@ int32_t create_pid_memory(t_process* process){
 
 }
 
-int32_t process_total_pages_needed(int32_t size){
-    return (int32_t)ceil((double)size / (double)tam_pagina);
+uint32_t process_total_pages_needed(uint32_t size){
+    return (uint32_t)ceil((double)size / (double)tam_pagina);
 }
 
-int32_t process_complete_second_level_tables(int32_t total_pages_needed){
-	return (int32_t) floor ( (double) total_pages_needed / (double) entradas_por_tabla);
+uint32_t process_complete_second_level_tables(uint32_t total_pages_needed){
+	return (uint32_t) floor ( (double) total_pages_needed / (double) entradas_por_tabla);
 }
 
-first_level_entries_t* create_first_level_entry(int32_t second_level_entries, int32_t process_pid, int32_t *swap_id){
+first_level_entries_t* create_first_level_entry(uint32_t second_level_entries, uint32_t process_pid, uint32_t *swap_id){
 	second_level_page_table_t* second_level_page_table = create_second_level_table(second_level_entries, process_pid, swap_id);
 
     first_level_entries_t* first_level_entry = malloc(sizeof(first_level_entries_t));
@@ -69,7 +69,7 @@ first_level_entries_t* create_first_level_entry(int32_t second_level_entries, in
     return first_level_entry;
 }
 
-second_level_page_table_t* create_second_level_table(int32_t pages, int32_t process_pid, int32_t *swap_id){
+second_level_page_table_t* create_second_level_table(uint32_t pages, uint32_t process_pid, uint32_t *swap_id){
 
 	second_level_page_table_t* second_level_page_table = malloc(sizeof(second_level_page_table_t));
 	second_level_page_table->pages = list_create();
@@ -82,7 +82,7 @@ second_level_page_table_t* create_second_level_table(int32_t pages, int32_t proc
     return second_level_page_table;
 }
 
-page_t* create_second_level_page(int32_t process_pid, int32_t *swap_id)
+page_t* create_second_level_page(uint32_t process_pid, uint32_t *swap_id)
 {
     page_t* page = malloc(sizeof(page_t));
 
@@ -99,7 +99,7 @@ page_t* create_second_level_page(int32_t process_pid, int32_t *swap_id)
     return page;
 }
 
-void create_process_state(int32_t pid_first_level_table_number, t_process* process){
+void create_process_state(uint32_t pid_first_level_table_number, t_process* process){
 
 	process_state_t* process_state = malloc(sizeof(process_state_t));
 	process_state->clock_pointer = 0;
@@ -111,8 +111,8 @@ void create_process_state(int32_t pid_first_level_table_number, t_process* proce
 	pthread_mutex_unlock(&MUTEX_PROCESS_EXTRA_INFO);
 }
 
-bool process_table_not_exists(int32_t pid){
-	int32_t size = list_size(global_first_level_page_tables);
+bool process_table_not_exists(uint32_t pid){
+	uint32_t size = list_size(global_first_level_page_tables);
 
 	for(int i = 0;i<size;i++){
 		first_level_page_table_t* table;
@@ -124,7 +124,7 @@ bool process_table_not_exists(int32_t pid){
 }
 
 
-int32_t suspend_pid(t_process* process){
+uint32_t suspend_pid(t_process* process){
 
 	log_info(logger, "suspend_pid - Swapeando paginas del proceso:%d - Inicio", process->pid);
 
@@ -188,10 +188,10 @@ void swap_second_level_entry(void* entry){
     }
 }
 
-void* read_frame(int32_t frame_number){
+void* read_frame(uint32_t frame_number){
 
     void* frame = malloc(tam_pagina);
-    int32_t offset = frame_number * tam_pagina;
+    uint32_t offset = frame_number * tam_pagina;
 
     pthread_mutex_lock(&MUTEX_MEMORY);
     memcpy(frame, memory + offset, tam_pagina);
@@ -200,7 +200,7 @@ void* read_frame(int32_t frame_number){
     return frame;
 }
 
-void free_memory(int32_t first_level_table_number){
+void free_memory(uint32_t first_level_table_number){
     log_info(logger, "Se borra de memoria la tabla de primer nivel: %d", first_level_table_number);
 
     pthread_mutex_lock(&MUTEX_FIRST_LEVEL_TABLES);
@@ -213,7 +213,7 @@ void free_memory(int32_t first_level_table_number){
 }
 
 void free_first_level_entry(void* entry){
-	int32_t second_level_table_id = ((first_level_entries_t*) entry)->second_level_table_id;
+	uint32_t second_level_table_id = ((first_level_entries_t*) entry)->second_level_table_id;
     log_info(logger, "Se borra de memoria la tabla de segundo nivel:%d", second_level_table_id);
 
     pthread_mutex_lock(&MUTEX_SECOND_LEVEL_TABLES);
@@ -234,7 +234,7 @@ void free_second_level_entry(void* entry){
     }
 }
 
-int32_t get_second_level_page_table(t_page_table_request* page_table_request){
+uint32_t get_second_level_page_table(t_page_table_request* page_table_request){
 
 	log_info(logger, "Retardo de memoria %dms", retardo_memoria);
 	usleep(retardo_memoria*1000);
@@ -248,7 +248,7 @@ int32_t get_second_level_page_table(t_page_table_request* page_table_request){
     return first_level_entry->second_level_table_id;
 }
 
-int32_t get_frame_number(t_page_table_request* page_table_request, bool isWrite){
+uint32_t get_frame_number(t_page_table_request* page_table_request, bool isWrite){
 
 		log_info(logger, "Retardo de memoria %dms", retardo_memoria);
 		usleep(retardo_memoria*1000);
@@ -270,7 +270,7 @@ int32_t get_frame_number(t_page_table_request* page_table_request, bool isWrite)
 
 				if (process_state->frames_used < marcos_por_proceso){
 
-					int32_t frame = -1;
+					uint32_t frame = -1;
 
 					//Busco primer frame libre en memoria
 					pthread_mutex_lock(&MUTEX_OCCUPIED_FRAMES);
@@ -337,9 +337,9 @@ int32_t get_frame_number(t_page_table_request* page_table_request, bool isWrite)
 
 }
 
-void write_page_in_memory(int32_t frame, void* swap_page_data){
+void write_page_in_memory(uint32_t frame, void* swap_page_data){
 
-	int32_t offset = frame * tam_pagina;
+	uint32_t offset = frame * tam_pagina;
 
     pthread_mutex_lock(&MUTEX_MEMORY);
     memcpy(memory + offset, swap_page_data, tam_pagina);
@@ -387,7 +387,7 @@ page_t* find_victim_page_to_replace(process_state_t* process_state, page_t* page
     return victim_page;
 }
 
-t_list* get_second_level_pages(int32_t first_level_page_table_id)
+t_list* get_second_level_pages(uint32_t first_level_page_table_id)
 {
     pthread_mutex_lock(&MUTEX_FIRST_LEVEL_TABLES);
     first_level_page_table_t* first_level_page_table = list_get(global_first_level_page_tables, first_level_page_table_id);
@@ -417,7 +417,7 @@ t_list* get_second_level_pages(int32_t first_level_page_table_id)
 page_t* replace_with_clock(process_state_t* process_state, t_list* all_process_pages_list, page_t* page){
 	log_info(logger, "Reemplazando pagina con algoritmo CLOCK - Inicio");
 
-	int32_t pages_number = list_size(all_process_pages_list);
+	uint32_t pages_number = list_size(all_process_pages_list);
 
 	page_t* victim_page;
 
@@ -480,7 +480,7 @@ page_t* replace_with_clock_m(process_state_t* process_state, t_list* all_process
 	log_info(logger, "Reemplazando pagina con algoritmo CLOCK-M - Inicio");
 
 	//TODO: Uso marcos_por_proceso. Revisar cual usar.
-//	int32_t pages_number = list_size(all_process_pages_list);
+//	uint32_t pages_number = list_size(all_process_pages_list);
 
 	page_t* victim_page;
 
@@ -493,7 +493,7 @@ page_t* replace_with_clock_m(process_state_t* process_state, t_list* all_process
 		//    list_iterate(all_process_pages_list, (void *) imprimirBitsUso);
 
 	page_t* pointer;
-	int32_t pointer_start = process_state->clock_pointer;
+	uint32_t pointer_start = process_state->clock_pointer;
 
 	bool completed = false;
 
@@ -627,11 +627,11 @@ page_t* replace_with_clock_m(process_state_t* process_state, t_list* all_process
 	return victim_page;
 }
 
-void* read_frame(int32_t frame_number){
+void* read_frame(uint32_t frame_number){
 
     void* frame = malloc(tam_pagina);
 
-    int32_t offset = frame_number * tam_pagina;
+    uint32_t offset = frame_number * tam_pagina;
     pthread_mutex_lock(&MUTEX_MEMORY);
     memcpy(frame, memory + offset, tam_pagina);
     pthread_mutex_unlock(&MUTEX_MEMORY);
