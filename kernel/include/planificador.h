@@ -12,7 +12,8 @@
     #include <estructura.h>
     #include <socket.h>
     #include <globales.h>
-
+    #include <libreriaConexiones.h>
+// CREAR CONEXION = INICIAR CLIENTE
     pthread_mutex_t mutex_estado_new;
     pthread_mutex_t mutex_estado_ready;
     pthread_mutex_t mutex_estado_exit;

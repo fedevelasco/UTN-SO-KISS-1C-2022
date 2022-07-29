@@ -1,54 +1,59 @@
 #include <socket.h>
 
 /* Inicializo el sevidor en modo escucha */
-int iniciar_servidor(char* IP, char* PORT)
-{
-	int socket_servidor;
-	struct addrinfo hints, *server_info;
+// int iniciar_servidor(char* IP, char* PORT)
+// {
+// 	int socket_servidor;
+// 	struct addrinfo hints, *server_info;
 
-	memset(&hints, 0, sizeof(hints));
-	hints.ai_family = PF_INET;
-	hints.ai_socktype = SOCK_STREAM;
-	hints.ai_flags = IPPROTO_TCP;
+// 	memset(&hints, 0, sizeof(hints));
+// 	hints.ai_family = PF_INET;
+// 	hints.ai_socktype = SOCK_STREAM;
+// 	hints.ai_flags = IPPROTO_TCP;
+// 	// hints.ai_family = AF_UNSPEC;
+// 	// hints.ai_socktype = SOCK_STREAM;
+// 	// hints.ai_flags = AI_PASSIVE;
 	
-	getaddrinfo(IP, PORT, &hints, &server_info);
+// 	getaddrinfo(IP, PORT, &hints, &server_info);
 
-	socket_servidor = socket(server_info->ai_family,  server_info->ai_socktype,server_info->ai_flags);
+// 	socket_servidor = socket(server_info->ai_family,  server_info->ai_socktype,server_info->ai_flags);
 	
-	if(socket_servidor == -1){
-		perror("Kernel - Error al crear socket");
-		exit(EXIT_FAILURE);
-	}
+// 	if(socket_servidor == -1){
+// 		perror("Kernel - Error al crear socket");
+// 		log_error(logger,"server_listen_ram - Error en sem_post - sem_kernel_thread. (errno %i)", errno);
+// 		exit(EXIT_FAILURE);
+// 	}
+// 	int yes = 1;
+// 	setsockopt(socket_servidor, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof yes); // Setea el socket como reutilizable
+// 	int binded = bind(socket_servidor, server_info->ai_addr, server_info->ai_addrlen);
 	
-	int binded = bind(socket_servidor, server_info->ai_addr, server_info->ai_addrlen);
+// 	if(binded == -1){
+// 		perror("Kernel - Error al bindear el socket");
+// 		exit(EXIT_FAILURE);
+// 	}
 	
-	if(binded == -1){
-		perror("Kernel - Error al bindear el socket");
-		exit(EXIT_FAILURE);
-	}
+// 	int listening = listen(socket_servidor, SOMAXCONN);
 	
-	int listening = listen(socket_servidor, SOMAXCONN);
-	
-	if(listening == -1){
-		perror("Kernel - error al escuchar conexion");
-		exit(EXIT_FAILURE);
-	}
+// 	if(listening == -1){
+// 		perror("Kernel - error al escuchar conexion");
+// 		exit(EXIT_FAILURE);
+// 	}
 
-	freeaddrinfo(server_info);
+// 	freeaddrinfo(server_info);
 	
-	return socket_servidor;
-}
+// 	return socket_servidor;
+// }
 
-int esperar_cliente(int socket_servidor)
-{
-	// Aceptamos un nuevo cliente
-	int socket_cliente = accept(socket_servidor, NULL, NULL);
-	if(socket_cliente == -1){
-		perror("error al aceptar socket_cliente");
-		exit(EXIT_FAILURE);
-	}
-	return socket_cliente;
-}
+// int esperar_cliente(int socket_servidor)
+// {
+// 	// Aceptamos un nuevo cliente
+// 	int socket_cliente = accept(socket_servidor, NULL, NULL);
+// 	if(socket_cliente == -1){
+// 		perror("error al aceptar socket_cliente");
+// 		exit(EXIT_FAILURE);
+// 	}
+// 	return socket_cliente;
+// }
 
 t_paquete* recibirPaquete(int server_socket){
 
@@ -67,36 +72,40 @@ t_paquete* recibirPaquete(int server_socket){
 }
 
 
-int crear_conexion(char* ip, char* puerto) {
-	struct addrinfo hints;
-	struct addrinfo *server_info;
+//  int crear_conexion(char* ip, char* puerto) {
 
-	memset(&hints, 0, sizeof(hints));
-	hints.ai_family = AF_INET;
-	hints.ai_socktype = SOCK_STREAM;
-	hints.ai_flags = IPPROTO_TCP;
+//  	struct addrinfo hints;
+//  	struct addrinfo *server_info;
 
-	getaddrinfo(ip, puerto, &hints, &server_info);
+//  	memset(&hints, 0, sizeof(hints));
+//  	hints.ai_family = AF_INET;
+//  	hints.ai_socktype = SOCK_STREAM;
+//  	hints.ai_flags = IPPROTO_TCP;
+//  	// hints.ai_family = AF_UNSPEC;
+// 	// hints.ai_socktype = SOCK_STREAM;
+// 	// hints.ai_flags = AI_PASSIVE;
 
-	int socket_cliente = socket(server_info->ai_family,  server_info->ai_socktype,server_info->ai_flags);
+//  	getaddrinfo(ip, puerto, &hints, &server_info);
+
+//  	int socket_cliente = socket(server_info->ai_family,  server_info->ai_socktype,server_info->ai_flags);
 	
-	if(socket_cliente == -1){
-		perror("error de creacion de socket");
-		exit(EXIT_FAILURE);
-	}
+//  	if(socket_cliente == -1){
+//  		perror("Error de creacion de socket");
+// 		log_error(logger,"server_listen_ram - Error en sem_post - sem_kernel_thread. (errno %i)",errno);
+//  		exit(EXIT_FAILURE);
+//  	}
 
-	int resultado_conexion = connect(socket_cliente, server_info->ai_addr, server_info->ai_addrlen);
+//  	int resultado_conexion = connect(socket_cliente, server_info->ai_addr, server_info->ai_addrlen);
 	
-	if(resultado_conexion != 0){
-		perror("error de conexión");
-		exit(EXIT_FAILURE);
-	}
+//  	if(resultado_conexion != 0){
+//  		perror("Error de conexión");
+//  		exit(EXIT_FAILURE);
+//  	}
 
-	freeaddrinfo(server_info);
+//  	freeaddrinfo(server_info);
 
-	return socket_cliente;
-}
-
+//  	return socket_cliente;
+//  }
 
 uint32_t recibir_operacion(uint32_t socket_cliente)
 {

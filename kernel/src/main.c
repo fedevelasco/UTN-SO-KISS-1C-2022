@@ -60,7 +60,8 @@ int main() {
     
     /* Inicializo el sevidor en modo escucha */
     int* socket = malloc(sizeof(int));
-    *socket = iniciar_servidor(IP, PUERTO_ESCUCHA);
+    char* nombre = "KERNEL";
+    *socket = iniciar_servidor(logger, nombre, IP, PUERTO_ESCUCHA);
 
     /* Inicializo los listas y colas correspondientes a los estados */
     inicializarEstados();
@@ -73,7 +74,7 @@ int main() {
     while(1){
 
         int* socket_consola = malloc(sizeof(int));
-        *socket_consola = esperar_cliente(*socket);
+        *socket_consola = esperar_cliente(logger, nombre, *socket);
 
         //log_info(logger, "Se conecto cliente");
         manejarProceso(socket_consola);

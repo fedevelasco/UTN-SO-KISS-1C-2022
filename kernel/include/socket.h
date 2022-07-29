@@ -10,11 +10,12 @@
     #include <netdb.h>
     #include <estructura.h>
     #include <globales.h>
+    #include <errno.h>
     
-    int iniciar_servidor(char* IP, char* PORT);
-    int esperar_cliente(int socket_servidor);
+  //  int iniciar_servidor(char* IP, char* PORT);
+   // int esperar_cliente(int socket_servidor);
 
-    int crear_conexion(char *ip, char* puerto);
+// int crear_conexion(char *ip, char* puerto);
     t_paquete* recibirPaquete(int server_socket);
 
     uint32_t recibir_operacion(uint32_t socket_cliente);

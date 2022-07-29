@@ -119,7 +119,9 @@
 	void*  serializarMensaje(void* stream, void* estructura);
 
 	void* serializarPCB(void* stream, void* estructura, int offset);
+	void* pcb_serializar(void* stream, void* estructura, int offset); //nuevo
 	t_pcb* deserializarPCB(void* stream, int offset);
+	t_pcb* pcb_deserializar(void* stream, int offset); //nuevo
 	void freePCB(t_pcb* pcb);
 	
 	void*  serializarIO(void* stream, void* estructura);

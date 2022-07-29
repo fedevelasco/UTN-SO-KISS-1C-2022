@@ -203,6 +203,7 @@ t_mensaje*  deserializarMensaje(void* stream){
     memcpy(mensaje->texto, stream + offset, mensaje->longitud);
 	return mensaje;
 }
+
 void* serializarPCB(void* stream, void* estructura, int offset){
 	t_pcb* pcb = (t_pcb*) estructura;
 	memcpy(stream + offset, &(pcb->id),sizeof(uint32_t));
@@ -221,6 +222,24 @@ void* serializarPCB(void* stream, void* estructura, int offset){
 	serializarInstrucciones(stream, (void*)pcb->instrucciones,  offset);
 	return stream;
 }
+
+// --------- serializa el stream y devuelve el offset ------------
+void* pcb_serializar(void* stream, void* estructura, int offset){
+	
+	t_pcb* pcb = (t_pcb*) estructura;
+
+    offset += serialize_int(stream + offset, &(pcb->id));
+    offset += serialize_int(stream + offset, &(pcb->tamanioProceso));
+    offset += serialize_int(stream + offset, &(pcb->PC));
+ 	offset += serialize_int(stream + offset, &(pcb->tablaDePaginas));
+    offset += serialize_int(stream + offset, &(pcb->estimacionRafaga));
+	offset += serialize_int(stream + offset, &(pcb->lengthUltimaRafaga));
+	offset += serialize_instructions_list (stream + offset, pcb->instrucciones);
+
+    return offset;
+}
+
+
 t_pcb* deserializarPCB(void* stream, int offset){
 	t_pcb* pcb = malloc(sizeof(t_pcb));
 	memcpy(&(pcb->id),stream + offset,sizeof(uint32_t));
@@ -240,6 +259,22 @@ t_pcb* deserializarPCB(void* stream, int offset){
 	
 	return pcb;
 }
+
+// ------------- Devuelve un pcb deserializado a partir de un stream de datos ----------------
+t_pcb* pcb_deserializar(void* stream, int offset){
+	
+	t_pcb* pcb = malloc(sizeof(t_pcb));
+	offset += deserialize_int(&(pcb->id), stream + offset);
+	offset += deserialize_int(&(pcb->tamanioProceso), stream + offset);
+	offset += deserialize_int(&(pcb->PC), stream + offset);
+    offset += deserialize_int(&(pcb->tablaDePaginas), stream + offset);
+	offset += deserialize_int(&(pcb->estimacionRafaga), stream + offset);
+	offset += deserialize_int(&(pcb->sizeInstrucciones), stream + offset);
+	offset += deserialize_instructions_list(pcb->instrucciones, stream + offset);    
+
+	return pcb;
+}
+
 void freePCB(t_pcb * pcb) {
 	free(pcb->instrucciones);
 	free(pcb);

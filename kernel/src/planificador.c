@@ -59,7 +59,7 @@ void Aready(){
 
 
 // ------------ Obtengo el siguiente PCB a ser agregado a la lista READY -----------------
-t_pcb * obtenerSiguienteAready(){
+t_pcb* obtenerSiguienteAready(){
     
     t_pcb* pcb = NULL;  
     	if(!queue_is_empty(estado_susp_ready)){
@@ -76,6 +76,7 @@ t_pcb * obtenerSiguienteAready(){
         else{
             pthread_mutex_lock(&mutex_estado_new);
             pcb = queue_pop(estado_new); // Consigo un PCB de la cola de estado NEW
+            //printf("PROBLEMA DE HILO AREADY");
             comunicacionMemoriaCreacionEstructuras(pcb); // Le pregunto a memorio por el valor de tabla de paginas para el nuevo PCB, luego lo asigno
             pthread_mutex_unlock(&mutex_estado_new);
             return pcb;
@@ -227,7 +228,7 @@ void hilo_block(){
 }//REQ_CREAR_PROCESO_KERNEL_MEMORIA
 
 void comunicacionMemoriaSuspender(t_pcb * pcb){
-    int socketMemoria = crear_conexion(IP_MEMORIA,PUERTO_MEMORIA);
+    int socketMemoria = iniciar_cliente(IP_MEMORIA,PUERTO_MEMORIA, logger);
     t_paquete * paqueteAmemoria = armarPaqueteCon(pcb, REQ_SUSP_PROCESO_KERNEL_MEMORIA);
     enviarPaquete(paqueteAmemoria, socketMemoria);
     eliminarPaquete(paqueteAmemoria);
@@ -240,8 +241,8 @@ void comunicacionMemoriaSuspender(t_pcb * pcb){
 
 // --------- Le pregunto a memorio por el valor de tabla de paginas para el nuevo PCB, luego lo asigno ----------------------
 void comunicacionMemoriaCreacionEstructuras(t_pcb * pcb){
-
-    int socketMemoria = crear_conexion(IP_MEMORIA,PUERTO_MEMORIA);
+    //TODO: me esta tirando error este socket
+    int socketMemoria = iniciar_cliente(IP_MEMORIA,PUERTO_MEMORIA, logger);
     if (socketMemoria == -1){
         log_info(logger, "Kernel - No se pudo crear la conexion con memoria para traer las estructuras");
     }
@@ -258,7 +259,7 @@ void comunicacionMemoriaCreacionEstructuras(t_pcb * pcb){
 }
 
 void comunicacionMemoriaFinalizar(t_pcb * pcb) {
-    int socketMemoria = crear_conexion(IP_MEMORIA,PUERTO_MEMORIA);
+    int socketMemoria = iniciar_cliente(IP_MEMORIA,PUERTO_MEMORIA, logger);
     t_paquete * paqueteAmemoria = armarPaqueteCon(pcb, REQ_FIN_PROCESO_KERNEL_MEMORIA);
     enviarPaquete(paqueteAmemoria, socketMemoria);
     eliminarPaquete(paqueteAmemoria);
@@ -331,7 +332,7 @@ t_pcb * planificacionFIFO(){
 // }
 void interrumpirPCB(){
     log_info(logger, "Interrumpiendo proceso");
-    int socketInterrupt = crear_conexion(IP_CPU, PUERTO_CPU_INTERRUPT);
+    int socketInterrupt = iniciar_cliente(IP_CPU, PUERTO_CPU_INTERRUPT, logger);
     int numero = 1;
     t_paquete * paquete = armarPaqueteCon(&numero, REQ_INTERRUPCION_KERNEL_CPU);
     enviarPaquete(paquete, socketInterrupt);
@@ -341,7 +342,7 @@ void interrumpirPCB(){
 
 
 void ejecutarPCB(t_pcb * pcb){
-    int socketDispatch = crear_conexion(IP_CPU, PUERTO_CPU_DISPATCH);
+    int socketDispatch = iniciar_cliente(IP_CPU, PUERTO_CPU_DISPATCH, logger);
     t_paquete * paquete = armarPaqueteCon(pcb, REQ_PCB_A_EJECUTAR_KERNEL_CPU);
     enviarPaquete(paquete, socketDispatch);
     eliminarPaquete(paquete);
