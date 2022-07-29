@@ -1,7 +1,7 @@
 // FUNCIONES PROPIAS DEL CICLO DE INSTRUCCION
 // Fetch -> Decode -> Fetch Operands -> Execute -> Check Interrupt
 
-// Nuevas estructuras //
+
 
 #include "../Include/cicloInstruccion.h"
 
@@ -171,91 +171,5 @@ void memoria_write(uint32_t direccion_fisica, uint32_t dato) {
     eliminarPaquete(paqueteRespuesta);
     free(peticion);
 }
-
-
-                // ----------- INTEGRACION CON OTROS ARCHIVOS ------------ //
-
-// #include "cpu.h"      // DEBERIA REESTRUCTURAR EL .h PARA TENER UN cicloInstruccion.h // 
-
-
-// // FETCH - buscar la próxima instrucción a ejecutar// 
-
-// /*----- Operaciones sobre el PC y avisos por quantum -----*/
-
-
-// void setearPC(t_PCB* pcb, t_puntero_instruccion pc) {
-// 	if(!CU_is_test_running()){
-// 		log_info(activeLogger, "Actualizando PC de |%d| a |%d|.", pcb->PC, (int)pc);
-// 	}
-// 	pcb->PC = (int)pc;
-// }
-
-// void incrementarPC(t_PCB* pcb) {
-// 	setearPC(pcb, (t_puntero_instruccion)((pcb->PC) + 1));
-// }
-
-// void loggearFinDePrimitiva(char* primitiva) {
-// 	log_debug(debugLogger, ANSI_COLOR_GREEN "La primitiva |%s| finalizó OK." ANSI_COLOR_RESET, primitiva);
-// }
-
-// void desalojarProceso() {
-// 	log_info(activeLogger, "Desalojando proceso...");
-
-// 	enviarPCB();
-// 	ejecutando = false;
-// 	log_info(activeLogger, "Proceso desalojado.");
-// }
-
-// // void pass(){} //no borrar
-
-// void obtenerPCB() {		//recibo el pcb que me manda kernel
-// 	if(pcbActual!=NULL){
-// 		pcb_destroy(pcbActual);
-// 	}
-// 	ejecutando = true;
-
-// 	pcbActual=malloc(sizeof(t_PCB));
-// 	//log_debug(debugLogger, "Recibiendo PCB...");
-// 	char* serialPCB = leerLargoYMensaje(kernel);
-// 	log_debug(debugLogger, "PCB recibido!");
-// 	deserializar_PCB(pcbActual, serialPCB);
-// 	enviarPID();
-// 	cantidadPaginasCodigo = pcbActual->cantidad_paginas;
-// 	stack = pcbActual->SP;
-// 	free(serialPCB);
-// }
-
-// void enviarPCB() {
-// 	//log_debug(debugLogger, "Enviando PCB a kernel...");
-// 	int bytes = bytes_PCB(pcbActual);
-// 	//imprimir_PCB(pcbActual);
-// 	char* serialPCB = malloc(bytes);
-// 	serializar_PCB(serialPCB, pcbActual);
-
-// 	enviarLargoYSerial(kernel, bytes, serialPCB);
-// 	log_debug(debugLogger, "PCB Enviado!");
-// 	free(serialPCB);
-// }
-
-// /**
-//  * Llamo a la funcion analizadorLinea del parser y logeo
-//  */
-// void parsear(char* const sentencia) {
-// 	log_info(activeLogger, "Ejecutando la sentencia |%s|...", sentencia);
-// 	pcbActual->PC++; 			//si desp el parser lo setea en otro lado mediante una primitiva, es tema suyo.
-// 								//lo incremento antes asi no se desfasa.
-
-// 	if(noEsEnd(sentencia)){
-// 		analizadorLinea(sentencia, &funciones, &funcionesKernel); // chequear el funcionesKernel con juli
-// 		if(flagMeSalteoTodoConGoto){return;}
-
-// 		log_info(activeLogger, "PC actualizado a |%d|",pcbActual->PC);
-// 		enviarHeader(kernel,headerTermineInstruccion);
-// 		log_debug(debugLogger,"Informé a kernel del fin de una instrucción");
-// 	}
-// 	else{
-// 		finalizar_proceso(true);
-// 	}
-// }
 
 
