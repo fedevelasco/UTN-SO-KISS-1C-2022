@@ -246,15 +246,39 @@ void comunicacionMemoriaCreacionEstructuras(t_pcb * pcb){
     if (socketMemoria == -1){
         log_info(logger, "Kernel - No se pudo crear la conexion con memoria para traer las estructuras");
     }
-    t_paquete* paqueteAmemoria = armarPaqueteCon(pcb, REQ_CREAR_PROCESO_KERNEL_MEMORIA);
-    enviarPaquete(paqueteAmemoria, socketMemoria);
-    eliminarPaquete(paqueteAmemoria);
-    t_paquete* paqueteRespuesta = recibirPaquete(socketMemoria);
-    uint32_t* tablaPaginas1erNivel = deserializarUINT32_T(paqueteRespuesta->buffer->stream);
-    pcb->tablaDePaginas = *tablaPaginas1erNivel; *tablaPaginas1erNivel;
-    log_info(logger, "Kernel - Tabla de paginas primer nivel con index: %d, asignada al pcb: %d",*tablaPaginas1erNivel, pcb->id);
-    eliminarPaquete(paqueteRespuesta);
-    free(tablaPaginas1erNivel);
+
+    t_process* crear_proceso = create_process();
+    crear_proceso->process_size = pcb->tamanioProceso;
+	crear_proceso->pid = pcb->id;
+
+
+	t_buffer* buffer = new_crear_proceso_buffer(crear_proceso);
+
+	t_package* package = new_package(buffer, PROCESS_INIT_REQUEST);
+
+	if (send_to_server(socketMemoria, package) == -1) {
+		log_error(logger, "Error al enviar paquete al servidor");
+
+	}
+	buffer_destroy(buffer);
+	package_destroy(package);
+
+   uint32_t cod_op = recibir_operacion(socketMemoria);
+	if(cod_op != PROCESS_INIT_RESPONSE){
+			perror("respuesta inesperada");
+			exit(EXIT_FAILURE);
+		}
+
+	char* buffer_recibido = recibir_paquete(socketMemoria);
+
+	uint32_t tablaPaginas1erNivel;
+
+	deserialize_int(&tablaPaginas1erNivel, buffer_recibido);
+
+	free(buffer_recibido);
+
+    pcb->tablaDePaginas = tablaPaginas1erNivel;
+    log_info(logger, "Kernel - Tabla de paginas primer nivel con index: %d, asignada al pcb: %d",tablaPaginas1erNivel, pcb->id);
 
 }
 

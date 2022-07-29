@@ -12,6 +12,9 @@
 	#include <instruccion.h>
 	#include <tads/op_code.h>
 	#include <tads/instructions_list.h>
+    #include <tads/package.h>
+   	#include <tads/buffer.h>
+	#include <tads/process.h>
 	#include <serialization.h>
 	
 	typedef struct{

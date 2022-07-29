@@ -182,6 +182,19 @@ t_proceso* recibirPaqquete_inicio(int server_socket){
     log_info(logger, "Kernel - Recoleccion de informacion para generar proceso completada");
 }
 
+t_buffer* new_crear_proceso_buffer(t_process* proceso){
+
+	t_buffer* buffer = create_buffer();
+
+	buffer->size = 3*sizeof(uint32_t);
+
+	buffer->stream = malloc(buffer->size);
+	int offset = serialize_process(buffer->stream, proceso);
+
+	log_debug(logger, "new_crear_proceso_buffer - size: %d\n", offset);
+
+	return buffer;
+}
 
 
 

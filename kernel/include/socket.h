@@ -22,5 +22,6 @@
     char* recibir_buffer(uint32_t* buffer_size, uint32_t socket_cliente);
     t_proceso* recibir_paquete(uint32_t socket_cliente, t_log* logger);
     t_proceso* recibirPaqquete_inicio(int server_socket);
+    t_buffer* new_crear_proceso_buffer(t_process* proceso);
     
 #endif

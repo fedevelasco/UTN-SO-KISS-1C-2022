@@ -80,7 +80,7 @@ void process_kernel_functions(){
 	        			log_info(logger, "Im a debug message");
 	        			break;
 	        		}
-	        		case PROCESS_INIT_REQUEST: {
+	        		case PROCESS_INIT_REQUEST: { //kernel comunicacionMemoriaCreacionEstructuras
 	        			process_init(operation_buffer);
 	        			break;
 	        		}
