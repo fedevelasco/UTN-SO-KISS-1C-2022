@@ -200,6 +200,17 @@ void* read_frame(uint32_t frame_number){
     return frame;
 }
 
+uint32_t process_frames(uint32_t process_size){
+    return (uint32_t)ceil((double)process_size / (double)tam_pagina);
+}
+uint32_t first_level_page(uint32_t swap_page_id){
+    return (uint32_t)floor((double)swap_page_id / (double)entradas_por_tabla);
+}
+uint32_t second_level_page(uint32_t swap_page_id){
+    return swap_page_id % entradas_por_tabla;
+}
+
+
 void free_memory(uint32_t first_level_table_number){
     log_info(logger, "Se borra de memoria la tabla de primer nivel: %d", first_level_table_number);
 
@@ -259,7 +270,7 @@ uint32_t get_frame_number(t_page_table_request* page_table_request, bool isWrite
 				second_level_page_table_t* second_level_page_table = list_get(global_second_level_page_tables, page_table_request->table_number);
 			pthread_mutex_unlock(&MUTEX_SECOND_LEVEL_TABLES);
 
-			page_t* page = list_get(second_level_page_table, page_table_request->entry_number);
+			page_t* page = list_get(second_level_page_table->pages, page_table_request->entry_number);
 
 			pthread_mutex_lock(&MUTEX_PROCESS_EXTRA_INFO);
 			process_state_t* process_state = dictionary_get(process_extra_info, string_itoa(page_table_request->pid));
@@ -327,12 +338,17 @@ uint32_t get_frame_number(t_page_table_request* page_table_request, bool isWrite
 
 			if (isWrite){
 				page->bit_M = true;
+				log_info(logger, "Al pid: %d se le asigna el frame: %d para Escritura", page->frame_number, page_table_request->pid);
+			} else {
+				log_info(logger, "Al pid: %d se le asigna el frame: %d para Lectura", page->frame_number, page_table_request->pid);
 			}
 
 			page->bit_U = true;
 
 
 	    pthread_mutex_unlock(&MUTEX_SECOND_LEVEL_ENTRY);
+
+
 	    return page->frame_number;
 
 }
@@ -397,10 +413,10 @@ t_list* get_second_level_pages(uint32_t first_level_page_table_id)
 
     for(int i=0; i < list_size(first_level_page_table->first_level_entries);i++){
 
-    	first_level_entries_t entry = list_get(first_level_page_table->first_level_entries, i);
+    	first_level_entries_t* entry = list_get(first_level_page_table->first_level_entries, i);
 
     	pthread_mutex_lock(&MUTEX_SECOND_LEVEL_TABLES);
-    	second_level_page_table_t second_level_page_table = list_get(global_second_level_page_tables, entry->second_level_table_id);
+    	second_level_page_table_t* second_level_page_table = list_get(global_second_level_page_tables, entry->second_level_table_id);
     	pthread_mutex_unlock(&MUTEX_SECOND_LEVEL_TABLES);
 
     	for(int j=0; j < list_size(second_level_page_table->pages);j++){
@@ -417,21 +433,21 @@ t_list* get_second_level_pages(uint32_t first_level_page_table_id)
 page_t* replace_with_clock(process_state_t* process_state, t_list* all_process_pages_list, page_t* page){
 	log_info(logger, "Reemplazando pagina con algoritmo CLOCK - Inicio");
 
-	uint32_t pages_number = list_size(all_process_pages_list);
+//	uint32_t pages_number = list_size(all_process_pages_list);
 
 	page_t* victim_page;
 
 	//TODO: Revisar
 //	log_info(logger, "------Estado inicial antes de reemplazo------");
 //	    log_info(logger, "PUNTERO: %d", process_state->clock_pointer);
-//	    void imprimirEstadoInicial(page_t* entrada)
+//	    void imprimirEstadoInicial(page_t* page)
 //	    {
 //	        log_info(logger, "PAGINA:(%d,%d) - FRAME: %d - BIT USO: %d - BIT PRESENCIA: %d",
-//	                 paginaPrimerNivel(entrada->swap_page_id),
-//	                 paginaSegundoNivel(entrada->swap_page_id),
-//	                 entrada->frame_number,
-//	                 entrada->bit_U,
-//	                 entrada->bit_P);
+//	                 first_level_page(page->swap_page_id),
+//	                 second_level_page(page->swap_page_id),
+//	                 page->frame_number,
+//	                 page->bit_U,
+//	                 page->bit_P);
 //	    }
 //
 //	    list_iterate(all_process_pages_list, (void *)imprimirEstadoInicial);
@@ -455,20 +471,20 @@ page_t* replace_with_clock(process_state_t* process_state, t_list* all_process_p
 
 			log_info(logger,
 					"Usando algoritmo: %s - se reemplaza pagina de swap victima : [%d,%d] por pagina de swap: [%d,%d]  - Ingresa a memoria en frame:%d",
-					algoritmo_reemplazo, paginaPrimerNivel(victim_page->swap_page_id), paginaSegundoNivel(victim_page->swap_page_id),
-					paginaPrimerNivel(page->swap_page_id), paginaSegundoNivel(page->swap_page_id), victim_page->frame_number);
+					algoritmo_reemplazo, first_level_page(victim_page->swap_page_id), second_level_page(victim_page->swap_page_id),
+					first_level_page(page->swap_page_id), second_level_page(page->swap_page_id), victim_page->frame_number);
 
 			break;
 
 		} else {
 			//Saco bit de uso y vuelvo a recorrer
 			pointer->bit_U = false;
-			log_info(logger, "Se cambia bit uso = 0 para pagina:[%d,%d]", paginaPrimerNivel(pointer->swap_page_id), paginaSegundoNivel(pointer->swap_page_id));
+			log_info(logger, "Se cambia bit uso = 0 para pagina:[%d,%d]", first_level_page(pointer->swap_page_id), second_level_page(pointer->swap_page_id));
 
 		}
 
 		if(!pointer->bit_U){
-			log_info(logger, "La pagina: [%d,%d] tiene bit de presencia en: %d. Paso a la proxima pagina.", paginaPrimerNivel(pointer->swap_page_id), paginaSegundoNivel(pointer->swap_page_id));
+			log_info(logger, "La pagina: [%d,%d] tiene bit de presencia en: %d. Paso a la proxima pagina.", first_level_page(pointer->swap_page_id), second_level_page(pointer->swap_page_id), pointer->bit_P);
 		}
 	}
 
@@ -627,18 +643,35 @@ page_t* replace_with_clock_m(process_state_t* process_state, t_list* all_process
 	return victim_page;
 }
 
-void* read_frame(uint32_t frame_number){
 
-    void* frame = malloc(tam_pagina);
+uint32_t read_fisical_address(uint32_t fisical_address){
 
-    uint32_t offset = frame_number * tam_pagina;
+	log_info(logger, "Retardo de memoria %dms", retardo_memoria);
+	usleep(retardo_memoria*1000);
+
+    uint32_t data;
+//    uint32_t data = malloc(sizeof(uint32_t));
+
     pthread_mutex_lock(&MUTEX_MEMORY);
-    memcpy(frame, memory + offset, tam_pagina);
+    memcpy(&data, memory + fisical_address, sizeof(uint32_t));
     pthread_mutex_unlock(&MUTEX_MEMORY);
-
-    return frame;
+    log_info(logger, "LECTURA - En la direccion fisica: %d se LEE el dato: %d", fisical_address, data);
+    return data;
 }
 
+void write_memory_data(t_memory_write_request* write){
+
+	log_info(logger, "Retardo de memoria %dms", retardo_memoria);
+	usleep(retardo_memoria*1000);
+
+	uint32_t data = write->data;
+
+    pthread_mutex_lock(&MUTEX_MEMORY);
+    memcpy(memory + write->fisical_address, &data, sizeof(uint32_t));
+    pthread_mutex_unlock(&MUTEX_MEMORY);
+
+    log_info(logger, "ESCRITURA - En la direccion fisica: %d se ESCRIBE el dato: %d", write->fisical_address, data);
+}
 
 
 

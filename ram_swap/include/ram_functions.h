@@ -26,7 +26,18 @@ void* read_frame(uint32_t frame_number);
 void free_memory(uint32_t first_level_table_number);
 void free_first_level_entry(void* entry);
 void free_second_level_entry(void* entry);
+uint32_t process_frames(uint32_t process_size);
 uint32_t get_second_level_page_table(t_page_table_request* page_table_request);
+uint32_t read_fisical_address(uint32_t fisical_address);
+uint32_t first_level_page(uint32_t swap_page_id);
+uint32_t second_level_page(uint32_t swap_page_id);
+void write_memory_data(t_memory_write_request* write);
+uint32_t get_frame_number(t_page_table_request* page_table_request, bool isWrite);
+page_t* find_victim_page_to_replace(process_state_t* process_state, page_t* page);
+void write_page_in_memory(uint32_t frame, void* swap_page_data);
+t_list* get_second_level_pages(uint32_t first_level_page_table_id);
+page_t* replace_with_clock(process_state_t* process_state, t_list* all_process_pages_list, page_t* page);
+page_t* replace_with_clock_m(process_state_t* process_state, t_list* all_process_pages_list, page_t* page);
 
 
 #endif /* RAM_FUNCTIONS_H_ */

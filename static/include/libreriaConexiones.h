@@ -28,6 +28,6 @@ int iniciar_cliente(char *ip, char* puerto, t_log* logger);
 
 // -------------- Liberar Conexiones --------------
 
-void liberar_conexion(int* socket_cliente);
+void liberar_conexion(int socket_cliente);
 
 #endif

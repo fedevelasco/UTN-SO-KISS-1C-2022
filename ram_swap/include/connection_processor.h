@@ -22,9 +22,10 @@ void process_kill(operation_buffer_t* operation_buffer);
 //Cpu
 void get_memory_config(operation_buffer_t* operation_buffer);
 void get_second_level_table(operation_buffer_t* operation_buffer);
-void get_frame(operation_buffer_t* operation_buffer);
-
-
+void get_frame_read(operation_buffer_t* operation_buffer);
+void get_frame_write(operation_buffer_t* operation_buffer);
+void read_memory(operation_buffer_t* operation_buffer);
+void write_memory(operation_buffer_t* operation_buffer);
 
 
 

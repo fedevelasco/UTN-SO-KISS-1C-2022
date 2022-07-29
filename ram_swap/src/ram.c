@@ -105,7 +105,7 @@ int main(int argc, char* argv[]){
 
 	/* ---------------- LIBERO CONEXIONES Y FINALIZO  -------------------- */
 
-	liberar_conexion(&server_socket);
+	liberar_conexion(server_socket);
 
 	close_process();
 

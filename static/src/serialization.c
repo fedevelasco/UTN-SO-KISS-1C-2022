@@ -231,6 +231,24 @@ uint32_t deserialize_page_table_request(t_page_table_request* output, char* inpu
 	return offset;
 }
 
+uint32_t serialize_memory_write_request(char* output, t_memory_write_request* input) {
+	uint32_t offset = 0;
+	offset += serialize_int(output + offset, &(input->fisical_address));
+	offset += serialize_int(output + offset, &(input->data));
+	offset += serialize_int(output + offset, &(input->pid));
+
+	return offset;
+}
+
+uint32_t deserialize_memory_write_request(t_memory_write_request* output, char* input) {
+	uint32_t offset = 0;
+	offset += deserialize_int(&output->fisical_address, input);
+	offset += deserialize_int(&output->data, input + offset);
+	offset += deserialize_int(&output->pid, input + offset);
+
+	return offset;
+}
+
 
 
 
