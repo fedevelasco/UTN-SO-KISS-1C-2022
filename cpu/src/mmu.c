@@ -129,7 +129,7 @@ uint32_t consultarTablaSegundoNivel(uint32_t tablaDePaginasPrimerNivel, uint32_t
     package_destroy(package);
 
    uint32_t cod_op = recibir_operacion(socket_memoria);
-    if(cod_op != GET_SECOND_LEVEL_TABLE_REQUEST){
+    if(cod_op != GET_SECOND_LEVEL_TABLE_RESPONSE){
             perror("respuesta inesperada");
             exit(EXIT_FAILURE);
         }

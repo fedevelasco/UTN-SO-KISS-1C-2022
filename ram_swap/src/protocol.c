@@ -62,14 +62,75 @@ uint32_t send_second_level_table_id(uint32_t client_socket, uint32_t second_leve
 
 	t_buffer* buffer = new_second_level_table_buffer(second_level_table_id);
 
-	t_package* package = new_package(buffer, PROCESS_INIT_RESPONSE);
+	t_package* package = new_package(buffer, GET_SECOND_LEVEL_TABLE_RESPONSE);
 
 	if (send_to_server(client_socket, package) == -1) {
 		log_error(logger, "Error al enviar paquete al servidor");
 		return 1;
 	}
 
-	log_debug(logger, "send_process_init - se envio el paquete a servidor");
+	log_debug(logger, "send_second_level_table_id - se envio el paquete a servidor");
+	return 0;
+}
+
+uint32_t send_frame_number_read(uint32_t client_socket, uint32_t frame_number){
+
+	t_buffer* buffer = new_frame_number_buffer(frame_number);
+
+	t_package* package = new_package(buffer, GET_FRAME_READ_RESPONSE);
+
+	if (send_to_server(client_socket, package) == -1) {
+		log_error(logger, "Error al enviar paquete al servidor");
+		return 1;
+	}
+
+	log_debug(logger, "send_frame_number - se envio el paquete a servidor");
+	return 0;
+}
+
+uint32_t send_frame_number_write(uint32_t client_socket, uint32_t frame_number){
+
+	t_buffer* buffer = new_frame_number_buffer(frame_number);
+
+	t_package* package = new_package(buffer, GET_FRAME_WRITE_RESPONSE);
+
+	if (send_to_server(client_socket, package) == -1) {
+		log_error(logger, "Error al enviar paquete al servidor");
+		return 1;
+	}
+
+	log_debug(logger, "send_frame_number - se envio el paquete a servidor");
+	return 0;
+}
+
+
+uint32_t send_memory_data(uint32_t client_socket, uint32_t memory_data){
+
+	t_buffer* buffer = new_memory_data_buffer(memory_data);
+
+	t_package* package = new_package(buffer, READ_MEMORY_RESPONSE);
+
+	if (send_to_server(client_socket, package) == -1) {
+		log_error(logger, "Error al enviar paquete al servidor");
+		return 1;
+	}
+
+	log_debug(logger, "send_memory_data - se envio el paquete a servidor");
+	return 0;
+}
+
+uint32_t send_write_memory(uint32_t client_socket){
+
+	t_buffer* buffer = new_write_memory_buffer();
+
+	t_package* package = new_package(buffer, WRITE_MEMORY_RESPONSE);
+
+	if (send_to_server(client_socket, package) == -1) {
+		log_error(logger, "Error al enviar paquete al servidor");
+		return 1;
+	}
+
+	log_debug(logger, "send_write_memory - se envio el paquete a servidor");
 	return 0;
 }
 
@@ -128,6 +189,34 @@ t_buffer* new_second_level_table_buffer(uint32_t second_level_table_id){
 	return buffer;
 }
 
+t_buffer* new_frame_number_buffer(uint32_t frame_number){
+
+	t_buffer* buffer = create_buffer();
+
+	buffer->size = sizeof(uint32_t);
+
+	buffer->stream = malloc(buffer->size);
+	int offset = serialize_int(buffer->stream, &frame_number);
+
+	log_debug(logger, "new_frame_number_buffer - size: %d\n", offset);
+
+	return buffer;
+}
+
+t_buffer* new_memory_data_buffer(uint32_t memory_data){
+
+	t_buffer* buffer = create_buffer();
+
+	buffer->size = sizeof(uint32_t);
+
+	buffer->stream = malloc(buffer->size);
+	int offset = serialize_int(buffer->stream, &memory_data);
+
+	log_debug(logger, "new_memory_data_buffer - size: %d\n", offset);
+
+	return buffer;
+}
+
 t_buffer* new_process_suspend_buffer(){
 
 	uint32_t ok_signal = 1;
@@ -140,6 +229,22 @@ t_buffer* new_process_suspend_buffer(){
 	int offset = serialize_int(buffer->stream, &ok_signal);
 
 	log_debug(logger, "new_process_suspend_buffer - size: %d\n", offset);
+
+	return buffer;
+}
+
+t_buffer* new_write_memory_buffer(){
+
+	uint32_t ok_signal = 1;
+
+	t_buffer* buffer = create_buffer();
+
+	buffer->size = sizeof(uint32_t);
+
+	buffer->stream = malloc(buffer->size);
+	int offset = serialize_int(buffer->stream, &ok_signal);
+
+	log_debug(logger, "new_write_memory_buffer - size: %d\n", offset);
 
 	return buffer;
 }

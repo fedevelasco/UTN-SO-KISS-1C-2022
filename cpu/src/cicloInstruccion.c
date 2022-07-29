@@ -1,7 +1,7 @@
 // FUNCIONES PROPIAS DEL CICLO DE INSTRUCCION
 // Fetch -> Decode -> Fetch Operands -> Execute -> Check Interrupt
 
-// Nuevas estructuras //
+
 
 #include "../Include/cicloInstruccion.h"
 
@@ -141,116 +141,64 @@ uint32_t * memoria_read(uint32_t direccion_fisica) {
     enviarPaquete(paquete,socket_memoria);
     eliminarPaquete(paquete);
 
-    //TODO: COMPLETAR CONEXION    
-    uint32_t* asd = 1;
+    //TODO: COMPLETAR CONEXION   
+    uint32_t asdnum = 1;  
+    uint32_t* asd = &asdnum;
     return asd;
 }
 
 void memoria_write(uint32_t direccion_fisica, uint32_t dato) {
 
     uint32_t socket_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
-    t_peticionEscritura * peticion = malloc(sizeof(t_peticionEscritura));
-    peticion->direccionFisica = direccion_fisica;
-    peticion->dato = dato;
-    peticion->id = PCB_ACTUAL;
 
-    t_paquete * paquete = armarPaqueteCon(peticion, REQ_WRITE_CPU_MEMORIA); // agregar el dato al paquete
-    enviarPaquete(paquete,socket_memoria);
-    eliminarPaquete(paquete);
-    t_paquete * paqueteRespuesta = recibirPaquete(socket_memoria);
-    if(paqueteRespuesta->codigo_operacion != RES_WRITE_CPU_MEMORIA){
-        perror("respuesta inesperada");
-        eliminarPaquete(paqueteRespuesta);
-        exit(EXIT_FAILURE);
-    }
-    eliminarPaquete(paqueteRespuesta);
-    free(peticion);
+    t_memory_write_request* peticion_escritura = create_memory_write_request();
+
+    peticion_escritura->fisical_address = direccion_fisica;
+    peticion_escritura->data = dato;
+    peticion_escritura->pid = PCB_ACTUAL;
+
+    t_buffer* buffer = new_peticion_buffer(peticion_escritura);
+
+    //Codigo operacion que envio: * REQUEST
+	t_package* package = new_package(buffer, WRITE_MEMORY_REQUEST);
+
+	if (send_to_server(socket_memoria, package) == -1) {
+		log_error(logger, "Error al enviar paquete al servidor");
+
+	}
+	buffer_destroy(buffer);
+	package_destroy(package);
+
+   uint32_t cod_op = recibir_operacion(socket_memoria);
+   //Codigo operacion que recibo:* RESPONSE
+	if(cod_op != WRITE_MEMORY_RESPONSE){
+			perror("respuesta inesperada");
+			exit(EXIT_FAILURE);
+		}
+
+	char* buffer_recibido = recibir_paquete(socket_memoria);
+
+	uint32_t escritura_ok;
+
+	deserialize_int(&escritura_ok, buffer_recibido);
+
+	if(escritura_ok != 1){
+		log_error(logger, "Error al escribir dato en memoria");
+	}
+
+	free(buffer_recibido);
 }
 
+t_buffer* new_peticion_buffer(t_memory_write_request* peticion_escritura){
 
-                // ----------- INTEGRACION CON OTROS ARCHIVOS ------------ //
+	t_buffer* buffer = create_buffer();
 
-// #include "cpu.h"      // DEBERIA REESTRUCTURAR EL .h PARA TENER UN cicloInstruccion.h // 
+	buffer->size = 3*sizeof(uint32_t);
 
+	buffer->stream = malloc(buffer->size);
+	int offset = serialize_memory_write_request(buffer->stream, peticion_escritura);
 
-// // FETCH - buscar la próxima instrucción a ejecutar// 
+	log_debug(logger, "new_peticion_buffer - size: %d\n", offset);
 
-// /*----- Operaciones sobre el PC y avisos por quantum -----*/
-
-
-// void setearPC(t_PCB* pcb, t_puntero_instruccion pc) {
-// 	if(!CU_is_test_running()){
-// 		log_info(activeLogger, "Actualizando PC de |%d| a |%d|.", pcb->PC, (int)pc);
-// 	}
-// 	pcb->PC = (int)pc;
-// }
-
-// void incrementarPC(t_PCB* pcb) {
-// 	setearPC(pcb, (t_puntero_instruccion)((pcb->PC) + 1));
-// }
-
-// void loggearFinDePrimitiva(char* primitiva) {
-// 	log_debug(debugLogger, ANSI_COLOR_GREEN "La primitiva |%s| finalizó OK." ANSI_COLOR_RESET, primitiva);
-// }
-
-// void desalojarProceso() {
-// 	log_info(activeLogger, "Desalojando proceso...");
-
-// 	enviarPCB();
-// 	ejecutando = false;
-// 	log_info(activeLogger, "Proceso desalojado.");
-// }
-
-// // void pass(){} //no borrar
-
-// void obtenerPCB() {		//recibo el pcb que me manda kernel
-// 	if(pcbActual!=NULL){
-// 		pcb_destroy(pcbActual);
-// 	}
-// 	ejecutando = true;
-
-// 	pcbActual=malloc(sizeof(t_PCB));
-// 	//log_debug(debugLogger, "Recibiendo PCB...");
-// 	char* serialPCB = leerLargoYMensaje(kernel);
-// 	log_debug(debugLogger, "PCB recibido!");
-// 	deserializar_PCB(pcbActual, serialPCB);
-// 	enviarPID();
-// 	cantidadPaginasCodigo = pcbActual->cantidad_paginas;
-// 	stack = pcbActual->SP;
-// 	free(serialPCB);
-// }
-
-// void enviarPCB() {
-// 	//log_debug(debugLogger, "Enviando PCB a kernel...");
-// 	int bytes = bytes_PCB(pcbActual);
-// 	//imprimir_PCB(pcbActual);
-// 	char* serialPCB = malloc(bytes);
-// 	serializar_PCB(serialPCB, pcbActual);
-
-// 	enviarLargoYSerial(kernel, bytes, serialPCB);
-// 	log_debug(debugLogger, "PCB Enviado!");
-// 	free(serialPCB);
-// }
-
-// /**
-//  * Llamo a la funcion analizadorLinea del parser y logeo
-//  */
-// void parsear(char* const sentencia) {
-// 	log_info(activeLogger, "Ejecutando la sentencia |%s|...", sentencia);
-// 	pcbActual->PC++; 			//si desp el parser lo setea en otro lado mediante una primitiva, es tema suyo.
-// 								//lo incremento antes asi no se desfasa.
-
-// 	if(noEsEnd(sentencia)){
-// 		analizadorLinea(sentencia, &funciones, &funcionesKernel); // chequear el funcionesKernel con juli
-// 		if(flagMeSalteoTodoConGoto){return;}
-
-// 		log_info(activeLogger, "PC actualizado a |%d|",pcbActual->PC);
-// 		enviarHeader(kernel,headerTermineInstruccion);
-// 		log_debug(debugLogger,"Informé a kernel del fin de una instrucción");
-// 	}
-// 	else{
-// 		finalizar_proceso(true);
-// 	}
-// }
-
-
+	return buffer;
+}

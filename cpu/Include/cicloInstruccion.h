@@ -14,7 +14,7 @@
     #include "../Include/variablesGlobales.h"
     #include "../Include/mmu.h"
 
-    #include <conexiones.h>
+    #include "../Include/conexiones.h"
     
     uint32_t tablaPaginasPrimerNivelPCB;
     t_paquete * cicloInstruccion(t_pcb * pcb);

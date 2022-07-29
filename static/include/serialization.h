@@ -22,6 +22,7 @@
 #include "tads/process.h"
 #include "tads/memory_config.h"
 #include "tads/page_table_request.h"
+#include "tads/memory_write_request.h"
 
 
 
@@ -164,6 +165,18 @@ uint32_t serialize_page_table_request(char* output, t_page_table_request* input)
 * @DESC: Deserializa un buffer en input hacia un t_page_table_request en output y retorna el offset.
 */
 uint32_t deserialize_page_table_request(t_page_table_request* output, char* input);
+
+/**
+* @NAME: serialize_memory_write_request
+* @DESC: Serializa un t_memory_write_request en output y retorna el offset.
+*/
+uint32_t serialize_memory_write_request(char* output, t_memory_write_request* input);
+
+/**
+* @NAME: deserialize_memory_write_request
+* @DESC: Deserializa un buffer en input hacia un t_memory_write_request en output y retorna el offset.
+*/
+uint32_t deserialize_memory_write_request(t_memory_write_request* output, char* input);
 
 
 

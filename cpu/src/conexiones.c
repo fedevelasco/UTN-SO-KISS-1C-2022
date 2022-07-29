@@ -2,12 +2,12 @@
 
 #include "../Include/conexiones.h"
 
-// ***** Funciones de conexiones ***** //
+// ***** ELIMINAR COMENTADOS  YA QUE SON VIEJOS ***** //
 
-int getHandshake(int cli) {
-	char* handshake = recv_nowait_ws(cli, 1);
-	return charToInt(handshake);
-}
+// int getHandshake(int cli) {
+// 	char* handshake = recv_nowait_ws(cli, 1);
+// 	return charToInt(handshake);
+// }
 
 // void warnDebug() {
 // 	log_warning(activeLogger, "--- CORRIENDO EN MODO DEBUG!!! ---", getpid());
