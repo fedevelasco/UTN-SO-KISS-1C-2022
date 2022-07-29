@@ -6,13 +6,14 @@
     #include <stdint.h>
     #include <math.h>
     #include <stdbool.h>
+	#include <global_structures.h>
     // sin static
     #include "../Include/variablesGlobales.h"
     #include <commons/collections/list.h>
     #include <commons/string.h>
 
     #include "../Include/conexiones.h"
-    #include <tads/page_table_request.h>
+
 
     t_list * listaTLB;
     uint32_t tiempoAccesoGlobal;

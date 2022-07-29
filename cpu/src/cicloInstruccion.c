@@ -150,20 +150,55 @@ uint32_t * memoria_read(uint32_t direccion_fisica) {
 void memoria_write(uint32_t direccion_fisica, uint32_t dato) {
 
     uint32_t socket_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
-    t_peticionEscritura * peticion = malloc(sizeof(t_peticionEscritura));
-    peticion->direccionFisica = direccion_fisica;
-    peticion->dato = dato;
-    peticion->id = PCB_ACTUAL;
 
-    t_paquete * paquete = armarPaqueteCon(peticion, REQ_WRITE_CPU_MEMORIA); // agregar el dato al paquete
-    enviarPaquete(paquete,socket_memoria);
-    eliminarPaquete(paquete);
-    t_paquete * paqueteRespuesta = recibirPaquete(socket_memoria);
-    if(paqueteRespuesta->codigo_operacion != RES_WRITE_CPU_MEMORIA){
-        perror("respuesta inesperada");
-        eliminarPaquete(paqueteRespuesta);
-        exit(EXIT_FAILURE);
-    }
-    eliminarPaquete(paqueteRespuesta);
-    free(peticion);
+    t_memory_write_request* peticion_escritura = create_memory_write_request();
+
+    peticion_escritura->fisical_address = direccion_fisica;
+    peticion_escritura->data = dato;
+    peticion_escritura->pid = PCB_ACTUAL;
+
+    t_buffer* buffer = new_peticion_buffer(peticion_escritura);
+
+    //Codigo operacion que envio: * REQUEST
+	t_package* package = new_package(buffer, WRITE_MEMORY_REQUEST);
+
+	if (send_to_server(socket_memoria, package) == -1) {
+		log_error(logger, "Error al enviar paquete al servidor");
+
+	}
+	buffer_destroy(buffer);
+	package_destroy(package);
+
+   uint32_t cod_op = recibir_operacion(socket_memoria);
+   //Codigo operacion que recibo:* RESPONSE
+	if(cod_op != WRITE_MEMORY_RESPONSE){
+			perror("respuesta inesperada");
+			exit(EXIT_FAILURE);
+		}
+
+	char* buffer_recibido = recibir_paquete(socket_memoria);
+
+	uint32_t escritura_ok;
+
+	deserialize_int(&escritura_ok, buffer_recibido);
+
+	if(escritura_ok != 1){
+		log_error(logger, "Error al escribir dato en memoria");
+	}
+
+	free(buffer_recibido);
+}
+
+t_buffer* new_peticion_buffer(t_memory_write_request* peticion_escritura){
+
+	t_buffer* buffer = create_buffer();
+
+	buffer->size = 3*sizeof(uint32_t);
+
+	buffer->stream = malloc(buffer->size);
+	int offset = serialize_memory_write_request(buffer->stream, peticion_escritura);
+
+	log_debug(logger, "new_peticion_buffer - size: %d\n", offset);
+
+	return buffer;
 }
