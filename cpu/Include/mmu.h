@@ -12,6 +12,7 @@
     #include <commons/string.h>
 
     #include <conexiones.h>
+    #include <tads/page_table_request.h>
 
     t_list * listaTLB;
     uint32_t tiempoAccesoGlobal;

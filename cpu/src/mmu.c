@@ -115,7 +115,7 @@ uint32_t consultarTablaSegundoNivel(uint32_t tablaDePaginasPrimerNivel, uint32_t
     t_page_table_request* request = create_page_table_request();
     request->table_number = tablaDePaginasPrimerNivel;
     request->entry_number = entradaPrimerNivel;
-    request->pid = 
+    request->pid = PCB_ACTUAL;
 
     t_buffer* buffer = new_page_table_request_buffer(request);
 
@@ -134,13 +134,13 @@ uint32_t consultarTablaSegundoNivel(uint32_t tablaDePaginasPrimerNivel, uint32_t
             exit(EXIT_FAILURE);
         }
     
-    char* buffer = recibir_paquete(socket_memoria);
+    char* buffer_recibido = recibir_paquete(socket_memoria);
 
     uint32_t tabla_segundo_nivel_numero;
 
-    deserialize_int(&tabla_segundo_nivel_numero, buffer);
+    deserialize_int(&tabla_segundo_nivel_numero, buffer_recibido);
     
-    free(buffer);
+    free(buffer_recibido);
 
     return tabla_segundo_nivel_numero;
 }

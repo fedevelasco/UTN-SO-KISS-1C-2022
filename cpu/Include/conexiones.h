@@ -15,6 +15,7 @@
 #include <commons/collections/dictionary.h>
 #include <commons/collections/queue.h>
 #include <commons/collections/list.h>
+#include <tads/package.h>
 // #include <parser/parser.h>
 #include <string.h>
 #include <signal.h>
@@ -27,6 +28,7 @@
 #include "../Include/cpu_alt.h"
 // sin static
 #include "../Include/serializacion_cpu.h"
+#include <serialization.h>
 
 /*------------Variables Globales--------------*/
 int kernel; //cpu es cliente del kernel
@@ -50,6 +52,7 @@ char* recibir_buffer(uint32_t* buffer_size, uint32_t socket_cliente);
 uint32_t recibir_operacion(uint32_t socket_cliente);
 uint32_t send_package(uint32_t connection, t_package* package);
 uint32_t send_to_server(uint32_t connection, t_package* package);
+t_buffer* new_page_table_request_buffer(t_page_table_request* request);
 
 t_traduccion_direcciones* obtenerTraduccionDeDirecciones(int socket);
 

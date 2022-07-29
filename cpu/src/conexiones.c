@@ -149,7 +149,7 @@ t_buffer* new_page_table_request_buffer(t_page_table_request* request){
 
 	t_buffer* buffer = create_buffer();
 
-	buffer->size = sizeof(3*uint32_t);
+	buffer->size = 3*sizeof(uint32_t);
 
 	buffer->stream = malloc(buffer->size);
 	int offset = serialize_page_table_request(buffer->stream, request);
