@@ -45,6 +45,12 @@ void hacer_handshake_memoria();
 void establecerConexionConMemoria();
 void establecerConexionConKernel();
 
+char* recibir_paquete(uint32_t socket_cliente);
+char* recibir_buffer(uint32_t* buffer_size, uint32_t socket_cliente);
+uint32_t recibir_operacion(uint32_t socket_cliente);
+uint32_t send_package(uint32_t connection, t_package* package);
+uint32_t send_to_server(uint32_t connection, t_package* package);
+
 t_traduccion_direcciones* obtenerTraduccionDeDirecciones(int socket);
 
 

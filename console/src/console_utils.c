@@ -1,6 +1,6 @@
 #include <console_utils.h>
 
-int32_t create_connection(t_log* logger, const char* server_name, char *ip, char* port)
+uint32_t create_connection(t_log* logger, const char* server_name, char *ip, char* port)
 {
 	struct addrinfo infoSocket, *server_info; //Declaramos las estructuras
 
@@ -17,7 +17,7 @@ int32_t create_connection(t_log* logger, const char* server_name, char *ip, char
 		}
 
 	// Ahora vamos a crear el socket.
-	int32_t server_socket = 0;
+	uint32_t server_socket = 0;
 	server_socket = socket(server_info->ai_family,
 		                    server_info->ai_socktype,
 		                    server_info->ai_protocol);
@@ -51,15 +51,15 @@ int32_t create_connection(t_log* logger, const char* server_name, char *ip, char
 }
 
 
-void end_connection(int32_t connection)
+void end_connection(uint32_t connection)
 {
 	close(connection);
 }
 
-int32_t receive_operation_code(int32_t server_socket)
+uint32_t receive_operation_code(uint32_t server_socket)
 {
-	int32_t cod_op;
-		if(recv(server_socket, &cod_op, sizeof(int32_t), MSG_WAITALL) > 0)
+	uint32_t cod_op;
+		if(recv(server_socket, &cod_op, sizeof(uint32_t), MSG_WAITALL) > 0)
 			return cod_op;
 		else
 		{
@@ -69,7 +69,7 @@ int32_t receive_operation_code(int32_t server_socket)
 }
 
 
-int32_t send_to_server(int32_t connection, t_package* package)
+uint32_t send_to_server(uint32_t connection, t_package* package)
 {
 	if(send_package(connection, package) == -1){
 		package_destroy(package);
@@ -80,9 +80,9 @@ int32_t send_to_server(int32_t connection, t_package* package)
 	return 1;
 }
 
-int32_t send_package(int32_t connection, t_package* package)
+uint32_t send_package(uint32_t connection, t_package* package)
 {
-	int32_t bytes = package->buffer->size + sizeof(int32_t) + sizeof(t_op_code);
+	uint32_t bytes = package->buffer->size + sizeof(uint32_t) + sizeof(t_op_code);
 	char* to_send = serialize_package(package, bytes);
 
 	if(send(connection, to_send, bytes, 0) == -1){
@@ -124,7 +124,7 @@ t_config* load_configuration_file(t_log* logger)
 }
 
 
-void end_process(int32_t connection, t_log* logger, t_config* config){
+void end_process(uint32_t connection, t_log* logger, t_config* config){
 
 	if(logger != NULL){
 		log_destroy(logger);
@@ -137,11 +137,11 @@ void end_process(int32_t connection, t_log* logger, t_config* config){
     close(connection);
 }
 
-char* recibir_buffer(int32_t socket_cliente)
+char* recibir_buffer(uint32_t socket_cliente)
 {
-	int32_t buffer_size;
+	uint32_t buffer_size;
 	char* buffer;
-	if(recv(socket_cliente, &buffer_size, sizeof(int32_t), MSG_WAITALL) == -1){
+	if(recv(socket_cliente, &buffer_size, sizeof(uint32_t), MSG_WAITALL) == -1){
 		perror("error scoket");
 	}
 

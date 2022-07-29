@@ -20,14 +20,14 @@
 // Tabla de paginas primer nivel
 typedef struct first_level_page_table {
 
-	int32_t pid;
+	uint32_t pid;
 	t_list* first_level_entries; //first_level_entries_t
 
 } first_level_page_table_t;
 
 typedef struct first_level_entries {
-	int32_t pid;
-	int32_t second_level_table_id;
+	uint32_t pid;
+	uint32_t second_level_table_id;
 } first_level_entries_t;
 
 // Tabla de paginas segundo nivel
@@ -37,24 +37,24 @@ typedef struct second_level_page_table{
 } second_level_page_table_t;
 
 typedef struct page {
-    int32_t pid;
-    int32_t frame_number;
+    uint32_t pid;
+    uint32_t frame_number;
     bool bit_U;     // bit de uso
     bool bit_P;     // bit de presencia
     bool bit_M;     // bit de modificado
-    int32_t swap_page_id;
+    uint32_t swap_page_id;
 } page_t;
 
 typedef struct process_state{
-	int32_t frames_used;
-	int32_t clock_pointer;
-	int32_t first_level_page_table_id;
+	uint32_t frames_used;
+	uint32_t clock_pointer;
+	uint32_t first_level_page_table_id;
 } process_state_t;
 
 typedef struct operation_buffer{
 	op_code opcode;
 	char* buffer;
-	int32_t client_socket;
+	uint32_t client_socket;
 } operation_buffer_t;
 
 // Mutex
@@ -74,16 +74,16 @@ pthread_mutex_t MUTEX_OCCUPIED_FRAMES;
 
 // Variables globales
 char* puerto_escucha;
-int32_t tam_memoria;
-int32_t tam_pagina;
-int32_t entradas_por_tabla;
-int32_t retardo_memoria;
+uint32_t tam_memoria;
+uint32_t tam_pagina;
+uint32_t entradas_por_tabla;
+uint32_t retardo_memoria;
 char* 	algoritmo_reemplazo;
-int32_t marcos_por_proceso;
-int32_t retardo_swap;
+uint32_t marcos_por_proceso;
+uint32_t retardo_swap;
 char*   path_swap;
 char* ip;
-int32_t cantidad_frames;
+uint32_t cantidad_frames;
 
 t_log* logger;
 

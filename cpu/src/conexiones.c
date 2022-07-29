@@ -86,6 +86,79 @@ t_traduccion_direcciones* obtenerTraduccionDeDirecciones(int socket){
 
 }
 
+char* recibir_paquete(uint32_t socket_cliente)
+{
+	uint32_t buffer_size;
+	char* buffer;
+
+	buffer = recibir_buffer(&buffer_size, socket_cliente);
+	
+	return buffer;
+}
+
+char* recibir_buffer(uint32_t* buffer_size, uint32_t socket_cliente)
+{
+	char* buffer;
+
+	read(socket_cliente, buffer_size, sizeof(uint32_t));
+	buffer = malloc(*buffer_size);
+	read(socket_cliente, buffer, *buffer_size);
+
+	return buffer;
+}
+
+uint32_t recibir_operacion(uint32_t socket_cliente)
+{
+	uint32_t cod_op;
+	if(recv(socket_cliente, &cod_op, sizeof(uint32_t), MSG_WAITALL) > 0)
+		return cod_op;
+	else
+	{
+		close(socket_cliente);
+		return -1;
+	}
+}
+
+uint32_t send_to_server(uint32_t connection, t_package* package)
+{
+	if(send_package(connection, package) == -1){
+		package_destroy(package);
+		return -1;
+	}
+	package_destroy(package);
+
+	return 1;
+}
+
+
+uint32_t send_package(uint32_t connection, t_package* package)
+{
+	uint32_t bytes = package->buffer->size + 2*sizeof(uint32_t);
+	char* to_send = serialize_package(package, bytes);
+
+	if(send(connection, to_send, bytes, MSG_CONFIRM ) == -1){
+		free(to_send);
+		return -1;
+	}
+
+	free(to_send);
+	return 1;
+}
+
+t_buffer* new_page_table_request_buffer(t_page_table_request* request){
+
+	t_buffer* buffer = create_buffer();
+
+	buffer->size = sizeof(3*uint32_t);
+
+	buffer->stream = malloc(buffer->size);
+	int offset = serialize_page_table_request(buffer->stream, request);
+
+	log_debug(logger, "new_page_table_request_buffer - size: %d\n", offset);
+
+	return buffer;
+}
+
 
 // -------- ESTABLECER CONEXIONES CON LOS OTROS MODULOS -------- //
 

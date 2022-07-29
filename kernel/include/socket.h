@@ -17,9 +17,9 @@
     int crear_conexion(char *ip, char* puerto);
     t_paquete* recibirPaquete(int server_socket);
 
-    int32_t recibir_operacion(int32_t socket_cliente);
-    char* recibir_buffer(int32_t* buffer_size, int32_t socket_cliente);
-    t_instructions_list* recibir_paquete(int32_t socket_cliente, t_log* logger);
+    uint32_t recibir_operacion(uint32_t socket_cliente);
+    char* recibir_buffer(uint32_t* buffer_size, uint32_t socket_cliente);
+    t_instructions_list* recibir_paquete(uint32_t socket_cliente, t_log* logger);
     t_instructions_list* recibirPaqquete_inicio(int server_socket, t_proceso* nuevo_proceso);
     
 #endif

@@ -1,11 +1,11 @@
 #include <protocol.h>
 
 
-char* recv_buffer(int32_t client_socket)
+char* recv_buffer(uint32_t client_socket)
 {
 	char* buffer;
-	int32_t buffer_size;
-	recv(client_socket, &buffer_size, sizeof(int32_t), 0);
+	uint32_t buffer_size;
+	recv(client_socket, &buffer_size, sizeof(uint32_t), 0);
 	buffer = malloc(buffer_size);
 	recv(client_socket, buffer, buffer_size, 0);
 
@@ -13,7 +13,7 @@ char* recv_buffer(int32_t client_socket)
 }
 
 
-int32_t send_process_init(int32_t client_socket, int32_t pid_first_level_table_number){
+uint32_t send_process_init(uint32_t client_socket, uint32_t pid_first_level_table_number){
 
 	t_buffer* buffer = new_process_init_buffer(pid_first_level_table_number);
 
@@ -28,7 +28,7 @@ int32_t send_process_init(int32_t client_socket, int32_t pid_first_level_table_n
 	return 0;
 }
 
-int32_t send_process_suspend(int32_t client_socket){
+uint32_t send_process_suspend(uint32_t client_socket){
 
 	t_buffer* buffer = new_process_suspend_buffer();
 
@@ -43,7 +43,7 @@ int32_t send_process_suspend(int32_t client_socket){
 	return 0;
 }
 
-int32_t send_memory_config(int32_t client_socket, t_memory_config* memory_config){
+uint32_t send_memory_config(uint32_t client_socket, t_memory_config* memory_config){
 
 	t_buffer* buffer = new_memory_config_buffer(memory_config);
 
@@ -58,8 +58,23 @@ int32_t send_memory_config(int32_t client_socket, t_memory_config* memory_config
 	return 0;
 }
 
+uint32_t send_second_level_table_id(uint32_t client_socket, uint32_t second_level_table_id){
 
-int32_t send_to_server(int32_t connection, t_package* package)
+	t_buffer* buffer = new_second_level_table_buffer(second_level_table_id);
+
+	t_package* package = new_package(buffer, PROCESS_INIT_RESPONSE);
+
+	if (send_to_server(client_socket, package) == -1) {
+		log_error(logger, "Error al enviar paquete al servidor");
+		return 1;
+	}
+
+	log_debug(logger, "send_process_init - se envio el paquete a servidor");
+	return 0;
+}
+
+
+uint32_t send_to_server(uint32_t connection, t_package* package)
 {
 	if(send_package(connection, package) == -1){
 		package_destroy(package);
@@ -71,9 +86,9 @@ int32_t send_to_server(int32_t connection, t_package* package)
 }
 
 
-int32_t send_package(int32_t connection, t_package* package)
+uint32_t send_package(uint32_t connection, t_package* package)
 {
-	int32_t bytes = package->buffer->size + 2*sizeof(int32_t);
+	uint32_t bytes = package->buffer->size + 2*sizeof(uint32_t);
 	char* to_send = serialize_package(package, bytes);
 
 	if(send(connection, to_send, bytes, MSG_CONFIRM ) == -1){
@@ -85,11 +100,11 @@ int32_t send_package(int32_t connection, t_package* package)
 	return 1;
 }
 
-t_buffer* new_process_init_buffer(int32_t pid_first_level_table_number){
+t_buffer* new_process_init_buffer(uint32_t pid_first_level_table_number){
 
 	t_buffer* buffer = create_buffer();
 
-	buffer->size = sizeof(int32_t);
+	buffer->size = sizeof(uint32_t);
 
 	buffer->stream = malloc(buffer->size);
 	int offset = serialize_int(buffer->stream, &pid_first_level_table_number);
@@ -99,13 +114,27 @@ t_buffer* new_process_init_buffer(int32_t pid_first_level_table_number){
 	return buffer;
 }
 
-t_buffer* new_process_suspend_buffer(){
-
-	int32_t ok_signal = 1;
+t_buffer* new_second_level_table_buffer(uint32_t second_level_table_id){
 
 	t_buffer* buffer = create_buffer();
 
-	buffer->size = sizeof(int32_t);
+	buffer->size = sizeof(uint32_t);
+
+	buffer->stream = malloc(buffer->size);
+	int offset = serialize_int(buffer->stream, &second_level_table_id);
+
+	log_debug(logger, "new_second_level_table_buffer - size: %d\n", offset);
+
+	return buffer;
+}
+
+t_buffer* new_process_suspend_buffer(){
+
+	uint32_t ok_signal = 1;
+
+	t_buffer* buffer = create_buffer();
+
+	buffer->size = sizeof(uint32_t);
 
 	buffer->stream = malloc(buffer->size);
 	int offset = serialize_int(buffer->stream, &ok_signal);
@@ -119,7 +148,7 @@ t_buffer* new_memory_config_buffer(t_memory_config* memory_config){
 
 	t_buffer* buffer = create_buffer();
 
-	buffer->size = sizeof(int32_t);
+	buffer->size = sizeof(uint32_t);
 
 	buffer->stream = malloc(buffer->size);
 	int offset = serialize_memory_config(buffer->stream, memory_config);

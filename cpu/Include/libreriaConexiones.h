@@ -11,11 +11,11 @@
 // #include<assert.h>
 
 
-// int32_t iniciar_servidor(char* ip, char* puerto, t_log* logger);
+// uint32_t iniciar_servidor(char* ip, char* puerto, t_log* logger);
 
 // // -------------- Aceptar cliente como Servidor --------------
 
-// int32_t esperar_cliente(int32_t socket_servidor, t_log* logger);
+// uint32_t esperar_cliente(uint32_t socket_servidor, t_log* logger);
 
 // // -------------- Iniciar Cliente --------------
 

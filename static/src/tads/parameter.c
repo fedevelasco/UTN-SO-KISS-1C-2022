@@ -6,7 +6,7 @@ t_parameter* create_parameter(){
 	return parameter;
 }
 
-t_parameter* new_parameter(int32_t value){
+t_parameter* new_parameter(uint32_t value){
 	t_parameter* parameter = create_parameter();
 	parameter->value = value;
 	return parameter;

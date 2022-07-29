@@ -28,7 +28,7 @@ char* cargar_config(t_config* config){
 	return puerto;
 }
 
-int32_t main(void) {
+uint32_t main(void) {
 
 	// Log
 	logger = log_create("log.log", "Servidor", 1, LOG_LEVEL_DEBUG);
@@ -41,9 +41,9 @@ int32_t main(void) {
 	
 	
 	// Conexion
-	int32_t server_fd = iniciar_servidor(logger, "Kernel", ip, puerto); //Inicio el servidor
+	uint32_t server_fd = iniciar_servidor(logger, "Kernel", ip, puerto); //Inicio el servidor
 	log_info(logger, "Kernel   listo para recibir a consola");
-	// int32_t cliente_fd = esperar_cliente(logger, "Kernel", server_fd); //Configuro el socket para esperar clientes
+	// uint32_t cliente_fd = esperar_cliente(logger, "Kernel", server_fd); //Configuro el socket para esperar clientes
 
 
 	// 	t_instructions_list* instructions_list;
@@ -63,7 +63,7 @@ int32_t main(void) {
 	/* PRUEBA MANUAL
 	while (1) {
 
-		int32_t cod_op = recibir_operacion(cliente_fd); //Recibo el op_code de consola 
+		uint32_t cod_op = recibir_operacion(cliente_fd); //Recibo el op_code de consola 
 		switch (cod_op) {
 
 		case INSTRUCTIONS: //Ejecuto el caso donde op_code == INSTRUCTIONS

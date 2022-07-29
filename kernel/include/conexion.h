@@ -24,10 +24,10 @@
 
 t_log* logger;
 
-char* recibir_buffer(int32_t*, int32_t);
+char* recibir_buffer(uint32_t*, uint32_t);
 
-t_instructions_list* recibir_paquete(int32_t, t_log*);
-int32_t recibir_operacion(int32_t);
+t_instructions_list* recibir_paquete(uint32_t, t_log*);
+uint32_t recibir_operacion(uint32_t);
 
 
 static void procesar_conexion(void* void_args);

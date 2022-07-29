@@ -33,7 +33,7 @@ pthread_mutex_t LOCK_ACCESS_RAM;
 pthread_mutex_t LOCK_ACCESS_TABLE;
 //////////////////////////////////////////
 
-int32_t server_socket;
+uint32_t server_socket;
 
 
 #endif /* CONSOLE_H_ */

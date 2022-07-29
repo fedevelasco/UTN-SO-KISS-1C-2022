@@ -4,7 +4,7 @@ void server_listen_ram(char* server_name, int server_socket) {
 
 	while (1) {
 
-		int32_t client_socket = esperar_cliente(logger, server_name, server_socket);
+		uint32_t client_socket = esperar_cliente(logger, server_name, server_socket);
 
 		if (client_socket != -1) {
 
@@ -17,6 +17,12 @@ void server_listen_ram(char* server_name, int server_socket) {
 			char* buffer;
 
 			buffer = recv_buffer(client_socket);
+
+			t_process* process = create_process();
+			deserialize_process(process, operation_buffer->buffer);
+
+
+
 
 			operation_buffer_t* operation_buffer = malloc(sizeof(operation_buffer_t));
 			operation_buffer->opcode = opcode;
@@ -47,7 +53,7 @@ void server_listen_ram(char* server_name, int server_socket) {
 	}
 }
 
-int32_t kernel_opcode(t_op_code opcode){
+uint32_t kernel_opcode(t_op_code opcode){
 
 	if(
 		opcode == PROCESS_INIT_REQUEST ||

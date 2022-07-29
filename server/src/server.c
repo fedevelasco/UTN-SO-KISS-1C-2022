@@ -1,6 +1,6 @@
 #include <server.h>
 
-int32_t main(void) {
+uint32_t main(void) {
 
 	logger = log_create("log.log", "Servidor", 1, LOG_LEVEL_DEBUG);
 
@@ -16,15 +16,15 @@ int32_t main(void) {
 	puerto = config_get_string_value(config, "PUERTO");
 
 
-	int32_t server_fd = iniciar_servidor(logger, "Server", ip, puerto);
+	uint32_t server_fd = iniciar_servidor(logger, "Server", ip, puerto);
 	log_info(logger, "Servidor listo para recibir al cliente");
-	int32_t cliente_fd = esperar_cliente(logger, "Server", server_fd);
+	uint32_t cliente_fd = esperar_cliente(logger, "Server", server_fd);
 
 
 	t_instructions_list* instructions_list;
 
 	while (1) {
-		int32_t cod_op = recibir_operacion(cliente_fd);
+		uint32_t cod_op = recibir_operacion(cliente_fd);
 		switch (cod_op) {
 		case INSTRUCTIONS:
 			instructions_list = recibir_paquete(cliente_fd, logger);

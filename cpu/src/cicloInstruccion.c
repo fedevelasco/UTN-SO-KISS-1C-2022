@@ -140,15 +140,24 @@ uint32_t * memoria_read(uint32_t direccion_fisica) {
     t_paquete * paquete = armarPaqueteCon(&direccion_fisica, REQ_READ_CPU_MEMORIA);
     enviarPaquete(paquete,socket_memoria);
     eliminarPaquete(paquete);
-    t_paquete * paqueteRespuesta = recibirPaquete(socket_memoria);
-    if(paqueteRespuesta->codigo_operacion != RES_READ_MEMORIA_CPU){
-        perror("respuesta inesperada");
-        exit(EXIT_FAILURE);
-    }
-    //TODO: ELIMINAR PAQUETE??
-    uint32_t * dato = deserializarUINT32_T(paqueteRespuesta->buffer->stream);
-    eliminarPaquete(paqueteRespuesta);
-    return dato;
+
+
+    uint32_t cod_op = recibir_operacion(socket_memoria);
+    if(cod_op != RES_READ_MEMORIA_CPU){
+            perror("respuesta inesperada");
+            exit(EXIT_FAILURE);
+        }
+    
+    char* buffer = recibir_paquete(socket_memoria);
+    
+    //TODO: Hacer el tad
+    memory_read_t* memoria = create_memory_read();
+
+	deserialize_memory_read(memoria, buffer);
+
+    free(buffer);
+    
+    return memoria->dato;
 }
 
 void memoria_write(uint32_t direccion_fisica, uint32_t dato) {

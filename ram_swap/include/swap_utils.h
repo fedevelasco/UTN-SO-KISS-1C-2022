@@ -21,13 +21,13 @@
 pthread_mutex_t MUTEX_SWAP;
 
 
-int32_t swap_init();
-int32_t swap_create(int32_t pid, int32_t size);
-char* get_file_name(int32_t pid);
-int32_t get_swap_size(int32_t size);
-void write_frame_in_swap(void* frame, int32_t swap_page_id, int32_t pid);
-void free_process_swap(int32_t pid);
-void* read_page_in_swap(int32_t swap_page_id, int32_t pid);
+uint32_t swap_init();
+uint32_t swap_create(uint32_t pid, uint32_t size);
+char* get_file_name(uint32_t pid);
+uint32_t get_swap_size(uint32_t size);
+void write_frame_in_swap(void* frame, uint32_t swap_page_id, uint32_t pid);
+void free_process_swap(uint32_t pid);
+void* read_page_in_swap(uint32_t swap_page_id, uint32_t pid);
 
 
 

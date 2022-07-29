@@ -29,13 +29,13 @@ void proceso_asignar_pcb(t_proceso* proceso, t_PCB* pcb){
 
 }
 
-void proceso_asignar_socket_de_cliente(t_proceso* proceso, int32_t cliente_socket){
+void proceso_asignar_socket_de_cliente(t_proceso* proceso, uint32_t cliente_socket){
 
     proceso->socketConsola = cliente_socket;
 
 }
 
-void proceso_asignar_socket_de_cpu(t_proceso* proceso, int32_t cpu_socket){
+void proceso_asignar_socket_de_cpu(t_proceso* proceso, uint32_t cpu_socket){
 
     proceso->socketCPU = cpu_socket;
 

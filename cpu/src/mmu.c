@@ -111,23 +111,40 @@ void incrementarIndiceFIFO() {
 uint32_t consultarTablaSegundoNivel(uint32_t tablaDePaginasPrimerNivel, uint32_t pagina) {
     int socket_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
     uint32_t entradaPrimerNivel = obtenerEntradaTabla1erNivel(pagina);
-    t_consultaTablaPagina * consulta = malloc(sizeof(t_consultaTablaPagina));
+  
+    t_page_table_request* request = create_page_table_request();
+    request->table_number = tablaDePaginasPrimerNivel;
+    request->entry_number = entradaPrimerNivel;
+    request->pid = 
+
+    t_buffer* buffer = new_page_table_request_buffer(request);
+
+	t_package* package = new_package(buffer, GET_SECOND_LEVEL_TABLE_REQUEST);
+
+	if (send_to_server(socket_memoria, package) == -1) {
+		log_error(logger, "Error al enviar paquete al servidor");
+		return 1;
+	}
+    buffer_destroy(buffer);
+    package_destroy(package);
+
+   uint32_t cod_op = recibir_operacion(socket_memoria);
+    if(cod_op != GET_SECOND_LEVEL_TABLE_REQUEST){
+            perror("respuesta inesperada");
+            exit(EXIT_FAILURE);
+        }
     
-    consulta->tablaDePaginas = tablaDePaginasPrimerNivel;
-    consulta->entradaPagina = entradaPrimerNivel;
-    consulta->id = PCB_ACTUAL;//TODO: problema de concurrencia
+    char* buffer = recibir_paquete(socket_memoria);
+
+    uint32_t tabla_segundo_nivel_numero;
+
+    deserialize_int(&tabla_segundo_nivel_numero, buffer);
     
-    t_paquete * paquete = armarPaqueteCon(consulta, REQ_TABLA_SEGUNDO_NIVEL_CPU_MEMORIA);
-    enviarPaquete(paquete,socket_memoria);
-    free(consulta);
-    eliminarPaquete(paquete);
-    t_paquete * paqueteRespuesta = recibirPaquete(socket_memoria);
-    uint32_t * tablaSegundoNivelDeserializada = deserializarUINT32_T(paqueteRespuesta->buffer->stream);
-    eliminarPaquete(paqueteRespuesta);
-    uint32_t tablaSegundoNivel = *tablaSegundoNivelDeserializada; 
-    free(tablaSegundoNivelDeserializada);
-    return tablaSegundoNivel;
+    free(buffer);
+
+    return tabla_segundo_nivel_numero;
 }
+
 
 uint32_t consultarMarco(uint32_t tablaDePaginasSegundoNivel, uint32_t pagina, t_op_code codOP) {
     uint32_t socket_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);

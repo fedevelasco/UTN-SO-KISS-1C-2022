@@ -11,6 +11,8 @@
     #include <commons/collections/list.h>
     #include <commons/string.h>
 
+    #include <conexiones.h>
+
     t_list * listaTLB;
     uint32_t tiempoAccesoGlobal;
     uint32_t indiceFIFO;

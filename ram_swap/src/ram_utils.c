@@ -13,7 +13,7 @@ t_log* start_logger(void) {
 	return new_logger;
 }
 
-int32_t load_ram_configuration_file(char* config_path, char* ip_config_path) {
+uint32_t load_ram_configuration_file(char* config_path, char* ip_config_path) {
 	log_info(logger,"Carga de archivo de configuracion - load_configuration_file - Inicio");
 	t_config* config_to_load;
 	t_config* ip_config_to_load;
@@ -49,7 +49,7 @@ int32_t load_ram_configuration_file(char* config_path, char* ip_config_path) {
 	return 0;
 }
 
-int32_t memory_create() {
+uint32_t memory_create() {
 
 	//Creo memoria y la relleno
 	memory = malloc(tam_memoria);
@@ -61,7 +61,7 @@ int32_t memory_create() {
 
 	//Creo bitarray para saber frames libres
 
-	int32_t frames = cantidad_frames / 8;
+	uint32_t frames = cantidad_frames / 8;
 	char *bitarray_memory_block = create_bitarray_memory_block(cantidad_frames);
     occupied_frames_bitarray = bitarray_create_with_mode(bitarray_memory_block, frames, LSB_FIRST);
 
@@ -78,10 +78,10 @@ int32_t memory_create() {
 	return 0;
 }
 
-char* create_bitarray_memory_block(int32_t frames){
+char* create_bitarray_memory_block(uint32_t frames){
 
     // Si cantidad frames menor a 8, ocupa 1 byte. Si es mayor ocupa, el entero superior.
-    int32_t size = frames < 8 ? 1 : (int32_t) ceil( (double)frames / 8.0 );
+    uint32_t size = frames < 8 ? 1 : (uint32_t) ceil( (double)frames / 8.0 );
 
     char* memory_block = malloc(size);
     memset(memory_block, 0, size);
@@ -92,7 +92,7 @@ char* create_bitarray_memory_block(int32_t frames){
 }
 
 
-int32_t paging_tables_create() {
+uint32_t paging_tables_create() {
 
 	global_first_level_page_tables = list_create();
 	global_second_level_page_tables = list_create();
@@ -103,7 +103,7 @@ int32_t paging_tables_create() {
 
 }
 
-int32_t mutex_init(){
+uint32_t mutex_init(){
 
 
 	if (
@@ -126,7 +126,7 @@ int32_t mutex_init(){
 	return 0;
 }
 
-int32_t threads_init(){
+uint32_t threads_init(){
 
 	pthread_t kernel_thread;
 	pthread_t cpu_thread;
@@ -149,7 +149,7 @@ int32_t threads_init(){
 	 return 0;
 }
 
-int32_t aux_elements_init(){
+uint32_t aux_elements_init(){
 
 	if(pthread_mutex_init(&MUTEX_KERNEL_QUEUE, (void *)NULL)){
 		log_error(logger, "aux_elements_init - Error en creacion de mutex de cola de kernel");

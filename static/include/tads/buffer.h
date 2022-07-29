@@ -10,7 +10,7 @@
 
 
 typedef struct {
-	int32_t size;
+	uint32_t size;
 	char* stream;
 } t_buffer;
 

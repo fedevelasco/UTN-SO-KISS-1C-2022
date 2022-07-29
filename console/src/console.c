@@ -1,6 +1,6 @@
 #include <console.h>
 
-int main(int32_t argc, char** argv){
+int main(uint32_t argc, char** argv){
 
 	/* ---------------- LOGGING ---------------- */
 	t_log* logger;
@@ -12,13 +12,13 @@ int main(int32_t argc, char** argv){
 	}
 
 
-	int32_t connection;
+	uint32_t connection;
 	char* ip;
 	char* port;
 	char *psudocode_file_path;
 
 
-	int32_t process_size;
+	uint32_t process_size;
 
 
 	t_config* config;

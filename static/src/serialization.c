@@ -1,30 +1,30 @@
 #include <serialization.h>
 
-int32_t serialize_int(char* output, int32_t* input) {
-	int32_t size = sizeof(int32_t);
+uint32_t serialize_int(char* output, uint32_t* input) {
+	uint32_t size = sizeof(uint32_t);
 	memcpy(output, input, size);
 	return size;
 }
-int32_t deserialize_int(int32_t* output, char* input) {
-	int32_t size = sizeof(int32_t);
+uint32_t deserialize_int(uint32_t* output, char* input) {
+	uint32_t size = sizeof(uint32_t);
 	memcpy(output, input, size);
 	return size;
 }
 
-int32_t serialize_opcode(char* output, t_op_code* input) {
-	int32_t size = sizeof(t_op_code);
+uint32_t serialize_opcode(char* output, t_op_code* input) {
+	uint32_t size = sizeof(t_op_code);
 	memcpy(output, input, sizeof(t_op_code));
 	return size;
 }
-int32_t deserialize_opcode(t_op_code* output, char* input) {
-	int32_t size = sizeof(t_op_code);
+uint32_t deserialize_opcode(t_op_code* output, char* input) {
+	uint32_t size = sizeof(t_op_code);
 	memcpy(output, input, size);
 	return size;
 }
 
 
-int32_t serialize_list(char* output,t_list* input, int32_t element_size) {
-	int32_t i, offset = 1;
+uint32_t serialize_list(char* output,t_list* input, uint32_t element_size) {
+	uint32_t i, offset = 1;
 	// Se va a guardar en la primera posicion la cantidad de elementos
 	output[0] = list_size(input);
 	for (i = 0; i < output[0]; i++) {
@@ -34,8 +34,8 @@ int32_t serialize_list(char* output,t_list* input, int32_t element_size) {
 	return offset;
 }
 
-int32_t deserialize_list(t_list* output,char* input, int32_t element_size) {
-	int32_t i, offset = 1;
+uint32_t deserialize_list(t_list* output,char* input, uint32_t element_size) {
+	uint32_t i, offset = 1;
 	// Se saca de la primera posicion la cantidad de elementos
 	for (i = 0; i < input[0]; i++) {
 		void* buffer = malloc(element_size);
@@ -48,8 +48,8 @@ int32_t deserialize_list(t_list* output,char* input, int32_t element_size) {
 	return offset;
 }
 
-int32_t deserialize_parameters(t_list* output,char* input, int32_t element_size) {
-	int32_t i, offset = 1;
+uint32_t deserialize_parameters(t_list* output,char* input, uint32_t element_size) {
+	uint32_t i, offset = 1;
 	// Se saca de la primera posicion la cantidad de elementos
 	for (i = 0; i < input[0]; i++) {
 		t_parameter* parameter = create_parameter();
@@ -64,8 +64,8 @@ int32_t deserialize_parameters(t_list* output,char* input, int32_t element_size)
 	return offset;
 }
 
-int32_t serialize_string(char* output,char* input) {
-	int32_t offset = 0;
+uint32_t serialize_string(char* output,char* input) {
+	uint32_t offset = 0;
 	// Se va a guardar en la primera posicion la cantidad de chars
 	output[0] = string_length(input)+1;
 	offset += sizeof(char);
@@ -75,8 +75,8 @@ int32_t serialize_string(char* output,char* input) {
 	return offset;
 }
 
-int32_t deserialize_string(char* output,char* input) {
-	int32_t offset = 1;
+uint32_t deserialize_string(char* output,char* input) {
+	uint32_t offset = 1;
 	// Se saca de la primera posicion la cantidad de chars
 	memcpy(output, input + offset, input[0]);
 	offset += input[0];
@@ -84,16 +84,16 @@ int32_t deserialize_string(char* output,char* input) {
 	return offset;
 }
 
-int32_t serialize_instruction(char* output, t_instruction* input) {
-	int32_t offset = 0;
+uint32_t serialize_instruction(char* output, t_instruction* input) {
+	uint32_t offset = 0;
 	offset += serialize_string(output + offset, input->id);
 	offset += serialize_list(output + offset, input->parameters, sizeof(t_parameter));
 
 	return offset;
 }
 
-int32_t serialize_instructions_list(char* output, t_instructions_list* input) {
-	int32_t i, offset = 1;
+uint32_t serialize_instructions_list(char* output, t_instructions_list* input) {
+	uint32_t i, offset = 1;
 	// Cantidad de instrucciones
 	output[0] = list_size(input->instructions);
 	for (i = 0; i < output[0]; i++) {
@@ -104,8 +104,8 @@ int32_t serialize_instructions_list(char* output, t_instructions_list* input) {
 	return offset;
 }
 
-int32_t deserialize_instruction(t_instruction* output, char* input) {
-	int32_t offset = 0;
+uint32_t deserialize_instruction(t_instruction* output, char* input) {
+	uint32_t offset = 0;
 	offset += deserialize_string(output->id, input);
 	offset += deserialize_parameters(output->parameters, input + offset, sizeof(t_parameter));
 	for(int i=0;i<list_size(output->parameters);i++){
@@ -115,8 +115,8 @@ int32_t deserialize_instruction(t_instruction* output, char* input) {
 	return offset;
 }
 
-int32_t deserialize_instructions_list(t_instructions_list* output, char* input) {
-	int32_t i, offset = 1;
+uint32_t deserialize_instructions_list(t_instructions_list* output, char* input) {
+	uint32_t i, offset = 1;
 	// Cantidad de instrucciones en input[0]
 	for (i = 0; i < input[0]; i++) {
 		t_instruction* instruction = create_instruction();
@@ -130,16 +130,16 @@ int32_t deserialize_instructions_list(t_instructions_list* output, char* input) 
 }
 
 //No necesito deserializar el package y buffer. Tengo funciones que reciben el op_code y el extraen el buffer.
-int32_t serialize_buffer_stream(char* output, t_buffer* input) {
-	int32_t offset = 0;
+uint32_t serialize_buffer_stream(char* output, t_buffer* input) {
+	uint32_t offset = 0;
 	memcpy(output + offset, input->stream, input->size);
 	offset+= input->size;
 
 	return offset;
 }
 
-int32_t serialize_buffer(char* output, t_buffer* input) {
-	int32_t offset = 0;
+uint32_t serialize_buffer(char* output, t_buffer* input) {
+	uint32_t offset = 0;
 	offset += serialize_int(output + offset, &(input->size));
 	offset += serialize_buffer_stream(output + offset, input);
 
@@ -147,12 +147,12 @@ int32_t serialize_buffer(char* output, t_buffer* input) {
 }
 
 //Hago return del output directamente por que es lo ultimo en serializar antes de enviar.
-char* serialize_package(t_package* package, int32_t bytes)
+char* serialize_package(t_package* package, uint32_t bytes)
 {
 	char * output  = malloc(bytes);
 	memset(output, 0, bytes);
 
-	int32_t offset = 0;
+	uint32_t offset = 0;
 
 	offset += serialize_opcode(output + offset, &(package->operation_code));
 	offset += serialize_buffer(output + offset, package->buffer);
@@ -179,8 +179,8 @@ t_buffer* new_instruction_buffer(t_instructions_list* instructions_list, t_log* 
 	return buffer;
 }
 
-int32_t serialize_process(char* output, t_process* input) {
-	int32_t offset = 0;
+uint32_t serialize_process(char* output, t_process* input) {
+	uint32_t offset = 0;
 	offset += serialize_int(output + offset, &(input->pid));
 	offset += serialize_int(output + offset, &(input->process_size));
 	offset += serialize_int(output + offset, &(input->first_level_table_number));
@@ -188,8 +188,8 @@ int32_t serialize_process(char* output, t_process* input) {
 	return offset;
 }
 
-int32_t deserialize_process(t_process* output, char* input) {
-	int32_t offset = 0;
+uint32_t deserialize_process(t_process* output, char* input) {
+	uint32_t offset = 0;
 	offset += deserialize_int(&output->pid, input);
 	offset += deserialize_int(&output->process_size, input + offset);
 	offset += deserialize_int(&output->first_level_table_number, input + offset);
@@ -197,24 +197,24 @@ int32_t deserialize_process(t_process* output, char* input) {
 	return offset;
 }
 
-int32_t serialize_memory_config(char* output, t_memory_config* input) {
-	int32_t offset = 0;
+uint32_t serialize_memory_config(char* output, t_memory_config* input) {
+	uint32_t offset = 0;
 	offset += serialize_int(output + offset, &(input->page_size));
 	offset += serialize_int(output + offset, &(input->pages_per_table));
 
 	return offset;
 }
 
-int32_t deserialize_memory_config(t_memory_config* output, char* input) {
-	int32_t offset = 0;
+uint32_t deserialize_memory_config(t_memory_config* output, char* input) {
+	uint32_t offset = 0;
 	offset += deserialize_int(&output->page_size, input);
 	offset += deserialize_int(&output->pages_per_table, input + offset);
 
 	return offset;
 }
 
-int32_t serialize_page_table_request(char* output, t_page_table_request* input) {
-	int32_t offset = 0;
+uint32_t serialize_page_table_request(char* output, t_page_table_request* input) {
+	uint32_t offset = 0;
 	offset += serialize_int(output + offset, &(input->table_number));
 	offset += serialize_int(output + offset, &(input->entry_number));
 	offset += serialize_int(output + offset, &(input->pid));
@@ -222,8 +222,8 @@ int32_t serialize_page_table_request(char* output, t_page_table_request* input) 
 	return offset;
 }
 
-int32_t deserialize_page_table_request(t_page_table_request* output, char* input) {
-	int32_t offset = 0;
+uint32_t deserialize_page_table_request(t_page_table_request* output, char* input) {
+	uint32_t offset = 0;
 	offset += deserialize_int(&output->table_number, input);
 	offset += deserialize_int(&output->entry_number, input + offset);
 	offset += deserialize_int(&output->pid, input + offset);
@@ -235,8 +235,8 @@ int32_t deserialize_page_table_request(t_page_table_request* output, char* input
 
 
 
-void print_buffer(char* buffer, int32_t size) {
-	int32_t i;
+void print_buffer(char* buffer, uint32_t size) {
+	uint32_t i;
 	printf("\nbuffer=");
 	for (i = 0; i < size; i++) {
 		printf("[%d]", buffer[i]);
@@ -263,11 +263,11 @@ int test_serialization(){
 	return CU_get_error();
 }
 void test_serialize_int(){
-	int32_t a=57,b;
+	uint32_t a=57,b;
 	char* buffer;
-	buffer = malloc(sizeof(int32_t));
+	buffer = malloc(sizeof(uint32_t));
 	serialize_int(buffer,&a);
-	print_buffer(buffer,sizeof(int32_t));
+	print_buffer(buffer,sizeof(uint32_t));
 	deserialize_int(&b,buffer);
 	CU_ASSERT_EQUAL(a,b);
 	CU_ASSERT_EQUAL(b,57);
@@ -411,7 +411,7 @@ void test_serialize_process(){
 
 	processA->pid = 2;
 	processA->process_size = 1024;
-	int32_t size = (2 * (sizeof(int32_t)));
+	uint32_t size = (2 * (sizeof(uint32_t)));
 
 	char* buffer = malloc (size);
 	memset(buffer, 0, size);
@@ -429,7 +429,7 @@ void test_serialize_process(){
 
 //TODO: falta agregar tests de package y buffer
 
-//int main(int32_t argc, char** argv){
+//int main(uint32_t argc, char** argv){
 //	test_serialization();
 //	return 0;
 //}

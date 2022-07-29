@@ -5,9 +5,9 @@
 #include <stdio.h>
 
 typedef struct page_table_request {
-	int32_t table_number;
-	int32_t entry_number;
-	int32_t pid;
+	uint32_t table_number;
+	uint32_t entry_number;
+	uint32_t pid;
 } t_page_table_request;
 
 

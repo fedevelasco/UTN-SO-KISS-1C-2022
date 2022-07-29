@@ -16,11 +16,11 @@ t_list* mutex_list;
 	REPLACED; \
 	pthread_mutex_unlock(&MUTEX_REPLACED);} \
 
-int32_t mutex_init(int mutex_size, ...);
-int32_t thread_create(pthread_t * thread, void *(*function)(void *));
-int32_t thread_create_with_parameter(pthread_t * hilo, void *(*function)(void *), void * parameter);
+uint32_t mutex_init(int mutex_size, ...);
+uint32_t thread_create(pthread_t * thread, void *(*function)(void *));
+uint32_t thread_create_with_parameter(pthread_t * hilo, void *(*function)(void *), void * parameter);
 void mutex_destroy();
-int32_t set_thread_attributes();
+uint32_t set_thread_attributes();
 void thread_attributes_destroy();
 
 #endif /* THREADS_H_ */

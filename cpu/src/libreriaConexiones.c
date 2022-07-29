@@ -5,10 +5,10 @@
 
 // // -------------- Iniciar Servidor --------------
 
-// int32_t iniciar_servidor(char* puerto, char* ip, t_log* logger)
+// uint32_t iniciar_servidor(char* puerto, char* ip, t_log* logger)
 // {
 
-// 	int32_t socket_servidor;
+// 	uint32_t socket_servidor;
 
 // 	struct addrinfo hints, *servinfo, *p; //Ignorar errores
 
@@ -33,10 +33,10 @@
 
 // // -------------- Aceptar cliente como Servidor --------------
 
-// int32_t esperar_cliente(int32_t socket_servidor, t_log* logger)
+// uint32_t esperar_cliente(uint32_t socket_servidor, t_log* logger)
 // {
 
-// 	int32_t socket_cliente = accept(socket_servidor, NULL, NULL); // Aceptamos un nuevo cliente
+// 	uint32_t socket_cliente = accept(socket_servidor, NULL, NULL); // Aceptamos un nuevo cliente
 
 // 	log_info(logger, "Conexion con Consola - Se conecto un cliente");
 

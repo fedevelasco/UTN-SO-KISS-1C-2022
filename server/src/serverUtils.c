@@ -1,8 +1,8 @@
 #include <serverUtils.h>
 
-int32_t iniciar_servidor(t_log* logger, const char* name, char* ip, char* puerto)
+uint32_t iniciar_servidor(t_log* logger, const char* name, char* ip, char* puerto)
 {
-	int32_t socket_servidor; //Declaramos el descriptor
+	uint32_t socket_servidor; //Declaramos el descriptor
 
 	struct addrinfo infoSocket, *server_info; //Declaramos las estructuras
 
@@ -60,23 +60,23 @@ int32_t iniciar_servidor(t_log* logger, const char* name, char* ip, char* puerto
 	return socket_servidor;
 }
 
-int32_t esperar_cliente(t_log* logger, const char* name, int32_t socket_servidor)
+uint32_t esperar_cliente(t_log* logger, const char* name, uint32_t socket_servidor)
 {
 	// Aceptamos un nuevo cliente
 	struct sockaddr_in dir_cliente; // Esta estructura contendra los datos de la conexion del cliente. IP, puerto, etc
 	socklen_t addrlenght  = sizeof(dir_cliente);
 
-	int32_t socket_cliente = accept(socket_servidor, (struct sockaddr *) &dir_cliente, &addrlenght );
+	uint32_t socket_cliente = accept(socket_servidor, (struct sockaddr *) &dir_cliente, &addrlenght );
 
 	log_info(logger, "Cliente conectado (a %s)\n", name);
 
 	return socket_cliente;
 }
 
-int32_t recibir_operacion(int32_t socket_cliente)
+uint32_t recibir_operacion(uint32_t socket_cliente)
 {
-	int32_t cod_op;
-	if(recv(socket_cliente, &cod_op, sizeof(int32_t), MSG_WAITALL) > 0)
+	uint32_t cod_op;
+	if(recv(socket_cliente, &cod_op, sizeof(uint32_t), MSG_WAITALL) > 0)
 		return cod_op;
 	else
 	{
@@ -85,28 +85,28 @@ int32_t recibir_operacion(int32_t socket_cliente)
 	}
 }
 
-char* recibir_buffer(int32_t* buffer_size, int32_t socket_cliente)
+char* recibir_buffer(uint32_t* buffer_size, uint32_t socket_cliente)
 {
 	char* buffer;
 
-	read(socket_cliente, buffer_size, sizeof(int32_t));
+	read(socket_cliente, buffer_size, sizeof(uint32_t));
 	buffer = malloc(*buffer_size);
 	read(socket_cliente, buffer, *buffer_size);
 
 	return buffer;
 }
 
-void recibir_mensaje(int32_t socket_cliente)
+void recibir_mensaje(uint32_t socket_cliente)
 {
-	int32_t size;
+	uint32_t size;
 	char* buffer = recibir_buffer(&size, socket_cliente);
 	log_info(logger, "Me llego el mensaje %s", buffer);
 	free(buffer);
 }
 
-t_instructions_list* recibir_paquete(int32_t socket_cliente, t_log* logger)
+t_instructions_list* recibir_paquete(uint32_t socket_cliente, t_log* logger)
 {
-	int32_t buffer_size;
+	uint32_t buffer_size;
 	char* buffer;
 
 	buffer = recibir_buffer(&buffer_size, socket_cliente);

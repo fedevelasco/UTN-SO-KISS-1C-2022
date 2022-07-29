@@ -139,7 +139,7 @@ t_proceso* deserializarProceso_V2 (t_paquete* paquete){
 	//printf("KERNEL - COPIADO EL TAMANIO DE PROCESO\n");
     //offset += sizeof(uint32_t);
     proceso->tamanioProceso = 20;
-    int32_t bytes = deserialize_instructions_list(proceso->instrucciones, paquete->buffer->stream);
+    uint32_t bytes = deserialize_instructions_list(proceso->instrucciones, paquete->buffer->stream);
     printf("KERNEL - LISTA DE INSTRUCCIONES EXTRAIDA\n");
     imprimir_lista_instrucciones(proceso->instrucciones);
 }
