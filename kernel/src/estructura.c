@@ -224,7 +224,7 @@ void* serializarPCB(void* stream, void* estructura, int offset){
 }
 
 // --------- serializa el stream y devuelve el offset ------------
-void* pcb_serializar(void* stream, void* estructura, int offset){
+void* pcb_serializar_estruc(void* stream, void* estructura, int offset){
 	
 	t_pcb* pcb = (t_pcb*) estructura;
 
@@ -261,7 +261,7 @@ t_pcb* deserializarPCB(void* stream, int offset){
 }
 
 // ------------- Devuelve un pcb deserializado a partir de un stream de datos ----------------
-t_pcb* pcb_deserializar(void* stream, int offset){
+t_pcb* pcb_deserializar_estrucs(void* stream, int offset){
 	
 	t_pcb* pcb = malloc(sizeof(t_pcb));
 	offset += deserialize_int(&(pcb->id), stream + offset);

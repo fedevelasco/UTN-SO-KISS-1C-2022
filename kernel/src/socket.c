@@ -130,7 +130,7 @@ char* recibir_buffer(uint32_t* buffer_size, uint32_t socket_cliente)
 	return buffer;
 }
 
-t_proceso* recibir_paquete(uint32_t socket_cliente, t_log* logger)
+t_proceso* recibir_paquete(uint32_t socket_cliente)
 {
 	uint32_t buffer_size; //Creo el tamanio del buffer
 	char* buffer; //Creo el buffer
@@ -158,7 +158,7 @@ t_proceso* recibirPaqquete_inicio(int server_socket){
 
 			case INSTRUCTIONS: //Ejecuto el caso donde op_code == INSTRUCTIONS
 
-				nuevo_proceso = recibir_paquete(server_socket, logger); //Recibo paquete, lo deserializo y lo guardo en instruction_list
+				nuevo_proceso = recibir_paquete(server_socket); //Recibo paquete, lo deserializo y lo guardo en instruction_list
 				nuevo_proceso->tamanioProceso = nuevo_proceso->instrucciones->process_size;
 				log_info(logger, "Kernel - Paquete recibido");
 				log_info(logger, "Kernel - Tamanio lista de instrucciones: %i", nuevo_proceso->sizeInstrucciones);
@@ -194,6 +194,31 @@ t_buffer* new_crear_proceso_buffer(t_process* proceso){
 	log_debug(logger, "new_crear_proceso_buffer - size: %d\n", offset);
 
 	return buffer;
+}
+
+uint32_t send_package(uint32_t connection, t_package* package)
+{
+	uint32_t bytes = package->buffer->size + sizeof(uint32_t) + sizeof(t_op_code);
+	char* to_send = serialize_package(package, bytes);
+
+	if(send(connection, to_send, bytes, 0) == -1){
+		free(to_send);
+		return -1;
+	}
+
+	free(to_send);
+	return 1;
+}
+
+uint32_t send_to_server(uint32_t connection, t_package* package)
+{
+	if(send_package(connection, package) == -1){
+		package_destroy(package);
+		return -1;
+	} 
+	package_destroy(package);
+	
+	return 1;
 }
 
 

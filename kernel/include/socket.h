@@ -11,6 +11,7 @@
     #include <estructura.h>
     #include <globales.h>
     #include <errno.h>
+    #include <serialization.h>
     
   //  int iniciar_servidor(char* IP, char* PORT);
    // int esperar_cliente(int socket_servidor);
@@ -20,8 +21,12 @@
 
     uint32_t recibir_operacion(uint32_t socket_cliente);
     char* recibir_buffer(uint32_t* buffer_size, uint32_t socket_cliente);
-    t_proceso* recibir_paquete(uint32_t socket_cliente, t_log* logger);
+    t_proceso* recibir_paquete(uint32_t socket_cliente);
     t_proceso* recibirPaqquete_inicio(int server_socket);
     t_buffer* new_crear_proceso_buffer(t_process* proceso);
+    uint32_t send_package(uint32_t connection, t_package* package);
+    uint32_t send_to_server(uint32_t connection, t_package* package);
+
+    
     
 #endif
