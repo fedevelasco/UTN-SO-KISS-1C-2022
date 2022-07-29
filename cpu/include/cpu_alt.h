@@ -19,8 +19,10 @@
     #include "../include/cicloInstruccion.h"
     #include "../include/servidor_abstracto.h"
 
-    int* socket_dispatch;
-    int * socket_interrupt;
+	#include <libreriaConexiones.h>
+
+    int socket_dispatch;
+    int socket_interrupt;
     t_servidor * servidor_dispatch;
     t_servidor * servidor_interrupt;
     void iniciar_hilos(void);

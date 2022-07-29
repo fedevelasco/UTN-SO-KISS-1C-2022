@@ -62,9 +62,10 @@ void deserializarInterrupt(t_paquete * paquete, int socket_cliente){
 }
 
 void servidorInterrupt(void * socket){
-    int * socket_servidor = (int * )socket;
+    int socket_servidor = (int) socket;
     while(1){
-        int socket_cliente = esperar_cliente(*socket_servidor);
+    	char* cliente = "Cliente";
+        int socket_cliente = esperar_cliente(logger, cliente, socket_servidor);
         log_info(logger, "interrupt: se conecta cliente");
         //instanciar hilo que atienda la solicitud
         t_paquete * paquete = recibirPaquete(socket_cliente);

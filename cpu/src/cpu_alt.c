@@ -3,10 +3,13 @@
 
 void iniciarHilos(){
     log_info(logger, "iniciando hilos..");
-    socket_dispatch = malloc(sizeof(int));
-    *socket_dispatch = iniciar_servidor(IP, PUERTO_ESCUCHA_DISPATCH);
-    socket_interrupt = malloc(sizeof(int));
-    *socket_interrupt = iniciar_servidor(IP, PUERTO_ESCUCHA_INTERRUPT); 
+    char* dispatch = "Dispatch";
+    char* interrupt = "Interrupt";
+
+    socket_dispatch = iniciar_servidor(logger, dispatch, IP, PUERTO_ESCUCHA_DISPATCH);
+
+    socket_interrupt = iniciar_servidor(logger, IP, interrupt, PUERTO_ESCUCHA_INTERRUPT);
+
     pthread_t thread_dispatch, thread_interrupt;
     servidor_dispatch = obtenerServidor(socket_dispatch, deserializarDispatch, "dispatch");
     //servidor_interrupt = obtenerServidor(socket_interrupt, deserializarInterrupt, "interrupt");
@@ -32,7 +35,7 @@ void inicializarVariablesGlobales(char * pathConfig,char * pathConfigIP){
     REEMPLAZO_TLB = config_get_string_value(config, "REEMPLAZO_TLB");
     hayInterrupcion = false;
     pthread_mutex_init(&mutex_interrupcion, NULL);
-    log_info(logger, "Variables de configuracion Leidas");
+    log_info(logger, "Variables de configuracion Leidas: ip_cpu %s", IP);
 }
 int main(int argc, char* argv[]) {
     logger = log_create("cpu.log", "cpu", true, LOG_LEVEL_INFO);
@@ -48,7 +51,10 @@ int main(int argc, char* argv[]) {
     char * pathIPS = argv[2];
     inicializarVariablesGlobales(pathConfig, pathIPS);
     //handshake con memoria
-    int socket_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
+
+    log_info(logger, "IP_MEMORIA: %s", IP_MEMORIA);
+
+    int socket_memoria = iniciar_cliente(IP_MEMORIA, PUERTO_MEMORIA, logger);
     traduccion_direcciones = obtenerTraduccionDeDirecciones(socket_memoria);
     close(socket_memoria);
     log_info(logger, "traduccion de direcciones obtenida de memoria");

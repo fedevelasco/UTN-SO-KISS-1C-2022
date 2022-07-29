@@ -53,6 +53,8 @@ uint32_t recibir_operacion(uint32_t socket_cliente);
 uint32_t send_package(uint32_t connection, t_package* package);
 uint32_t send_to_server(uint32_t connection, t_package* package);
 t_buffer* new_page_table_request_buffer(t_page_table_request* request);
+t_buffer* new_memoria_read_buffer(uint32_t direccion);
+t_buffer* new_peticion_buffer(t_memory_write_request* peticion_escritura);
 
 t_traduccion_direcciones* obtenerTraduccionDeDirecciones(int socket);
 

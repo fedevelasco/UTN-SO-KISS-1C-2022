@@ -109,7 +109,8 @@ void incrementarIndiceFIFO() {
 }
 
 uint32_t consultarTablaSegundoNivel(uint32_t tablaDePaginasPrimerNivel, uint32_t pagina) {
-    int socket_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
+
+    int socket_memoria = iniciar_cliente(IP_MEMORIA, PUERTO_MEMORIA, logger);
     uint32_t entradaPrimerNivel = obtenerEntradaTabla1erNivel(pagina);
   
     t_page_table_request* request = create_page_table_request();
@@ -147,14 +148,14 @@ uint32_t consultarTablaSegundoNivel(uint32_t tablaDePaginasPrimerNivel, uint32_t
 
 
 uint32_t consultarMarco(uint32_t tablaDePaginasSegundoNivel, uint32_t pagina, t_op_code codOP) {
-    uint32_t socket_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
+    uint32_t socket_memoria = iniciar_cliente(IP_MEMORIA, PUERTO_MEMORIA, logger);
     uint32_t entradaSegundoNivel = obtenerEntradaTabla2doNivel(pagina);
 
     // t_consultaTablaPagina * consulta = malloc(sizeof(t_consultaTablaPagina));
 
     t_page_table_request* request = create_page_table_request(); 
-    request->table_number = tablaDePaginasPrimerNivel;
-    request->entry_number = entradaPrimerNivel;
+    request->table_number = tablaDePaginasSegundoNivel;
+    request->entry_number = entradaSegundoNivel;
     request->pid = PCB_ACTUAL;
 
     t_buffer* buffer = new_page_table_request_buffer(request);

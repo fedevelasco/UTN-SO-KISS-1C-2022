@@ -1,5 +1,5 @@
 # Libraries
-LIBS=static commons cunit readline pthread
+LIBS=static commons m cunit readline pthread
 # static commons pthread m cunit readline
 
 # Custom libraries' paths
@@ -12,7 +12,7 @@ CDEBUG=-g -Wall -DDEBUG
 CRELEASE=-O3 -Wall -DNDEBUG
 
 # Arguments when executing with start, memcheck or helgrind
-ARGS=1001 ../console/instructions.txt
+ARGS=/home/utnso/shared/git/tp-2022-1c-Grupo-TP-SO/cpu/configuracion.config /home/utnso/shared/git/tp-2022-1c-Grupo-TP-SO/cpu/ips.config
 
 # Valgrind flags
 MEMCHECK_FLAGS=--track-origins=yes --log-file="memcheck.log" --show-leak-kinds=all

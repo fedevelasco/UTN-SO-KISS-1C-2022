@@ -88,7 +88,7 @@ bool execute(t_instruccion instruccion){
             //log_info(logger, "Ejecutando IO");
             return false;
         case READ: {
-            uint32_t dato = execute_read(instruccion.parametro1);
+            execute_read(instruccion.parametro1);
             log_info(logger, "Ejecutado READ");
 
             // log_info(logger, "Ejecutado READ");
@@ -136,9 +136,9 @@ void execute_write(uint32_t direccion_logica, uint32_t dato){
     log_info(logger, "WRITE dato: %d en dirección física: %d", dato, direccionFisica);
 }
 
-uint32_t * memoria_read(uint32_t direccion_fisica) {
+uint32_t  memoria_read(uint32_t direccion_fisica) {
 
-    uint32_t socket_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
+    uint32_t socket_memoria = iniciar_cliente(IP_MEMORIA, PUERTO_MEMORIA, logger);
 
     t_buffer* buffer = new_memoria_read_buffer(direccion_fisica);
 
@@ -187,7 +187,7 @@ uint32_t * memoria_read(uint32_t direccion_fisica) {
 
 void memoria_write(uint32_t direccion_fisica, uint32_t dato) {
 
-    uint32_t socket_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
+    uint32_t socket_memoria = iniciar_cliente(IP_MEMORIA, PUERTO_MEMORIA, logger);
 
     t_memory_write_request* peticion_escritura = create_memory_write_request();
 
@@ -227,16 +227,4 @@ void memoria_write(uint32_t direccion_fisica, uint32_t dato) {
 	free(buffer_recibido);
 }
 
-t_buffer* new_peticion_buffer(t_memory_write_request* peticion_escritura){
 
-	t_buffer* buffer = create_buffer();
-
-	buffer->size = 3*sizeof(uint32_t);
-
-	buffer->stream = malloc(buffer->size);
-	int offset = serialize_memory_write_request(buffer->stream, peticion_escritura);
-
-	log_debug(logger, "new_peticion_buffer - size: %d\n", offset);
-
-	return buffer;
-}

@@ -67,35 +67,35 @@ t_paquete* recibirPaquete(int server_socket){
 }
 
 
-int crear_conexion(char* ip, char* puerto) {
-	struct addrinfo hints;
-	struct addrinfo *server_info;
-
-	memset(&hints, 0, sizeof(hints));
-	hints.ai_family = AF_INET;
-	hints.ai_socktype = SOCK_STREAM;
-	hints.ai_flags = IPPROTO_TCP;
-
-	getaddrinfo(ip, puerto, &hints, &server_info);
-
-	int socket_cliente = socket(server_info->ai_family,  server_info->ai_socktype,server_info->ai_flags);
-	
-	if(socket_cliente == -1){
-		perror("error de creacion de socket");
-		exit(EXIT_FAILURE);
-	}
-
-	int resultado_conexion = connect(socket_cliente, server_info->ai_addr, server_info->ai_addrlen);
-	
-	if(resultado_conexion != 0){
-		perror("error de conexión");
-		exit(EXIT_FAILURE);
-	}
-
-	freeaddrinfo(server_info);
-
-	return socket_cliente;
-}
+//int crear_conexion(char* ip, char* puerto) {
+//	struct addrinfo hints;
+//	struct addrinfo *server_info;
+//
+//	memset(&hints, 0, sizeof(hints));
+//	hints.ai_family = AF_INET;
+//	hints.ai_socktype = SOCK_STREAM;
+//	hints.ai_flags = IPPROTO_TCP;
+//
+//	getaddrinfo(ip, puerto, &hints, &server_info);
+//
+//	int socket_cliente = socket(server_info->ai_family,  server_info->ai_socktype,server_info->ai_flags);
+//
+//	if(socket_cliente == -1){
+//		perror("error de creacion de socket");
+//		exit(EXIT_FAILURE);
+//	}
+//
+//	int resultado_conexion = connect(socket_cliente, server_info->ai_addr, server_info->ai_addrlen);
+//
+//	if(resultado_conexion != 0){
+//		perror("error de conexión");
+//		exit(EXIT_FAILURE);
+//	}
+//
+//	freeaddrinfo(server_info);
+//
+//	return socket_cliente;
+//}
 
 
 uint32_t recibir_operacion(uint32_t socket_cliente)

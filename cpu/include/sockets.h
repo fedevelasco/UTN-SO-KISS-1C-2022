@@ -10,9 +10,9 @@
     #include"../include/serializacion_cpu.h"
     #include<commons/log.h>
     
-    int iniciar_servidor(char* IP, char* PORT);
-    int esperar_cliente(int socket_servidor);
-    int crear_conexion(char *ip, char* puerto);
+//    int iniciar_servidor(char* IP, char* PORT);
+//    int esperar_cliente(int socket_servidor);
+
     t_paquete* recibirPaquete(int server_socket);
 
 #endif

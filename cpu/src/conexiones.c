@@ -173,6 +173,20 @@ t_buffer* new_memoria_read_buffer(uint32_t direccion){
 	return buffer;
 }
 
+t_buffer* new_peticion_buffer(t_memory_write_request* peticion_escritura){
+
+	t_buffer* buffer = create_buffer();
+
+	buffer->size = 3*sizeof(uint32_t);
+
+	buffer->stream = malloc(buffer->size);
+	int offset = serialize_memory_write_request(buffer->stream, peticion_escritura);
+
+	log_debug(logger, "new_peticion_buffer - size: %d\n", offset);
+
+	return buffer;
+}
+
 
 // -------- ESTABLECER CONEXIONES CON LOS OTROS MODULOS -------- //
 
