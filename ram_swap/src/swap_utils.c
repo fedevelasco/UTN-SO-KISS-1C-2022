@@ -78,6 +78,8 @@ void write_frame_in_swap(void* frame, uint32_t swap_page_id, uint32_t pid) {
 
 void free_process_swap(uint32_t pid){
 
+	log_info(logger, "free_process_swap - Eliminando el archivo SWAP del proceso: %d - Inicio", pid);
+
 	char* file_path = get_file_name(pid);
 
 	log_info(logger, "Retardo de swap %dms", retardo_swap);
@@ -88,6 +90,8 @@ void free_process_swap(uint32_t pid){
     	log_error(logger, "free_process_swap - No se pudo eliminar el archivo SWAP. (errno %i)", errno);
     }
     free(file_path);
+
+    log_info(logger, "free_process_swap - Eliminando el archivo SWAP del proceso: %d - Fin", pid);
 }
 
 void* read_page_in_swap(uint32_t swap_page_id, uint32_t pid){
