@@ -41,7 +41,7 @@ uint32_t create_pid_memory(t_process* process){
 
 	log_error(logger, "create_pid_memory - Tabla de paginas de primer nivel ya existe para proceso: %d", process->pid);
 
-	return -1;
+	exit(-1);
 
 
 }
@@ -247,6 +247,9 @@ void free_second_level_entry(void* entry){
 
 uint32_t get_second_level_page_table(t_page_table_request* page_table_request){
 
+    log_info(logger, "get_second_level_page_table - Inicio");
+
+
 	log_info(logger, "Retardo de memoria %dms", retardo_memoria);
 	usleep(retardo_memoria*1000);
 
@@ -256,10 +259,14 @@ uint32_t get_second_level_page_table(t_page_table_request* page_table_request){
 
     first_level_entries_t* first_level_entry = list_get(first_level_page_table->first_level_entries, page_table_request->entry_number);
 
+    log_info(logger, "get_second_level_page_table - Fin");
+
     return first_level_entry->second_level_table_id;
 }
 
 uint32_t get_frame_number(t_page_table_request* page_table_request, bool isWrite){
+
+		log_info(logger, "get_frame_number - Inicio");
 
 		log_info(logger, "Retardo de memoria %dms", retardo_memoria);
 		usleep(retardo_memoria*1000);
@@ -348,7 +355,7 @@ uint32_t get_frame_number(t_page_table_request* page_table_request, bool isWrite
 
 	    pthread_mutex_unlock(&MUTEX_SECOND_LEVEL_ENTRY);
 
-
+	    log_info(logger, "get_frame_number - Inicio");
 	    return page->frame_number;
 
 }
@@ -646,6 +653,8 @@ page_t* replace_with_clock_m(process_state_t* process_state, t_list* all_process
 
 uint32_t read_fisical_address(uint32_t fisical_address){
 
+	log_info(logger, "read_fisical_address - Leyendo direccion fisica - Inicio");
+
 	log_info(logger, "Retardo de memoria %dms", retardo_memoria);
 	usleep(retardo_memoria*1000);
 
@@ -656,10 +665,13 @@ uint32_t read_fisical_address(uint32_t fisical_address){
     memcpy(&data, memory + fisical_address, sizeof(uint32_t));
     pthread_mutex_unlock(&MUTEX_MEMORY);
     log_info(logger, "LECTURA - En la direccion fisica: %d se LEE el dato: %d", fisical_address, data);
+    log_info(logger, "read_fisical_address - Leyendo direccion fisica - Fin");
     return data;
 }
 
 void write_memory_data(t_memory_write_request* write){
+
+	log_info(logger, "write_memory_data - Escribiendo memoria - Inicio");
 
 	log_info(logger, "Retardo de memoria %dms", retardo_memoria);
 	usleep(retardo_memoria*1000);
@@ -671,6 +683,7 @@ void write_memory_data(t_memory_write_request* write){
     pthread_mutex_unlock(&MUTEX_MEMORY);
 
     log_info(logger, "ESCRITURA - En la direccion fisica: %d se ESCRIBE el dato: %d", write->fisical_address, data);
+	log_info(logger, "write_memory_data - Escribiendo memoria - Fin");
 }
 
 

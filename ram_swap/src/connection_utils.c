@@ -2,24 +2,28 @@
 
 void server_listen_ram(char* server_name, int server_socket) {
 
+
 	while (1) {
-		uint32_t client_socket = esperar_cliente(logger, server_name, server_socket);
-		if (client_socket != -1) {
+		int32_t* client_socket = malloc(sizeof(int32_t));
+
+		*client_socket = esperar_cliente(logger, server_name, server_socket);
+
+		if (*client_socket != -1) {
 
 			t_op_code opcode;
-			if (recv(client_socket, &opcode, sizeof(t_op_code), 0) != sizeof(t_op_code)) {
+			if (recv(*client_socket, &opcode, sizeof(t_op_code), 0) != sizeof(t_op_code)) {
 				log_error(logger, "server_listen_ram - Error recibiendo op_code");
 			}
 
 
 			char* buffer;
 
-			buffer = recv_buffer(client_socket);
+			buffer = recv_buffer(*client_socket);
 
 			operation_buffer_t* operation_buffer = malloc(sizeof(operation_buffer_t));
 			operation_buffer->opcode = opcode;
 			operation_buffer->buffer = buffer;
-			operation_buffer->client_socket = client_socket;
+			operation_buffer->client_socket = *client_socket;
 
 			if (kernel_opcode(opcode)) {
 				log_info(logger, "El opcode es de Kernel");
@@ -41,7 +45,10 @@ void server_listen_ram(char* server_name, int server_socket) {
 				}
 			}
 
+		}else{
+			exit(-1);
 		}
+
 	}
 }
 
@@ -112,7 +119,7 @@ void process_cpu_functions(){
 		        sem_wait(&sem_cpu_thread);
 		        pthread_mutex_lock(&MUTEX_CPU_QUEUE);
 		        operation_buffer_t* operation_buffer = queue_pop(cpu_queue);
-		        pthread_mutex_unlock(&MUTEX_KERNEL_QUEUE);
+		        pthread_mutex_unlock(&MUTEX_CPU_QUEUE);
 
 		        switch (operation_buffer->opcode) {
 		        		case DEBUGGING: {

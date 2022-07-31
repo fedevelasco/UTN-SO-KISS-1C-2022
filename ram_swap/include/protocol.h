@@ -11,7 +11,7 @@
 
 
 
-char* recv_buffer(uint32_t client_socket);
+char* recv_buffer(int32_t client_socket);
 uint32_t send_process_init(uint32_t client_socket, uint32_t pid_first_level_table_number);
 uint32_t send_package(uint32_t connection, t_package* package);
 uint32_t send_to_server(uint32_t connection, t_package* package);
