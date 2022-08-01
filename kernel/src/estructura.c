@@ -49,11 +49,11 @@ t_paquete* crearPaquete(t_op_code cod_op)
 	return paquete;
 }
 
-t_paquete* armarPaqueteCon(void* estructura,t_op_code cod_op){ 
+t_paquete* armarPaqueteCon(void* estructura, t_op_code cod_op){ 
 
 	t_paquete* paquete = crearPaquete(cod_op);
-	paquete->buffer->size = tamanioEstructura(estructura,cod_op);
-	paquete->buffer->stream = serializarEstructura(estructura,paquete->buffer->size,cod_op);
+	paquete->buffer->size = tamanioEstructura(estructura, cod_op);
+	paquete->buffer->stream = serializarEstructura(estructura, paquete->buffer->size, cod_op);
 
 	//printf("Paquete %d creado \n", paquete->codigoOperacion);
 	return  paquete;
@@ -204,24 +204,42 @@ t_mensaje*  deserializarMensaje(void* stream){
 	return mensaje;
 }
 
-void* serializarPCB(void* stream, void* estructura, int offset){
-	t_pcb* pcb = (t_pcb*) estructura;
-	memcpy(stream + offset, &(pcb->id),sizeof(uint32_t));
-	offset += sizeof(uint32_t);
-	memcpy(stream + offset, &(pcb->tamanioProceso),sizeof(uint32_t));
-	offset += sizeof(uint32_t);
-	memcpy(stream + offset, &(pcb->PC),sizeof(uint32_t));
-	offset += sizeof(uint32_t);
-	memcpy(stream + offset, &(pcb->tablaDePaginas),sizeof(uint32_t));
-	offset += sizeof(uint32_t);
-	memcpy(stream + offset, &(pcb->estimacionRafaga),sizeof(uint32_t));
-	offset += sizeof(uint32_t);
-	memcpy(stream + offset, &(pcb->lengthUltimaRafaga),sizeof(uint32_t));
-	offset += sizeof(uint32_t);
-	memcpy(stream + offset, &(pcb->sizeInstrucciones),sizeof(uint32_t));
-	serializarInstrucciones(stream, (void*)pcb->instrucciones,  offset);
-	return stream;
-}
+// void* serializarPCB(void* stream, void* estructura, int offset){
+// 	t_pcb* pcb = (t_pcb*) estructura;
+// 	memcpy(stream + offset, &(pcb->id),sizeof(uint32_t));
+// 	offset += sizeof(uint32_t);
+// 	memcpy(stream + offset, &(pcb->tamanioProceso),sizeof(uint32_t));
+// 	offset += sizeof(uint32_t);
+// 	memcpy(stream + offset, &(pcb->PC),sizeof(uint32_t));
+// 	offset += sizeof(uint32_t);
+// 	memcpy(stream + offset, &(pcb->tablaDePaginas),sizeof(uint32_t));
+// 	offset += sizeof(uint32_t);
+// 	memcpy(stream + offset, &(pcb->estimacionRafaga),sizeof(uint32_t));
+// 	offset += sizeof(uint32_t);
+// 	memcpy(stream + offset, &(pcb->lengthUltimaRafaga),sizeof(uint32_t));
+// 	offset += sizeof(uint32_t);
+// 	memcpy(stream + offset, &(pcb->sizeInstrucciones),sizeof(uint32_t));
+// 	serializarInstrucciones(stream, (void*)pcb->instrucciones,  offset);
+// 	return stream;
+// }
+// t_pcb* deserializarPCB(void* stream, int offset){
+// 	t_pcb* pcb = malloc(sizeof(t_pcb));
+// 	memcpy(&(pcb->id),stream + offset,sizeof(uint32_t));
+// 	offset += sizeof(uint32_t);
+// 	memcpy(&(pcb->tamanioProceso),stream + offset,sizeof(uint32_t));
+// 	offset += sizeof(uint32_t);
+// 	memcpy(&(pcb->PC),stream + offset,sizeof(uint32_t));
+// 	offset += sizeof(uint32_t);
+// 	memcpy(&(pcb->tablaDePaginas), stream + offset, sizeof(uint32_t));
+// 	offset += sizeof(uint32_t);
+// 	memcpy(&(pcb->estimacionRafaga), stream + offset, sizeof(uint32_t));
+// 	offset += sizeof(uint32_t);
+// 	memcpy(&(pcb->lengthUltimaRafaga), stream + offset, sizeof(uint32_t));
+// 	offset += sizeof(uint32_t);
+// 	memcpy(&(pcb->sizeInstrucciones), stream + offset, sizeof(uint32_t));
+// 	pcb->instrucciones = deserializarInstrucciones(stream, offset);
+// 	return pcb;
+// }
 
 // --------- serializa el stream y devuelve el offset ------------
 void* pcb_serializar_estruc(void* stream, void* estructura, int offset){
@@ -234,32 +252,11 @@ void* pcb_serializar_estruc(void* stream, void* estructura, int offset){
  	offset += serialize_int(stream + offset, &(pcb->tablaDePaginas));
     offset += serialize_int(stream + offset, &(pcb->estimacionRafaga));
 	offset += serialize_int(stream + offset, &(pcb->lengthUltimaRafaga));
+	offset += serialize_int(stream + offset, &(pcb->sizeInstrucciones));
 	offset += serialize_instructions_list (stream + offset, pcb->instrucciones);
 
     return offset;
 }
-
-
-t_pcb* deserializarPCB(void* stream, int offset){
-	t_pcb* pcb = malloc(sizeof(t_pcb));
-	memcpy(&(pcb->id),stream + offset,sizeof(uint32_t));
-	offset += sizeof(uint32_t);
-	memcpy(&(pcb->tamanioProceso),stream + offset,sizeof(uint32_t));
-	offset += sizeof(uint32_t);
-	memcpy(&(pcb->PC),stream + offset,sizeof(uint32_t));
-	offset += sizeof(uint32_t);
-	memcpy(&(pcb->tablaDePaginas), stream + offset, sizeof(uint32_t));
-	offset += sizeof(uint32_t);
-	memcpy(&(pcb->estimacionRafaga), stream + offset, sizeof(uint32_t));
-	offset += sizeof(uint32_t);
-	memcpy(&(pcb->lengthUltimaRafaga), stream + offset, sizeof(uint32_t));
-	offset += sizeof(uint32_t);
-	memcpy(&(pcb->sizeInstrucciones), stream + offset, sizeof(uint32_t));
-	pcb->instrucciones = deserializarInstrucciones(stream, offset);
-	
-	return pcb;
-}
-
 // ------------- Devuelve un pcb deserializado a partir de un stream de datos ----------------
 t_pcb* pcb_deserializar_estrucs(void* stream, int offset){
 	
@@ -269,11 +266,59 @@ t_pcb* pcb_deserializar_estrucs(void* stream, int offset){
 	offset += deserialize_int(&(pcb->PC), stream + offset);
     offset += deserialize_int(&(pcb->tablaDePaginas), stream + offset);
 	offset += deserialize_int(&(pcb->estimacionRafaga), stream + offset);
+	offset += deserialize_int(&(pcb->lengthUltimaRafaga), stream + offset);
 	offset += deserialize_int(&(pcb->sizeInstrucciones), stream + offset);
 	offset += deserialize_instructions_list(pcb->instrucciones, stream + offset);    
 
 	return pcb;
 }
+// --------- Caculo los bytes para el pcb ------------
+int bytes_PCB(t_pcb* pcb){
+    int temp = sizeof(uint32_t)*7 + bytes_instructions_list(pcb->instrucciones);
+}
+// --------- armo un pcb serializado y me arma el stream a mandar de una ------------
+char* pcb_create_package_with_opcode(t_pcb* pcb, int32_t bytes, t_op_code opcode){
+	char * output  = malloc(bytes);
+	memset(output, 0, bytes);
+
+	int32_t offset = 0;
+
+	offset += serialize_opcode(output + offset, opcode);
+	//offset += pcb_serializar(pcb, output + offset);
+	pcb_serializar_estruc(output, pcb, offset);
+
+	return output;
+}
+// ----------- Creo pcb para la deserializacion -----------
+t_pcb* pcb_create_with_size(int32_t size){ // Uso el pcb create con size para cuando deserealizo un PCB
+	t_pcb* pcb = malloc(size);
+	pcb->id= 0;
+    pcb->tamanioProceso = 0;
+	pcb->PC = 0;
+    pcb->tablaDePaginas = 0;
+    pcb->estimacionRafaga = 0;
+	pcb->lengthUltimaRafaga = 0;
+	pcb->lengthUltimaRafaga = 0;
+    pcb->LISTA_INSTRUCCIONES = create_instructions_list();
+	return pcb;
+}
+// ----------- recibo stream de datos post opcode y me genera un pcb ----------------
+t_pcb* pcb_recibir_package(int32_t socket){
+	int32_t bytes;
+	recv(socket, bytes, sizeof(int32_t), 0);
+	char* a_deserializar;
+	recv(socket, a_deserializar, bytes, 0);
+	t_pcb* temp = pcb_create_with_size(bytes);
+	temp = pcb_deserializar_estrucs(a_deserializar, 0);
+	return temp;
+}
+
+// 1: int32_t cod_op = recibir_operacion(cliente_fd)
+// 2: t_pcb pcb = pcb_recibir_package(int32_t socket)
+
+
+
+
 
 void freePCB(t_pcb * pcb) {
 	free(pcb->instrucciones);
@@ -370,7 +415,7 @@ t_peticionEscritura* deserializarPeticionEscritura(void* stream) {
 	return peticion;
 }
 
-void* serializarEstructura(void* estructura,int tamanio,t_op_code cod_op){
+void* serializarEstructura(void* estructura, int tamanio, t_op_code cod_op){
 
 	void* stream = malloc(tamanio);
 
@@ -385,7 +430,7 @@ void* serializarEstructura(void* estructura,int tamanio,t_op_code cod_op){
 			return serializarTraduccionDirecciones(stream,estructura);
 		}
 		case REQ_PCB_A_EJECUTAR_KERNEL_CPU:{
-			return pcb_serializar_estruc(stream,estructura,0);
+			return pcb_serializar_estruc(stream,estructura,0); //mi serializacion
 		}
 		case PCB_EJECUTADO_IO_CPU_KERNEL:{
 			return serializarIO(stream,estructura);
@@ -452,7 +497,7 @@ void* serializarEstructura(void* estructura,int tamanio,t_op_code cod_op){
 	}
 }
 
-int tamanioEstructura(void* estructura ,t_op_code cod_op){
+int d(void* estructura ,t_op_code cod_op){
 
 	switch(cod_op){
 
@@ -468,8 +513,9 @@ int tamanioEstructura(void* estructura ,t_op_code cod_op){
 			return sizeof(uint32_t)*2;
 		}
 		case REQ_PCB_A_EJECUTAR_KERNEL_CPU:{
-			t_pcb * pcb = (t_pcb *) estructura; 
-			return sizeof(uint32_t)*7 + pcb->sizeInstrucciones*(sizeof(uint32_t)*2 + sizeof(instruccion_id));
+			t_pcb* pcb = (t_pcb *) estructura; 
+			//return sizeof(uint32_t)*7 + pcb->sizeInstrucciones*(sizeof(uint32_t)*2 + sizeof(instruccion_id));
+			return sizeof(uint32_t)*6 + sizeof(t_instructions_list);	
 		}
 		case PCB_EJECUTADO_IO_CPU_KERNEL:{
 			t_IO * io = (t_IO *) estructura; 

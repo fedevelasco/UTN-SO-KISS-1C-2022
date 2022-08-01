@@ -332,7 +332,7 @@ void comunicacionMemoriaFinalizar(t_pcb * pcb) {
 }
 
 t_pcb * algoritmoPlanificacion(){
-    if(string_equals_ignore_case(ALGORITMO_PLANIFICACION,"FIFO")){
+    {
         log_info(logger, "Se planifica FIFO");
         t_pcb * pcb = planificacionFIFO();
         log_info(logger, "FIFO elige el pcb: %d y se pasa a exec",pcb->id);
@@ -371,7 +371,7 @@ void inicializarPlanificacion(){
     log_info(logger, "Kernel - Listo para recibir servidores");
 }
 
-t_pcb * planificacionFIFO(){
+t_pcb* planificacionFIFO(){
     t_pcb * pcb;
     pthread_mutex_lock(&mutex_estado_ready);
     pcb = (t_pcb *) list_remove(estado_ready, 0);
@@ -405,10 +405,22 @@ void interrumpirPCB(){
     //close(socketInterrupt);
 }
 
+/* TODO: A implementar con nuestras cosas   
+(a puerto dipatch)
+REQ_PCB_A_EJECUTAR_KERNEL_CPU,  ejecutar pcb
 
+PCB_EJECUTADO_IO_CPU_KERNEL, pcb necesita IO
+
+PCB_EJECUTADO_EXIT_CPU_KERNEL, pcb ejecutado, puede finalizarce
+
+PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL, el pcb que me devolvieron fue interrumpido
+
+(a puerto interrupt)
+REQ_INTERRUPCION_KERNEL_CPU, Interrumpir el pcb actual, le mando solo un opcode
+*/
 void ejecutarPCB(t_pcb * pcb){
-    int socketDispatch = iniciar_cliente(IP_CPU, PUERTO_CPU_DISPATCH, logger);
-    t_paquete * paquete = armarPaqueteCon(pcb, REQ_PCB_A_EJECUTAR_KERNEL_CPU);
+    int socketDispatch = iniciar_cliente(IP_CPU, PUERTO_CPU_DISPATCH, logger); // TODO: Agregar funcionalidad segun lo de memoria
+    t_paquete* paquete = armarPaqueteCon(pcb, REQ_PCB_A_EJECUTAR_KERNEL_CPU); 
     enviarPaquete(paquete, socketDispatch);
     eliminarPaquete(paquete);
     freePCB(pcb);
@@ -439,7 +451,7 @@ void ejecutarPCB(t_pcb * pcb){
             break;
         }
         case PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL:{
-            t_pcb * pcbActualizado = deserializarPCB(paqueteRespuesta->buffer->stream, 0);
+            t_pcb* pcbActualizado = deserializarPCB(paqueteRespuesta->buffer->stream, 0);
             pcbActualizado->estimacionRafaga -= pcbActualizado->lengthUltimaRafaga; 
             log_info(logger, "Entró un pcb desalojado por interrupción ID: id: %d | estimacionRafaga: %d | lenghtUltimaRafaga: %d", pcbActualizado->id, pcbActualizado->estimacionRafaga, pcbActualizado->lengthUltimaRafaga);
             addEstadoReady(pcbActualizado);

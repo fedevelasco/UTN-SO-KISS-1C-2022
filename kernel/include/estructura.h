@@ -121,10 +121,12 @@
 	t_mensaje*  deserializarMensaje(void* stream);
 	void*  serializarMensaje(void* stream, void* estructura);
 
-	void* serializarPCB(void* stream, void* estructura, int offset);
-	void* pcb_serializar_estruc(void* stream, void* estructura, int offset); //nuevo
-	t_pcb* deserializarPCB(void* stream, int offset);
-	t_pcb* pcb_deserializar_estruc(void* stream, int offset); //nuevo
+	// void* serializarPCB(void* stream, void* estructura, int offset);
+	// t_pcb* deserializarPCB(void* stream, int offset);
+	void* pcb_serializar_estruc(void* stream, void* estructura, int offset);//nuevo
+	t_pcb* pcb_deserializar_estruc(void* stream, int offset);//nuevo
+	int bytes_PCB(t_pcb* pcb);//nuevo
+	char* pcb_create_package_with_opcode(t_pcb* pcb, int32_t bytes, t_op_code opcode);//nuevo
 	void freePCB(t_pcb* pcb);
 	
 	void*  serializarIO(void* stream, void* estructura);
