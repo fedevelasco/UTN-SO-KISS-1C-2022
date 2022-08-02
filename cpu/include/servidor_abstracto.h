@@ -7,6 +7,8 @@
     #include  <libreriaConexiones.h>
     #include "../include/sockets.h"
     #include "../include/variablesGlobales.h"
+    #include "../include/cpu_servidor.h "
+    
     typedef struct{
         int  socket;
         char nombre[10];

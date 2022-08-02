@@ -231,7 +231,8 @@ void *  serializarIO(void* stream, void* estructura){
 	int offset = 0;
 	memcpy(stream + offset, &(IO->tiempoBloqueo),sizeof(uint32_t));
 	offset += sizeof(uint32_t);
-	serializarPCB(stream, (void*) IO->pcb, offset);
+	// serializarPCB(stream, (void*) IO->pcb, offset);
+	pcb_serializar_estruc(stream, (void*) IO->pcb, offset);
 	return stream;
 }
 

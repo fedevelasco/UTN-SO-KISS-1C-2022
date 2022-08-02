@@ -12,6 +12,7 @@
     #include <pthread.h>
 // sin static 
     #include "../include/serializacion_cpu.h"
+    #include "../include/protocolo_transferencia.h"
 
 t_config * config;
 t_config * ips;

@@ -15,9 +15,8 @@
     #include "../include/serializacion_cpu.h"
     #include "../include/variablesGlobales.h"
     #include "../include/mmu.h"
-
-
-
+    #include "../include/protocolo_transferencia.h"
+    #include <serializacion.h>  // cambiar ruta
     #include "../include/conexiones.h"
     
     uint32_t tablaPaginasPrimerNivelPCB;

@@ -7,6 +7,7 @@
 	#include <sys/socket.h>
 	#include <netdb.h>
 	#include "../include/instruccion.h"
+	#include "../include/protocolo_transferencia.h"
 	#include <commons/collections/list.h>
 	#include <commons/collections/queue.h>
 	#include <tads/op_code.h>

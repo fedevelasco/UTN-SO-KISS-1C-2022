@@ -1,8 +1,6 @@
 // FUNCIONES PROPIAS DEL CICLO DE INSTRUCCION
 // Fetch -> Decode -> Fetch Operands -> Execute -> Check Interrupt
 
-
-
 #include "../include/cicloInstruccion.h"
 
 
@@ -39,7 +37,7 @@ t_paquete * cicloInstruccion(t_pcb * pcb) {
             pthread_mutex_unlock(&mutex_interrupcion);
             pcb->lengthUltimaRafaga = pcb->PC - PC_inicial;
             log_info(logger, "Hay interrupcion, devulve el pcb");
-            paquete = armarPaqueteCon(pcb, PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL);
+            paquete = pcb_create_package_with_opcode(pcb, PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL); // TO DO cambiar la funcion
             return paquete;
         }
         else{
@@ -56,13 +54,13 @@ t_paquete * cicloInstruccion(t_pcb * pcb) {
             io->pcb = pcb;
             io->tiempoBloqueo = instruccion.parametro1;
             log_info(logger, "Ejecuto IO de: %d milisegundos", instruccion.parametro1);
-            paquete = armarPaqueteCon(io, PCB_EJECUTADO_IO_CPU_KERNEL);
+            paquete = armarPaqueteCon(io, PCB_EJECUTADO_IO_CPU_KERNEL); // TO DO a reemplazar el armar paquete
             free(io);
             //log_info(logger, "Ejecuto IO, devuelve el pcb id:%d", pcb->id);
             break;
         }
         case EXIT:{
-            paquete = armarPaqueteCon(pcb, PCB_EJECUTADO_EXIT_CPU_KERNEL);
+            paquete = pcb_create_package_with_opcode(pcb, PCB_EJECUTADO_EXIT_CPU_KERNEL); // TO DO  a reemplazar la funcion con la nuestra
             log_info(logger, "Ejecuto EXIT, devuelve el pcb id:%d", pcb->id);
             break;
         }
