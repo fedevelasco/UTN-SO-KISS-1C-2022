@@ -126,8 +126,6 @@ uint32_t consultarTablaSegundoNivel(uint32_t tablaDePaginasPrimerNivel, uint32_t
 		log_error(logger, "Error al enviar paquete al servidor");
 		return 1;
 	}
-    buffer_destroy(buffer);
-    package_destroy(package);
 
    uint32_t cod_op = recibir_operacion(socket_memoria);
     if(cod_op != GET_SECOND_LEVEL_TABLE_RESPONSE){
@@ -172,9 +170,7 @@ uint32_t consultarMarco(uint32_t tablaDePaginasSegundoNivel, uint32_t pagina, t_
 		log_error(logger, "Error al enviar paquete al servidor");
 		return 1;
 	}
-        buffer_destroy(buffer);
-        package_destroy(package);
-
+  
     uint32_t cod_op = recibir_operacion(socket_memoria);
     if(cod_op != GET_SECOND_LEVEL_TABLE_REQUEST){
             perror("respuesta inesperada");

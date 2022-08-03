@@ -150,9 +150,7 @@ uint32_t  memoria_read(uint32_t direccion_fisica) {
 		log_error(logger, "Error al enviar paquete al servidor");
 
 	}
-	buffer_destroy(buffer);
-	package_destroy(package);
-
+	
     uint32_t cod_op = recibir_operacion(socket_memoria);
 
    //Codigo operacion que recibo:* RESPONSE
@@ -205,8 +203,6 @@ void memoria_write(uint32_t direccion_fisica, uint32_t dato) {
 		log_error(logger, "Error al enviar paquete al servidor");
 
 	}
-	buffer_destroy(buffer);
-	package_destroy(package);
 
    uint32_t cod_op = recibir_operacion(socket_memoria);
    //Codigo operacion que recibo:* RESPONSE

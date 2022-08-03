@@ -14,8 +14,6 @@ t_memory_config* obtenerTraduccionDeDirecciones(){
 		log_error(logger, "Error al enviar paquete al servidor");
 
 	}
-	buffer_destroy(buffer);
-	package_destroy(package);
 
 	uint32_t cod_op = recibir_operacion(socket_memoria);
 	if(cod_op != GET_MEMORY_CONFIG_RESPONSE){

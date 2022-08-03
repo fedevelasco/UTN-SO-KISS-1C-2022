@@ -8,7 +8,7 @@ void iniciarHilos(){
 
     socket_dispatch = iniciar_servidor(logger, dispatch, IP, PUERTO_ESCUCHA_DISPATCH);
 
-    socket_interrupt = iniciar_servidor(logger, IP, interrupt, PUERTO_ESCUCHA_INTERRUPT);
+    socket_interrupt = iniciar_servidor(logger, interrupt, IP, PUERTO_ESCUCHA_INTERRUPT);
 
     //TODO: Revisar esto!
 
@@ -30,8 +30,8 @@ void inicializarVariablesGlobales(char * pathConfig,char * pathConfigIP){
     IP = config_get_string_value(ips, "IP_CPU");
     PUERTO_ESCUCHA_DISPATCH = config_get_string_value(ips, "PUERTO_CPU_DISPATCH");
     PUERTO_ESCUCHA_INTERRUPT = config_get_string_value(ips, "PUERTO_CPU_INTERRUPT");
-    IP_MEMORIA = config_get_string_value(ips, "IP_MEMORIA");
-    PUERTO_MEMORIA = config_get_string_value(ips, "PUERTO_MEMORIA");
+    IP_MEMORIA = config_get_string_value(ips, "IP_RAM");
+    PUERTO_MEMORIA = config_get_string_value(ips, "PUERTO_ESCUCHA_RAM");
     RETARDO_NOOP = config_get_int_value(config, "RETARDO_NOOP") / 1000;
     ENTRADAS_TLB = config_get_int_value(config, "ENTRADAS_TLB");
     REEMPLAZO_TLB = config_get_string_value(config, "REEMPLAZO_TLB");
@@ -54,12 +54,12 @@ int main(int argc, char* argv[]) {
     inicializarVariablesGlobales(pathConfig, pathIPS);
     //handshake con memoria
 
-    log_info(logger, "IP_MEMORIA: %s", IP_MEMORIA);
+    log_info(logger, "IP_MEMORIA: %s, PORT: %s", IP_MEMORIA, PUERTO_MEMORIA);
 
 //    int socket_memoria = iniciar_cliente(IP_MEMORIA, PUERTO_MEMORIA, logger);
     traduccion_direcciones = obtenerTraduccionDeDirecciones();
 //    close(socket_memoria);
-    log_info(logger, "traduccion de direcciones obtenida de memoria");
+    log_info(logger, "traduccion de direcciones obtenida de memoria: tamanio_pagina=%d, paginas_por_tabla=%d ", traduccion_direcciones->page_size, traduccion_direcciones->pages_per_table);
     iniciarEstructurasMMU();
     iniciarHilos();
     

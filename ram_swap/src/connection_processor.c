@@ -94,6 +94,8 @@ void get_memory_config(operation_buffer_t* operation_buffer){
 	memory_config->page_size = tam_pagina;
 	memory_config->pages_per_table = entradas_por_tabla;
 
+	log_debug(logger, "get_memory_config - page_size=%d pages_per_table=%d", memory_config->page_size, memory_config->pages_per_table);
+
 	if(send_memory_config(operation_buffer->client_socket, memory_config)) {
 		log_error(logger, "Error enviando configuracion de memoria a cpu");
 		memory_config_destroy(memory_config);

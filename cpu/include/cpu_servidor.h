@@ -15,17 +15,7 @@
 
 t_config * config;
 t_config * ips;
-char * IP;
-char * PUERTO_ESCUCHA_DISPATCH;
-char * PUERTO_ESCUCHA_INTERRUPT;
-char * IP_MEMORIA;
-char * PUERTO_MEMORIA;
-char * REEMPLAZO_TLB;
-int RETARDO_NOOP;
-int ENTRADAS_TLB;
-bool hayInterrupcion;
-pthread_mutex_t mutex_interrupcion;
-t_memory_config* traduccion_direcciones;
+
 
 void deserializarDispatch(t_paquete * paquete, int socket_cliente);
 void deserializarInterrupt(t_paquete * paquete, int socket_cliente);
