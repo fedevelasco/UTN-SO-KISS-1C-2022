@@ -1,7 +1,7 @@
 // Operaciones y traduccion de direcciones logicaas a fisicas
 // ESTRUCTURA DE TLB
 
-#include "../Include/mmu.h"
+#include "../include/mmu.h"
 
 void iniciarEstructurasMMU() {
     tiempoAccesoGlobal = 0;
@@ -109,7 +109,8 @@ void incrementarIndiceFIFO() {
 }
 
 uint32_t consultarTablaSegundoNivel(uint32_t tablaDePaginasPrimerNivel, uint32_t pagina) {
-    int socket_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
+
+    int socket_memoria = iniciar_cliente(IP_MEMORIA, PUERTO_MEMORIA, logger);
     uint32_t entradaPrimerNivel = obtenerEntradaTabla1erNivel(pagina);
   
     t_page_table_request* request = create_page_table_request();
@@ -125,8 +126,6 @@ uint32_t consultarTablaSegundoNivel(uint32_t tablaDePaginasPrimerNivel, uint32_t
 		log_error(logger, "Error al enviar paquete al servidor");
 		return 1;
 	}
-    buffer_destroy(buffer);
-    package_destroy(package);
 
    uint32_t cod_op = recibir_operacion(socket_memoria);
     if(cod_op != GET_SECOND_LEVEL_TABLE_RESPONSE){
@@ -147,25 +146,46 @@ uint32_t consultarTablaSegundoNivel(uint32_t tablaDePaginasPrimerNivel, uint32_t
 
 
 uint32_t consultarMarco(uint32_t tablaDePaginasSegundoNivel, uint32_t pagina, t_op_code codOP) {
-    uint32_t socket_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
+    uint32_t socket_memoria = iniciar_cliente(IP_MEMORIA, PUERTO_MEMORIA, logger);
     uint32_t entradaSegundoNivel = obtenerEntradaTabla2doNivel(pagina);
-    t_consultaTablaPagina * consulta = malloc(sizeof(t_consultaTablaPagina));
-    
-    consulta->tablaDePaginas = tablaDePaginasSegundoNivel;
-    consulta->entradaPagina = entradaSegundoNivel;
-    consulta->id = PCB_ACTUAL;//TODO: problema de concurrencia
 
-    t_paquete * paquete = armarPaqueteCon(consulta, codOP);
-    enviarPaquete(paquete,socket_memoria);
-    free(consulta);
-    eliminarPaquete(paquete);
-    t_paquete * paqueteRespuesta = recibirPaquete(socket_memoria);
+    // t_consultaTablaPagina * consulta = malloc(sizeof(t_consultaTablaPagina));
+
+    t_page_table_request* request = create_page_table_request(); 
+    request->table_number = tablaDePaginasSegundoNivel;
+    request->entry_number = entradaSegundoNivel;
+    request->pid = PCB_ACTUAL;
+
+    t_buffer* buffer = new_page_table_request_buffer(request);
+
+	t_package* package = new_package(buffer, codOP);
+
+    // t_paquete * paquete = armarPaqueteCon(consulta, codOP);
+    // enviarPaquete(paquete,socket_memoria);
+    // free(consulta);
+    // eliminarPaquete(paquete);
+    // t_paquete * paqueteRespuesta = recibirPaquete(socket_memoria);
+
+    	if (send_to_server(socket_memoria, package) == -1) {
+		log_error(logger, "Error al enviar paquete al servidor");
+		return 1;
+	}
+  
+    uint32_t cod_op = recibir_operacion(socket_memoria);
+    if(cod_op != GET_SECOND_LEVEL_TABLE_REQUEST){
+            perror("respuesta inesperada");
+            exit(EXIT_FAILURE);
+        }
     
-    uint32_t * marco = deserializarUINT32_T(paqueteRespuesta->buffer->stream);
-    eliminarPaquete(paqueteRespuesta);
-    uint32_t marcoo = * marco;
-    free(marco);
-    return marcoo;
+    char* buffer_recibido = recibir_paquete(socket_memoria);
+
+    uint32_t marco;
+
+    deserialize_int(&marco, buffer_recibido);
+    
+    free(buffer_recibido);
+
+    return marco;
 }
 
 uint32_t consultarDireccionFisica(uint32_t tablaPaginasPrimerNivelPCB, uint32_t direccion_logica, t_op_code codOP) {
@@ -191,21 +211,21 @@ uint32_t consultarDireccionFisica(uint32_t tablaPaginasPrimerNivelPCB, uint32_t 
 }
 
 uint32_t obtenerNumeroPagina(uint32_t direccion_logica) {
-    return floor(direccion_logica/traduccion_direcciones->tamanio_pagina);
+    return floor(direccion_logica/traduccion_direcciones->page_size);
 }
 
 uint32_t obtenerEntradaTabla1erNivel(uint32_t numero_pagina) {
-    return floor(numero_pagina/traduccion_direcciones->paginas_por_tabla);
+    return floor(numero_pagina/traduccion_direcciones->pages_per_table);
 }
 
 uint32_t obtenerEntradaTabla2doNivel(uint32_t numero_pagina) {
-    return numero_pagina % traduccion_direcciones->paginas_por_tabla;
+    return numero_pagina % traduccion_direcciones->pages_per_table;
 }
 
 uint32_t obtenerDesplazamiento(uint32_t direccion_logica, uint32_t numero_pagina) {
-    return direccion_logica - numero_pagina * traduccion_direcciones->tamanio_pagina;
+    return direccion_logica - numero_pagina * traduccion_direcciones->page_size;
 }
 
 uint32_t obtenerDireccionFisica(uint32_t desplazamiento, uint32_t numero_marco) {
-    return desplazamiento + numero_marco * traduccion_direcciones->tamanio_pagina;
+    return desplazamiento + numero_marco * traduccion_direcciones->page_size;
 }

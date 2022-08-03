@@ -55,8 +55,16 @@ typedef struct process_state{
 typedef struct operation_buffer{
 	t_op_code opcode;
 	char* buffer;
-	uint32_t client_socket;
+	int32_t client_socket;
 } operation_buffer_t;
+
+typedef struct swap_file {
+	int32_t pid;
+	int32_t swap_file;
+	int32_t swap_size;
+	void* swap_mmap;
+} t_swap_file;
+
 
 // Mutex
 
@@ -68,6 +76,7 @@ pthread_mutex_t MUTEX_SECOND_LEVEL_ENTRY;
 pthread_mutex_t MUTEX_PROCESS_EXTRA_INFO;
 pthread_mutex_t MUTEX_ID_EN_SWAP;
 pthread_mutex_t MUTEX_OCCUPIED_FRAMES;
+pthread_mutex_t MUTEX_SWAP_FILES;
 
 // Threads
 
@@ -91,13 +100,16 @@ t_log* logger;
 t_list* last_memory_position_used;
 
 void* memory;
-void* swap_area;
+//void* swap_area;
 t_bitarray* occupied_frames_bitarray;
 t_dictionary* process_extra_info;
 
 // Listas de paginas globales
 t_list* global_first_level_page_tables;
 t_list* global_second_level_page_tables;
+
+//Lista de archivos swap
+t_list* swap_files_list;
 
 typedef struct {
     int socket;

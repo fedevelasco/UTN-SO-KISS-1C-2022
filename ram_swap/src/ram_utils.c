@@ -97,6 +97,8 @@ uint32_t paging_tables_create() {
 	global_first_level_page_tables = list_create();
 	global_second_level_page_tables = list_create();
 
+	swap_files_list = list_create();
+
 	log_info(logger, "paging_tables_create - Tablas de paginas globales creadas con exito");
 
 	return 0;
@@ -114,7 +116,8 @@ uint32_t mutex_init(){
 	pthread_mutex_init(&MUTEX_SECOND_LEVEL_ENTRY, (void *)NULL) ||
 	pthread_mutex_init(&MUTEX_PROCESS_EXTRA_INFO, (void *)NULL) ||
 	pthread_mutex_init(&MUTEX_ID_EN_SWAP, (void *)NULL) ||
-	pthread_mutex_init(&MUTEX_OCCUPIED_FRAMES, (void *)NULL)
+	pthread_mutex_init(&MUTEX_OCCUPIED_FRAMES, (void *)NULL) ||
+	pthread_mutex_init(&MUTEX_SWAP_FILES,(void *)NULL)
 	)
 	{
 		log_error(logger, "mutex_init - Error en creacion de mutex");

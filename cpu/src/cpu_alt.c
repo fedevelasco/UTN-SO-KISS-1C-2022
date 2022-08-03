@@ -1,12 +1,17 @@
-#include "../Include/cpu_alt.h" 
+#include "../include/cpu_alt.h" 
 
 
 void iniciarHilos(){
     log_info(logger, "iniciando hilos..");
-    socket_dispatch = malloc(sizeof(int));
-    *socket_dispatch = iniciar_servidor(IP, PUERTO_ESCUCHA_DISPATCH);
-    socket_interrupt = malloc(sizeof(int));
-    *socket_interrupt = iniciar_servidor(IP, PUERTO_ESCUCHA_INTERRUPT); 
+    char* dispatch = "Dispatch";
+    char* interrupt = "Interrupt";
+
+    socket_dispatch = iniciar_servidor(logger, dispatch, IP, PUERTO_ESCUCHA_DISPATCH);
+
+    socket_interrupt = iniciar_servidor(logger, interrupt, IP, PUERTO_ESCUCHA_INTERRUPT);
+
+    //TODO: Revisar esto!
+
     pthread_t thread_dispatch, thread_interrupt;
     servidor_dispatch = obtenerServidor(socket_dispatch, deserializarDispatch, "dispatch");
     //servidor_interrupt = obtenerServidor(socket_interrupt, deserializarInterrupt, "interrupt");
@@ -25,14 +30,18 @@ void inicializarVariablesGlobales(char * pathConfig,char * pathConfigIP){
     IP = config_get_string_value(ips, "IP_CPU");
     PUERTO_ESCUCHA_DISPATCH = config_get_string_value(ips, "PUERTO_CPU_DISPATCH");
     PUERTO_ESCUCHA_INTERRUPT = config_get_string_value(ips, "PUERTO_CPU_INTERRUPT");
-    IP_MEMORIA = config_get_string_value(ips, "IP_MEMORIA");
-    PUERTO_MEMORIA = config_get_string_value(ips, "PUERTO_MEMORIA");
+    IP_MEMORIA = config_get_string_value(ips, "IP_RAM");
+    PUERTO_MEMORIA = config_get_string_value(ips, "PUERTO_ESCUCHA_RAM");
     RETARDO_NOOP = config_get_int_value(config, "RETARDO_NOOP") / 1000;
     ENTRADAS_TLB = config_get_int_value(config, "ENTRADAS_TLB");
     REEMPLAZO_TLB = config_get_string_value(config, "REEMPLAZO_TLB");
     hayInterrupcion = false;
+    char* r = "\r";
+    if(string_ends_with(IP, r)){
+    	log_debug(logger, "WARNING!: ip termina con \r: %s", IP);
+    }
     pthread_mutex_init(&mutex_interrupcion, NULL);
-    log_info(logger, "Variables de configuracion Leidas");
+    log_info(logger, "Variables de configuracion Leidas: ip_cpu %s", IP);
 }
 int main(int argc, char* argv[]) {
     logger = log_create("cpu.log", "cpu", true, LOG_LEVEL_INFO);
@@ -48,16 +57,20 @@ int main(int argc, char* argv[]) {
     char * pathIPS = argv[2];
     inicializarVariablesGlobales(pathConfig, pathIPS);
     //handshake con memoria
-    int socket_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
-    traduccion_direcciones = obtenerTraduccionDeDirecciones(socket_memoria);
-    close(socket_memoria);
-    log_info(logger, "traduccion de direcciones obtenida de memoria");
+
+    log_info(logger, "IP_MEMORIA: %s, PORT: %s", IP_MEMORIA, PUERTO_MEMORIA);
+
+//    int socket_memoria = iniciar_cliente(IP_MEMORIA, PUERTO_MEMORIA, logger);
+    traduccion_direcciones = obtenerTraduccionDeDirecciones();
+//    close(socket_memoria);
+    log_info(logger, "traduccion de direcciones obtenida de memoria: tamanio_pagina=%d, paginas_por_tabla=%d ", traduccion_direcciones->page_size, traduccion_direcciones->pages_per_table);
     iniciarEstructurasMMU();
     iniciarHilos();
     
     //liberar heap
     config_destroy(config);
     config_destroy(ips);
-    free(traduccion_direcciones);
+    memory_config_destroy(traduccion_direcciones);
+    log_destroy(logger);
     return 0;
 }

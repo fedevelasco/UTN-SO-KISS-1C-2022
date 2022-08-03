@@ -104,6 +104,7 @@ t_paquete* recibirPaquete(int server_socket){
 
 //  	freeaddrinfo(server_info);
 
+
 //  	return socket_cliente;
 //  }
 
@@ -171,7 +172,7 @@ t_proceso* recibirPaqquete_inicio(int server_socket){
 			case -1:
 
 				log_error(logger, "El cliente se desconecto. Terminando conexion con el cliente."); //Codigo para finalizar conexion
-				return;
+				return -1;
 
 			default:
 
@@ -181,6 +182,7 @@ t_proceso* recibirPaqquete_inicio(int server_socket){
 		}
     log_info(logger, "Kernel - Recoleccion de informacion para generar proceso completada");
 }
+
 
 t_buffer* new_crear_proceso_buffer(t_process* proceso){
 

@@ -5,9 +5,9 @@
 
 // -------------- Iniciar Servidor --------------
 
-uint32_t iniciar_servidor(t_log* logger, char* name, char* ip, char* puerto)
+int32_t iniciar_servidor(t_log* logger, char* name, char* ip, char* puerto)
 {
-	uint32_t socket_servidor; //Declaramos el descriptor
+	int32_t socket_servidor; //Declaramos el descriptor
 
 	struct addrinfo infoSocket, *server_info; //Declaramos las estructuras
 
@@ -68,14 +68,19 @@ uint32_t iniciar_servidor(t_log* logger, char* name, char* ip, char* puerto)
 
 // -------------- Aceptar Cliente --------------
 
-uint32_t esperar_cliente(t_log* logger, char* name, uint32_t socket_servidor)
+int32_t esperar_cliente(t_log* logger, char* name, int32_t socket_servidor)
 {
 	// Aceptamos un nuevo cliente
 	struct sockaddr_in dir_cliente; // Esta estructura contendra los datos de la conexion del cliente. IP, puerto, etc
 	socklen_t addrlenght  = sizeof(dir_cliente);
 
 
-	uint32_t socket_cliente = accept(socket_servidor, (struct sockaddr *) &dir_cliente, &addrlenght ); // Aceptamos un nuevo cliente
+	int32_t socket_cliente = accept(socket_servidor, (struct sockaddr *) &dir_cliente, &addrlenght ); // Aceptamos un nuevo cliente
+
+	if(socket_cliente == -1){
+			perror("Error al aceptar socket_cliente");
+			exit(EXIT_FAILURE);
+		}
 
 	log_info(logger, "socket: %i", socket_cliente);
 

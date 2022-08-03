@@ -1,7 +1,7 @@
 #include <protocol.h>
 
 
-char* recv_buffer(uint32_t client_socket)
+char* recv_buffer(int32_t client_socket)
 {
 	char* buffer;
 	uint32_t buffer_size;
@@ -253,7 +253,7 @@ t_buffer* new_memory_config_buffer(t_memory_config* memory_config){
 
 	t_buffer* buffer = create_buffer();
 
-	buffer->size = sizeof(uint32_t);
+	buffer->size = 2*sizeof(uint32_t);
 
 	buffer->stream = malloc(buffer->size);
 	int offset = serialize_memory_config(buffer->stream, memory_config);

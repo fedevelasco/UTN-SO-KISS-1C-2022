@@ -2,7 +2,7 @@
 
 // INTEGRO OPERACIONES //
 
-#include "../Include/cpu_servidor.h"
+#include "../include/cpu_servidor.h"
 
 // INICIALIZACION //
 
@@ -18,7 +18,7 @@ void validarParametros(int argc, char* argv[]){
 void deserializarDispatch(t_paquete * paquete, int socket_cliente){
     switch(paquete->codigo_operacion){
 		case REQ_PCB_A_EJECUTAR_KERNEL_CPU:{
-            t_pcb * pcb = deserializarPCB(paquete->buffer->stream, 0);
+            t_pcb * pcb = pcb_deserializar_estrucs(paquete->buffer->stream, 0); // falta compilar
             log_info(logger, "recibido pcb id:%d para ejecutar", pcb->id);
             vaciarTLB(pcb->id);
             
@@ -62,9 +62,10 @@ void deserializarInterrupt(t_paquete * paquete, int socket_cliente){
 }
 
 void servidorInterrupt(void * socket){
-    int * socket_servidor = (int * )socket;
+    int socket_servidor = (int) socket;
     while(1){
-        int socket_cliente = esperar_cliente(*socket_servidor);
+    	char* cliente = "Cliente";
+        int socket_cliente = esperar_cliente(logger, cliente, socket_servidor);
         log_info(logger, "interrupt: se conecta cliente");
         //instanciar hilo que atienda la solicitud
         t_paquete * paquete = recibirPaquete(socket_cliente);

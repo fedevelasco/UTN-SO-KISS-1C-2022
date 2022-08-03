@@ -1,13 +1,12 @@
 // FUNCIONES PROPIAS DEL CICLO DE INSTRUCCION
 // Fetch -> Decode -> Fetch Operands -> Execute -> Check Interrupt
 
+#include <cicloInstruccion.h>
 
 
-#include "../Include/cicloInstruccion.h"
+t_instruction* fetch(t_pcb *  pcb){
+    t_instruction* instruccion_actual = list_get(pcb->instrucciones->instructions, pcb->PC);
 
-
-t_instruccion fetch(t_pcb *  pcb){
-    t_instruccion instruccion_actual = pcb->instrucciones[pcb->PC];
     return instruccion_actual;
 }
 
@@ -17,7 +16,7 @@ t_paquete * cicloInstruccion(t_pcb * pcb) {
     pthread_mutex_unlock(&mutex_interrupcion);
     t_paquete * paquete;
     bool seguirEjecutando = true;
-    t_instruccion instruccion;
+    t_instruction* instruccion;
     uint32_t PC_inicial = pcb->PC;
     PCB_ACTUAL=pcb->id;
     log_info(logger, "Inicia ciclo instruccion para pcb id:%d", pcb->id);
@@ -27,7 +26,7 @@ t_paquete * cicloInstruccion(t_pcb * pcb) {
     while(seguirEjecutando ){
         instruccion = fetch(pcb);
         const char* identificador_instruccion;
-        identificador_instruccion = instruccion_idAString((instruccion).identificador);
+        identificador_instruccion = instruccion->id;
         log_info(logger, "Instrucción: %s", identificador_instruccion);
         seguirEjecutando = execute(instruccion);
         log_info(logger, " ");
@@ -39,7 +38,7 @@ t_paquete * cicloInstruccion(t_pcb * pcb) {
             pthread_mutex_unlock(&mutex_interrupcion);
             pcb->lengthUltimaRafaga = pcb->PC - PC_inicial;
             log_info(logger, "Hay interrupcion, devulve el pcb");
-            paquete = armarPaqueteCon(pcb, PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL);
+            paquete = pcb_create_package_with_opcode(pcb, PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL); // TO DO cambiar la funcion
             return paquete;
         }
         else{
@@ -50,106 +49,144 @@ t_paquete * cicloInstruccion(t_pcb * pcb) {
 
     pcb->lengthUltimaRafaga = pcb->PC - PC_inicial;
     
-    switch (instruccion.identificador){
-        case IO:{
-            t_IO * io = malloc(sizeof(t_IO));
-            io->pcb = pcb;
-            io->tiempoBloqueo = instruccion.parametro1;
-            log_info(logger, "Ejecuto IO de: %d milisegundos", instruccion.parametro1);
-            paquete = armarPaqueteCon(io, PCB_EJECUTADO_IO_CPU_KERNEL);
-            free(io);
-            //log_info(logger, "Ejecuto IO, devuelve el pcb id:%d", pcb->id);
-            break;
-        }
-        case EXIT:{
-            paquete = armarPaqueteCon(pcb, PCB_EJECUTADO_EXIT_CPU_KERNEL);
-            log_info(logger, "Ejecuto EXIT, devuelve el pcb id:%d", pcb->id);
-            break;
-        }
-        default:{
-           log_error(logger, "No ejecuto EXIT o IO, no debe pasar por aca");
-           exit(EXIT_FAILURE);
-           break;
-        }
-    }
+
+    if(string_equals_ignore_case(instruccion->id,"IO")){
+
+    	t_IO * io = malloc(sizeof(t_IO));
+		io->pcb = pcb;
+		io->tiempoBloqueo = ((t_parameter*) list_get(instruccion->parameters, 0))->value;
+		log_info(logger, "Ejecuto IO de: %d milisegundos", io->tiempoBloqueo);
+		paquete = armarPaqueteCon(io, PCB_EJECUTADO_IO_CPU_KERNEL); // TO DO a reemplazar el armar paquete
+		free(io);
+		//log_info(logger, "Ejecuto IO, devuelve el pcb id:%d", pcb->id);
+
+    } else if(string_equals_ignore_case(instruccion->id,"EXIT")){
+
+    	paquete = pcb_create_package_with_opcode(pcb, PCB_EJECUTADO_EXIT_CPU_KERNEL); // TO DO  a reemplazar la funcion con la nuestra
+		log_info(logger, "Ejecuto EXIT, devuelve el pcb id:%d", pcb->id);
+
+	} else {
+		 log_error(logger, "No ejecuto EXIT o IO, no debe pasar por aca");
+		 exit(EXIT_FAILURE);
+	}
+
+
+
 
     log_info(logger, "finaliza ciclo instruccion para pcb id:%d", pcb->id);
     return paquete;
 }
 
 
-bool execute(t_instruccion instruccion){
-    switch (instruccion.identificador){
-        case NO_OP:
-            log_info(logger, "Ejecutado NO_OP");
-            usleep(RETARDO_NOOP*1000);
-            return true;
-        case IO:
-            //log_info(logger, "Ejecutando IO");
-            return false;
-        case READ: {
-            uint32_t * dato = execute_read(instruccion.parametro1);
-            log_info(logger, "Ejecutado READ");
-            free(dato);
-            //uint32_t * dato = execute_read(instruccion.parametro1);
-            //log_info(logger, "Ejecutado READ valor: %d", *dato);
-            return true;
-        }
-        case COPY:{
-            //log_info(logger, "Ejecutando COPY");
-            uint32_t * dato = execute_read(instruccion.parametro2);
+bool execute(t_instruction* instruccion){
 
-            execute_write(instruccion.parametro1, *dato);
-            free(dato);
-            log_info(logger, "COPY finalizado");
-            return true;
-        }
-        case WRITE:
-            
-            execute_write( instruccion.parametro1, instruccion.parametro2);
-            log_info(logger, "Ejecutado Write");
-            return true;
-        case EXIT:
-            log_info(logger, "Ejecutado Exit");
-            return false;
-        default:{
-            log_error(logger, "IDENTIFICADOR INSTRUCCION NO CONTEMPLADO-> %d", instruccion.identificador);
-            exit(EXIT_FAILURE);
-            return false; 
-        }
-    }
+	if (string_equals_ignore_case(instruccion->id, "NO_OP")) {
+		log_info(logger, "Ejecutado NO_OP");
+		usleep(RETARDO_NOOP * 1000);
+		return true;
+	} else if (string_equals_ignore_case(instruccion->id, "IO")) {
+		//log_info(logger, "Ejecutando IO");
+		return false;
+	} else if (string_equals_ignore_case(instruccion->id, "READ")) {
+		execute_read( ((t_parameter*)list_get(instruccion->parameters,0))->value );
+		log_info(logger, "Ejecutado READ");
+
+		// log_info(logger, "Ejecutado READ");
+		// free(dato);
+		//uint32_t * dato = execute_read(instruccion.parametro1);
+
+		return true;
+	} else if (string_equals_ignore_case(instruccion->id, "COPY")) {
+		//log_info(logger, "Ejecutando COPY");
+		uint32_t dato = execute_read( ((t_parameter*)list_get(instruccion->parameters,1))->value );
+
+		execute_write(((t_parameter*)list_get(instruccion->parameters,0))->value, dato);
+		// free(dato);
+		log_info(logger, "COPY finalizado");
+		return true;
+
+	} else if (string_equals_ignore_case(instruccion->id, "WRITE")) {
+		execute_write(((t_parameter*)list_get(instruccion->parameters,0))->value , ((t_parameter*)list_get(instruccion->parameters,1))->value);
+		log_info(logger, "Ejecutado Write");
+		return true;
+	} else if (string_equals_ignore_case(instruccion->id, "EXIT")) {
+		log_info(logger, "Ejecutado Exit");
+		return false;
+	} else {
+		log_error(logger, "IDENTIFICADOR INSTRUCCION NO CONTEMPLADO-> %s",
+				instruccion->id);
+		exit(EXIT_FAILURE);
+		return false;
+	}
+
+
+
 }
-uint32_t * execute_read(uint32_t direccion_logica){
+uint32_t execute_read(uint32_t direccion_logica){
 
-    uint32_t direccionFisica = consultarDireccionFisica(tablaPaginasPrimerNivelPCB, direccion_logica, REQ_MARCO_LECTURA_CPU_MEMORIA);
-    uint32_t * dato = memoria_read(direccionFisica);
-    log_info(logger, "READ dato: %d en dirección física: %d", *dato, direccionFisica);
+    uint32_t direccionFisica = consultarDireccionFisica(tablaPaginasPrimerNivelPCB, direccion_logica, GET_FRAME_READ_REQUEST);
+    uint32_t dato = memoria_read(direccionFisica);
+    log_info(logger, "READ dato: %d en dirección física: %d", dato, direccionFisica);
     //leer direccion fisica en memoria y loggear dato
     return dato;
 }
 
 void execute_write(uint32_t direccion_logica, uint32_t dato){
-    uint32_t direccionFisica = consultarDireccionFisica(tablaPaginasPrimerNivelPCB, direccion_logica, REQ_MARCO_ESCRITURA_CPU_MEMORIA);
+    uint32_t direccionFisica = consultarDireccionFisica(tablaPaginasPrimerNivelPCB, direccion_logica, GET_FRAME_WRITE_REQUEST);
     memoria_write(direccionFisica, dato);
     log_info(logger, "WRITE dato: %d en dirección física: %d", dato, direccionFisica);
 }
 
-uint32_t * memoria_read(uint32_t direccion_fisica) {
+uint32_t  memoria_read(uint32_t direccion_fisica) {
 
-    uint32_t socket_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
-    t_paquete * paquete = armarPaqueteCon(&direccion_fisica, REQ_READ_CPU_MEMORIA);
-    enviarPaquete(paquete,socket_memoria);
-    eliminarPaquete(paquete);
+    uint32_t socket_memoria = iniciar_cliente(IP_MEMORIA, PUERTO_MEMORIA, logger);
+
+    t_buffer* buffer = new_memoria_read_buffer(direccion_fisica);
+
+    //Codigo operacion que envio: * REQUEST
+	t_package* package = new_package(buffer, READ_MEMORY_REQUEST);
+
+	if (send_to_server(socket_memoria, package) == -1) {
+		log_error(logger, "Error al enviar paquete al servidor");
+
+	}
+	
+    uint32_t cod_op = recibir_operacion(socket_memoria);
+
+   //Codigo operacion que recibo:* RESPONSE
+	if(cod_op != READ_MEMORY_RESPONSE){
+			perror("respuesta inesperada");
+			exit(EXIT_FAILURE);
+		}
+
+	char* buffer_recibido = recibir_paquete(socket_memoria);
+
+	uint32_t dato;
+
+	deserialize_int(&dato, buffer_recibido);
+
+	if(dato == -1){
+		log_error(logger, "Error al leer dato en memoria");
+	}
+
+	free(buffer_recibido);
+
+    // uint32_t asdnum = 1;  
+    // uint32_t* asd = &asdnum;
+
+    return dato;
+}
+    // t_paquete * paquete = armarPaqueteCon(&direccion_fisica, REQ_READ_CPU_MEMORIA);
+    // enviarPaquete(paquete,socket_memoria);
+    // eliminarPaquete(paquete);
 
     //TODO: COMPLETAR CONEXION   
-    uint32_t asdnum = 1;  
-    uint32_t* asd = &asdnum;
-    return asd;
-}
+    
+
 
 void memoria_write(uint32_t direccion_fisica, uint32_t dato) {
 
-    uint32_t socket_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
+    uint32_t socket_memoria = iniciar_cliente(IP_MEMORIA, PUERTO_MEMORIA, logger);
 
     t_memory_write_request* peticion_escritura = create_memory_write_request();
 
@@ -166,8 +203,6 @@ void memoria_write(uint32_t direccion_fisica, uint32_t dato) {
 		log_error(logger, "Error al enviar paquete al servidor");
 
 	}
-	buffer_destroy(buffer);
-	package_destroy(package);
 
    uint32_t cod_op = recibir_operacion(socket_memoria);
    //Codigo operacion que recibo:* RESPONSE
@@ -189,16 +224,4 @@ void memoria_write(uint32_t direccion_fisica, uint32_t dato) {
 	free(buffer_recibido);
 }
 
-t_buffer* new_peticion_buffer(t_memory_write_request* peticion_escritura){
 
-	t_buffer* buffer = create_buffer();
-
-	buffer->size = 3*sizeof(uint32_t);
-
-	buffer->stream = malloc(buffer->size);
-	int offset = serialize_memory_write_request(buffer->stream, peticion_escritura);
-
-	log_debug(logger, "new_peticion_buffer - size: %d\n", offset);
-
-	return buffer;
-}
