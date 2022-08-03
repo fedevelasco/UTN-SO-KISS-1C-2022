@@ -36,6 +36,10 @@ void inicializarVariablesGlobales(char * pathConfig,char * pathConfigIP){
     ENTRADAS_TLB = config_get_int_value(config, "ENTRADAS_TLB");
     REEMPLAZO_TLB = config_get_string_value(config, "REEMPLAZO_TLB");
     hayInterrupcion = false;
+    char* r = "\r";
+    if(string_ends_with(IP, r)){
+    	log_debug(logger, "WARNING!: ip termina con \r: %s", IP);
+    }
     pthread_mutex_init(&mutex_interrupcion, NULL);
     log_info(logger, "Variables de configuracion Leidas: ip_cpu %s", IP);
 }
