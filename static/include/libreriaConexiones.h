@@ -16,11 +16,11 @@
 #define IP_KERNEL "127.0.0.1"
 #define PUERTO_KERNEL "4444"
 
-uint32_t iniciar_servidor(t_log* logger, char* name, char* ip, char* puerto);
+int32_t iniciar_servidor(t_log* logger, char* name, char* ip, char* puerto);
 
 // -------------- Aceptar cliente como Servidor --------------
 
-uint32_t esperar_cliente(t_log* logger, char* name, uint32_t socket_servidor);
+int32_t esperar_cliente(t_log* logger, char* name, int32_t socket_servidor);
 
 // -------------- Iniciar Cliente --------------
 

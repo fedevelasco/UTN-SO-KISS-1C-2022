@@ -1,7 +1,7 @@
 #include <protocol.h>
 
 
-char* recv_buffer(uint32_t client_socket)
+char* recv_buffer(int32_t client_socket)
 {
 	char* buffer;
 	uint32_t buffer_size;
