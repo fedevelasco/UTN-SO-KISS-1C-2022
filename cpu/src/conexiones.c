@@ -1,89 +1,38 @@
 // Contiene los handshake con kernel y consola, traduccion de direcciones y paquetes de handshake.h del otro
 
-#include "../include/conexiones.h"
+#include <conexiones.h>
 
-// ***** ELIMINAR COMENTADOS  YA QUE SON VIEJOS ***** //
+t_memory_config* obtenerTraduccionDeDirecciones(){
 
-// int getHandshake(int cli) {
-// 	char* handshake = recv_nowait_ws(cli, 1);
-// 	return charToInt(handshake);
-// }
+	 int socket_memoria = iniciar_cliente(IP_MEMORIA, PUERTO_MEMORIA, logger);
 
-// void warnDebug() {
-// 	log_warning(activeLogger, "--- CORRIENDO EN MODO DEBUG!!! ---", getpid());
-// 	log_warning(activeLogger, "--- CORRIENDO EN MODO DEBUG!!! ---", getpid());
-// 	log_warning(activeLogger, "--- CORRIENDO EN MODO DEBUG!!! ---", getpid());
-// 	log_warning(activeLogger, "--- CORRIENDO EN MODO DEBUG!!! ---", getpid());
-// }
+	 t_buffer* buffer = new_memory_config_buffer();
 
-// -------- KERNEL -------- //
+	t_package* package = new_package(buffer, GET_MEMORY_CONFIG_REQUEST);
 
-// void conectar_kernel() {
-// 	direccionKernel = crearDireccionParaCliente(config.puertoKernel,
-// 			config.ipKernel);
-// 	kernel = socket_w();
-// 	connect_w(kernel, &direccionKernel); //conecto cpu a la direccion 'direccionKernel'
-// 	log_info(activeLogger, "Conectado a Kernel!");
-// }
+	if (send_to_server(socket_memoria, package) == -1) {
+		log_error(logger, "Error al enviar paquete al servidor");
 
-// void hacer_handshake_kernel() {
-// 	char* hand = string_from_format("%c%c", HeaderHandshake, SOYCPU);
-// 	send_w(kernel, hand, 2);
+	}
+	buffer_destroy(buffer);
+	package_destroy(package);
 
-// 	if (getHandshake(kernel) != SOYKERNEL) {
-// 		perror("Se esperaba que CPU se conecte con Kernel.");
-// 	} else {
-// 		log_info(bgLogger, "Exito al hacer handshake con Kernel.");
-// 	}
-// }
+	uint32_t cod_op = recibir_operacion(socket_memoria);
+	if(cod_op != GET_MEMORY_CONFIG_RESPONSE){
+		perror("respuesta inesperada");
+		exit(EXIT_FAILURE);
+	}
 
-// -------- MEMORIA -------- //
+	char* buffer_recibido = recibir_paquete(socket_memoria);
 
-// void conectar_memoria() {
-// 	direccionMemoria = crearDireccionParaCliente(config.puertoMemoria, config.ipMemoria);
-// 	memoria = socket_w();
-// 	connect_w(memoria, &direccionMemoria); //conecto memoria a la direccion 'direccionMemoria'
-// 	log_info(activeLogger, "Conectado a Memoria!");
-// }
+	t_memory_config* traduccion_direcciones = create_memory_config();
 
-// void hacer_handshake_memoria() {
-// 	char *hand = string_from_format("%c%c", HeaderHandshake, SOYCPU);
-// 	send_w(memoria, hand, 2);
+	deserialize_memory_config(traduccion_direcciones, buffer_recibido);
 
-// 	if (getHandshake(memoria) != SOYMEMORIA) {
-// 		perror("Se esperaba que CPU se conecte con Memoria.");
-// 	} else {
-// 		log_info(bgLogger, "Exito al hacer handshake con Memoria.");
-// 	}
-// }
-
-
-t_traduccion_direcciones* obtenerTraduccionDeDirecciones(int socket){
-    t_mensaje * mensaje = malloc(sizeof(t_mensaje));
-    mensaje->texto=string_new();
-    string_append(&mensaje->texto,"hola");
-    mensaje->longitud=strlen(mensaje->texto)+1;
-    t_paquete * paquete = armarPaqueteCon(mensaje,REQ_TRADUCCION_DIRECCIONES_CPU_MEMORIA);
-    enviarPaquete(paquete,socket);
-    eliminarPaquete(paquete);
-    
-    free(mensaje->texto);
-    free(mensaje);
-    
-
-    //respuesta
-    paquete = recibirPaquete(socket);
-    if(paquete->codigo_operacion!=RES_TRADUCCION_DIRECCIONES_MEMORIA_CPU){
-        perror("No se recibio el codigo de operacion esperado para traduccion de direcciones");
-        exit(EXIT_FAILURE);
-    }
-    t_traduccion_direcciones* traduccion_direcciones = deserializarTraduccionDirecciones(paquete->buffer->stream);
-
-    eliminarPaquete(paquete);
+	free(buffer_recibido);
+	close(socket_memoria);
 
     return traduccion_direcciones;
-
-
 }
 
 char* recibir_paquete(uint32_t socket_cliente)
@@ -187,28 +136,23 @@ t_buffer* new_peticion_buffer(t_memory_write_request* peticion_escritura){
 	return buffer;
 }
 
+t_buffer* new_memory_config_buffer(){
 
-// -------- ESTABLECER CONEXIONES CON LOS OTROS MODULOS -------- //
+	t_buffer* buffer = create_buffer();
 
-// void establecerConexionConMemoria() {
-// 	if (!config.DEBUG_IGNORE_MEMORIA) {
-// 		conectar_memoria();
-// 		log_info(activeLogger,"Estoy handshakeando");
-// 		hacer_handshake_memoria();
-// 	} else {
-// 		warnDebug();
-// 	}
+	buffer->size = sizeof(uint32_t);
 
-// 	pedir_tamanio_paginas();
-// }
-// void establecerConexionConKernel() {
-// 	if(!config.DEBUG_IGNORE_KERNEL){
-// 		conectar_kernel();
-// 		hacer_handshake_kernel();
-// 	}else{
-// 		warnDebug();
-// 	}
-// }
+	uint32_t get_memory_config_signal = 1;
+
+	buffer->stream = malloc(buffer->size);
+	int offset = serialize_int(buffer->stream, &get_memory_config_signal);
+
+	log_debug(logger, "new_memoria_config_buffer - size: %d\n", offset);
+
+	return buffer;
+}
+
+
 
 
 

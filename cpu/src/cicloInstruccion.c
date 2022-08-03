@@ -1,11 +1,12 @@
 // FUNCIONES PROPIAS DEL CICLO DE INSTRUCCION
 // Fetch -> Decode -> Fetch Operands -> Execute -> Check Interrupt
 
-#include "../include/cicloInstruccion.h"
+#include <cicloInstruccion.h>
 
 
-t_instruccion fetch(t_pcb *  pcb){
-    t_instruccion instruccion_actual = pcb->instrucciones[pcb->PC];
+t_instruction* fetch(t_pcb *  pcb){
+    t_instruction* instruccion_actual = list_get(pcb->instrucciones->instructions, pcb->PC);
+
     return instruccion_actual;
 }
 
@@ -15,7 +16,7 @@ t_paquete * cicloInstruccion(t_pcb * pcb) {
     pthread_mutex_unlock(&mutex_interrupcion);
     t_paquete * paquete;
     bool seguirEjecutando = true;
-    t_instruccion instruccion;
+    t_instruction* instruccion;
     uint32_t PC_inicial = pcb->PC;
     PCB_ACTUAL=pcb->id;
     log_info(logger, "Inicia ciclo instruccion para pcb id:%d", pcb->id);
@@ -25,7 +26,7 @@ t_paquete * cicloInstruccion(t_pcb * pcb) {
     while(seguirEjecutando ){
         instruccion = fetch(pcb);
         const char* identificador_instruccion;
-        identificador_instruccion = instruccion_idAString((instruccion).identificador);
+        identificador_instruccion = instruccion->id;
         log_info(logger, "Instrucción: %s", identificador_instruccion);
         seguirEjecutando = execute(instruccion);
         log_info(logger, " ");
@@ -48,76 +49,78 @@ t_paquete * cicloInstruccion(t_pcb * pcb) {
 
     pcb->lengthUltimaRafaga = pcb->PC - PC_inicial;
     
-    switch (instruccion.identificador){
-        case IO:{
-            t_IO * io = malloc(sizeof(t_IO));
-            io->pcb = pcb;
-            io->tiempoBloqueo = instruccion.parametro1;
-            log_info(logger, "Ejecuto IO de: %d milisegundos", instruccion.parametro1);
-            paquete = armarPaqueteCon(io, PCB_EJECUTADO_IO_CPU_KERNEL); // TO DO a reemplazar el armar paquete
-            free(io);
-            //log_info(logger, "Ejecuto IO, devuelve el pcb id:%d", pcb->id);
-            break;
-        }
-        case EXIT:{
-            paquete = pcb_create_package_with_opcode(pcb, PCB_EJECUTADO_EXIT_CPU_KERNEL); // TO DO  a reemplazar la funcion con la nuestra
-            log_info(logger, "Ejecuto EXIT, devuelve el pcb id:%d", pcb->id);
-            break;
-        }
-        default:{
-           log_error(logger, "No ejecuto EXIT o IO, no debe pasar por aca");
-           exit(EXIT_FAILURE);
-           break;
-        }
-    }
+
+    if(string_equals_ignore_case(instruccion->id,"IO")){
+
+    	t_IO * io = malloc(sizeof(t_IO));
+		io->pcb = pcb;
+		io->tiempoBloqueo = ((t_parameter*) list_get(instruccion->parameters, 0))->value;
+		log_info(logger, "Ejecuto IO de: %d milisegundos", io->tiempoBloqueo);
+		paquete = armarPaqueteCon(io, PCB_EJECUTADO_IO_CPU_KERNEL); // TO DO a reemplazar el armar paquete
+		free(io);
+		//log_info(logger, "Ejecuto IO, devuelve el pcb id:%d", pcb->id);
+
+    } else if(string_equals_ignore_case(instruccion->id,"EXIT")){
+
+    	paquete = pcb_create_package_with_opcode(pcb, PCB_EJECUTADO_EXIT_CPU_KERNEL); // TO DO  a reemplazar la funcion con la nuestra
+		log_info(logger, "Ejecuto EXIT, devuelve el pcb id:%d", pcb->id);
+
+	} else {
+		 log_error(logger, "No ejecuto EXIT o IO, no debe pasar por aca");
+		 exit(EXIT_FAILURE);
+	}
+
+
+
 
     log_info(logger, "finaliza ciclo instruccion para pcb id:%d", pcb->id);
     return paquete;
 }
 
 
-bool execute(t_instruccion instruccion){
-    switch (instruccion.identificador){
-        case NO_OP:
-            log_info(logger, "Ejecutado NO_OP");
-            usleep(RETARDO_NOOP*1000);
-            return true;
-        case IO:
-            //log_info(logger, "Ejecutando IO");
-            return false;
-        case READ: {
-            execute_read(instruccion.parametro1);
-            log_info(logger, "Ejecutado READ");
+bool execute(t_instruction* instruccion){
 
-            // log_info(logger, "Ejecutado READ");
-            // free(dato);
-            //uint32_t * dato = execute_read(instruccion.parametro1);
-            
-            return true;
-        }
-        case COPY:{
-            //log_info(logger, "Ejecutando COPY");
-            uint32_t dato = execute_read(instruccion.parametro2);
+	if (string_equals_ignore_case(instruccion->id, "NO_OP")) {
+		log_info(logger, "Ejecutado NO_OP");
+		usleep(RETARDO_NOOP * 1000);
+		return true;
+	} else if (string_equals_ignore_case(instruccion->id, "IO")) {
+		//log_info(logger, "Ejecutando IO");
+		return false;
+	} else if (string_equals_ignore_case(instruccion->id, "READ")) {
+		execute_read( ((t_parameter*)list_get(instruccion->parameters,0))->value );
+		log_info(logger, "Ejecutado READ");
 
-            execute_write(instruccion.parametro1, dato);
-            // free(dato);
-            log_info(logger, "COPY finalizado");
-            return true;
-        }
-        case WRITE:
-            
-            execute_write( instruccion.parametro1, instruccion.parametro2);
-            log_info(logger, "Ejecutado Write");
-            return true;
-        case EXIT:
-            log_info(logger, "Ejecutado Exit");
-            return false;
-        default:{
-            log_error(logger, "IDENTIFICADOR INSTRUCCION NO CONTEMPLADO-> %d", instruccion.identificador);
-            exit(EXIT_FAILURE);
-            return false; 
-        }
-    }
+		// log_info(logger, "Ejecutado READ");
+		// free(dato);
+		//uint32_t * dato = execute_read(instruccion.parametro1);
+
+		return true;
+	} else if (string_equals_ignore_case(instruccion->id, "COPY")) {
+		//log_info(logger, "Ejecutando COPY");
+		uint32_t dato = execute_read( ((t_parameter*)list_get(instruccion->parameters,1))->value );
+
+		execute_write(((t_parameter*)list_get(instruccion->parameters,0))->value, dato);
+		// free(dato);
+		log_info(logger, "COPY finalizado");
+		return true;
+
+	} else if (string_equals_ignore_case(instruccion->id, "WRITE")) {
+		execute_write(((t_parameter*)list_get(instruccion->parameters,0))->value , ((t_parameter*)list_get(instruccion->parameters,1))->value);
+		log_info(logger, "Ejecutado Write");
+		return true;
+	} else if (string_equals_ignore_case(instruccion->id, "EXIT")) {
+		log_info(logger, "Ejecutado Exit");
+		return false;
+	} else {
+		log_error(logger, "IDENTIFICADOR INSTRUCCION NO CONTEMPLADO-> %s",
+				instruccion->id);
+		exit(EXIT_FAILURE);
+		return false;
+	}
+
+
+
 }
 uint32_t execute_read(uint32_t direccion_logica){
 

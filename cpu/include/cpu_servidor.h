@@ -3,16 +3,15 @@
 #ifndef CPU_SERVIDOR_H_
 #define CPU_SERVIDOR_H_
 
-    #include <stdlib.h>
-    #include <stdio.h>
-    #include "../include/servidor_abstracto.h"
-    #include "../include/cicloInstruccion.h"
-    #include "../include/variablesGlobales.h"
-    #include "../include/mmu.h"
-    #include <pthread.h>
-// sin static 
-    #include "../include/serializacion_cpu.h"
-    #include "../include/protocolo_transferencia.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include "../include/servidor_abstracto.h"
+#include "../include/cicloInstruccion.h"
+#include <global_structures.h>
+#include "../include/mmu.h"
+#include <pthread.h>
+
+#include "../include/protocolo_transferencia.h"
 
 t_config * config;
 t_config * ips;
@@ -26,11 +25,10 @@ int RETARDO_NOOP;
 int ENTRADAS_TLB;
 bool hayInterrupcion;
 pthread_mutex_t mutex_interrupcion;
-t_traduccion_direcciones* traduccion_direcciones;
+t_memory_config* traduccion_direcciones;
 
-
-    void deserializarDispatch(t_paquete * paquete, int socket_cliente);
-    void deserializarInterrupt(t_paquete * paquete, int socket_cliente);
-    void servidorInterrupt(void * socket);
+void deserializarDispatch(t_paquete * paquete, int socket_cliente);
+void deserializarInterrupt(t_paquete * paquete, int socket_cliente);
+void servidorInterrupt(void * socket);
 
 #endif

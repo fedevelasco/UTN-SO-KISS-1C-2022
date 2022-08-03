@@ -10,6 +10,8 @@ void iniciarHilos(){
 
     socket_interrupt = iniciar_servidor(logger, IP, interrupt, PUERTO_ESCUCHA_INTERRUPT);
 
+    //TODO: Revisar esto!
+
     pthread_t thread_dispatch, thread_interrupt;
     servidor_dispatch = obtenerServidor(socket_dispatch, deserializarDispatch, "dispatch");
     //servidor_interrupt = obtenerServidor(socket_interrupt, deserializarInterrupt, "interrupt");
@@ -54,9 +56,9 @@ int main(int argc, char* argv[]) {
 
     log_info(logger, "IP_MEMORIA: %s", IP_MEMORIA);
 
-    int socket_memoria = iniciar_cliente(IP_MEMORIA, PUERTO_MEMORIA, logger);
-    traduccion_direcciones = obtenerTraduccionDeDirecciones(socket_memoria);
-    close(socket_memoria);
+//    int socket_memoria = iniciar_cliente(IP_MEMORIA, PUERTO_MEMORIA, logger);
+    traduccion_direcciones = obtenerTraduccionDeDirecciones();
+//    close(socket_memoria);
     log_info(logger, "traduccion de direcciones obtenida de memoria");
     iniciarEstructurasMMU();
     iniciarHilos();
@@ -64,6 +66,7 @@ int main(int argc, char* argv[]) {
     //liberar heap
     config_destroy(config);
     config_destroy(ips);
-    free(traduccion_direcciones);
+    memory_config_destroy(traduccion_direcciones);
+    log_destroy(logger);
     return 0;
 }

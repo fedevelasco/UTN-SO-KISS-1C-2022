@@ -94,6 +94,10 @@ void process_kernel_functions(){
 	        			process_kill(operation_buffer);
 	        			break;
 	        		}
+	        		case GET_MEMORY_CONFIG_REQUEST: {
+	        			get_memory_config(operation_buffer);
+	        			break;
+	        		}
 
 	        		default:
 	        			log_error(logger, "KERNEL_THREAD - process_kernel_functions - Error en server");

@@ -16,26 +16,21 @@
 #include <commons/collections/queue.h>
 #include <commons/collections/list.h>
 #include <tads/package.h>
-// #include <parser/parser.h>
+
 #include <string.h>
 #include <signal.h>
 #include <stdbool.h>
-// #include "handshake.h"
-// #include "header.h"
-// #include "cliente-servidor.h"
-// #include "log.h"
-// #include "commonTypes.h"
-#include "../include/cpu_alt.h"
-// sin static
-#include "../include/serializacion_cpu.h"
+
+#include <libreriaConexiones.h>
+#include <protocolo_transferencia.h>
 #include <serialization.h>
+#include <tads/memory_config.h>
 
 /*------------Variables Globales--------------*/
 int kernel; //cpu es cliente del kernel
 int memoria; //cpu es cliente de memoria
 struct sockaddr_in direccionKernel;   //direccion del kernel
 struct sockaddr_in direccionMemoria;	  //direccion memoria
-
 
 // ***** Funciones de conexiones ***** //
 int getHandshake(int cli);
@@ -55,9 +50,8 @@ uint32_t send_to_server(uint32_t connection, t_package* package);
 t_buffer* new_page_table_request_buffer(t_page_table_request* request);
 t_buffer* new_memoria_read_buffer(uint32_t direccion);
 t_buffer* new_peticion_buffer(t_memory_write_request* peticion_escritura);
+t_buffer* new_memory_config_buffer();
 
-t_traduccion_direcciones* obtenerTraduccionDeDirecciones(int socket);
-
-
+t_memory_config* obtenerTraduccionDeDirecciones();
 
 #endif     

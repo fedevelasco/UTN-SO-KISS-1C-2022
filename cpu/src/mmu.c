@@ -215,21 +215,21 @@ uint32_t consultarDireccionFisica(uint32_t tablaPaginasPrimerNivelPCB, uint32_t 
 }
 
 uint32_t obtenerNumeroPagina(uint32_t direccion_logica) {
-    return floor(direccion_logica/traduccion_direcciones->tamanio_pagina);
+    return floor(direccion_logica/traduccion_direcciones->page_size);
 }
 
 uint32_t obtenerEntradaTabla1erNivel(uint32_t numero_pagina) {
-    return floor(numero_pagina/traduccion_direcciones->paginas_por_tabla);
+    return floor(numero_pagina/traduccion_direcciones->pages_per_table);
 }
 
 uint32_t obtenerEntradaTabla2doNivel(uint32_t numero_pagina) {
-    return numero_pagina % traduccion_direcciones->paginas_por_tabla;
+    return numero_pagina % traduccion_direcciones->pages_per_table;
 }
 
 uint32_t obtenerDesplazamiento(uint32_t direccion_logica, uint32_t numero_pagina) {
-    return direccion_logica - numero_pagina * traduccion_direcciones->tamanio_pagina;
+    return direccion_logica - numero_pagina * traduccion_direcciones->page_size;
 }
 
 uint32_t obtenerDireccionFisica(uint32_t desplazamiento, uint32_t numero_marco) {
-    return desplazamiento + numero_marco * traduccion_direcciones->tamanio_pagina;
+    return desplazamiento + numero_marco * traduccion_direcciones->page_size;
 }
