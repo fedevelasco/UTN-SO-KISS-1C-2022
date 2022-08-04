@@ -77,6 +77,7 @@ t_pcb* obtenerSiguienteAready(){
             pthread_mutex_lock(&mutex_estado_new);
             pcb = queue_pop(estado_new); // Consigo un PCB de la cola de estado NEW
             comunicacionMemoriaCreacionEstructuras(pcb); // Le pregunto a memoria por el valor de tabla de paginas para el nuevo PCB, luego lo asigno
+            log_info(logger, "Kernel - Tabla de paginas primer nivel con index: %d, asignada al pcb: %d",pcb->tablaDePaginas, pcb->id);
             pthread_mutex_unlock(&mutex_estado_new);
             return pcb;
         }
@@ -295,7 +296,6 @@ void comunicacionMemoriaCreacionEstructuras(t_pcb * pcb){
 	free(buffer_recibido);
 
     pcb->tablaDePaginas = tablaPaginas1erNivel;
-    log_info(logger, "Kernel - Tabla de paginas primer nivel con index: %d, asignada al pcb: %d",tablaPaginas1erNivel, pcb->id);
 
 }
 

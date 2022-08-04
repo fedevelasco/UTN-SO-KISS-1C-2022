@@ -28,6 +28,9 @@ t_pcb* pcb_deserializar_estrucs(void* stream, int offset){
 	offset += deserialize_int(&(pcb->estimacionRafaga), stream + offset);
 	offset += deserialize_int(&(pcb->lengthUltimaRafaga), stream + offset);
 	offset += deserialize_int(&(pcb->sizeInstrucciones), stream + offset);
+
+	pcb->instrucciones = create_instructions_list_with_size(pcb->sizeInstrucciones);
+
 	offset += deserialize_instructions_list(pcb->instrucciones, stream + offset);    
 
 	return pcb;
@@ -55,7 +58,7 @@ t_paquete * pcb_create_package_with_opcode(t_pcb* pcb, t_op_code opcode){
 }
 // ----------- Creo pcb para la deserializacion -----------
 t_pcb* pcb_create_with_size(int32_t size){ // Uso el pcb create con size para cuando deserealizo un PCB
-	t_pcb* pcb = malloc(size);
+	t_pcb* pcb = malloc(sizeof(t_pcb));
 	pcb->id= 0;
     pcb->tamanioProceso = 0;
 	pcb->PC = 0;
@@ -63,7 +66,7 @@ t_pcb* pcb_create_with_size(int32_t size){ // Uso el pcb create con size para cu
     pcb->estimacionRafaga = 0;
 	pcb->lengthUltimaRafaga = 0;
 	pcb->lengthUltimaRafaga = 0;
-    pcb->instrucciones = create_instructions_list();
+    pcb->instrucciones = create_instructions_list_with_size(size);
 	return pcb;
 }
 // ----------- recibo stream de datos post opcode y me genera un pcb ----------------

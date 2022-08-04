@@ -162,11 +162,7 @@ t_proceso* recibirPaqquete_inicio(int server_socket){
 
 	t_proceso* nuevo_proceso = malloc(sizeof(t_proceso));
 
-//	t_op_code cod_op = recibir_operacion(server_socket); // Recibo el cod_op
-	t_op_code cod_op;
-	if (recv(server_socket, &cod_op, sizeof(t_op_code), 0) != sizeof(t_op_code)) {
-		log_error(logger, "server_listen_ram - Error recibiendo op_code");
-	}
+	t_op_code cod_op = recibir_operacion(server_socket); // Recibo el cod_op
 
 	switch (cod_op) {
 
@@ -182,7 +178,7 @@ t_proceso* recibirPaqquete_inicio(int server_socket){
 		return nuevo_proceso;
 		break;
 
-	case -1:
+	case UNDEFINED:
 
 		log_error(logger,
 				"El cliente se desconecto. Terminando conexion con el cliente."); //Codigo para finalizar conexion
