@@ -131,7 +131,17 @@ char* recibir_buffer(uint32_t* buffer_size, uint32_t socket_cliente)
 	return buffer;
 }
 
-t_proceso* recibir_paquete(uint32_t socket_cliente)
+char* recibir_paquete(uint32_t socket_cliente)
+{
+	uint32_t buffer_size;
+	char* buffer;
+
+	buffer = recibir_buffer(&buffer_size, socket_cliente);
+
+	return buffer;
+}
+
+t_proceso* recibir_paquete_proceso(uint32_t socket_cliente)
 {
 	uint32_t buffer_size; //Creo el tamanio del buffer
 	char* buffer; //Creo el buffer
@@ -151,36 +161,42 @@ t_proceso* recibir_paquete(uint32_t socket_cliente)
 t_proceso* recibirPaqquete_inicio(int server_socket){
 
 	t_proceso* nuevo_proceso = malloc(sizeof(t_proceso));
-	t_instructions_list* instructions_list = malloc(sizeof(t_instructions_list));
 
-    uint32_t cod_op = recibir_operacion(server_socket);// Recibo el cod_op
-     
-        switch (cod_op) {
+//	t_op_code cod_op = recibir_operacion(server_socket); // Recibo el cod_op
+	t_op_code cod_op;
+	if (recv(server_socket, &cod_op, sizeof(t_op_code), 0) != sizeof(t_op_code)) {
+		log_error(logger, "server_listen_ram - Error recibiendo op_code");
+	}
 
-			case INSTRUCTIONS: //Ejecuto el caso donde op_code == INSTRUCTIONS
+	switch (cod_op) {
 
-				nuevo_proceso = recibir_paquete(server_socket); //Recibo paquete, lo deserializo y lo guardo en instruction_list
-				nuevo_proceso->tamanioProceso = nuevo_proceso->instrucciones->process_size;
-				log_info(logger, "Kernel - Paquete recibido");
-				log_info(logger, "Kernel - Tamanio lista de instrucciones: %i", nuevo_proceso->sizeInstrucciones);
-				log_info(logger, "Kernel - Tamanio de proceso: %i ", nuevo_proceso->tamanioProceso);
-  				// TODO: no funciona.... imprimir_lista_instrucciones(nuevo_proceso->instrucciones);
-				
-                return(nuevo_proceso);
-				break;
+	case INSTRUCTIONS: //Ejecuto el caso donde op_code == INSTRUCTIONS
 
-			case -1:
+		nuevo_proceso = recibir_paquete_proceso(server_socket); //Recibo paquete, lo deserializo y lo guardo en instruction_list
+		nuevo_proceso->tamanioProceso = nuevo_proceso->instrucciones->process_size;
+		log_info(logger, "Kernel - Paquete recibido");
+		log_info(logger, "Kernel - Tamanio lista de instrucciones: %i", nuevo_proceso->sizeInstrucciones);
+		log_info(logger, "Kernel - Tamanio de proceso: %i ", nuevo_proceso->tamanioProceso);
+		// TODO: no funciona.... imprimir_lista_instrucciones(nuevo_proceso->instrucciones);
 
-				log_error(logger, "El cliente se desconecto. Terminando conexion con el cliente."); //Codigo para finalizar conexion
-				return -1;
+		return nuevo_proceso;
+		break;
 
-			default:
+	case -1:
 
-				log_warning(logger,"Operacion desconocida."); //Codigo para cualquier otro op_code no mencionado arriba
-				break;
+		log_error(logger,
+				"El cliente se desconecto. Terminando conexion con el cliente."); //Codigo para finalizar conexion
+		exit(-1);
+		break;
 
-		}
-    log_info(logger, "Kernel - Recoleccion de informacion para generar proceso completada");
+	default:
+
+		log_warning(logger, "Operacion desconocida."); //Codigo para cualquier otro op_code no mencionado arriba
+		break;
+
+	}
+
+	log_info(logger, "Kernel - Recoleccion de informacion para generar proceso completada");
 }
 
 

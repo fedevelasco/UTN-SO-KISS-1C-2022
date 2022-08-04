@@ -50,18 +50,7 @@
 		char * texto;
 	}t_mensaje;
 
-	/*
-	typedef struct{
-		uint32_t id;
-		uint32_t tamanioProceso;
-		uint32_t PC;
-		uint32_t tablaDePaginas;
-		uint32_t estimacionRafaga;
-		uint32_t lengthUltimaRafaga;
-		uint32_t sizeInstrucciones;
-		t_instruccion* instrucciones;
-	}t_pcb;
-	*/
+
 	typedef struct{
 		uint32_t id;
 		uint32_t tamanioProceso;
@@ -106,13 +95,13 @@
 	
 	void * serializarInstrucciones(void* stream, void* estructura, int offset);
 	t_instruccion* deserializarInstrucciones(void * stream, int offset);
-	t_instructions_list* deserializarInstrucciones_V2(t_paquete* paquete, int offset);
+
 
 //	t_proceso* crearProceso(uint32_t tamanioProceso, uint32_t sizeInstrucciones,t_instruccion* instrucciones);
 //	void freeProceso(t_proceso * proceso);
 	void * serializarProceso(void* stream, void* estructura);
 //	t_proceso* deserializarProceso(void* stream);
-//	t_proceso* deserializarProceso_V2 (t_paquete* paquete);
+
 	
 	t_traduccion_direcciones* crearTraduccionDirecciones(uint32_t PID);
 	void * serializarTraduccionDirecciones(void* stream, void* estructura);
@@ -125,7 +114,8 @@
 	// void* serializarPCB(void* stream, void* estructura, int offset);
 	// t_pcb* deserializarPCB(void* stream, int offset);
 	void* pcb_serializar_estruc(void* stream, void* estructura, int offset);//nuevo
-	t_pcb* pcb_deserializar_estruc(void* stream, int offset);//nuevo
+	t_pcb* pcb_deserializar_estrucs(void* stream, int offset);//nuevo
+
 	int bytes_PCB_struc(t_pcb* pcb);//nuevo
 	char* pcb_create_package_with_opcode(t_pcb* pcb, int32_t bytes, t_op_code opcode);//nuevo
 	t_pcb* pcb_create_with_size_for_des(int32_t size);

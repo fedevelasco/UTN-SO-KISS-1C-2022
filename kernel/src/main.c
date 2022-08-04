@@ -8,7 +8,7 @@ void manejarProceso(int* socket_consola){
     nuevo_proceso = recibirPaqquete_inicio(*socket_consola);
     //t_paquete* paquete = recibirPaquete(*socket_consola); // Recibo paquete de consola FUNCIONA
     //t_proceso* nuevo_proceso = deserializarProceso(paquete->buffer->stream); // Creo proceso a partir del paquete
-    //t_proceso* nuevo_proceso = deserializarProceso_V2(paquete);
+
     //eliminarPaquete(paquete); // Elimino el paquete 
 
     // Print de lista de instrucciones
@@ -27,15 +27,14 @@ void manejarProceso(int* socket_consola){
 }
 
 
-//int main(int argc, char* argv[]) {
-int main() {
-    //validarParametros(argc, argv);
-    //char * pathConfig = argv[1];
-    //char * pathIPS = argv[2];
+int main(int argc, char* argv[]) {
+
+    validarParametros(argc, argv);
+    char * pathConfig = argv[1];
+    char * pathIPS = argv[2];
 
     /* Inicializo la config y asigno los valores a las variables globales */
-    //inicializarVariablesGlobales(pathConfig, pathIPS);
-    inicializarVariablesGlobales("/home/utnso/shared/tp-2022-1c-Grupo-TP-SO/kernel/config/kernel.cfg", "/home/utnso/shared/tp-2022-1c-Grupo-TP-SO/kernel/config/ip.cfg");
+    inicializarVariablesGlobales(pathConfig, pathIPS);
 
     /* Inicializacion de los mutex */
     pthread_mutex_init(&mutex_estado_new, (void *)NULL);

@@ -49,94 +49,6 @@ t_paquete* crearPaquete(t_op_code cod_op)
 	return paquete;
 }
 
-int tamanioEstructura(void* estructura ,t_op_code cod_op){
-
-	switch(cod_op){
-
-		case PROCESO:{
-			t_proceso * proceso = (t_proceso *) estructura;
-			return sizeof(uint32_t)*2 + proceso->sizeInstrucciones*(sizeof(uint32_t)*2 + sizeof(instruccion_id));
-		}
-		case REQ_TRADUCCION_DIRECCIONES_CPU_MEMORIA:{
-			t_mensaje * msg = (t_mensaje*) estructura;
-			return msg->longitud + sizeof(uint32_t);
-		}
-		case RES_TRADUCCION_DIRECCIONES_MEMORIA_CPU:{
-			return sizeof(uint32_t)*2;
-		}
-		case REQ_PCB_A_EJECUTAR_KERNEL_CPU:{
-			t_pcb * pcb = (t_pcb *) estructura; 
-			return sizeof(uint32_t)*7 + pcb->sizeInstrucciones*(sizeof(uint32_t)*2 + sizeof(instruccion_id));
-		}
-		case PCB_EJECUTADO_IO_CPU_KERNEL:{
-			t_IO * io = (t_IO *) estructura; 
-			return sizeof(uint32_t) + sizeof(uint32_t)*7 + io->pcb->sizeInstrucciones*(sizeof(uint32_t)*2 + sizeof(instruccion_id));
-		}
-		case PCB_EJECUTADO_EXIT_CPU_KERNEL:{
-			t_pcb * pcb = (t_pcb *) estructura; 
-			return sizeof(uint32_t)*7 + pcb->sizeInstrucciones*(sizeof(uint32_t)*2 + sizeof(instruccion_id));
-		}
-		case PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL:{
-			t_pcb * pcb = (t_pcb *) estructura; 
-			return sizeof(uint32_t)*7 + pcb->sizeInstrucciones*(sizeof(uint32_t)*2 + sizeof(instruccion_id));
-		}
-		case REQ_INTERRUPCION_KERNEL_CPU:{
-			return sizeof(uint32_t);
-		}
-		case RES_FIN_PROCESO_KERNEL_CONSOLA:{
-			return sizeof(uint32_t);
-		}
-		case REQ_FIN_PROCESO_KERNEL_MEMORIA:{
-			t_pcb * pcb = (t_pcb *) estructura; 
-			return sizeof(uint32_t)*7 + pcb->sizeInstrucciones*(sizeof(uint32_t)*2 + sizeof(instruccion_id));
-		}
-		case REQ_CREAR_PROCESO_KERNEL_MEMORIA:{
-			t_pcb * pcb = (t_pcb *) estructura; 
-			return sizeof(uint32_t)*7 + pcb->sizeInstrucciones*(sizeof(uint32_t)*2 + sizeof(instruccion_id));
-		}
-		case RES_CREAR_PROCESO_KERNEL_MEMORIA:{
-			return sizeof(uint32_t);
-		}
-		case REQ_SUSP_PROCESO_KERNEL_MEMORIA:{
-			t_pcb * pcb = (t_pcb *) estructura; 
-			return sizeof(uint32_t)*7 + pcb->sizeInstrucciones*(sizeof(uint32_t)*2 + sizeof(instruccion_id));
-		}
-		case RES_SUSP_PROCESO_KERNEL_MEMORIA:{
-			return sizeof(uint32_t);
-		}
-		case REQ_TABLA_SEGUNDO_NIVEL_CPU_MEMORIA:{
-			return sizeof(uint32_t)*3;
-		}
-		case RES_TABLA_SEGUNDO_NIVEL_MEMORIA_CPU: {
-			return sizeof(uint32_t);
-		}
-		case REQ_MARCO_ESCRITURA_CPU_MEMORIA:{
-			return sizeof(uint32_t)*3;
-		}
-		case REQ_MARCO_LECTURA_CPU_MEMORIA:{
-			return sizeof(uint32_t)*3;
-		}
-		case RES_MARCO_MEMORIA_CPU:{
-			return sizeof(uint32_t);
-		}
-		case REQ_READ_CPU_MEMORIA:{
-			return sizeof(uint32_t);
-		}
-		case RES_READ_MEMORIA_CPU:{
-			return sizeof(uint32_t);
-		}
-		case REQ_WRITE_CPU_MEMORIA:{
-			return sizeof(uint32_t)*3;
-		}
-		case RES_WRITE_CPU_MEMORIA:{
-			return sizeof(uint32_t);
-		}
-		default: {
-			fprintf(stderr,"Código de operacion %d no contemplado", cod_op);
-			exit(EXIT_FAILURE);
-		}	
-	}
-}
 
 t_paquete* armarPaqueteCon(void* estructura, t_op_code cod_op){ 
 
@@ -212,27 +124,6 @@ void* serializarProceso (void* stream, void* estructura){
 	return stream;
 }
 
-//
-//t_proceso* deserializarProceso (void* stream){
-//	t_proceso* proceso = malloc(sizeof(t_proceso)); //Aloco memoria para el proceso
-//	int offset = 0;
-//	memcpy(&(proceso->tamanioProceso), stream + offset, sizeof(uint32_t)); //Asigno el tamanio del proceso
-//	offset += sizeof(uint32_t); //
-//	proceso->instrucciones = deserializarInstrucciones(stream,  offset);
-//	return proceso;
-//}
-
-t_proceso* deserializarProceso_V2 (t_paquete* paquete){
-	t_proceso* proceso = malloc(sizeof(t_proceso)); //Aloco memoria para el proceso
-	//int offset = 0;
-	//memcpy(&(proceso->tamanioProceso), paquete->buffer->stream + offset, sizeof(uint32_t)); //Asigno el tamanio del proceso
-	//printf("KERNEL - COPIADO EL TAMANIO DE PROCESO\n");
-    //offset += sizeof(uint32_t);
-    proceso->tamanioProceso = 20;
-    uint32_t bytes = deserialize_instructions_list(proceso->instrucciones, paquete->buffer->stream);
-    printf("KERNEL - LISTA DE INSTRUCCIONES EXTRAIDA\n");
-    imprimir_lista_instrucciones(proceso->instrucciones);
-}
 
 void* serializarInstrucciones (void* stream, void* estructura, int offset){
 	uint32_t sizeInstrucciones=0;
@@ -267,10 +158,6 @@ t_instruccion* deserializarInstrucciones(void * stream, int offset){
 		offset += sizeof(uint32_t);
 	}
 	return instrucciones;
-}
-
-t_instructions_list* deserializarInstrucciones_V2(t_paquete* paquete, int offset){
-    printf("asdas");
 }
 
 
@@ -344,7 +231,8 @@ void* pcb_serializar_estruc(void* stream, void* estructura, int offset){
 	offset += serialize_int(stream + offset, &(pcb->sizeInstrucciones));
 	offset += serialize_instructions_list (stream + offset, pcb->instrucciones);
 
-    return offset;
+	return stream;
+
 }
 // ------------- Devuelve un pcb deserializado a partir de un stream de datos ----------------
 t_pcb* pcb_deserializar_estrucs(void* stream, int offset){
@@ -363,7 +251,7 @@ t_pcb* pcb_deserializar_estrucs(void* stream, int offset){
 }
 // --------- Caculo los bytes para el pcb ------------
 int bytes_PCB_struc(t_pcb* pcb){
-    int temp = sizeof(uint32_t)*7 + bytes_instructions_list(pcb->instrucciones);
+    return sizeof(uint32_t)*7 + bytes_instructions_list(pcb->instrucciones);
 }
 // --------- armo un pcb serializado y me arma el stream a mandar de una ------------
 // REQ_PCB_A_EJECUTAR_KERNEL_CPU,  ejecutar pcb
@@ -381,22 +269,22 @@ char* pcb_create_package_with_opcode(t_pcb* pcb, int32_t bytes, t_op_code opcode
 
 	switch(opcode){
 		case REQ_PCB_A_EJECUTAR_KERNEL_CPU:{
-			offset += serialize_opcode(output + offset, REQ_PCB_A_EJECUTAR_KERNEL_CPU);
+			offset += serialize_opcode(output + offset, (t_op_code*) REQ_PCB_A_EJECUTAR_KERNEL_CPU);
 			pcb_serializar_estruc(output, pcb, offset);
 			return output;
 		}
 		case PCB_EJECUTADO_IO_CPU_KERNEL:{
-			offset += serialize_opcode(output + offset, PCB_EJECUTADO_IO_CPU_KERNEL);
+			offset += serialize_opcode(output + offset, (t_op_code*) PCB_EJECUTADO_IO_CPU_KERNEL);
 			pcb_serializar_estruc(output, pcb, offset);
 			return output;
 		}
 		case PCB_EJECUTADO_EXIT_CPU_KERNEL:{
-			offset += serialize_opcode(output + offset, PCB_EJECUTADO_EXIT_CPU_KERNEL);
+			offset += serialize_opcode(output + offset, (t_op_code*) PCB_EJECUTADO_EXIT_CPU_KERNEL);
 			pcb_serializar_estruc(output, pcb, offset);
 			return output;
 		}
 		case PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL:{
-			offset += serialize_opcode(output + offset, PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL);
+			offset += serialize_opcode(output + offset, (t_op_code*) PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL);
 			pcb_serializar_estruc(output, pcb, offset);
 			return output;
 		}
@@ -424,8 +312,8 @@ char* pcb_create_package_with_opcode(t_pcb* pcb, int32_t bytes, t_op_code opcode
 // ----------- recibo stream de datos post opcode y me genera un pcb ----------------
 t_pcb* pcb_recibir_package(int32_t socket){
 	int32_t bytes;
-	recv(socket, bytes, sizeof(int32_t), 0);
-	char* a_deserializar;
+	recv(socket, &bytes, sizeof(int32_t), 0);
+	char* a_deserializar = malloc(bytes);
 	recv(socket, a_deserializar, bytes, 0);
 	t_pcb* temp = pcb_create_with_size_for_des(bytes);
 	temp = pcb_deserializar_estrucs(a_deserializar, 0);
@@ -616,7 +504,7 @@ void* serializarEstructura(void* estructura, int tamanio, t_op_code cod_op){
 	}
 }
 
-int d(void* estructura ,t_op_code cod_op){
+int tamanioEstructura(void* estructura ,t_op_code cod_op){
 
 	switch(cod_op){
 
@@ -633,8 +521,7 @@ int d(void* estructura ,t_op_code cod_op){
 		}
 		case REQ_PCB_A_EJECUTAR_KERNEL_CPU:{
 			t_pcb* pcb = (t_pcb *) estructura; 
-			//return sizeof(uint32_t)*7 + pcb->sizeInstrucciones*(sizeof(uint32_t)*2 + sizeof(instruccion_id));
-			return sizeof(uint32_t)*6 + sizeof(t_instructions_list);	
+			return sizeof(uint32_t)*7 + bytes_instructions_list(pcb->instrucciones);
 		}
 		case PCB_EJECUTADO_IO_CPU_KERNEL:{
 			t_IO * io = (t_IO *) estructura; 
