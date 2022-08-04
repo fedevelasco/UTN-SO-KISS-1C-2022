@@ -1,6 +1,8 @@
 #include <planificacion.h>
 
-/*
+/* TODO: Borrar el file
+
+
 Planificador de Largo Plazo
 Al conectarse una consola al kernel, deberá generarse la estructura PCB detallada anteriormente y asignarse este proceso al estado NEW.
 

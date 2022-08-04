@@ -98,6 +98,7 @@
 	void crearBuffer(t_paquete* paquete);
 
     t_paquete* crearPaquete(t_op_code cod_op);
+	int tamanioEstructura(void* estructura ,t_op_code cod_op);
     t_paquete* armarPaqueteCon(void* estructura,t_op_code cod_op);
     void* serializarPaquete(t_paquete* paquete, uint32_t bytes);
     void enviarPaquete(t_paquete* paquete, int socket_cliente);
@@ -125,8 +126,9 @@
 	// t_pcb* deserializarPCB(void* stream, int offset);
 	void* pcb_serializar_estruc(void* stream, void* estructura, int offset);//nuevo
 	t_pcb* pcb_deserializar_estruc(void* stream, int offset);//nuevo
-	int bytes_PCB(t_pcb* pcb);//nuevo
+	int bytes_PCB_struc(t_pcb* pcb);//nuevo
 	char* pcb_create_package_with_opcode(t_pcb* pcb, int32_t bytes, t_op_code opcode);//nuevo
+	t_pcb* pcb_create_with_size_for_des(int32_t size);
 	void freePCB(t_pcb* pcb);
 	
 	void*  serializarIO(void* stream, void* estructura);

@@ -332,7 +332,7 @@ void comunicacionMemoriaFinalizar(t_pcb * pcb) {
 }
 
 t_pcb * algoritmoPlanificacion(){
-    {
+    if(string_equals_ignore_case(ALGORITMO_PLANIFICACION,"FIFO")){
         log_info(logger, "Se planifica FIFO");
         t_pcb * pcb = planificacionFIFO();
         log_info(logger, "FIFO elige el pcb: %d y se pasa a exec",pcb->id);
@@ -372,7 +372,7 @@ void inicializarPlanificacion(){
 }
 
 t_pcb* planificacionFIFO(){
-    t_pcb * pcb;
+    t_pcb* pcb;
     pthread_mutex_lock(&mutex_estado_ready);
     pcb = (t_pcb *) list_remove(estado_ready, 0);
     pthread_mutex_unlock(&mutex_estado_ready);
@@ -445,13 +445,13 @@ void ejecutarPCB(t_pcb * pcb){
         }
         case PCB_EJECUTADO_EXIT_CPU_KERNEL:{
             log_info(logger, "Entró un pcb a exit");
-            t_pcb * pcbActualizado = deserializarPCB(paqueteRespuesta->buffer->stream, 0);
+            t_pcb * pcbActualizado = pcb_deserializar_estrucs(paqueteRespuesta->buffer->stream, 0);
             execAexit(pcbActualizado);
           
             break;
         }
         case PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL:{
-            t_pcb* pcbActualizado = deserializarPCB(paqueteRespuesta->buffer->stream, 0);
+            t_pcb* pcbActualizado = pcb_deserializar_estrucs(paqueteRespuesta->buffer->stream, 0);
             pcbActualizado->estimacionRafaga -= pcbActualizado->lengthUltimaRafaga; 
             log_info(logger, "Entró un pcb desalojado por interrupción ID: id: %d | estimacionRafaga: %d | lenghtUltimaRafaga: %d", pcbActualizado->id, pcbActualizado->estimacionRafaga, pcbActualizado->lengthUltimaRafaga);
             addEstadoReady(pcbActualizado);
@@ -477,23 +477,23 @@ void ejecutarPCB(t_pcb * pcb){
 }
 
 
-void addEstadoReady(t_pcb * pcb){
-    pthread_mutex_lock(&mutex_estado_ready);
+void addEstadoReady(t_pcb* pcb){
     log_info(logger, "se agrega pcb: %d a ready",pcb->id);
+    pthread_mutex_lock(&mutex_estado_ready);
     list_add(estado_ready, (void *) pcb);
     pthread_mutex_unlock(&mutex_estado_ready); 
 }
 
-void addEstadoBlocked(t_IO * io){
-    pthread_mutex_lock(&mutex_estado_blocked);
+void addEstadoBlocked(t_IO* io){
     log_info(logger, "se agrega pcb: %d a blocked",io->pcb->id);
+    pthread_mutex_lock(&mutex_estado_blocked);
     queue_push(estado_blocked, (void *) io);
     pthread_mutex_unlock(&mutex_estado_blocked);
 }
 
-void addEstadoSuspReady(t_pcb * pcb){
-    pthread_mutex_lock(&mutex_estado_susp_ready);
+void addEstadoSuspReady(t_pcb* pcb){
     log_info(logger, "se agrega pcb: %d a susp-ready",pcb->id);
+    pthread_mutex_lock(&mutex_estado_susp_ready);
     queue_push(estado_susp_ready, (void *) pcb);
     pthread_mutex_unlock(&mutex_estado_susp_ready); 
 }
