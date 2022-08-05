@@ -105,12 +105,12 @@ t_log* start_logger(void)
 	return new_logger;
 }
 
-t_config* load_configuration_file(t_log* logger)
+t_config* load_configuration_file(char* ips_path, t_log* logger)
 {
 	log_info(logger, "Carga de archivo de configuracion - load_configuration_file - Inicio");
 	t_config* new_configuration;
 
-	new_configuration = config_create("../console/console.config");
+	new_configuration = config_create(ips_path);
 
 	if (new_configuration == NULL){
 		log_error(logger, "Carga de archivo de configuracion - load_configuration_file - Error al crear configuracion");

@@ -13,6 +13,11 @@ int main(int32_t argc, char** argv){
 
 
 	uint32_t connection;
+
+
+	char* ip_config_path = argv[3];
+
+
 	char* ip;
 	char* port;
 	char *psudocode_file_path;
@@ -28,11 +33,11 @@ int main(int32_t argc, char** argv){
 	/* ---------------- ARCHIVOS DE CONFIGURACION ---------------- */
 
 	log_info(logger, "Carga de archivo de configuracion - Inicio");
-	config = load_configuration_file(logger);
+	config = load_configuration_file(ip_config_path,logger);
 
 	// Loggeamos el valor de config
-	ip = config_get_string_value(config, "KERNEL_IP");
-	port = config_get_string_value(config, "KERNEL_PORT");
+	ip = config_get_string_value(config, "IP_KERNEL");
+	port = config_get_string_value(config, "PUERTO_KERNEL");
 
 	log_info(logger, "El kernel configurado tiene ip: %s:%s", ip, port);
 	log_info(logger, "Carga de archivo de configuracion - Fin");
@@ -40,7 +45,7 @@ int main(int32_t argc, char** argv){
 	/* ---------------- ARCHIVO DE PSEUDOCODIGO ---------------- */
 
 	log_info(logger, "Carga de archivo de pseudocodigo - Inicio");
-	psudocode_file_path = argv[2];
+	psudocode_file_path = argv[1];
 	if (strcmp(psudocode_file_path, "") == 0){
 		log_error(logger, "Carga de archivo de pseudocodigo - La ruta del archivo de pseudocodigo esta vacia - Fin proceso");
 		return EXIT_FAILURE;
@@ -58,7 +63,7 @@ int main(int32_t argc, char** argv){
 	/* ---------------- TAMANIO DE PROCESO -------------------- */
 
 	log_info(logger, "Carga de tamanio de proceso - Inicio");
-	char *process_size_string = argv[1];
+	char *process_size_string = argv[2];
 	if (strcmp(process_size_string, " ") == 0){
 			log_error(logger, "Carga de tamanio de proceso - El tamanio de proceso esta vacio - Fin proceso");
 			return EXIT_FAILURE;

@@ -91,3 +91,33 @@ memcheck: all
 helgrind: all
 	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH); \
 	valgrind --tool=helgrind $(HELGRIND_FLAGS) ./$(BIN) $(ARGS)
+	
+.PHONY: base
+base: release
+	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH); \
+	./$(BIN) $(BASE)
+
+.PHONY: planificacion
+planificacion: release
+	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH); \
+	./$(BIN) $(PLANIFICACION)
+
+.PHONY: suspension
+suspension: release
+	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH); \
+	./$(BIN) $(SUSPENSION)
+
+.PHONY: memoria
+memoria: release
+	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH); \
+	./$(BIN) $(MEMORIA)
+
+.PHONY: tlb
+tlb: release
+	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH); \
+	./$(BIN) $(TLB)
+
+.PHONY: integral
+integral: release
+	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH); \
+	./$(BIN) $(INTEGRAL)

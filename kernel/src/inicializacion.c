@@ -32,8 +32,8 @@ void inicializarVariablesGlobales(char * pathConfig, char * pathConfigIP){
     IP_CPU = config_get_string_value(ips, "IP_CPU");
     PUERTO_CPU_DISPATCH = config_get_string_value(ips, "PUERTO_CPU_DISPATCH");
     PUERTO_CPU_INTERRUPT = config_get_string_value(ips, "PUERTO_CPU_INTERRUPT");
-    IP_MEMORIA = config_get_string_value(ips, "IP_MEMORIA"); 
-    PUERTO_MEMORIA = config_get_string_value(ips,"PUERTO_MEMORIA");
+    IP_MEMORIA = config_get_string_value(ips, "IP_RAM");
+    PUERTO_MEMORIA = config_get_string_value(ips,"PUERTO_ESCUCHA_RAM");
     GRADO_MULTIPROGRAMACION = config_get_int_value(config, "GRADO_MULTIPROGRAMACION");
     ALGORITMO_PLANIFICACION = config_get_string_value(config, "ALGORITMO_PLANIFICACION");
     ESTIMACION_INICIAL = config_get_int_value(config, "ESTIMACION_INICIAL");

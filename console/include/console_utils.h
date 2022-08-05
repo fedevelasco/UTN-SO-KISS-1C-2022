@@ -47,7 +47,7 @@ uint32_t receive_operation_code(uint32_t server_socket);
 uint32_t send_package(uint32_t connection, t_package* package);
 uint32_t send_to_server(uint32_t connection, t_package* package);
 t_log* start_logger(void);
-t_config* load_configuration_file(t_log* logger);
+t_config* load_configuration_file(char* ips_path, t_log* logger);
 void end_process(uint32_t connection, t_log* logger, t_config* config);
 
 #endif /* CONSOLE_UTILS_H_ */
