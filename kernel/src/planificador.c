@@ -43,12 +43,12 @@ void Aready(){
         sem_wait(&sem_hay_pcb_esperando_ready);
 
         sem_wait(&sem_multiprogramacion);
-        log_info(logger, "Kernel - Grado de multiprogramación permite agregar proceso al estado READY\n");
+//        log_info(logger, "Kernel - Grado de multiprogramación permite agregar proceso al estado READY\n"); rompe
         
         t_pcb * pcb = obtenerSiguienteAready();
 
         addEstadoReady(pcb);
-//        log_info(logger, "Se elimino el proceso PID %d de New y se agrego a Ready", pcb->id);
+//        log_info(logger, "Se elimino el proceso PID %d de New y se agrego a Ready", pcb->id); rompe
         
         if(string_equals_ignore_case(ALGORITMO_PLANIFICACION,"SRT")){
             interrumpirPCB();
@@ -176,11 +176,15 @@ void execAexit(t_pcb * pcb){
     
     comunicacionMemoriaFinalizar(pcb);
 
+
+
     pthread_mutex_lock(&mutex_consolas_conectadas);
     consolaAnotificar = list_remove_by_condition(consolas_conectadas, filtro);
     pthread_mutex_unlock(&mutex_consolas_conectadas);
     
-    t_paquete * paqueteAconsola = armarPaqueteCon(&(pcb->id), RES_FIN_PROCESO_KERNEL_CONSOLA);
+    log_info(logger, "Kernel - Finalizando consola id: %d, socket: %d", consolaAnotificar->id, *consolaAnotificar->socket);
+
+    t_paquete * paqueteAconsola = armarPaqueteCon(&(pcb->id), EXIT_CONSOLE);
     enviarPaquete(paqueteAconsola, *consolaAnotificar->socket); 
     eliminarPaquete(paqueteAconsola);
 
@@ -230,7 +234,7 @@ void hilo_block(){
 // -------------- Me conecto a memoria para suspender un proceso -------------- 
 void comunicacionMemoriaSuspender(t_pcb * pcb){
 
-    int socketMemoria = iniciar_cliente(IP_MEMORIA,PUERTO_MEMORIA, logger);
+    int socketMemoria = iniciar_cliente(IP_MEMORIA,PUERTO_MEMORIA);
     if (socketMemoria == -1){
         log_info(logger, "Kernel - No se pudo crear la conexion con memoria para suspender el proceso");
     }
@@ -261,7 +265,7 @@ void comunicacionMemoriaSuspender(t_pcb * pcb){
 // --------- Le pregunto a memorio por el valor de tabla de paginas para el nuevo PCB, luego lo asigno ----------------------
 void comunicacionMemoriaCreacionEstructuras(t_pcb * pcb){
 
-    int socketMemoria = iniciar_cliente(IP_MEMORIA,PUERTO_MEMORIA, logger);
+    int socketMemoria = iniciar_cliente(IP_MEMORIA,PUERTO_MEMORIA);
     if (socketMemoria == -1){
         log_info(logger, "Kernel - No se pudo crear la conexion con memoria para traer las estructuras");
     }
@@ -302,7 +306,7 @@ void comunicacionMemoriaCreacionEstructuras(t_pcb * pcb){
 // -------------- Me conecto a memoria para que termine un proceso -------------- 
 void comunicacionMemoriaFinalizar(t_pcb * pcb) {
 
-    int socketMemoria = iniciar_cliente(IP_MEMORIA,PUERTO_MEMORIA, logger);
+    int socketMemoria = iniciar_cliente(IP_MEMORIA,PUERTO_MEMORIA);
     if (socketMemoria == -1){
         log_info(logger, "Kernel - No se pudo crear la conexion con memoria para terminar el proceso");
     }
@@ -319,14 +323,6 @@ void comunicacionMemoriaFinalizar(t_pcb * pcb) {
 		log_error(logger, "Kernel - Error al enviar paquete a memoria");
 	}
 
-    buffer_destroy(buffer);
-	package_destroy(package);
-
-    uint32_t cod_op = recibir_operacion(socketMemoria);
-	if(cod_op != PROCESS_KILL_RESPONSE){
-		perror("respuesta inesperada");
-		exit(EXIT_FAILURE);
-	}
     log_info(logger, "Kernel - Memoria termino el proceso correctamente");
 
 }
@@ -397,7 +393,7 @@ t_pcb* planificacionFIFO(){
 // }
 void interrumpirPCB(){
     log_info(logger, "Interrumpiendo proceso");
-    int socketInterrupt = iniciar_cliente(IP_CPU, PUERTO_CPU_INTERRUPT, logger);
+    int socketInterrupt = iniciar_cliente(IP_CPU, PUERTO_CPU_INTERRUPT);
     int numero = 1;
     t_paquete * paquete = armarPaqueteCon(&numero, REQ_INTERRUPCION_KERNEL_CPU);
     enviarPaquete(paquete, socketInterrupt);
@@ -419,7 +415,7 @@ PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL, el pcb que me devolvieron fue interrumpid
 REQ_INTERRUPCION_KERNEL_CPU, Interrumpir el pcb actual, le mando solo un opcode
 */
 void ejecutarPCB(t_pcb * pcb){
-    int socketDispatch = iniciar_cliente(IP_CPU, PUERTO_CPU_DISPATCH, logger); // TODO: Agregar funcionalidad segun lo de memoria
+    int socketDispatch = iniciar_cliente(IP_CPU, PUERTO_CPU_DISPATCH);
     t_paquete* paquete = armarPaqueteCon(pcb, REQ_PCB_A_EJECUTAR_KERNEL_CPU); 
     enviarPaquete(paquete, socketDispatch);
     eliminarPaquete(paquete);

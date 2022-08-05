@@ -1,53 +1,34 @@
 #include <console_utils.h>
 
-uint32_t create_connection(t_log* logger, const char* server_name, char *ip, char* port)
+uint32_t create_connection(char *ip, char* puerto)
 {
-	struct addrinfo infoSocket, *server_info; //Declaramos las estructuras
+	struct addrinfo hints;
+	struct addrinfo *server_info;
 
-	memset(&infoSocket, 0, sizeof(infoSocket)); //Seteamos el valor de la informacion de la direccion a 0
-	//Asignamos los valores de info de la conexion
-	infoSocket.ai_family = AF_UNSPEC;//Indica a getaddrinfo(3) que la direccion va a ser de tipo IPv4 o IPv6
-	infoSocket.ai_socktype = SOCK_STREAM; //Socket de tipo TCP/IP
-	infoSocket.ai_flags = AI_PASSIVE; //Solo para cuando se quiere utilizar el socket para un servidor
+	memset(&hints, 0, sizeof(hints));
+	hints.ai_family = AF_INET;
+	hints.ai_socktype = SOCK_STREAM;
+	hints.ai_flags = IPPROTO_TCP;
 
-	//Obtenemos la direccion y los datos del socket y los mete en server_info
-		if (getaddrinfo(ip, port, &infoSocket, &server_info) != 0){
-			log_error(logger, "Conexion a Kernel - getaddrinfo - No se pudo obtener la direccion correctamente de %s:%s", ip, port);
-			return -1;
-		}
+	getaddrinfo(ip, puerto, &hints, &server_info);
 
-	// Ahora vamos a crear el socket.
-	uint32_t server_socket = 0;
-	server_socket = socket(server_info->ai_family,
-		                    server_info->ai_socktype,
-		                    server_info->ai_protocol);
+	uint32_t socket_cliente = socket(server_info->ai_family,  server_info->ai_socktype,server_info->ai_flags);
 
-	// Fallo en crear el socket
-	if(server_socket == -1) {
-		freeaddrinfo(server_info);
-		log_error(logger, "Conexion a Kernel - socket - Error creando el socket para %s:%s", ip, port);
-		return -1;
+	if(socket_cliente == -1){
+		perror("error de creacion de socket");
+		exit(EXIT_FAILURE);
 	}
 
-	//Seteo socket como reusable
+	int resultado_conexion = connect(socket_cliente, server_info->ai_addr, server_info->ai_addrlen);
 
-	int yes = 1;
-	setsockopt(server_socket, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof yes);
-
-
-	// Ahora que tenemos el socket, vamos a conectarlo
-
-	// Error conectando
-	    if(connect(server_socket, server_info->ai_addr, server_info->ai_addrlen) == -1) {
-	        close(server_socket);
-	        freeaddrinfo(server_info);
-	        log_error(logger, "Conexion a Kernel - connect - Error al conectar a %s\n", server_name);
-	        return -1;
-	    } else
-	        log_info(logger, "Conexion a Kernel - Consola conectada en %s:%s a %s\n", ip, port, server_name);
+	if(resultado_conexion != 0){
+		perror("error de conexión");
+		exit(EXIT_FAILURE);
+	}
 
 	freeaddrinfo(server_info);
-	return server_socket;
+
+	return socket_cliente;
 }
 
 
@@ -59,13 +40,29 @@ void end_connection(uint32_t connection)
 uint32_t receive_operation_code(uint32_t server_socket)
 {
 	uint32_t cod_op;
-		if(recv(server_socket, &cod_op, sizeof(uint32_t), MSG_WAITALL) > 0)
-			return cod_op;
-		else
-		{
-			close(server_socket);
-			return -1;
-		}
+	if(recv(server_socket, &cod_op, sizeof(uint32_t), MSG_WAITALL) > 0)
+		return cod_op;
+	else
+	{
+		close(server_socket);
+		return -1;
+	}
+}
+
+t_paquete* wait_package(int server_socket){
+
+	t_paquete* paquete = malloc(sizeof(t_paquete));
+	paquete->buffer = malloc(sizeof(t_buffer));
+
+	recv(server_socket, &(paquete->codigo_operacion), sizeof(t_op_code), 0);
+
+	recv(server_socket, &(paquete->buffer->size), sizeof(uint32_t), 0);
+
+	paquete->buffer->stream = malloc(paquete->buffer->size);
+
+	recv(server_socket, paquete->buffer->stream, paquete->buffer->size, 0);
+
+	return paquete;
 }
 
 

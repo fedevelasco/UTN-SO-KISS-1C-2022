@@ -141,6 +141,8 @@ void* read_page_in_swap(uint32_t swap_page_id, uint32_t pid){
 
 	memcpy(swap_page_data, swap_file->swap_mmap+offset, tam_pagina);
 
+	pthread_mutex_unlock(&MUTEX_SWAP);
+
 	log_info(logger, "read_page_in_swap - Leyendo pagina en SWAP del proceso: %d - Fin", pid);
 
 	return swap_page_data;

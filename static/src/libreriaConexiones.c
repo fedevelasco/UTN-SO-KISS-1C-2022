@@ -91,7 +91,8 @@ int32_t esperar_cliente(t_log* logger, char* name, int32_t socket_servidor)
 
 // -------------- Iniciar Cliente --------------
 
-int iniciar_cliente(char *ip, char* puerto, t_log* logger){
+//int iniciar_cliente(char *ip, char* puerto, t_log* logger){ //viejo
+int iniciar_cliente(char *ip, char* puerto){
 	struct addrinfo hints;
 	struct addrinfo *server_info;
 
@@ -107,12 +108,12 @@ int iniciar_cliente(char *ip, char* puerto, t_log* logger){
 	int connection_info = connect(socket_cliente, server_info->ai_addr, server_info->ai_addrlen);// Ahora que tenemos el socket, vamos a conectarlo
 
 	if(connection_info == -1){
-		log_error(logger, "No se pudo conectar al servidor");
+		perror("No se pudo conectar al servidor");
 		close(socket_cliente);
 		freeaddrinfo(server_info);
 		return -1;
 	} else {
-		log_info(logger, "Connexion al servidor exitosa");
+//		perror("Connexion al servidor exitosa");
 	}
 
 	freeaddrinfo(server_info);

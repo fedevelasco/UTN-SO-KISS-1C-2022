@@ -27,8 +27,21 @@ typedef struct {
 		t_list *lines;
 	} t_pseudocode;
 
+typedef struct{
+	uint32_t size;
+	void* stream;
+}t_buffer_new;
 
-uint32_t create_connection(t_log* logger, const char* server_name, char *ip, char* port);
+typedef struct{
+	t_op_code codigo_operacion;
+	t_buffer_new* buffer;
+}t_paquete;
+
+
+uint32_t create_connection(char *ip, char* puerto);
+t_paquete* wait_package(int server_socket);
+
+
 void end_connection(uint32_t connection);
 uint32_t receive_operation_code(uint32_t server_socket);
 uint32_t send_package(uint32_t connection, t_package* package);

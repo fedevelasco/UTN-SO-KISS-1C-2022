@@ -74,7 +74,7 @@ int main(int32_t argc, char** argv){
 
 	// Creo una conexión hacia el kernel
 	log_info(logger, "Conexion a Kernel - Creando conexion a kernel");
-	connection = create_connection(logger, "Kernel", ip, port);
+	connection = create_connection(ip, port);
 	if (connection == -1){
 			log_error(logger, "Conexion a Kernel - Error al crear conexion - Fin proceso");
 			return EXIT_FAILURE;
@@ -103,21 +103,20 @@ int main(int32_t argc, char** argv){
 		return EXIT_FAILURE;
 	}
 
-	close(connection);
-
-	//Para debug
-//	end_process(connection, logger, config);
 
 	//Espero mensaje de finalizacion del kernel
 	log_info(logger, "Conexion a Kernel - Consola esperando mensaje de finalizacion del Kernel");
-	while(1){
-		int cod_op = receive_operation_code(connection);
-		if (cod_op == EXIT_CONSOLE){
-			end_process(connection, logger, config);
-			log_info(logger, "Conexion a Kernel - Finalizacion exitosa");
-		}
+
+	t_paquete * package = wait_package(connection);
+
+	log_info(logger, "Llego paquete de kernel codop: %d", package->codigo_operacion);
+	if (package->codigo_operacion == EXIT_CONSOLE){
+		log_info(logger, "Conexion a Kernel - Finalizacion exitosa");
+		end_process(connection, logger, config);
 
 	}
+
+
 
 }
 

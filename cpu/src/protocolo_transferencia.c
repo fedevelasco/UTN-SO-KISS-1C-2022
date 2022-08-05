@@ -168,7 +168,7 @@ void* serializarEstructura(void* estructura, int tamanio, t_op_code cod_op){
 		case REQ_INTERRUPCION_KERNEL_CPU:{
 			return serializarUINT32_T(stream,estructura);
 		}
-		case RES_FIN_PROCESO_KERNEL_CONSOLA:{
+		case EXIT_CONSOLE:{
 			return serializarUINT32_T(stream,estructura);
 		}
 		case REQ_FIN_PROCESO_KERNEL_MEMORIA:{
@@ -328,7 +328,7 @@ uint32_t tamanioEstructura(void* estructura ,t_op_code cod_op){
 		case REQ_INTERRUPCION_KERNEL_CPU:{
 			return sizeof(uint32_t);
 		}
-		case RES_FIN_PROCESO_KERNEL_CONSOLA:{
+		case EXIT_CONSOLE:{
 			return sizeof(uint32_t);
 		}
 		case REQ_FIN_PROCESO_KERNEL_MEMORIA:{

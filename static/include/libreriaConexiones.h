@@ -24,7 +24,8 @@ int32_t esperar_cliente(t_log* logger, char* name, int32_t socket_servidor);
 
 // -------------- Iniciar Cliente --------------
 
-int iniciar_cliente(char *ip, char* puerto, t_log* logger);
+//int iniciar_cliente(char *ip, char* puerto, t_log* logger); //viejo
+int iniciar_cliente(char *ip, char* puerto);
 
 // -------------- Liberar Conexiones --------------
 

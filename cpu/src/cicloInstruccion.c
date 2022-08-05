@@ -160,7 +160,7 @@ void execute_write(uint32_t direccion_logica, uint32_t dato){
 
 uint32_t  memoria_read(uint32_t direccion_fisica) {
 
-    uint32_t socket_memoria = iniciar_cliente(IP_MEMORIA, PUERTO_MEMORIA, logger);
+    uint32_t socket_memoria = iniciar_cliente(IP_MEMORIA, PUERTO_MEMORIA);
 
     t_buffer* buffer = new_memoria_read_buffer(direccion_fisica);
 
@@ -207,7 +207,7 @@ uint32_t  memoria_read(uint32_t direccion_fisica) {
 
 void memoria_write(uint32_t direccion_fisica, uint32_t dato) {
 
-    uint32_t socket_memoria = iniciar_cliente(IP_MEMORIA, PUERTO_MEMORIA, logger);
+    uint32_t socket_memoria = iniciar_cliente(IP_MEMORIA, PUERTO_MEMORIA);
 
     t_memory_write_request* peticion_escritura = create_memory_write_request();
 

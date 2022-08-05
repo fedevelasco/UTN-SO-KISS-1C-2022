@@ -4,7 +4,7 @@
 
 t_memory_config* obtenerTraduccionDeDirecciones(){
 
-	 int socket_memoria = iniciar_cliente(IP_MEMORIA, PUERTO_MEMORIA, logger);
+	 int socket_memoria = iniciar_cliente(IP_MEMORIA, PUERTO_MEMORIA);
 
 	 t_buffer* buffer = new_memory_config_buffer();
 
