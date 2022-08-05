@@ -53,13 +53,14 @@ t_paquete * cicloInstruccion(t_pcb * pcb) {
 
                } else if(string_equals_ignore_case(instruccion->id,"EXIT")){
 
-               	paquete = pcb_create_package_with_opcode(pcb, PCB_EJECUTADO_EXIT_CPU_KERNEL);
+               	paquete = armarPaqueteCon(pcb, PCB_EJECUTADO_EXIT_CPU_KERNEL);
            		log_info(logger, "Ejecuto EXIT, devuelve el pcb id:%d", pcb->id);
            		pthread_mutex_unlock(&mutex_interrupcion);
 				return paquete;
 
            	} else {
-           	 paquete = pcb_create_package_with_opcode(pcb, PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL);
+//           	 paquete = pcb_create_package_with_opcode(pcb, PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL);
+           	paquete = armarPaqueteCon(pcb, PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL);
            	 pthread_mutex_unlock(&mutex_interrupcion);
 			 return paquete;
            	}
@@ -84,7 +85,6 @@ t_paquete * cicloInstruccion(t_pcb * pcb) {
 
     } else if(string_equals_ignore_case(instruccion->id,"EXIT")){
 
-//    	paquete = pcb_create_package_with_opcode(pcb, PCB_EJECUTADO_EXIT_CPU_KERNEL);
     	paquete = armarPaqueteCon(pcb, PCB_EJECUTADO_EXIT_CPU_KERNEL);
 		log_info(logger, "Ejecuto EXIT, devuelve el pcb id:%d", pcb->id);
 

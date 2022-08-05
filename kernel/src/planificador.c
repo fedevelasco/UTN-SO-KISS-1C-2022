@@ -392,7 +392,7 @@ t_pcb* planificacionFIFO(){
 //     return pcb;
 // }
 void interrumpirPCB(){
-    log_info(logger, "Interrumpiendo proceso");
+//    log_info(logger, "Interrumpiendo proceso"); rompe
     int socketInterrupt = iniciar_cliente(IP_CPU, PUERTO_CPU_INTERRUPT);
     int numero = 1;
     t_paquete * paquete = armarPaqueteCon(&numero, REQ_INTERRUPCION_KERNEL_CPU);

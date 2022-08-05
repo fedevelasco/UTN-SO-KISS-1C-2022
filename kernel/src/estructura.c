@@ -513,7 +513,7 @@ int tamanioEstructura(void* estructura ,t_op_code cod_op){
 
 		case PROCESO:{
 			t_proceso * proceso = (t_proceso *) estructura;
-			return sizeof(uint32_t)*2 + proceso->sizeInstrucciones*(sizeof(uint32_t)*2 + sizeof(instruccion_id));
+			return sizeof(uint32_t)*2 + bytes_instructions_list(proceso->instrucciones);
 		}
 		case REQ_TRADUCCION_DIRECCIONES_CPU_MEMORIA:{
 			t_mensaje * msg = (t_mensaje*) estructura;
@@ -528,15 +528,15 @@ int tamanioEstructura(void* estructura ,t_op_code cod_op){
 		}
 		case PCB_EJECUTADO_IO_CPU_KERNEL:{
 			t_IO * io = (t_IO *) estructura; 
-			return sizeof(uint32_t) + sizeof(uint32_t)*7 + io->pcb->sizeInstrucciones*(sizeof(uint32_t)*2 + sizeof(instruccion_id));
+			return sizeof(uint32_t) + sizeof(uint32_t)*7 + bytes_instructions_list(io->pcb->instrucciones);
 		}
 		case PCB_EJECUTADO_EXIT_CPU_KERNEL:{
 			t_pcb * pcb = (t_pcb *) estructura; 
-			return sizeof(uint32_t)*7 + pcb->sizeInstrucciones*(sizeof(uint32_t)*2 + sizeof(instruccion_id));
+			return sizeof(uint32_t)*7 + bytes_instructions_list(pcb->instrucciones);
 		}
 		case PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL:{
 			t_pcb * pcb = (t_pcb *) estructura; 
-			return sizeof(uint32_t)*7 + pcb->sizeInstrucciones*(sizeof(uint32_t)*2 + sizeof(instruccion_id));
+			return sizeof(uint32_t)*7 + bytes_instructions_list(pcb->instrucciones);
 		}
 		case REQ_INTERRUPCION_KERNEL_CPU:{
 			return sizeof(uint32_t);
@@ -546,18 +546,18 @@ int tamanioEstructura(void* estructura ,t_op_code cod_op){
 		}
 		case REQ_FIN_PROCESO_KERNEL_MEMORIA:{
 			t_pcb * pcb = (t_pcb *) estructura; 
-			return sizeof(uint32_t)*7 + pcb->sizeInstrucciones*(sizeof(uint32_t)*2 + sizeof(instruccion_id));
+			return sizeof(uint32_t)*7 + bytes_instructions_list(pcb->instrucciones);
 		}
 		case REQ_CREAR_PROCESO_KERNEL_MEMORIA:{
 			t_pcb * pcb = (t_pcb *) estructura; 
-			return sizeof(uint32_t)*7 + pcb->sizeInstrucciones*(sizeof(uint32_t)*2 + sizeof(instruccion_id));
+			return sizeof(uint32_t)*7 + bytes_instructions_list(pcb->instrucciones);
 		}
 		case RES_CREAR_PROCESO_KERNEL_MEMORIA:{
 			return sizeof(uint32_t);
 		}
 		case REQ_SUSP_PROCESO_KERNEL_MEMORIA:{
 			t_pcb * pcb = (t_pcb *) estructura; 
-			return sizeof(uint32_t)*7 + pcb->sizeInstrucciones*(sizeof(uint32_t)*2 + sizeof(instruccion_id));
+			return sizeof(uint32_t)*7 + bytes_instructions_list(pcb->instrucciones);
 		}
 		case RES_SUSP_PROCESO_KERNEL_MEMORIA:{
 			return sizeof(uint32_t);
