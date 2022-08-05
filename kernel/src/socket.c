@@ -58,9 +58,13 @@
 t_paquete* recibirPaquete(int server_socket){
 
 	t_paquete* paquete = malloc(sizeof(t_paquete));
-	paquete->buffer = malloc(sizeof(t_buffer));
+	paquete->buffer = malloc(sizeof(t_buffer_new));
 
-	recv(server_socket, &(paquete->codigo_operacion), sizeof(t_op_code), 0);
+	uint32_t op_code;
+
+	recv(server_socket, &op_code, sizeof(uint32_t), 0);
+
+	paquete->codigo_operacion=op_code;
 
 	recv(server_socket, &(paquete->buffer->size), sizeof(uint32_t), 0);
 

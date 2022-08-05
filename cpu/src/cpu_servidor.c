@@ -42,7 +42,7 @@ void deserializarDispatch(t_paquete * paquete, int socket_cliente){
 void deserializarInterrupt(t_paquete * paquete, int socket_cliente){
     switch(paquete->codigo_operacion){
 		case REQ_INTERRUPCION_KERNEL_CPU:{
-            log_info(logger, "interrupt:recibido interrupcion");
+            log_info(logger, "Interrupt:recibido interrupcion");
             
             uint32_t * mensaje = deserializarUINT32_T(paquete->buffer->stream);
             free(mensaje);
@@ -53,7 +53,7 @@ void deserializarInterrupt(t_paquete * paquete, int socket_cliente){
             break; 
         }
         default:{
-            log_error(logger, "interrupt: no es por aca.");
+            log_error(logger, "Interrupt: llego un operation code erroneo: %d", paquete->codigo_operacion);
             break;
         }
     }
@@ -64,9 +64,9 @@ void deserializarInterrupt(t_paquete * paquete, int socket_cliente){
 void servidorInterrupt(void * socket){
     int socket_servidor = (int) socket;
     while(1){
-    	char* cliente = "Cliente";
+    	char* cliente = "Kernel";
         int socket_cliente = esperar_cliente(logger, cliente, socket_servidor);
-        log_info(logger, "interrupt: se conecta cliente");
+        log_info(logger, "Interrupt: se conecta Kernel");
         //instanciar hilo que atienda la solicitud
         t_paquete * paquete = recibirPaquete(socket_cliente);
         deserializarInterrupt(paquete, socket_cliente);

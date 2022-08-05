@@ -10,7 +10,8 @@
 #include <global_structures.h>
 #include <serialization.h> // nuestro static
 
-int pcb_serializar_estruc(void* stream, void* estructura, int offset);
+
+void* pcb_serializar_estruc(void* stream, void* estructura, int offset);
 t_pcb* pcb_deserializar_estrucs(void* stream, int offset);
 
 uint32_t bytes_PCB(t_pcb* pcb);
@@ -37,5 +38,9 @@ void* serializarPaquete(t_paquete* paquete, uint32_t bytes);
 void agregar_a_paquete(t_paquete* paquete, void* valor, uint32_t tamanio);
 void enviarPaquete(t_paquete* paquete, int socket_cliente);
 void eliminarPaquete(t_paquete* paquete);
+
+uint32_t tamanioEstructura(void* estructura ,t_op_code cod_op);
+
+
 
 #endif

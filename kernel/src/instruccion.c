@@ -9,7 +9,7 @@ t_instruccion* obtenerInstruccion(char* instruccionTexto){
         instruccion->identificador=NO_OP;
         instruccion->parametro1=atoi(instruccionSeparada[1]);
     }
-    else if(string_contains(instruccionSeparada[0],"I/O") || string_contains(instruccionSeparada[0], "IO")){
+    else if(string_contains(instruccionSeparada[0],"I/O") || string_contains(instruccionSeparada[0], "I/O")){
         instruccion->identificador=IO;
         instruccion->parametro1=atoi(instruccionSeparada[1]);
         instruccion->parametro2=0;
@@ -46,7 +46,7 @@ const char* instruccion_idAString(instruccion_id instruccion){
     switch (instruccion) 
     {
         case NO_OP: return "NO_OP";
-        case IO: return "IO";
+        case IO: return "I/O";
         case READ: return "READ";
         case COPY: return "COPY";
         case WRITE: return "WRITE";

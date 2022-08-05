@@ -9,10 +9,7 @@ void servidor(void * params){
         log_info(logger, "%s: se conecta kernel en el server interrupt", servidor->nombre);
         //instanciar hilo que atienda la solicitud
         t_paquete * paquete = recibirPaquete(socket_cliente);
-        
-        if (REQ_INTERRUPCION_KERNEL_CPU == paquete->codigo_operacion){ // si matchea entra al if
-            deserializarInterrupt(paquete, socket_cliente); // esto setea interrupcion a true REVISAR
-        }
+
         servidor->deserializarSegun(paquete, socket_cliente);
     }
 }

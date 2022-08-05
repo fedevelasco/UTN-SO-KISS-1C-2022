@@ -172,7 +172,7 @@ uint32_t consultarMarco(uint32_t tablaDePaginasSegundoNivel, uint32_t pagina, t_
 	}
   
     uint32_t cod_op = recibir_operacion(socket_memoria);
-    if(cod_op != GET_SECOND_LEVEL_TABLE_REQUEST){
+    if(cod_op != GET_FRAME_WRITE_RESPONSE && cod_op != GET_FRAME_READ_RESPONSE){
             perror("respuesta inesperada");
             exit(EXIT_FAILURE);
         }

@@ -48,7 +48,7 @@ void Aready(){
         t_pcb * pcb = obtenerSiguienteAready();
 
         addEstadoReady(pcb);
-        log_info(logger, "Se elimino el proceso PID %d de New y se agrego a Ready", pcb->id);
+//        log_info(logger, "Se elimino el proceso PID %d de New y se agrego a Ready", pcb->id);
         
         if(string_equals_ignore_case(ALGORITMO_PLANIFICACION,"SRT")){
             interrumpirPCB();
@@ -77,7 +77,7 @@ t_pcb* obtenerSiguienteAready(){
             pthread_mutex_lock(&mutex_estado_new);
             pcb = queue_pop(estado_new); // Consigo un PCB de la cola de estado NEW
             comunicacionMemoriaCreacionEstructuras(pcb); // Le pregunto a memoria por el valor de tabla de paginas para el nuevo PCB, luego lo asigno
-            log_info(logger, "Kernel - Tabla de paginas primer nivel con index: %d, asignada al pcb: %d",pcb->tablaDePaginas, pcb->id);
+//            log_info(logger, "Kernel - Tabla de paginas primer nivel con index: %d, asignada al pcb: %d",pcb->tablaDePaginas, pcb->id);
             pthread_mutex_unlock(&mutex_estado_new);
             return pcb;
         }
@@ -465,6 +465,8 @@ void ejecutarPCB(t_pcb * pcb){
         }   
         default:{
             eliminarPaquete(paqueteRespuesta);
+            log_info(logger, "cod op mal: %d", paqueteRespuesta->codigo_operacion);
+
             char * error = string_new();
             string_append_with_format(&error,"Respuesta de CPU %s no soportada",codOPtoString(paqueteRespuesta->codigo_operacion));
 
@@ -478,7 +480,7 @@ void ejecutarPCB(t_pcb * pcb){
 
 
 void addEstadoReady(t_pcb* pcb){
-    log_info(logger, "se agrega pcb: %d a ready",pcb->id);
+//    log_info(logger, "se agrega pcb: %d a ready",pcb->id);
     pthread_mutex_lock(&mutex_estado_ready);
     list_add(estado_ready, (void *) pcb);
     pthread_mutex_unlock(&mutex_estado_ready); 

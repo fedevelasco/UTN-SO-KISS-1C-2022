@@ -8,6 +8,7 @@
     //Logger
     t_log* logger;
 
+
     //Config
     t_config* config;
     t_config* ips;

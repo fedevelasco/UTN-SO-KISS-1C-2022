@@ -11,9 +11,9 @@ t_instruction* fetch(t_pcb *  pcb){
 }
 
 t_paquete * cicloInstruccion(t_pcb * pcb) {
-    pthread_mutex_lock(&mutex_interrupcion);
-    hayInterrupcion=false;
-    pthread_mutex_unlock(&mutex_interrupcion);
+//    pthread_mutex_lock(&mutex_interrupcion);
+//    hayInterrupcion=false;
+//    pthread_mutex_unlock(&mutex_interrupcion);
     t_paquete * paquete;
     bool seguirEjecutando = true;
     t_instruction* instruccion;
@@ -38,39 +38,60 @@ t_paquete * cicloInstruccion(t_pcb * pcb) {
             pthread_mutex_unlock(&mutex_interrupcion);
             pcb->lengthUltimaRafaga = pcb->PC - PC_inicial;
             log_info(logger, "Hay interrupcion, devulve el pcb");
-            paquete = pcb_create_package_with_opcode(pcb, PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL); // TO DO cambiar la funcion
-            return paquete;
-        }
-        else{
+
+            if(string_equals_ignore_case(instruccion->id,"I/O")){
+
+               	t_IO * io = malloc(sizeof(t_IO));
+           		io->pcb = pcb;
+           		io->tiempoBloqueo = ((t_parameter*) list_get(instruccion->parameters, 0))->value;
+           		log_info(logger, "Ejecuto IO de: %d milisegundos", io->tiempoBloqueo);
+           		paquete = armarPaqueteCon(io, PCB_EJECUTADO_IO_CPU_KERNEL);
+           		free(io);
+//           		log_info(logger, "Ejecuto IO, devuelve el pcb id:%d", pcb->id);
+           		pthread_mutex_unlock(&mutex_interrupcion);
+           		return paquete;
+
+               } else if(string_equals_ignore_case(instruccion->id,"EXIT")){
+
+               	paquete = pcb_create_package_with_opcode(pcb, PCB_EJECUTADO_EXIT_CPU_KERNEL);
+           		log_info(logger, "Ejecuto EXIT, devuelve el pcb id:%d", pcb->id);
+           		pthread_mutex_unlock(&mutex_interrupcion);
+				return paquete;
+
+           	} else {
+           	 paquete = pcb_create_package_with_opcode(pcb, PCB_EJECUTADO_INTERRUPCION_CPU_KERNEL);
+           	 pthread_mutex_unlock(&mutex_interrupcion);
+			 return paquete;
+           	}
+        } else {
+        	hayInterrupcion=false;
             pthread_mutex_unlock(&mutex_interrupcion);
-        }   
-        
+        }
     }
 
     pcb->lengthUltimaRafaga = pcb->PC - PC_inicial;
     
 
-    if(string_equals_ignore_case(instruccion->id,"IO")){
+    if(string_equals_ignore_case(instruccion->id,"I/O")){
 
     	t_IO * io = malloc(sizeof(t_IO));
 		io->pcb = pcb;
 		io->tiempoBloqueo = ((t_parameter*) list_get(instruccion->parameters, 0))->value;
 		log_info(logger, "Ejecuto IO de: %d milisegundos", io->tiempoBloqueo);
-		paquete = armarPaqueteCon(io, PCB_EJECUTADO_IO_CPU_KERNEL); // TO DO a reemplazar el armar paquete
+		paquete = armarPaqueteCon(io, PCB_EJECUTADO_IO_CPU_KERNEL);
 		free(io);
-		//log_info(logger, "Ejecuto IO, devuelve el pcb id:%d", pcb->id);
+//		log_info(logger, "Ejecuto IO, devuelve el pcb id:%d", pcb->id);
 
     } else if(string_equals_ignore_case(instruccion->id,"EXIT")){
 
-    	paquete = pcb_create_package_with_opcode(pcb, PCB_EJECUTADO_EXIT_CPU_KERNEL); // TO DO  a reemplazar la funcion con la nuestra
+//    	paquete = pcb_create_package_with_opcode(pcb, PCB_EJECUTADO_EXIT_CPU_KERNEL);
+    	paquete = armarPaqueteCon(pcb, PCB_EJECUTADO_EXIT_CPU_KERNEL);
 		log_info(logger, "Ejecuto EXIT, devuelve el pcb id:%d", pcb->id);
 
 	} else {
 		 log_error(logger, "No ejecuto EXIT o IO, no debe pasar por aca");
 		 exit(EXIT_FAILURE);
 	}
-
-
 
 
     log_info(logger, "finaliza ciclo instruccion para pcb id:%d", pcb->id);
@@ -84,7 +105,7 @@ bool execute(t_instruction* instruccion){
 		log_info(logger, "Ejecutado NO_OP");
 		usleep(RETARDO_NOOP * 1000);
 		return true;
-	} else if (string_equals_ignore_case(instruccion->id, "IO")) {
+	} else if (string_equals_ignore_case(instruccion->id, "I/O")) {
 		//log_info(logger, "Ejecutando IO");
 		return false;
 	} else if (string_equals_ignore_case(instruccion->id, "READ")) {

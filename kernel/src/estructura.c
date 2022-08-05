@@ -245,6 +245,9 @@ t_pcb* pcb_deserializar_estrucs(void* stream, int offset){
 	offset += deserialize_int(&(pcb->estimacionRafaga), stream + offset);
 	offset += deserialize_int(&(pcb->lengthUltimaRafaga), stream + offset);
 	offset += deserialize_int(&(pcb->sizeInstrucciones), stream + offset);
+
+	pcb->instrucciones = create_instructions_list_with_size(pcb->sizeInstrucciones);
+
 	offset += deserialize_instructions_list(pcb->instrucciones, stream + offset);    
 
 	return pcb;

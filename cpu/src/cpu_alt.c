@@ -2,7 +2,7 @@
 
 
 void iniciarHilos(){
-    log_info(logger, "iniciando hilos..");
+    log_info(logger, "Iniciando hilos");
     char* dispatch = "Dispatch";
     char* interrupt = "Interrupt";
 
@@ -10,11 +10,9 @@ void iniciarHilos(){
 
     socket_interrupt = iniciar_servidor(logger, interrupt, IP, PUERTO_ESCUCHA_INTERRUPT);
 
-    //TODO: Revisar esto!
-
     pthread_t thread_dispatch, thread_interrupt;
     servidor_dispatch = obtenerServidor(socket_dispatch, deserializarDispatch, "dispatch");
-    //servidor_interrupt = obtenerServidor(socket_interrupt, deserializarInterrupt, "interrupt");
+
     
     pthread_create(&thread_dispatch, NULL, (void*)servidor, (void*)servidor_dispatch);
     pthread_create(&thread_interrupt, NULL, (void*)servidorInterrupt, (void*)socket_interrupt);
@@ -22,7 +20,7 @@ void iniciarHilos(){
     
     pthread_detach(thread_interrupt);
     pthread_join(thread_dispatch, NULL);
-    //servidor(servidor_dispatch);
+
 }
 void inicializarVariablesGlobales(char * pathConfig,char * pathConfigIP){
     config = config_create(pathConfig);

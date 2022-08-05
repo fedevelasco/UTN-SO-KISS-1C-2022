@@ -103,6 +103,8 @@ int main(int32_t argc, char** argv){
 		return EXIT_FAILURE;
 	}
 
+	close(connection);
+
 	//Para debug
 //	end_process(connection, logger, config);
 
