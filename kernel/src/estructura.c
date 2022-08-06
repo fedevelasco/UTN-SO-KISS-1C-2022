@@ -229,13 +229,6 @@ t_pcb* pcb_recibir_package(int32_t socket){
 	return temp;
 }
 
-// 1: int32_t cod_op = recibir_operacion(cliente_fd)
-// 2: t_pcb pcb = pcb_recibir_package(int32_t socket)
-
-
-
-
-
 void freePCB(t_pcb * pcb) {
 	free(pcb->instrucciones);
 	free(pcb);

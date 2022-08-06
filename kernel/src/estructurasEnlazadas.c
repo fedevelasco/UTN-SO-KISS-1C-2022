@@ -1,15 +1,3 @@
-/*
-t_queue* COLA_NEW;
-t_list* LISTA_READY;
-t_queue* COLA_EXIT;
-t_queue* COLA_SUSPENDED_READY;
-t_list* LISTA_SUSPENDED_BLOCKED;
-t_list*  LISTA_BLOCKED;
-*/
-
-
-// Cola bloqueados = FIFO
-
 #include <estructurasEnlazadas.h>
 
 static unsigned long obj_tid = 0; 
