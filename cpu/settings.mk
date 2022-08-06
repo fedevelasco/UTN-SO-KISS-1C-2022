@@ -12,7 +12,7 @@ CDEBUG=-g -Wall -DDEBUG
 CRELEASE=-O3 -Wall -DNDEBUG
 
 # Arguments when executing with start, memcheck or helgrind
-ARGS=/home/utnso/tp-2022-1c-Grupo-TP-SO/cpu/configuracion.config /home/utnso/tp-2022-1c-Grupo-TP-SO/cpu/ips.config
+ARGS=/home/utnso/tp-2022-1c-Grupo-TP-SO/pruebas/INTEGRAL_CPU.cfg /home/utnso/tp-2022-1c-Grupo-TP-SO/pruebas/IP.cfg
 
 #Argumentos para pruebas
 BASE=/home/utnso/tp-2022-1c-Grupo-TP-SO/pruebas/BASE_CPU.cfg /home/utnso/tp-2022-1c-Grupo-TP-SO/pruebas/IP.cfg
