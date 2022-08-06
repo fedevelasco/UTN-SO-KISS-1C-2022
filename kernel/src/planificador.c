@@ -43,12 +43,12 @@ void Aready(){
         sem_wait(&sem_hay_pcb_esperando_ready);
 
         sem_wait(&sem_multiprogramacion);
-//        log_info(logger, "Kernel - Grado de multiprogramación permite agregar proceso al estado READY\n"); rompe
+        log_info(logger, "Kernel - Grado de multiprogramación permite agregar proceso al estado READY\n");
         
         t_pcb * pcb = obtenerSiguienteAready();
 
         addEstadoReady(pcb);
-//        log_info(logger, "Se elimino el proceso PID %d de New y se agrego a Ready", pcb->id); rompe
+        log_info(logger, "Se elimino el proceso PID %d de New y se agrego a Ready", pcb->id);
         
         if(string_equals_ignore_case(ALGORITMO_PLANIFICACION,"SRT")){
             interrumpirPCB();
@@ -234,7 +234,9 @@ void hilo_block(){
             }
 
         } else {
-            hacerIO(ultimoIO->tiempoBloqueo);
+        	log_info(logger, "tiempo de espera del pcb: %d: %d milisegundos", ultimoIO->pcb->id, ultimoIO->tiempoEspera / 1000);
+			log_info(logger, "pcb: %d ejecutando IO de: %d milisegundos", ultimoIO->pcb->id, ultimoIO->tiempoBloqueo);
+            hacerIO(ultimoIO->tiempoBloqueo * 1000);
             log_info(logger, "terminó la io del proceso: %d", ultimoIO->pcb->id);
             addEstadoReady(ultimoIO->pcb);
             if (string_equals_ignore_case(ALGORITMO_PLANIFICACION, "SRT"))
@@ -262,7 +264,7 @@ void sumarEsperaSegundos(void *ultimoIO)
 
 void hacerIO(uint32_t tiempoBloqueo)
 {
-    log_info(logger, "haciendo IO de %d milisegundos", tiempoBloqueo / 1000);
+    log_info(logger, "haciendo IO de %d milisegundos", tiempoBloqueo / 10000);
     if (tiempoBloqueo < 1000000)
     {
         for (int i = 0; i < tiempoBloqueo; i += (100 * 1000))
@@ -310,7 +312,7 @@ void comunicacionMemoriaSuspender(t_pcb * pcb){
 		perror("respuesta inesperada");
 		exit(EXIT_FAILURE);
 	}
-//    log_info(logger, "Kernel - Memoria suspendio el proceso correctamente"); rompe
+    log_info(logger, "Kernel - Memoria suspendio el proceso correctamente");
 }
 
 // --------- Le pregunto a memorio por el valor de tabla de paginas para el nuevo PCB, luego lo asigno ----------------------
@@ -440,7 +442,7 @@ t_pcb* planificacionFIFO(){
 //     return pcb;
 // }
 void interrumpirPCB(){
-//    log_info(logger, "Interrumpiendo proceso"); rompe
+    log_info(logger, "Interrumpiendo proceso");
     int socketInterrupt = iniciar_cliente(IP_CPU, PUERTO_CPU_INTERRUPT);
     int numero = 1;
     t_paquete * paquete = armarPaqueteCon(&numero, REQ_INTERRUPCION_KERNEL_CPU);
