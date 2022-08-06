@@ -4,13 +4,9 @@
 void manejarProceso(int* socket_consola){
 
     t_proceso* nuevo_proceso = malloc(sizeof(t_proceso));
-    //t_instructions_list* lista = 
+   
     nuevo_proceso = recibirPaqquete_inicio(*socket_consola);
-    //t_paquete* paquete = recibirPaquete(*socket_consola); // Recibo paquete de consola FUNCIONA
-    //t_proceso* nuevo_proceso = deserializarProceso(paquete->buffer->stream); // Creo proceso a partir del paquete
-
-    //eliminarPaquete(paquete); // Elimino el paquete 
-
+    
     // Print de lista de instrucciones
 
     t_pcb* pcb = iniciarPcb(nuevo_proceso); // Creo un PCB y le asigno los valores recolectados en nuevo_proceso

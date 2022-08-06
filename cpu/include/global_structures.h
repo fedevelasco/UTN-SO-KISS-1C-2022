@@ -29,6 +29,7 @@ typedef struct {
 typedef struct {
 	t_pcb * pcb;
 	uint32_t tiempoBloqueo;
+	uint32_t tiempoEspera;
 } t_IO;
 
 typedef struct {

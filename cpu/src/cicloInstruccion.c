@@ -103,7 +103,7 @@ bool execute(t_instruction* instruccion){
 
 	if (string_equals_ignore_case(instruccion->id, "NO_OP")) {
 		log_info(logger, "Ejecutado NO_OP");
-		usleep(RETARDO_NOOP * 1000);
+		usleep(RETARDO_NOOP * 1000000);
 		return true;
 	} else if (string_equals_ignore_case(instruccion->id, "I/O")) {
 		//log_info(logger, "Ejecutando IO");

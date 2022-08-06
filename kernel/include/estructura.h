@@ -9,7 +9,6 @@
 	#include <netdb.h>
 	#include <commons/collections/list.h>
 	#include <commons/collections/queue.h>
-	#include <instruccion.h>
 	#include <tads/op_code.h>
 	#include <tads/instructions_list.h>
     #include <tads/package.h>
@@ -27,13 +26,7 @@
 	    t_buffer_new* buffer;
     }t_paquete;
 
-	/*
-	typedef struct{
-		uint32_t tamanioProceso;
-		uint32_t sizeInstrucciones;
-		t_instruccion* instrucciones;
-	}t_proceso;
-	*/
+
 	typedef struct{
 		uint32_t tamanioProceso;
 		uint32_t sizeInstrucciones;
@@ -65,6 +58,7 @@
 	typedef struct{
         t_pcb * pcb;
         uint32_t tiempoBloqueo;
+		uint32_t tiempoEspera;
     }t_IO;
 	
 	typedef struct{
@@ -93,16 +87,7 @@
     void enviarPaquete(t_paquete* paquete, int socket_cliente);
     void eliminarPaquete(t_paquete* paquete);
 	
-	void * serializarInstrucciones(void* stream, void* estructura, int offset);
-	t_instruccion* deserializarInstrucciones(void * stream, int offset);
 
-
-//	t_proceso* crearProceso(uint32_t tamanioProceso, uint32_t sizeInstrucciones,t_instruccion* instrucciones);
-//	void freeProceso(t_proceso * proceso);
-	void * serializarProceso(void* stream, void* estructura);
-//	t_proceso* deserializarProceso(void* stream);
-
-	
 	t_traduccion_direcciones* crearTraduccionDirecciones(uint32_t PID);
 	void * serializarTraduccionDirecciones(void* stream, void* estructura);
 	t_traduccion_direcciones* deserializarTraduccionDirecciones(void* stream);

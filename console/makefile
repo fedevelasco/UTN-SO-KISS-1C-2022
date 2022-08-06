@@ -118,7 +118,7 @@ suspension1: release
 	./$(BIN) $(SUSPENSION1)
 
 .PHONY: suspension2
-suspension1: release
+suspension2: release
 	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH); \
 	./$(BIN) $(SUSPENSION2)
 

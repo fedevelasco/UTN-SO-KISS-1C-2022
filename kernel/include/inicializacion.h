@@ -5,7 +5,6 @@
     #include <stdio.h>
     #include <commons/string.h>
     #include <commons/collections/list.h>
-    #include "instruccion.h"
     #include "globales.h"
     #include "planificador.h"
     #include "estructura.h"

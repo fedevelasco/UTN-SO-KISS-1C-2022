@@ -21,7 +21,7 @@ void inicializarVariablesGlobales(char * pathConfig, char * pathConfigIP){
 
     config = config_create(pathConfig);
     ips = config_create(pathConfigIP);
-    logger = log_create("kernel1.log", "kernel1", 1, LOG_LEVEL_INFO);
+    logger = log_create("kernel.log", "kernel", 1, LOG_LEVEL_INFO);
     log_info(logger, "Kernel - Copiando configuracion de archivos .cfg");
 
     IP = config_get_string_value(ips, "IP_KERNEL");

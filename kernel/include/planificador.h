@@ -8,7 +8,6 @@
     #include <commons/string.h>
     #include <commons/collections/list.h>
     #include <commons/log.h>
-    #include <instruccion.h>
     #include <estructura.h>
     #include <socket.h>
     #include <globales.h>
@@ -57,6 +56,9 @@
     void Aready();
     void readyAexec();
     void suspReadyAready();
+    void hacerIO(uint32_t tiempoBloqueo);
+    void sumarEspera(void *pcbBloqueado);
+    void sumarEsperaSegundos(void *pcbBloqueado);
     void ingresarANew(t_pcb* pcb);
     t_pcb* algoritmoPlanificacion();
     

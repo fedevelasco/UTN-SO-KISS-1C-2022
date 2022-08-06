@@ -10,7 +10,7 @@ CDEBUG=-g -Wall -DDEBUG
 CRELEASE=-O3 -Wall -DNDEBUG
 
 # Arguments when executing with start, memcheck or helgrind
-ARGS=/home/utnso/tp-2022-1c-Grupo-TP-SO/pruebas/BASE_KERNEL.cfg /home/utnso/tp-2022-1c-Grupo-TP-SO/pruebas/IP.cfg
+ARGS=/home/utnso/tp-2022-1c-Grupo-TP-SO/pruebas/PLANI_KERNEL.cfg /home/utnso/tp-2022-1c-Grupo-TP-SO/pruebas/IP.cfg
 
 #Argumentos pruebas
 BASE=/home/utnso/tp-2022-1c-Grupo-TP-SO/pruebas/BASE_KERNEL.cfg /home/utnso/tp-2022-1c-Grupo-TP-SO/pruebas/IP.cfg

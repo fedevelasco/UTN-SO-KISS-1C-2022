@@ -90,7 +90,8 @@ void *  serializarIO(void* stream, void* estructura){
 	int offset = 0;
 	memcpy(stream + offset, &(IO->tiempoBloqueo),sizeof(uint32_t));
 	offset += sizeof(uint32_t);
-	// serializarPCB(stream, (void*) IO->pcb, offset);
+	memcpy(stream + offset, &(IO->tiempoEspera),sizeof(uint32_t));
+	offset += sizeof(uint32_t);
 	pcb_serializar_estruc(stream, (void*) IO->pcb, offset);
 	return stream;
 }
@@ -99,6 +100,8 @@ t_IO * deserializarIO(void* stream){
 	t_IO* IO = malloc(sizeof(t_IO));
 	int offset = 0;
 	memcpy(&(IO->tiempoBloqueo), stream + offset, sizeof(uint32_t));
+	offset += sizeof(uint32_t);
+	memcpy(&(IO->tiempoEspera), stream + offset, sizeof(uint32_t));
 	offset += sizeof(uint32_t);
 	IO->pcb = pcb_deserializar_estrucs(stream, offset);
 	return IO;
@@ -144,9 +147,6 @@ void* serializarEstructura(void* estructura, int tamanio, t_op_code cod_op){
 	void* stream = malloc(tamanio);
 
 	switch(cod_op){
-//		case PROCESO:{
-//			return serializarProceso(stream,estructura);
-//		}
 		case REQ_TRADUCCION_DIRECCIONES_CPU_MEMORIA:{
 			return serializarMensaje(stream,estructura);
 		}
@@ -315,7 +315,7 @@ uint32_t tamanioEstructura(void* estructura ,t_op_code cod_op){
 		}
 		case PCB_EJECUTADO_IO_CPU_KERNEL:{
 			t_IO * io = (t_IO *) estructura;
-			return sizeof(uint32_t) + sizeof(uint32_t)*7 + bytes_instructions_list(io->pcb->instrucciones);
+			return sizeof(uint32_t) + sizeof(uint32_t) + sizeof(uint32_t)*7 + bytes_instructions_list(io->pcb->instrucciones);
 		}
 		case PCB_EJECUTADO_EXIT_CPU_KERNEL:{
 			t_pcb * pcb = (t_pcb *) estructura;

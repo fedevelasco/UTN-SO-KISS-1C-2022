@@ -36,6 +36,20 @@ t_instructions_list *parse_pseudocode_file(char *path, t_log* logger) {
 
 			list_add(instructions_list->instructions, instruction);
 
+			if (strcmp(instruction->id, "NO_OP") == 0) {
+				for (int i = 1; i < ((t_parameter*) list_get(instruction->parameters,0))->value; i++ ){
+					t_instruction* instruction_noop = create_instruction();
+					string_append(&instruction_noop->id, instruction->id);
+					t_parameter* parameter = create_parameter();
+
+					parameter->value = ((t_parameter*) list_get(instruction->parameters,0))->value;
+
+					list_add(instruction_noop->parameters, parameter);
+
+					list_add(instructions_list->instructions, instruction_noop);
+				}
+			}
+
 			//Para debug.
 			log_debug(logger, "Instruccion agregada a la lista: %s en i=%i\n", ((t_instruction*) list_get(instructions_list->instructions,*i))->id, *i);
 			*i = *i + 1;

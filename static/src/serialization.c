@@ -57,9 +57,9 @@ uint32_t deserialize_parameters(t_list* output,char* input, uint32_t element_siz
 		list_add(output, parameter);
 		offset += element_size;
 	}
-	for(int i=0;i<list_size(output);i++){
-		printf("\ndeserialize_parameters - parameter value: %d\n", ((t_parameter*) list_get(output,i))->value);
-	}
+	// for(int i=0;i<list_size(output);i++){
+	// 	// printf("\ndeserialize_parameters - parameter value: %d\n", ((t_parameter*) list_get(output,i))->value);
+	// }
 
 	return offset;
 }
@@ -108,9 +108,9 @@ uint32_t deserialize_instruction(t_instruction* output, char* input) {
 	uint32_t offset = 0;
 	offset += deserialize_string(output->id, input);
 	offset += deserialize_parameters(output->parameters, input + offset, sizeof(t_parameter));
-	for(int i=0;i<list_size(output->parameters);i++){
-		printf("\ndeserialize_instruction - Instruction: parameter value: %d\n", ((t_parameter*) list_get(output->parameters,i))->value);
-		}
+	// for(int i=0;i<list_size(output->parameters);i++){
+	// 	printf("\ndeserialize_instruction - Instruction: parameter value: %d\n", ((t_parameter*) list_get(output->parameters,i))->value);
+	// 	}
 
 	return offset;
 }

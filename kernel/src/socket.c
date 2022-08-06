@@ -191,7 +191,7 @@ t_proceso* recibirPaqquete_inicio(int server_socket){
 
 	default:
 
-		log_warning(logger, "Operacion desconocida."); //Codigo para cualquier otro op_code no mencionado arriba
+		log_warning(logger, "Operacion desconocida: %d", cod_op); //Codigo para cualquier otro op_code no mencionado arriba
 		break;
 
 	}
