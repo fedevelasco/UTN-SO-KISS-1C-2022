@@ -8,7 +8,7 @@
 #include <commons/log.h>
 #include <pthread.h>
 #include <global_structures.h>
-#include <serialization.h> // nuestro static
+#include <serialization.h>
 
 
 void* pcb_serializar_estruc(void* stream, void* estructura, int offset);

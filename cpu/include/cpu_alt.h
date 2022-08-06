@@ -1,5 +1,3 @@
-// tiene el main.h
-
 #ifndef CPU_MAIN_H_
 #define CPU_MAIN_H_
 
@@ -8,15 +6,12 @@
 #include <commons/config.h>
 #include <commons/log.h>
 #include <pthread.h>
-
 #include "../include/conexiones.h"
-
 #include <protocolo_transferencia.h>
 #include "../include/cpu_servidor.h"
 #include <global_structures.h>
 #include "../include/cicloInstruccion.h"
 #include "../include/servidor_abstracto.h"
-
 #include <libreriaConexiones.h>
 
 int socket_dispatch;

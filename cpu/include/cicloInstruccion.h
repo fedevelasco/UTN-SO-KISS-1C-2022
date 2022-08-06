@@ -4,9 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <libreriaConexiones.h>
-
 #include <pthread.h>
-
 #include <global_structures.h>
 #include <mmu.h>
 #include <protocolo_transferencia.h>

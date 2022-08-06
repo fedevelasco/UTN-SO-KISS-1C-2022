@@ -1,7 +1,3 @@
-// constiene los .c de inicializacion.c - dispatch.c - interrupt.c
-
-// INTEGRO OPERACIONES //
-
 #include "../include/cpu_servidor.h"
 
 // INICIALIZACION //
@@ -18,7 +14,7 @@ void validarParametros(int argc, char* argv[]){
 void deserializarDispatch(t_paquete * paquete, int socket_cliente){
     switch(paquete->codigo_operacion){
 		case REQ_PCB_A_EJECUTAR_KERNEL_CPU:{
-            t_pcb * pcb = pcb_deserializar_estrucs(paquete->buffer->stream, 0); // falta compilar
+            t_pcb * pcb = pcb_deserializar_estrucs(paquete->buffer->stream, 0); 
             log_info(logger, "recibido pcb id:%d para ejecutar", pcb->id);
             vaciarTLB(pcb->id);
             

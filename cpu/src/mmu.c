@@ -1,6 +1,3 @@
-// Operaciones y traduccion de direcciones logicaas a fisicas
-// ESTRUCTURA DE TLB
-
 #include "../include/mmu.h"
 
 void iniciarEstructurasMMU() {
@@ -19,7 +16,7 @@ t_EntradaTLB * newEntradaTLB(uint32_t pagina, uint32_t marco) {
     return nuevaEntrada;
 }
 
-//falta agregar a tlb cuando hay espacio vacio
+
 void agregarTLB(uint32_t pagina, uint32_t marco) {
     if(list_size(listaTLB)<ENTRADAS_TLB){
         t_EntradaTLB * entrada = newEntradaTLB(pagina, marco);
@@ -173,7 +170,7 @@ uint32_t consultarMarco(uint32_t tablaDePaginasSegundoNivel, uint32_t pagina, t_
   
     uint32_t cod_op = recibir_operacion(socket_memoria);
     if(cod_op != GET_FRAME_WRITE_RESPONSE && cod_op != GET_FRAME_READ_RESPONSE){
-            perror("respuesta inesperada");
+            perror("Respuesta inesperada");
             exit(EXIT_FAILURE);
         }
     
@@ -229,3 +226,11 @@ uint32_t obtenerDesplazamiento(uint32_t direccion_logica, uint32_t numero_pagina
 uint32_t obtenerDireccionFisica(uint32_t desplazamiento, uint32_t numero_marco) {
     return desplazamiento + numero_marco * traduccion_direcciones->page_size;
 }
+
+
+
+
+
+
+// Operaciones y traduccion de direcciones logicas a fisicas
+// ESTRUCTURA DE TLB

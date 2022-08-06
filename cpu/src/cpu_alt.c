@@ -50,7 +50,7 @@ int main(int argc, char* argv[]) {
 			return EXIT_FAILURE;
 		}
         
-    log_info(logger, "parametros validados");
+    log_info(logger, "Parametros Validados");
     char * pathConfig = argv[1];
     char * pathIPS = argv[2];
     inicializarVariablesGlobales(pathConfig, pathIPS);
@@ -61,7 +61,7 @@ int main(int argc, char* argv[]) {
 //    int socket_memoria = iniciar_cliente(IP_MEMORIA, PUERTO_MEMORIA, logger);
     traduccion_direcciones = obtenerTraduccionDeDirecciones();
 //    close(socket_memoria);
-    log_info(logger, "traduccion de direcciones obtenida de memoria: tamanio_pagina=%d, paginas_por_tabla=%d ", traduccion_direcciones->page_size, traduccion_direcciones->pages_per_table);
+    log_info(logger, "Traduccion de direcciones obtenida de memoria: tamanio_pagina=%d, paginas_por_tabla=%d ", traduccion_direcciones->page_size, traduccion_direcciones->pages_per_table);
     iniciarEstructurasMMU();
     iniciarHilos();
     
@@ -72,3 +72,15 @@ int main(int argc, char* argv[]) {
     log_destroy(logger);
     return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+//main

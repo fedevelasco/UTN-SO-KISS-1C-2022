@@ -1,5 +1,3 @@
-// Contiene los handshake con kernel y consola, traduccion de direcciones y paquetes de handshake.h del otro
-
 #include <conexiones.h>
 
 t_memory_config* obtenerTraduccionDeDirecciones(){
@@ -154,3 +152,4 @@ t_buffer* new_memory_config_buffer(){
 
 
 
+// handshake con consola y traduccion de direcciones

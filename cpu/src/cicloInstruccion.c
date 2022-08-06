@@ -1,4 +1,4 @@
-// FUNCIONES PROPIAS DEL CICLO DE INSTRUCCION
+// CICLO DE INSTRUCCION
 // Fetch -> Decode -> Fetch Operands -> Execute -> Check Interrupt
 
 #include <cicloInstruccion.h>
@@ -19,7 +19,7 @@ t_paquete * cicloInstruccion(t_pcb * pcb) {
     t_instruction* instruccion;
     uint32_t PC_inicial = pcb->PC;
     PCB_ACTUAL=pcb->id;
-    log_info(logger, "Inicia ciclo instruccion para pcb id:%d", pcb->id);
+    log_info(logger, "Inicia ciclo instruccion para el pcb id:%d", pcb->id);
     log_info(logger, " ");
     tablaPaginasPrimerNivelPCB = pcb->tablaDePaginas;
 
@@ -94,7 +94,7 @@ t_paquete * cicloInstruccion(t_pcb * pcb) {
 	}
 
 
-    log_info(logger, "finaliza ciclo instruccion para pcb id:%d", pcb->id);
+    log_info(logger, "Finaliza ciclo instruccion para pcb id:%d", pcb->id);
     return paquete;
 }
 
@@ -173,7 +173,7 @@ uint32_t  memoria_read(uint32_t direccion_fisica) {
 
    //Codigo operacion que recibo:* RESPONSE
 	if(cod_op != READ_MEMORY_RESPONSE){
-			perror("respuesta inesperada");
+			perror("Respuesta inesperada");
 			exit(EXIT_FAILURE);
 		}
 
@@ -198,7 +198,7 @@ uint32_t  memoria_read(uint32_t direccion_fisica) {
     // enviarPaquete(paquete,socket_memoria);
     // eliminarPaquete(paquete);
 
-    //TODO: COMPLETAR CONEXION   
+      
     
 
 
@@ -225,7 +225,7 @@ void memoria_write(uint32_t direccion_fisica, uint32_t dato) {
    uint32_t cod_op = recibir_operacion(socket_memoria);
    //Codigo operacion que recibo:* RESPONSE
 	if(cod_op != WRITE_MEMORY_RESPONSE){
-			perror("respuesta inesperada");
+			perror("Respuesta inesperada");
 			exit(EXIT_FAILURE);
 		}
 

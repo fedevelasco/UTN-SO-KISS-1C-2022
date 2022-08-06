@@ -16,11 +16,9 @@
 #include <commons/collections/queue.h>
 #include <commons/collections/list.h>
 #include <tads/package.h>
-
 #include <string.h>
 #include <signal.h>
 #include <stdbool.h>
-
 #include <libreriaConexiones.h>
 #include <protocolo_transferencia.h>
 #include <serialization.h>

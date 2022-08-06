@@ -154,7 +154,7 @@ void* serializarEstructura(void* estructura, int tamanio, t_op_code cod_op){
 //			return serializarTraduccionDirecciones(stream,estructura);
 //		}
 		case REQ_PCB_A_EJECUTAR_KERNEL_CPU:{
-			return pcb_serializar_estruc(stream,estructura,0); //mi serializacion
+			return pcb_serializar_estruc(stream,estructura,0);
 		}
 		case PCB_EJECUTADO_IO_CPU_KERNEL:{
 			return serializarIO(stream,estructura);

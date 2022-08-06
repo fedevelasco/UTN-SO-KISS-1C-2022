@@ -1,5 +1,3 @@
-// contiene los h de inicializacion.h - dispatch.h - interrupt.h
-
 #ifndef CPU_SERVIDOR_H_
 #define CPU_SERVIDOR_H_
 
@@ -10,7 +8,6 @@
 #include <global_structures.h>
 #include "../include/mmu.h"
 #include <pthread.h>
-
 #include "../include/protocolo_transferencia.h"
 
 t_config * config;
