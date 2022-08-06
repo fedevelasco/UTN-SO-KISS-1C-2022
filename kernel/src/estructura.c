@@ -198,7 +198,7 @@ char* pcb_create_package_with_opcode(t_pcb* pcb, int32_t bytes, t_op_code opcode
 			return output;
 		}
 		default:{
-			fprintf(stderr,"Código de operacion %d no contemplado", opcode);
+			fprintf(stderr,"Kernel - Código de operacion %d no contemplado", opcode);
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -408,7 +408,7 @@ void* serializarEstructura(void* estructura, int tamanio, t_op_code cod_op){
 		}
 
 		default:{
-			fprintf(stderr,"Código de operacion %d no contemplado", cod_op);
+			fprintf(stderr,"Kernel - Código de operacion %d no contemplado", cod_op);
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -497,7 +497,7 @@ int tamanioEstructura(void* estructura ,t_op_code cod_op){
 			return sizeof(uint32_t);
 		}
 		default: {
-			fprintf(stderr,"Código de operacion %d no contemplado", cod_op);
+			fprintf(stderr,"Kernel - Código de operacion %d no contemplado", cod_op);
 			exit(EXIT_FAILURE);
 		}	
 	}
