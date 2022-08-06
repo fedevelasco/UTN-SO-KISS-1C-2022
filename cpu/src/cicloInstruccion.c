@@ -27,7 +27,7 @@ t_paquete * cicloInstruccion(t_pcb * pcb) {
         instruccion = fetch(pcb);
         const char* identificador_instruccion;
         identificador_instruccion = instruccion->id;
-        log_info(logger, "Instrucción: %s", identificador_instruccion);
+        // log_info(logger, "Instrucción: %s", identificador_instruccion);
         seguirEjecutando = execute(instruccion);
         log_info(logger, " ");
         pcb->PC++;
@@ -102,36 +102,33 @@ t_paquete * cicloInstruccion(t_pcb * pcb) {
 bool execute(t_instruction* instruccion){
 
 	if (string_equals_ignore_case(instruccion->id, "NO_OP")) {
-		log_info(logger, "Ejecutado NO_OP");
+		log_info(logger, "Ejecutando instruccion NO_OP");
 		usleep(RETARDO_NOOP * 1000000);
+
 		return true;
 	} else if (string_equals_ignore_case(instruccion->id, "I/O")) {
-		//log_info(logger, "Ejecutando IO");
+
 		return false;
 	} else if (string_equals_ignore_case(instruccion->id, "READ")) {
 		execute_read( ((t_parameter*)list_get(instruccion->parameters,0))->value );
-		log_info(logger, "Ejecutado READ");
-
-		// log_info(logger, "Ejecutado READ");
-		// free(dato);
-		//uint32_t * dato = execute_read(instruccion.parametro1);
+		log_info(logger, "Ejecutando instruccion READ %d", ((t_parameter*)list_get(instruccion->parameters,0))->value );
 
 		return true;
 	} else if (string_equals_ignore_case(instruccion->id, "COPY")) {
-		//log_info(logger, "Ejecutando COPY");
+		log_info(logger, "Ejecutando instruccion COPY %d %d", ((t_parameter*)list_get(instruccion->parameters,0))->value, ((t_parameter*)list_get(instruccion->parameters,1))->value );
 		uint32_t dato = execute_read( ((t_parameter*)list_get(instruccion->parameters,1))->value );
 
 		execute_write(((t_parameter*)list_get(instruccion->parameters,0))->value, dato);
-		// free(dato);
+		
 		log_info(logger, "COPY finalizado");
 		return true;
 
 	} else if (string_equals_ignore_case(instruccion->id, "WRITE")) {
 		execute_write(((t_parameter*)list_get(instruccion->parameters,0))->value , ((t_parameter*)list_get(instruccion->parameters,1))->value);
-		log_info(logger, "Ejecutado Write");
+		log_info(logger, "Ejecutado instruccion WRITE %d %d",((t_parameter*)list_get(instruccion->parameters,0))->value, ((t_parameter*)list_get(instruccion->parameters,1))->value );
 		return true;
 	} else if (string_equals_ignore_case(instruccion->id, "EXIT")) {
-		log_info(logger, "Ejecutado Exit");
+		log_info(logger, "Ejecutando instruccion Exit");
 		return false;
 	} else {
 		log_error(logger, "IDENTIFICADOR INSTRUCCION NO CONTEMPLADO-> %s",
