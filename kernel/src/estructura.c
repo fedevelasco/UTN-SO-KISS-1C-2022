@@ -230,7 +230,7 @@ t_pcb* pcb_recibir_package(int32_t socket){
 }
 
 void freePCB(t_pcb * pcb) {
-	instructions_list_destroy(pcb->instrucciones)
+	instructions_list_destroy(pcb->instrucciones);
 	free(pcb);
 }
 void*  serializarIO(void* stream, void* estructura){
