@@ -138,8 +138,6 @@ uint32_t consultarTablaSegundoNivel(uint32_t tablaDePaginasPrimerNivel, uint32_t
     
     free(buffer_recibido);
 
-    free(request);
-
     return tabla_segundo_nivel_numero;
 }
 
@@ -183,8 +181,6 @@ uint32_t consultarMarco(uint32_t tablaDePaginasSegundoNivel, uint32_t pagina, t_
     deserialize_int(&marco, buffer_recibido);
     
     free(buffer_recibido);
-
-    free(request);
 
     return marco;
 }
