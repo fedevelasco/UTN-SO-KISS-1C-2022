@@ -184,7 +184,7 @@ void swap_second_level_entry(void* entry){
         bitarray_clean_bit(occupied_frames_bitarray, page->frame_number);
         pthread_mutex_unlock(&MUTEX_OCCUPIED_FRAMES);
 
-        free(page);
+        // free(page);
     }
 }
 
@@ -271,7 +271,7 @@ uint32_t get_frame_number(t_page_table_request* page_table_request, bool isWrite
 		log_info(logger, "Retardo de memoria %dms", retardo_memoria);
 		usleep(retardo_memoria*1000);
 
-	    pthread_mutex_lock(&MUTEX_SECOND_LEVEL_ENTRY);
+	    // pthread_mutex_lock(&MUTEX_SECOND_LEVEL_ENTRY);
 
 			pthread_mutex_lock(&MUTEX_SECOND_LEVEL_TABLES);
 				second_level_page_table_t* second_level_page_table = list_get(global_second_level_page_tables, page_table_request->table_number);
@@ -353,9 +353,9 @@ uint32_t get_frame_number(t_page_table_request* page_table_request, bool isWrite
 			page->bit_U = true;
 
 
-	    pthread_mutex_unlock(&MUTEX_SECOND_LEVEL_ENTRY);
+	    // pthread_mutex_unlock(&MUTEX_SECOND_LEVEL_ENTRY);
 
-	    log_info(logger, "get_frame_number - Inicio");
+	    log_info(logger, "get_frame_number - Fin");
 	    return page->frame_number;
 
 }
@@ -642,7 +642,7 @@ page_t* replace_with_clock_m(process_state_t* process_state, t_list* all_process
 		} else {
 			//Saco bit de uso y vuelvo a recorrer
 			pointer->bit_U = false;
-
+			break;
 		}
 	}
 

@@ -93,10 +93,12 @@ uint32_t serialize_instruction(char* output, t_instruction* input) {
 }
 
 uint32_t serialize_instructions_list(char* output, t_instructions_list* input) {
-	uint32_t i, offset = 1;
+	uint32_t i, offset = 0, cant;
 	// Cantidad de instrucciones
-	output[0] = list_size(input->instructions);
-	for (i = 0; i < output[0]; i++) {
+
+	cant = list_size(input->instructions);
+	offset += serialize_int(output + offset, &(cant));
+	for (i = 0; i < cant; i++) {
 		// Serializacion de cada instruccion
 		offset += serialize_instruction(output + offset, list_get(input->instructions, i));
 	}
@@ -116,9 +118,12 @@ uint32_t deserialize_instruction(t_instruction* output, char* input) {
 }
 
 uint32_t deserialize_instructions_list(t_instructions_list* output, char* input) {
-	uint32_t i, offset = 1;
+	uint32_t i, offset = 0, cant;
+
+	offset += deserialize_int(&cant, input);
+
 	// Cantidad de instrucciones en input[0]
-	for (i = 0; i < input[0]; i++) {
+	for (i = 0; i < cant; i++) {
 		t_instruction* instruction = create_instruction();
 		offset += deserialize_instruction(instruction, input + offset);
 		// Agrego la instruccion recibida a la lista
@@ -174,7 +179,7 @@ t_buffer* new_instruction_buffer(t_instructions_list* instructions_list, t_log* 
 	int offset = serialize_instructions_list(buffer->stream, instructions_list);
 
 	instructions_list_destroy(instructions_list);
-	log_debug(logger, "create_instruction_buffer - size: %d\n", offset);
+//	log_debug(logger, "create_instruction_buffer - size: %d\n", offset);
 
 	return buffer;
 }

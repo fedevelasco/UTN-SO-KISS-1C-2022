@@ -37,7 +37,7 @@ t_paquete * cicloInstruccion(t_pcb * pcb) {
             hayInterrupcion=false;
             pthread_mutex_unlock(&mutex_interrupcion);
             pcb->lengthUltimaRafaga = pcb->PC - PC_inicial;
-            log_info(logger, "Hay interrupcion, devulve el pcb");
+            log_info(logger, "Hay interrupcion, devuelve el pcb");
 
             if(string_equals_ignore_case(instruccion->id,"I/O")){
 

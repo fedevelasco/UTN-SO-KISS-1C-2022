@@ -33,8 +33,8 @@ void instructions_list_destroy(t_instructions_list* instructions_list){
 }
 
 uint32_t bytes_instructions_list(t_instructions_list* instructions_list) {
-	//Empieza en 1 por que en el primer byte tengo el tamanio de la lista.
-	uint32_t bytes = 1;
+	//Empieza en sizeof(uint32_t) por que en el primer byte tengo el tamanio de la lista.
+	uint32_t bytes = sizeof(uint32_t);
 
 	for(int i=0;i<list_size(instructions_list->instructions);i++){
 		bytes += bytes_instruction(list_get(instructions_list->instructions, i));

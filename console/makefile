@@ -127,10 +127,10 @@ suspension3: release
 	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH); \
 	./$(BIN) $(SUSPENSION3)
 
-.PHONY: memoria1
-memoria1: release
+.PHONY: memoria
+memoria: release
 	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH); \
-	./$(BIN) $(MEMORIA1)
+	./$(BIN) $(MEMORIA)
 
 .PHONY: tlb1
 tlb1: release
