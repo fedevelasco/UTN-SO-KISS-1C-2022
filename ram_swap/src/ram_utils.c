@@ -3,7 +3,7 @@
 t_log* start_logger(void) {
 	t_log* new_logger;
 
-	new_logger = log_create("ram_swap.log", "Ram_Swap", 1, LOG_LEVEL_DEBUG);
+	new_logger = log_create("ram_swap.log", "Ram_Swap", 1, LOG_LEVEL_INFO);
 
 	if (new_logger == NULL) {
 		printf("No fue posible crear el Logger\n");
