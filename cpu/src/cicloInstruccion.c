@@ -240,7 +240,6 @@ void memoria_write(uint32_t direccion_fisica, uint32_t dato) {
 	}
 
 	free(buffer_recibido);
-	free(peticion_escritura);
 }
 
 

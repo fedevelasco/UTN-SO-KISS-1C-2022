@@ -15,22 +15,14 @@ t_pcb * iniciarPcb(t_proceso * proceso){
     
     pcb->id = id_nuevo_proceso;
     id_nuevo_proceso++;
-    memcpy(&(pcb->tamanioProceso), &(proceso->tamanioProceso), sizeof(uint32_t));
-    // pcb->tamanioProceso = proceso->tamanioProceso;
-
-     memcpy(&(pcb->sizeInstrucciones), &(proceso->sizeInstrucciones), sizeof(uint32_t));
-    // pcb->sizeInstrucciones = proceso->sizeInstrucciones;
-
-     memcpy(&(pcb->instrucciones), &(proceso->instrucciones), pcb->sizeInstrucciones);
-    // pcb->instrucciones = proceso->instrucciones;
+    pcb->tamanioProceso = proceso->tamanioProceso;
+    pcb->sizeInstrucciones = proceso->sizeInstrucciones;
+    pcb->instrucciones = proceso->instrucciones;
     pcb->lengthUltimaRafaga = 0;
     pcb->PC = 0;
     pcb->tablaDePaginas = 0;
     pcb->estimacionRafaga = ESTIMACION_INICIAL;
-
-    instructions_list_destroy(proceso->instrucciones);
     free(proceso);
-    
     return pcb;
 }
 
@@ -320,8 +312,6 @@ void comunicacionMemoriaSuspender(t_pcb * pcb){
 		perror("respuesta inesperada");
 		exit(EXIT_FAILURE);
 	}
-
-    free(crear_proceso);
     log_info(logger, "Kernel - Memoria suspendio el proceso correctamente");
 }
 
@@ -358,7 +348,6 @@ void comunicacionMemoriaCreacionEstructuras(t_pcb * pcb){
 	deserialize_int(&tablaPaginas1erNivel, buffer_recibido);
 
 	free(buffer_recibido);
-    free(crear_proceso);
 
     pcb->tablaDePaginas = tablaPaginas1erNivel;
 
@@ -384,7 +373,6 @@ void comunicacionMemoriaFinalizar(t_pcb * pcb) {
 		log_error(logger, "Kernel - Error al enviar paquete a memoria");
 	}
 
-    free(crear_proceso);
     log_info(logger, "Kernel - Memoria termino el proceso correctamente");
 
 }
